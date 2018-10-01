@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Travel</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_tours">Tours</string>
+    <string name="title_setting">Setting</string>
+</resources>
