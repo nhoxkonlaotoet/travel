@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="TourName">#000</color>
+    <color name="tourDescription">#000</color>
+    <color name="TourCost">#cc0000</color>
+
+    <color name="UserName">#000</color>
+    <color name="ReviewContent">#000</color>
 </resources>
