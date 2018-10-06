@@ -3,11 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.administrator.travel.fragments.NewsFeedFragment">
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <!-- TODO: Update blank fragment layout -->
-  <ListView
-      android:id="@+id/lstvNewsFeed"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"></ListView>
 
+    <ListView
+        android:id="@+id/lstvNewsFeed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
+    </RelativeLayout>
 </FrameLayout>

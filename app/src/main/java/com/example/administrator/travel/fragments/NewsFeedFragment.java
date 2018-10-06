@@ -42,6 +42,8 @@ public class NewsFeedFragment extends Fragment {
         ListView lstv = getActivity().findViewById(R.id.lstvNewsFeed);
         NewsFeedApdapter a = new NewsFeedApdapter();
         lstv.setAdapter(a);
+        lstv.setSelector(R.color.transparent);
+
     }
 
     @Override
@@ -82,16 +84,16 @@ public class NewsFeedFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if(position%2==0) {
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.news_feed_item, null);
-                TextView txt = convertView.findViewById(R.id.txtTourName);
-                txt.setText(list.get(position));
+            if(position%1==0) {
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.tour_item, null);
+              //  TextView txt = convertView.findViewById(R.id.txtTourName);
+               // txt.setText(list.get(position));
             }
             else
             {
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.news_feed_item_copy, null);
-                TextView txt = convertView.findViewById(R.id.txtItem_copy);
-                txt.setText(list.get(position));
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.review_item, null);
+               // TextView txt = convertView.findViewById(R.id.txtUserName);
+               // txt.setText(list.get(position));
             }
             return convertView;
         }
