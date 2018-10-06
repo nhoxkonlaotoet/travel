@@ -29,7 +29,7 @@ import com.example.administrator.travel.fragments.TourDetailFragment;
 
 public class TourActivity extends AppCompatActivity {
     Toolbar toolbar;
-    ViewPager vpTourImage, vpTabContainer;
+    ViewPager vpTourImage, vpContainer;
     TextView txt;
     TabLayout tablayoutTour;
 
@@ -46,7 +46,7 @@ public class TourActivity extends AppCompatActivity {
         toolbar.bringToFront();
         tablayoutTour = findViewById(R.id.tablayoutTour);
 
-        vpTabContainer = findViewById(R.id.vpTabContainer);
+        vpContainer = findViewById(R.id.vpTabContainer);
      //   tablayoutTour.setupWithViewPager(vpTabContainer);
 
         setSupportActionBar(toolbar);
@@ -61,9 +61,9 @@ public class TourActivity extends AppCompatActivity {
 
         Pager pager=new Pager(getSupportFragmentManager(),4);
 
-        vpTabContainer.setAdapter(pager);
+        vpContainer.setAdapter(pager);
 
-        vpTabContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        vpContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -72,7 +72,10 @@ public class TourActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 tablayoutTour.setScrollPosition(position, 0, true);
+
                 tablayoutTour.setSelected(true);
+
+                Log.e( "onPageSelected: ", position+"");
             }
 
             @Override
@@ -80,6 +83,23 @@ public class TourActivity extends AppCompatActivity {
 
             }
         });
+        tablayoutTour.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                vpContainer.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
 
     }
 
@@ -111,8 +131,8 @@ public class TourActivity extends AppCompatActivity {
                 default :
                     SelectTourFragment fragment2 = new SelectTourFragment();
                     return fragment2;
-
             }
+
         }
 
         @Override
@@ -120,7 +140,6 @@ public class TourActivity extends AppCompatActivity {
             return tabCount;
         }
     }
-
     public static class PlaceholderFragment extends Fragment {
 
         public PlaceholderFragment() {

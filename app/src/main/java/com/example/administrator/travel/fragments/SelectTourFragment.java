@@ -4,6 +4,7 @@ package com.example.administrator.travel.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 public class SelectTourFragment extends Fragment {
     ListView lstvSelectTour;
-
+    int i=0;
     public SelectTourFragment() {
         // Required empty public constructor
     }
@@ -32,14 +33,19 @@ public class SelectTourFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_select_tour, container, false);
+
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        lstvSelectTour = getActivity().findViewById(R.id.lstvSelectTour);
-        SelectTourAdapter adapter = new SelectTourAdapter();
-        lstvSelectTour.setAdapter(adapter);
+     //   lstvSelectTour = getActivity().findViewById(R.id.lstvSelectTour);
+      ///\  SelectTourAdapter adapter = new SelectTourAdapter();
+       // if(lstvSelectTour.getAdapter()==null)
+       //    lstvSelectTour.setAdapter(adapter);
+        i++;
+        Log.e("SelectTourFragment: ", "onViewCreated"+ "   "+ i);
+
     }
 
     public class SelectTourAdapter extends BaseAdapter {
@@ -73,4 +79,9 @@ public class SelectTourFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("SelectTourFragment", "onDestroy: " );
+    }
 }
