@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Khởi hành "
+        android:textSize="20sp"
+        android:textColor="@color/colorText"/>
+    <TextView
+        android:id="@+id/txtStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1/11/2018"
+        android:textSize="20sp"
+        android:textColor="@color/colorText"
+        android:layout_toRightOf="@id/textView1"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Số người "
+        android:textSize="20sp"
+        android:textColor="@color/colorText"
+        android:layout_below="@id/textView1"/>
+
+    <TextView
+        android:id="@+id/txtPeopleNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_toEndOf="@+id/textView2"
+        android:text="10/30"
+        android:textColor="@color/colorText"
+        android:textSize="20sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@+id/txtPeopleNumber"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Tham gia"
+        android:textAllCaps="false"
+        android:textColor="@color/colorText" />
+</RelativeLayout>

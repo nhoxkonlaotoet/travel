@@ -1,6 +1,11 @@
 package com.example.administrator.travel.activities;
 
 import android.content.Context;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -9,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,10 +24,16 @@ import android.widget.TextView;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.activities.TourActivity;
+import com.example.administrator.travel.fragments.SelectTourFragment;
+import com.example.administrator.travel.fragments.TourDetailFragment;
+
 public class TourActivity extends AppCompatActivity {
     Toolbar toolbar;
-    ViewPager vpTourImage;
+    ViewPager vpTourImage, vpTabContainer;
     TextView txt;
+    TabLayout tablayoutTour;
+
+    SectionsPagerAdapter mSectionsPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +44,10 @@ public class TourActivity extends AppCompatActivity {
         vpTourImage = findViewById(R.id.vpTourImage);
         txt = findViewById(R.id.txtTourImage);
         toolbar.bringToFront();
+        tablayoutTour = findViewById(R.id.tablayoutTour);
+
+        vpTabContainer = findViewById(R.id.vpTabContainer);
+        tablayoutTour.setupWithViewPager(vpTabContainer);
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = this.getSupportActionBar();
@@ -42,6 +58,28 @@ public class TourActivity extends AppCompatActivity {
         vpTourImage.setAdapter(adapter);
 
 
+
+        Pager pager=new Pager(getSupportFragmentManager(),4);
+
+        vpTabContainer.setAdapter(pager);
+
+        vpTabContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                tablayoutTour.setScrollPosition(position, 0, true);
+                tablayoutTour.setSelected(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 
@@ -55,7 +93,84 @@ public class TourActivity extends AppCompatActivity {
     }
 
 
+    public class Pager extends FragmentStatePagerAdapter {
 
+        int tabCount;
+
+        public Pager(FragmentManager fm, int tabCount){
+            super(fm);
+            this.tabCount=tabCount;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch(position){
+                case 0 :
+                    TourDetailFragment fragment1 = new TourDetailFragment();
+                    return fragment1;
+                default :
+                    SelectTourFragment fragment2 = new SelectTourFragment();
+                    return fragment2;
+
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return tabCount;
+        }
+    }
+
+    public static class PlaceholderFragment extends Fragment {
+
+        public PlaceholderFragment() {
+        }
+
+
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_tour_detail, container, false);
+            return rootView;
+        }
+    }
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            return PlaceholderFragment.newInstance(position + 1);
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "SECTION 1";
+                case 1:
+                    return "SECTION 2";
+                case 2:
+                    return "SECTION 3";
+            }
+            return null;
+        }
+    }
     public class SlideTourImageAdapter extends PagerAdapter {
         LayoutInflater layoutInflater;
         Context context;

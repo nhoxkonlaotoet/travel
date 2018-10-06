@@ -43,7 +43,7 @@ public class NewsFeedFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ListView lstv = getActivity().findViewById(R.id.lstvNewsFeed);
-        NewsFeedApdapter a = new NewsFeedApdapter();
+        NewsFeedAdapter a = new NewsFeedAdapter();
         lstv.setAdapter(a);
         lstv.setSelector(R.color.transparent);
         lstv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -61,10 +61,10 @@ public class NewsFeedFragment extends Fragment {
 
     }
 
-    public class NewsFeedApdapter extends BaseAdapter {
+    public class NewsFeedAdapter extends BaseAdapter {
         List<String> list= new ArrayList();
 
-        public NewsFeedApdapter()
+        public NewsFeedAdapter()
         {
             list.add("a");
             list.add("b");
