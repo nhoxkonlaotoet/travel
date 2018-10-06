@@ -47,7 +47,7 @@ public class TourActivity extends AppCompatActivity {
         tablayoutTour = findViewById(R.id.tablayoutTour);
 
         vpTabContainer = findViewById(R.id.vpTabContainer);
-        tablayoutTour.setupWithViewPager(vpTabContainer);
+     //   tablayoutTour.setupWithViewPager(vpTabContainer);
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = this.getSupportActionBar();
