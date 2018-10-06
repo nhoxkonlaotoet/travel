@@ -1,17 +1,20 @@
 package com.example.administrator.travel.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
+import com.example.administrator.travel.activities.TourActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +46,13 @@ public class NewsFeedFragment extends Fragment {
         NewsFeedApdapter a = new NewsFeedApdapter();
         lstv.setAdapter(a);
         lstv.setSelector(R.color.transparent);
-
+        lstv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), TourActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
