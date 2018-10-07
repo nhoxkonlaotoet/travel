@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.administrator.travel.R;
 
@@ -22,7 +23,6 @@ import java.util.List;
  */
 public class SelectTourFragment extends Fragment {
     ListView lstvSelectTour;
-    int i=0;
     public SelectTourFragment() {
         // Required empty public constructor
     }
@@ -39,25 +39,44 @@ public class SelectTourFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-     //   lstvSelectTour = getActivity().findViewById(R.id.lstvSelectTour);
-      ///\  SelectTourAdapter adapter = new SelectTourAdapter();
-       // if(lstvSelectTour.getAdapter()==null)
-       //    lstvSelectTour.setAdapter(adapter);
-        i++;
-        Log.e("SelectTourFragment: ", "onViewCreated"+ "   "+ i);
+        lstvSelectTour = getActivity().findViewById(R.id.lstvSelectTour);
+       SelectTourAdapter adapter = new SelectTourAdapter();
+        if(lstvSelectTour.getAdapter()==null)
+           lstvSelectTour.setAdapter(adapter);
+        Log.e("SelectTourFragment: ", "onViewCreated");
 
     }
 
     public class SelectTourAdapter extends BaseAdapter {
 
-
+        List<String> lstStartDay = new ArrayList<String>();
+        List<String> lstNumberPeople = new ArrayList<String>();
+        TextView txtStartDay, txtNumberPeople;
         public SelectTourAdapter()
         {
+            lstStartDay.add("10/10/2018");
+            lstStartDay.add("16/10/2018");
+            lstStartDay.add("25/10/2018");
+            lstStartDay.add("29/10/2018");
+            lstStartDay.add("6/11/2018");
+            lstStartDay.add("14/11/2018");
+            lstStartDay.add("20/11/2018");
+            lstStartDay.add("1/12/2018");
+            lstNumberPeople.add("40/50");
+            lstNumberPeople.add("35/50");
+            lstNumberPeople.add("15/50");
+            lstNumberPeople.add("6/50");
+            lstNumberPeople.add("0/50");
+            lstNumberPeople.add("0/50");
+            lstNumberPeople.add("0/50");
+            lstNumberPeople.add("0/50");
+
+
 
         }
         @Override
         public int getCount() {
-            return 10;
+            return lstStartDay.size();
         }
 
         @Override
@@ -74,14 +93,18 @@ public class SelectTourFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
 
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.select_tour_item, null);
+            txtStartDay = convertView.findViewById(R.id.txtStart);
+            txtNumberPeople = convertView.findViewById(R.id.txtNumberPeople);
+            txtStartDay.setText(lstStartDay.get(position));
+            txtNumberPeople.setText(lstNumberPeople.get(position));
 
             return convertView;
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.e("SelectTourFragment", "onDestroy: " );
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        Log.e("SelectTourFragment", "onDestroy: " );
+//    }
 }

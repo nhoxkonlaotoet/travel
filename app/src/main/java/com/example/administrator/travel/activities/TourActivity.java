@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.activities.TourActivity;
+import com.example.administrator.travel.fragments.MapFragment;
 import com.example.administrator.travel.fragments.SelectTourFragment;
 import com.example.administrator.travel.fragments.TourDetailFragment;
 
@@ -126,10 +127,13 @@ public class TourActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch(position){
                 case 0 :
-                    TourDetailFragment fragment1 = new TourDetailFragment();
-                    return fragment1;
+                    SelectTourFragment fragment = new SelectTourFragment();
+                    return fragment;
+                case 3:
+                    MapFragment fragment3 = new MapFragment();
+                    return fragment3;
                 default :
-                    SelectTourFragment fragment2 = new SelectTourFragment();
+                    TourDetailFragment fragment2 = new TourDetailFragment();
                     return fragment2;
             }
 
