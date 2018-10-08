@@ -126,7 +126,7 @@ public class TourActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             switch(position){
-                case 0 :
+                case 1 :
                     SelectTourFragment fragment = new SelectTourFragment();
                     return fragment;
                 case 3:
