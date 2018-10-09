@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
@@ -24,9 +27,16 @@ import java.util.List;
  */
 public class NewsFeedFragment extends Fragment {
 
-
+    private String array_spinner[];
+    Spinner spinner;
+    ListView lstv;
     public NewsFeedFragment() {
         // Required empty public constructor
+        array_spinner=new String[5];
+        array_spinner[0]="Mọi thứ";
+        array_spinner[1]="Tour";
+        array_spinner[2]="Địa điểm";
+        array_spinner[3]="Đánh giá";
     }
 
 
@@ -42,7 +52,8 @@ public class NewsFeedFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ListView lstv = getActivity().findViewById(R.id.lstvNewsFeed);
+        lstv = getActivity().findViewById(R.id.lstvNewsFeed);
+        spinner = getActivity().findViewById(R.id.spinner);
         NewsFeedAdapter a = new NewsFeedAdapter();
         lstv.setAdapter(a);
         lstv.setSelector(R.color.transparent);
@@ -51,7 +62,23 @@ public class NewsFeedFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), TourActivity.class);
                 startActivity(intent);
+
             }
+        });
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.news_feed_spinner_item,R.id.txtSpinnerOption, array_spinner);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+
         });
     }
 

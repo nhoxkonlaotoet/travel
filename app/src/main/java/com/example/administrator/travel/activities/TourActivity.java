@@ -26,6 +26,7 @@ import com.example.administrator.travel.R;
 import com.example.administrator.travel.activities.TourActivity;
 import com.example.administrator.travel.fragments.MapFragment;
 import com.example.administrator.travel.fragments.SelectTourFragment;
+import com.example.administrator.travel.fragments.StatusCommunicationFragment;
 import com.example.administrator.travel.fragments.TourDetailFragment;
 
 public class TourActivity extends AppCompatActivity {
@@ -87,7 +88,7 @@ public class TourActivity extends AppCompatActivity {
         tablayoutTour.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                vpContainer.setCurrentItem(tab.getPosition());
+                    vpContainer.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -126,14 +127,17 @@ public class TourActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             switch(position){
-                case 1 :
-                    SelectTourFragment fragment = new SelectTourFragment();
+                case 0:
+                    TourDetailFragment fragment = new TourDetailFragment();
                     return fragment;
+                case 1 :
+                    SelectTourFragment fragment1 = new SelectTourFragment();
+                    return fragment1;
                 case 3:
                     MapFragment fragment3 = new MapFragment();
                     return fragment3;
                 default :
-                    TourDetailFragment fragment2 = new TourDetailFragment();
+                    StatusCommunicationFragment fragment2 = new StatusCommunicationFragment();
                     return fragment2;
             }
 
