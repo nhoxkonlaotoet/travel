@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtScheduleTime"
+        android:layout_width="40dp"
+        android:layout_height="150dp"
+        android:gravity="right"
+        android:textColor="@color/colorText"
+        android:text="07:00 AM"/>
+
+    <RelativeLayout
+        android:id="@+id/layoutTimeline"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignBottom="@+id/layoutTodo"
+        android:layout_toRightOf="@id/txtScheduleTime">
+
+        <View
+            android:id="@+id/vScheduleBullet"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/schedule_bullet_background" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@id/vScheduleBullet"
+            android:background="#64dd17"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutTodo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/layoutTimeline">
+        <TextView
+            android:id="@+id/txtScheduleTodo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ăn sáng - Nhà hàng ABC"
+            android:textColor="@color/colorText"
+            android:textSize="18sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_location_on_black_24dp"/>
+            <TextView
+                android:id="@+id/txtScheduleAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Số 123, đường Hoàng Diệu 2, ..."/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/txtScheduleDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorText"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

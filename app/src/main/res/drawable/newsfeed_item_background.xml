@@ -7,7 +7,7 @@
                     <solid android:color="#dcdcdc" />
                 </shape>
             </item>
-            <item android:bottom="3dp" android:right ="0dp">
+            <item android:bottom="3dp" android:right ="1dp">
                 <shape>
                     <solid android:color="@color/colorNewsFeedBackground" />
                     <corners android:radius="5dp" />
@@ -24,7 +24,7 @@
                     <solid android:color="#dcdcdc" />
                 </shape>
             </item>
-            <item android:bottom="3dp" android:right ="0dp">
+            <item android:bottom="3dp" android:right ="1dp">
                 <shape>
                     <solid android:color="#fff" />
                     <corners android:radius="5dp" />

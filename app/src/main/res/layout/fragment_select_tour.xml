@@ -3,7 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.administrator.travel.fragments.SelectTourFragment">
-
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:gravity="center"-->
+        <!--android:text="asdasdasd"-->
+        <!--android:textSize="50sp"/>-->
     <!-- TODO: Update blank fragment layout -->
    <ListView
        android:id="@+id/lstvSelectTour"
