@@ -1,0 +1,84 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.administrator.travel.fragments.UpdateStatusFragment">
+
+    <RelativeLayout
+        android:id="@+id/rlupdatestatus"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#c2bbbb">
+        <ImageButton
+            android:id="@+id/btn_updatestatus_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+            android:background="@null"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Chia sẻ"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
+            android:textColor="#000"
+            android:layout_toRightOf="@id/btn_updatestatus_back"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_send_black_24dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"/>
+    </RelativeLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="Bạn đang nghĩ gì?"
+        android:ems="10"
+        android:gravity="start"
+        android:inputType="textMultiLine"
+        android:layout_below="@id/rlupdatestatus"
+        android:layout_above="@id/tbupdatestatus"/>
+    <TableRow
+        android:id="@+id/tbupdatestatus"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#c2bbbb"
+        android:layout_alignParentBottom="true"
+        android:weightSum="2">
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_burst_photo_black_24dp"
+            android:background="@null"
+            android:gravity="center"
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"/>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="2">
+            <TextView
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Quyền xem"/>
+            <Spinner
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </Spinner>
+
+        </TableRow>
+    </TableRow>
+
+</RelativeLayout>
