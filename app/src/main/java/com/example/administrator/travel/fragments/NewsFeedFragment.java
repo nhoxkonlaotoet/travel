@@ -1,8 +1,11 @@
 package com.example.administrator.travel.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.util.Log;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,7 +36,7 @@ public class NewsFeedFragment extends Fragment {
     ListView lstv;
     public NewsFeedFragment() {
         // Required empty public constructor
-        array_spinner=new String[5];
+        array_spinner=new String[4];
         array_spinner[0]="Mọi thứ";
         array_spinner[1]="Tour";
         array_spinner[2]="Địa điểm";
@@ -87,7 +91,42 @@ public class NewsFeedFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
+    //chua su dung
+    public class NewsFeedArrayAdapter extends  ArrayAdapter{
 
+        public NewsFeedArrayAdapter(@NonNull Context context, int resource) {
+            super(context, resource);
+        }
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            TextView v = (TextView) super.getView(position, convertView, parent);
+            if (v == null) {
+                v = new TextView(getActivity());
+            }
+            v.setTextColor(Color.BLACK);
+            v.setText(array_spinner[position]);
+            return v;
+        }
+
+        @Override
+        public String getItem(int position) {
+            return array_spinner[position];
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+
+            if (v == null) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                v = inflater.inflate(R.layout.news_feed_spinner_item, null);
+            }
+            TextView lbl = (TextView) v.findViewById(R.id.txtSpinnerOption);
+            lbl.setTextColor(Color.BLACK);
+            lbl.setText(array_spinner[position]);
+            return convertView;
+        }
+    }
     public class NewsFeedAdapter extends BaseAdapter {
         List<String> list= new ArrayList();
 

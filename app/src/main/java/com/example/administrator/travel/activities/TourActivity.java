@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.activities.TourActivity;
+import com.example.administrator.travel.fragments.ContactFragment;
 import com.example.administrator.travel.fragments.MapFragment;
 import com.example.administrator.travel.fragments.SelectTourFragment;
 import com.example.administrator.travel.fragments.StatusCommunicationFragment;
@@ -133,12 +134,14 @@ public class TourActivity extends AppCompatActivity {
                 case 1 :
                     SelectTourFragment fragment1 = new SelectTourFragment();
                     return fragment1;
-                case 3:
+                case 2:
+                    ContactFragment fragment2 = new ContactFragment();
+                    return fragment2;
+                default :
                     MapFragment fragment3 = new MapFragment();
                     return fragment3;
-                default :
-                    StatusCommunicationFragment fragment2 = new StatusCommunicationFragment();
-                    return fragment2;
+
+
             }
 
         }

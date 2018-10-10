@@ -5,21 +5,25 @@
     <color name="colorAccent">#FF4081</color>
 
 
-    <color name="colorText">#333</color>
+    <color name="colorText">#6C767C</color>
     <color name="colorTourName">#365899</color>
     <color name="colorNewsFeedBackground">#e8eaf6</color>
     <color name="colorNewsFeedItemBackground">#fff</color>
 
 
 
-    <color name="colorTourCost">#64dd17</color>
+    <color name="colorTourCost">#65A400</color>
     <color name="colorOldTourCost">#c30000</color>
 
 
     <color name="colorUserName">#000</color>
     <color name="colorReviewContent">#000</color>
 
+    <color name="colorGreen">#65A400</color>
+    <color name="colorGreenDark">#317500</color>
+
 
     <color name="transparent">#00000000</color>
 
+    <color name="colorSelected">#CDD0D2</color>
 </resources>

@@ -4,12 +4,12 @@
             <item android:left="5dp" android:top="5dp">
                 <shape>
                     <corners android:radius="5dp" />
-                    <solid android:color="#dcdcdc" />
+                    <solid android:color="@color/colorSelected" />
                 </shape>
             </item>
-            <item android:bottom="3dp" android:right ="1dp">
+            <item android:bottom="3dp" android:right ="2dp">
                 <shape>
-                    <solid android:color="@color/colorNewsFeedBackground" />
+                    <solid android:color="@color/colorSelected" />
                     <corners android:radius="5dp" />
 
                 </shape>
@@ -18,15 +18,15 @@
     </item>
     <item>
         <layer-list>
-            <item android:left="5dp" android:top="5dp">
+            <item android:left="2dp" android:top="5dp">
                 <shape>
                     <corners android:radius="5dp" />
-                    <solid android:color="#dcdcdc" />
+                   <solid android:color="@color/colorSelected"/>
                 </shape>
             </item>
-            <item android:bottom="3dp" android:right ="1dp">
+            <item android:bottom="3dp" android:right ="0dp">
                 <shape>
-                    <solid android:color="#fff" />
+                    <solid android:color="#fff"/>
                     <corners android:radius="5dp" />
 
                 </shape>

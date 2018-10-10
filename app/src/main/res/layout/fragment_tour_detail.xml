@@ -114,7 +114,9 @@
                 android:id="@+id/lstvSchedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtSchedule"/>
+                android:layout_below="@id/txtSchedule"
+                android:divider="@null"
+                android:dividerHeight="0dp"/>
         </RelativeLayout>
 
 

@@ -95,6 +95,14 @@ public class TourDetailFragment extends Fragment {
 
             convertView = getActivity().getLayoutInflater().inflate(R.layout.schedule_tour_item, null);
 
+            if(position==0) {
+                View vAboveLine = convertView.findViewById(R.id.vAboveLine);
+                vAboveLine.setVisibility(View.INVISIBLE);
+            }
+            if(position==getCount()-1) {
+                View vBelowLine = convertView.findViewById(R.id.vBelowLine);
+                vBelowLine.setVisibility(View.INVISIBLE);
+            }
             return convertView;
         }
     }

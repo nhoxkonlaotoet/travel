@@ -1,63 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/textView1"
+    <LinearLayout
+        android:id="@+id/layoutSelectTour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Khởi hành "
-        android:textSize="20sp"
-        android:textColor="@color/colorText"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"/>
-    <TextView
-        android:id="@+id/txtStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1/11/2018"
-        android:textSize="20sp"
-        android:textColor="@color/colorText"
-        android:layout_toRightOf="@id/textView1"
-        android:layout_marginTop="10dp"
-        />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Số người "
-        android:textSize="20sp"
-        android:textColor="@color/colorText"
-        android:layout_below="@id/textView1"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
-    <TextView
-        android:id="@+id/txtNumberPeople"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_toEndOf="@+id/textView2"
-        android:text="10/30"
-        android:textColor="@color/colorText"
-        android:textSize="20sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+            <ImageView
+                android:id="@+id/imgvCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
 
-        />
+                app:srcCompat="@drawable/ic_calendar_black_24dp" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/imgvCalendar"
+                android:text="Khởi hành "
+                android:textColor="@color/colorText"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/textView1"
+                android:text="1/11/2018"
+                android:textColor="@color/colorText"
+                android:textSize="18sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+        <ImageView
+                android:id="@+id/imgvNumberPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_human_black_24dp"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Số người "
+                android:textSize="18sp"
+                android:textColor="@color/colorText"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/imgvNumberPeople"/>
+
+            <TextView
+                android:id="@+id/txtNumberPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/textView2"
+                android:text="10/30"
+                android:textColor="@color/colorText"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/txtNumberPeople"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-
-        android:layout_alignTop="@+id/textView1"
         android:text="Tham gia"
         android:textAllCaps="false"
-        android:textColor="@color/colorText"
-        />
+        android:textColor="#FBFFF0"
+        android:layout_alignTop="@+id/layoutSelectTour"
+        android:layout_alignBottom="@+id/layoutSelectTour"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="5dp"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:background="@drawable/background_button_participate_tour"/>
 </RelativeLayout>

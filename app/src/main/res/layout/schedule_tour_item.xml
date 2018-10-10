@@ -18,24 +18,34 @@
         android:id="@+id/layoutTimeline"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginTop="2dp"
+
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_alignBottom="@+id/layoutTodo"
         android:layout_toRightOf="@id/txtScheduleTime">
+        <View
+            android:id="@+id/vAboveLine"
+            android:layout_width="1dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorGreen"
+            />
 
         <View
             android:id="@+id/vScheduleBullet"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/schedule_bullet_background" />
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/schedule_bullet_background"
+            android:layout_below="@+id/vAboveLine"/>
 
         <View
+            android:id="@+id/vBelowLine"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_below="@id/vScheduleBullet"
-            android:background="#64dd17"
+            android:background="@color/colorGreen"
             />
 
     </RelativeLayout>
