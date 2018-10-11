@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:background="@color/transparent"
         android:minHeight="?attr/actionBarSize"
-
+        app:title="Tour du lich Hội An"
+        app:titleTextColor="#000"
         android:theme="?attr/actionBarTheme" />
     <android.support.v4.view.ViewPager
         android:id="@+id/vpTourImage"
@@ -32,23 +33,7 @@
         app:tabGravity="fill"
         app:tabTextAppearance="@style/CustomTextAppearanceTab">
 
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chi tiết"/>
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Đặt tour"/>
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Liên hệ"/>
 
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bản đồ" />
     </android.support.design.widget.TabLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/vpTabContainer"

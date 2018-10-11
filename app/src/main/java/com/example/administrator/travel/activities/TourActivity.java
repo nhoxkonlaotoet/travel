@@ -26,6 +26,7 @@ import com.example.administrator.travel.R;
 import com.example.administrator.travel.activities.TourActivity;
 import com.example.administrator.travel.fragments.ContactFragment;
 import com.example.administrator.travel.fragments.MapFragment;
+import com.example.administrator.travel.fragments.NearbyFragment;
 import com.example.administrator.travel.fragments.SelectTourFragment;
 import com.example.administrator.travel.fragments.StatusCommunicationFragment;
 import com.example.administrator.travel.fragments.TourDetailFragment;
@@ -35,7 +36,7 @@ public class TourActivity extends AppCompatActivity {
     ViewPager vpTourImage, vpContainer;
     TextView txt;
     TabLayout tablayoutTour;
-
+    Boolean isMyTour=false;
     SectionsPagerAdapter mSectionsPagerAdapter;
 
     @Override
@@ -48,6 +49,29 @@ public class TourActivity extends AppCompatActivity {
         txt = findViewById(R.id.txtTourImage);
         toolbar.bringToFront();
         tablayoutTour = findViewById(R.id.tablayoutTour);
+        toolbar.setTitle("Tour du lich Hội An");
+
+        Bundle bundle = getIntent().getExtras();
+
+        if(bundle.getBoolean("mytour"))
+        {
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Chi tiết"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Hoạt động"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Gần đây"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Bản đồ"));
+            vpTourImage.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.BELOW, R.id.toolbar);
+            tablayoutTour.setLayoutParams(params);
+            isMyTour=true;
+        }
+        else
+        {
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Chi tiết"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Đặt tour"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Liên hệ"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Bản đồ"));
+        }
 
         vpContainer = findViewById(R.id.vpTabContainer);
      //   tablayoutTour.setupWithViewPager(vpTabContainer);
@@ -132,11 +156,22 @@ public class TourActivity extends AppCompatActivity {
                     TourDetailFragment fragment = new TourDetailFragment();
                     return fragment;
                 case 1 :
+                    if(isMyTour) {
+                        StatusCommunicationFragment fragment1 = new StatusCommunicationFragment();
+                        return fragment1;
+                    }else{
                     SelectTourFragment fragment1 = new SelectTourFragment();
-                    return fragment1;
+                    return fragment1;}
                 case 2:
-                    ContactFragment fragment2 = new ContactFragment();
-                    return fragment2;
+                    if(isMyTour) {
+                        NearbyFragment fragment2 = new NearbyFragment();
+                        return fragment2;
+                    }
+                    else
+                    {
+                        ContactFragment fragment2 = new ContactFragment();
+                        return fragment2;
+                    }
                 default :
                     MapFragment fragment3 = new MapFragment();
                     return fragment3;

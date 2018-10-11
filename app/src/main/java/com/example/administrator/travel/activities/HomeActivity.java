@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.fragments.NewsFeedFragment;
+import com.example.administrator.travel.fragments.SelectMyTourFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -28,7 +29,9 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
 
                 case R.id.navigation_my_tours:
-
+                    SelectMyTourFragment f1 = new SelectMyTourFragment();
+                    android.app.FragmentManager manager1= getFragmentManager();
+                    manager1.beginTransaction().replace(R.id.contenLayout,f1,f1.getTag()).commit();
                     return true;
                 case R.id.navigation_more:
 

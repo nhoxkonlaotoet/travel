@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+    <RelativeLayout
+        android:id="@+id/layoutMyTourNameandStartDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtMyTourName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tour du lịch Đà Lạt"
+            android:textColor="@color/colorText"
+            android:layout_marginBottom="5dp"/>
+        <LinearLayout
+            android:id="@+id/layoutMyTourStartDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtMyTourName">
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thời gian "
+                android:textColor="@color/colorText"/>
+            <TextView
+                android:id="@+id/txtStartDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1/10/2018 - 5/1/2018"
+                android:textColor="@color/colorText"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/layoutMyTourNameandStartDay"
+        android:layout_alignBottom="@+id/layoutMyTourNameandStartDay">
+        <ImageView
+            android:id="@+id/imgvMyTourStatus"
+            android:layout_width="16dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_check_mark"
+            android:layout_marginRight="5dp"/>
+        <TextView
+            android:id="@+id/txtMyTourStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Đã tham gia"
+            android:textColor="@color/colorHintText"
+            android:gravity="center"/>
+    </LinearLayout>
+</RelativeLayout>

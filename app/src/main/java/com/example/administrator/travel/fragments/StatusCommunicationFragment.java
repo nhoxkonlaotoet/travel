@@ -3,24 +3,19 @@ package com.example.administrator.travel.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 
+import com.example.administrator.travel.NonScrollListView;
 import com.example.administrator.travel.R;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link StatusCommunicationFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link StatusCommunicationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class StatusCommunicationFragment extends Fragment {
-
+    NonScrollListView lstvStatus;
     public StatusCommunicationFragment() {
         // Required empty public constructor
     }
@@ -34,6 +29,13 @@ public class StatusCommunicationFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        lstvStatus = getActivity().findViewById(R.id.lstvStatus);
+        lstvStatus.setAdapter(new StatusAdapter());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -43,5 +45,37 @@ public class StatusCommunicationFragment extends Fragment {
 
 
 
+    public class StatusAdapter extends BaseAdapter {
 
+
+        public StatusAdapter()
+        {
+
+        }
+        @Override
+        public int getCount() {
+            return 10;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            convertView = getActivity().getLayoutInflater().inflate(R.layout.status_item, null);
+            //  TextView txt = convertView.findViewById(R.id.txtTourName);
+            // txt.setText(list.get(position));
+
+
+            return convertView;
+        }
+    }
 }

@@ -4,8 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="colorHintText">#6C767C</color>
 
-    <color name="colorText">#6C767C</color>
+    <color name="colorText">#333</color>
     <color name="colorTourName">#365899</color>
     <color name="colorNewsFeedBackground">#e8eaf6</color>
     <color name="colorNewsFeedItemBackground">#fff</color>
