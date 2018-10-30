@@ -21,12 +21,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.views.activities.fragments.ContactFragment;
-import com.example.administrator.travel.views.activities.fragments.MapFragment;
-import com.example.administrator.travel.views.activities.fragments.NearbyFragment;
-import com.example.administrator.travel.views.activities.fragments.SelectTourFragment;
-import com.example.administrator.travel.views.activities.fragments.StatusCommunicationFragment;
-import com.example.administrator.travel.views.activities.fragments.TourDetailFragment;
+import com.example.administrator.travel.views.fragments.ContactFragment;
+import com.example.administrator.travel.views.fragments.MapFragment;
+import com.example.administrator.travel.views.fragments.NearbyFragment;
+import com.example.administrator.travel.views.fragments.SelectTourFragment;
+import com.example.administrator.travel.views.fragments.StatusCommunicationFragment;
+import com.example.administrator.travel.views.fragments.TourDetailFragment;
 
 public class TourActivity extends AppCompatActivity {
     Toolbar toolbar;

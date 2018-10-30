@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.views.activities.fragments.NewsFeedFragment;
-import com.example.administrator.travel.views.activities.fragments.SelectMyTourFragment;
+import com.example.administrator.travel.views.fragments.NewsFeedFragment;
+import com.example.administrator.travel.views.fragments.SelectMyTourFragment;
 
 public class HomeActivity extends AppCompatActivity {
 

@@ -5,6 +5,6 @@ package com.example.administrator.travel.models.entities;
  */
 
 public interface HomeInteractor {
-    public void getTour();
+    public void getTour(final OnGetTourFinishedListener listener);
 
 }

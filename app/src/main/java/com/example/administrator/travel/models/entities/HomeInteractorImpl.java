@@ -5,8 +5,9 @@ package com.example.administrator.travel.models.entities;
  */
 
 public class HomeInteractorImpl implements HomeInteractor {
+
     @Override
-    public void getTour() {
+    public void getTour(OnGetTourFinishedListener listener) {
 
     }
 }

@@ -5,4 +5,5 @@ package com.example.administrator.travel.models.entities;
  */
 
 public interface OnGetTourFinishedListener {
+    public void onSuccess();
 }
