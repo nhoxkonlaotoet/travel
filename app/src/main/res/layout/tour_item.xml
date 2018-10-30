@@ -76,6 +76,7 @@
                     android:numStars="5" />
 
                 <TextView
+                    android:id="@+id/txtNumberofRating"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -103,22 +104,22 @@
                     android:text="Viettravel" />
 
                 <TextView
-                    android:id="@+id/txtTourCost"
+                    android:id="@+id/txtTourPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="2.357.478 đ"
-                    android:textColor="@color/colorTourCost"
+                    android:textColor="@color/colorTourPrice"
                     android:textSize="20sp"
                     />
 
                 <TextView
-                    android:id="@+id/txtTourSaleCost"
+                    android:id="@+id/txtTourSalePrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center|bottom"
                     android:text="1.951.423 đ"
-                    android:textColor="@color/colorTourCost" />
+                    android:textColor="@color/colorTourPrice" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -13,8 +13,8 @@
 
 
 
-    <color name="colorTourCost">#65A400</color>
-    <color name="colorOldTourCost">#c30000</color>
+    <color name="colorTourPrice">#65A400</color>
+    <color name="colorTourOldPrice">#c30000</color>
 
 
     <color name="colorUserName">#000</color>

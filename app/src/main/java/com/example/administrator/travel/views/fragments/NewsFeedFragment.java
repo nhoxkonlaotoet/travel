@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -172,12 +173,20 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
             if(position%1==0) {
                 Tour tour = list.get(position);
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.tour_item, null);
+               //mapping
                 TextView txtTourName = convertView.findViewById(R.id.txtTourName);
                 TextView txtDays = convertView.findViewById(R.id.txtDays);
+                RatingBar ratingBar = convertView.findViewById(R.id.ratebarTourRating);
+                TextView txtNumberofRating = convertView.findViewById(R.id.txtNumberofRating);
+                TextView txtTourPrice = convertView.findViewById(R.id.txtTourPrice);
+                TextView txtTourSaleprice = convertView.findViewById(R.id.txtTourSalePrice);
+               //set values
                 txtTourName.setText(tour.name);
                 txtDays.setText(tour.days+" ngày "+tour.nights+" đêm");
-
-
+                ratingBar.setRating(tour.rating);
+                txtNumberofRating.setText(tour.numberofRating+" bình chọn");
+                txtTourPrice.setText(tour.adultPrice + "đ");
+                txtTourSaleprice.setVisibility(View.INVISIBLE);
             }
             else
             {

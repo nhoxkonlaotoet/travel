@@ -7,17 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.models.entities.Tour;
-import com.example.administrator.travel.views.HomeView;
 import com.example.administrator.travel.views.fragments.NewsFeedFragment;
 import com.example.administrator.travel.views.fragments.SelectMyTourFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 

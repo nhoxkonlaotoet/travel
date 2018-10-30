@@ -1,4 +1,6 @@
-package com.example.administrator.travel.models.entities;
+package com.example.administrator.travel.models;
+
+import com.example.administrator.travel.models.entities.Tour;
 
 import java.util.List;
 

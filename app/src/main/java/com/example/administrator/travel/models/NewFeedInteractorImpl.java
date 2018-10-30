@@ -1,7 +1,8 @@
-package com.example.administrator.travel.models.entities;
+package com.example.administrator.travel.models;
 
 import android.util.Log;
 
+import com.example.administrator.travel.models.entities.Tour;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

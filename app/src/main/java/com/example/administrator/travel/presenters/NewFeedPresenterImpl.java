@@ -2,9 +2,9 @@ package com.example.administrator.travel.presenters;
 
 import android.util.Log;
 
-import com.example.administrator.travel.models.entities.NewFeedInteractor;
-import com.example.administrator.travel.models.entities.NewFeedInteractorImpl;
-import com.example.administrator.travel.models.entities.OnGetNewFeedItemFinishedListener;
+import com.example.administrator.travel.models.NewFeedInteractor;
+import com.example.administrator.travel.models.NewFeedInteractorImpl;
+import com.example.administrator.travel.models.OnGetNewFeedItemFinishedListener;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.views.NewFeedView;
 
