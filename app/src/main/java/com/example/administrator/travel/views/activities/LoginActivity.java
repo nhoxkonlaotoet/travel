@@ -1,4 +1,4 @@
-package com.example.administrator.travel.activities;
+package com.example.administrator.travel.views.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.activities.HomeActivity;
 
 public class LoginActivity extends AppCompatActivity {
 

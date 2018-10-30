@@ -1,4 +1,4 @@
-package com.example.administrator.travel.fragments;
+package com.example.administrator.travel.views.activities.fragments;
 
 
 import android.content.Context;
@@ -8,20 +8,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.activities.TourActivity;
+import com.example.administrator.travel.views.activities.TourActivity;
 
 import java.util.ArrayList;
 import java.util.List;

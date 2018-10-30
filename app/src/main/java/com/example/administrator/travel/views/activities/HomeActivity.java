@@ -1,16 +1,14 @@
-package com.example.administrator.travel.activities;
+package com.example.administrator.travel.views.activities;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.fragments.NewsFeedFragment;
-import com.example.administrator.travel.fragments.SelectMyTourFragment;
+import com.example.administrator.travel.views.activities.fragments.NewsFeedFragment;
+import com.example.administrator.travel.views.activities.fragments.SelectMyTourFragment;
 
 public class HomeActivity extends AppCompatActivity {
 

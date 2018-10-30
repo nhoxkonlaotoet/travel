@@ -1,4 +1,4 @@
-package com.example.administrator.travel.fragments;
+package com.example.administrator.travel.views.activities.fragments;
 
 
 import android.os.Bundle;

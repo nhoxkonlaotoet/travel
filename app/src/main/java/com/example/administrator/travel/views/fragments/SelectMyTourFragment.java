@@ -1,4 +1,4 @@
-package com.example.administrator.travel.fragments;
+package com.example.administrator.travel.views.activities.fragments;
 
 
 import android.content.Intent;
@@ -13,11 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.activities.MyTourActivity;
-import com.example.administrator.travel.activities.TourActivity;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.administrator.travel.views.activities.TourActivity;
 
 /**
  * A simple {@link Fragment} subclass.

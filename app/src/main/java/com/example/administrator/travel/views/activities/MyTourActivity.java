@@ -1,4 +1,4 @@
-package com.example.administrator.travel.activities;
+package com.example.administrator.travel.views.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.example.administrator.travel.activities;
+package com.example.administrator.travel.views.activities;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
@@ -14,22 +14,19 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.activities.TourActivity;
-import com.example.administrator.travel.fragments.ContactFragment;
-import com.example.administrator.travel.fragments.MapFragment;
-import com.example.administrator.travel.fragments.NearbyFragment;
-import com.example.administrator.travel.fragments.SelectTourFragment;
-import com.example.administrator.travel.fragments.StatusCommunicationFragment;
-import com.example.administrator.travel.fragments.TourDetailFragment;
+import com.example.administrator.travel.views.activities.fragments.ContactFragment;
+import com.example.administrator.travel.views.activities.fragments.MapFragment;
+import com.example.administrator.travel.views.activities.fragments.NearbyFragment;
+import com.example.administrator.travel.views.activities.fragments.SelectTourFragment;
+import com.example.administrator.travel.views.activities.fragments.StatusCommunicationFragment;
+import com.example.administrator.travel.views.activities.fragments.TourDetailFragment;
 
 public class TourActivity extends AppCompatActivity {
     Toolbar toolbar;
