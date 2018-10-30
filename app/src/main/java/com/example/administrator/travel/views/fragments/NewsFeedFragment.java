@@ -131,14 +131,6 @@ public class NewsFeedFragment extends Fragment {
 
         public NewsFeedAdapter()
         {
-            list.add("a");
-            list.add("b");
-            list.add("c");
-            list.add("d");
-            list.add("e");
-            list.add("f");
-            list.add("g");
-            list.add("h");
 
         }
         @Override

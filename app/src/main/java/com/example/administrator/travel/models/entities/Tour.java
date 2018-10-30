@@ -8,18 +8,25 @@ public class Tour {
     public String id;
     public String name;
     public String description;
+    public Integer days;
+    public Integer nights;
+    public String vihicle;
     public Boolean state;
-    public Long adultCost;
-    public Long childCost;
-    public Long babyCost;
+    public Integer adultPrice;
+    public Integer childPrice;
+    public Integer babyPrice;
     public Tour(){}
-    public Tour(String name, String description, Boolean state, Long adultCost, Long childCost, Long babyCost)
+    public Tour(String name, String description, Integer days, Integer nights, String vihicle, Boolean state, //1: hoat dong, 0: khoa
+                Integer adultPrice, Integer childPrice, Integer babyPrice, String owner)
     {
         this.name=name;
         this.description=description;
+        this.days=days;
+        this.nights=nights;
+        this.vihicle=vihicle;
         this.state=state;
-        this.adultCost=adultCost;
-        this.childCost=childCost;
-        this.babyCost=babyCost;
+        this.adultPrice=adultPrice;
+        this.childPrice=childPrice;
+        this.babyPrice=babyPrice;
     }
 }
