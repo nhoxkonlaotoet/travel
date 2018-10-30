@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
+import com.example.administrator.travel.models.entities.Tour;
+import com.example.administrator.travel.presenters.NewFeedPresenter;
+import com.example.administrator.travel.presenters.NewFeedPresenterImpl;
+import com.example.administrator.travel.views.NewFeedView;
 import com.example.administrator.travel.views.activities.TourActivity;
 
 import java.util.ArrayList;
@@ -27,11 +32,12 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewsFeedFragment extends Fragment {
+public class NewsFeedFragment extends Fragment implements NewFeedView{
 
     private String array_spinner[];
     Spinner spinner;
     ListView lstv;
+    private NewFeedPresenter presenter;
     public NewsFeedFragment() {
         // Required empty public constructor
         array_spinner=new String[4];
@@ -54,11 +60,11 @@ public class NewsFeedFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        presenter= new NewFeedPresenterImpl(this);
+        presenter.getTours();
         lstv = getActivity().findViewById(R.id.lstvNewsFeed);
         spinner = getActivity().findViewById(R.id.spinner);
-        NewsFeedAdapter a = new NewsFeedAdapter();
-        lstv.setAdapter(a);
-        lstv.setSelector(R.color.transparent);
+
         lstv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -90,6 +96,19 @@ public class NewsFeedFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
+
+    @Override
+    public void showTours(List<Tour> listTour) {
+        Log.e( "NewFeedView ", "show tours" );
+        NewsFeedAdapter a = new NewsFeedAdapter(listTour);
+//        for(Tour tour : listTour)
+//        {
+//            Log.e("showTours: ", tour.toString());
+//        }
+        lstv.setAdapter(a);
+        lstv.setSelector(R.color.transparent);
+    }
+
     //chua su dung
     public class NewsFeedArrayAdapter extends  ArrayAdapter{
 
@@ -127,15 +146,15 @@ public class NewsFeedFragment extends Fragment {
         }
     }
     public class NewsFeedAdapter extends BaseAdapter {
-        List<String> list= new ArrayList();
+        List<Tour> list= new ArrayList();
 
-        public NewsFeedAdapter()
+        public NewsFeedAdapter(List<Tour> listTour)
         {
-
+            this.list = listTour;
         }
         @Override
         public int getCount() {
-            return list.size()-1;
+            return list.size();
         }
 
         @Override
@@ -151,9 +170,14 @@ public class NewsFeedFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if(position%1==0) {
+                Tour tour = list.get(position);
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.tour_item, null);
-              //  TextView txt = convertView.findViewById(R.id.txtTourName);
-               // txt.setText(list.get(position));
+                TextView txtTourName = convertView.findViewById(R.id.txtTourName);
+                TextView txtDays = convertView.findViewById(R.id.txtDays);
+                txtTourName.setText(tour.name);
+                txtDays.setText(tour.days+" ngày "+tour.nights+" đêm");
+
+
             }
             else
             {

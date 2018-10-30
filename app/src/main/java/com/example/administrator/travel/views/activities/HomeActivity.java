@@ -56,6 +56,24 @@ public class HomeActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference userRef = database.getReference("tours");
+        String key;
+
+        userRef.child("-LQ2GIaiHuH4LmUVogi5").setValue(new Tour("DU LỊCH [ĐÓN NĂM MỚI 2019] ĐÀ NẴNG - HỘI AN - SUỐI KHOÁNG NÓNG NÚI THẦN TÀI - BÀ NÀ - CẦU VÀNG ",
+                "",
+                3,2,"Hàng không Vietjet",(float)4.5,23,true,
+                5929000,4190000,2450000,"-LELM0FvJODmxnoRhFiG"));
+
+        userRef.child("-LQ2GIaxsDSHdPaQ4cWO").setValue(new Tour("DU LỊCH [CHĂM SÓC SỨC KHỎE] NHA TRANG - GM DỐC LẾT",
+                "",
+                3,3,"xe lửa",(float)4,67, true,
+                3979000,3979000,1989000,"-LELTicEhxKf9k4i_tHN"));
+        key= userRef.push().getKey();
+        userRef.child("-LQ2GIay5dB67r0BTjjy").setValue(new Tour("DU LỊCH PHÚ QUỐC - BÃI SAO [VIETJET]",
+                "",
+                3,2,"Vietjet Aviation",(float)3, 8,true,
+                3729000,2679000,1640000,"-LELTicEhxKf9k4i_tHN"));
 
 
     }
@@ -68,22 +86,4 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-//    FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference userRef = database.getReference("tours");
-//        String key;
-//        key= userRef.push().getKey();
-//        userRef.child(key).setValue(new Tour("DU LỊCH [ĐÓN NĂM MỚI 2019] ĐÀ NẴNG - HỘI AN - SUỐI KHOÁNG NÓNG NÚI THẦN TÀI - BÀ NÀ - CẦU VÀNG ",
-//                "",
-//                3,2,"Hàng không Vietjet",true,
-//                5929000,4190000,2450000,"-LELM0FvJODmxnoRhFiG"));
-//        key= userRef.push().getKey();
-//        userRef.child(key).setValue(new Tour("DU LỊCH [CHĂM SÓC SỨC KHỎE] NHA TRANG - GM DỐC LẾT",
-//                "",
-//                3,3,"xe lửa",true,
-//                3979000,3979000,1989000,"-LELTicEhxKf9k4i_tHN"));
-//        key= userRef.push().getKey();
-//        userRef.child(key).setValue(new Tour("DU LỊCH PHÚ QUỐC - BÃI SAO [VIETJET]",
-//                "",
-//                3,2,"Vietjet Aviation",true,
-//                3729000,2679000,1640000,"-LELTicEhxKf9k4i_tHN"));
-//
+
