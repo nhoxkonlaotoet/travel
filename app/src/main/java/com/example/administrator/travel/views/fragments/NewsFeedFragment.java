@@ -146,6 +146,7 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
             return convertView;
         }
     }
+
     public class NewsFeedAdapter extends BaseAdapter {
         List<Tour> list= new ArrayList();
 
