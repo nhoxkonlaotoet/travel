@@ -31,10 +31,10 @@ public class NewFeedPresenterImpl implements NewFeedPresenter,OnGetNewFeedItemFi
     }
     @Override
     public void onSuccess(List<Tour> listTour) {
-        for(Tour tour : listTour)
-        {
-            Log.e("onSuccess: ", tour.toString());
-        }
+//        for(Tour tour : listTour)
+//        {
+//            Log.e("onSuccess: ", tour.toString());
+//        }
         newFeedView.showTours(listTour);
     }
 

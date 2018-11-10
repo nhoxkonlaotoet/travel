@@ -1,6 +1,7 @@
 package com.example.administrator.travel.views.activities;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
+import com.example.administrator.travel.presenters.TourPresenter;
+import com.example.administrator.travel.views.TourView;
 import com.example.administrator.travel.views.fragments.ContactFragment;
 import com.example.administrator.travel.views.fragments.MapFragment;
 import com.example.administrator.travel.views.fragments.NearbyFragment;
@@ -28,14 +31,13 @@ import com.example.administrator.travel.views.fragments.SelectTourFragment;
 import com.example.administrator.travel.views.fragments.StatusCommunicationFragment;
 import com.example.administrator.travel.views.fragments.TourDetailFragment;
 
-public class TourActivity extends AppCompatActivity {
+public class TourActivity extends AppCompatActivity implements TourView {
     Toolbar toolbar;
     ViewPager vpTourImage, vpContainer;
-    TextView txt;
     TabLayout tablayoutTour;
     Boolean isMyTour=false;
     SectionsPagerAdapter mSectionsPagerAdapter;
-
+    TourPresenter presenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,13 +45,13 @@ public class TourActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         vpTourImage = findViewById(R.id.vpTourImage);
-        txt = findViewById(R.id.txtTourImage);
         toolbar.bringToFront();
         tablayoutTour = findViewById(R.id.tablayoutTour);
         toolbar.setTitle("Tour du lich Hội An");
-
+        presenter = new TourPresenter(this);
         Bundle bundle = getIntent().getExtras();
-
+        String tourId=bundle.getString("tourId");
+        presenter.getTourImages(tourId);
         if(bundle.getBoolean("mytour"))
         {
             tablayoutTour.addTab(tablayoutTour.newTab().setText("Chi tiết"));
@@ -78,8 +80,7 @@ public class TourActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        SlideTourImageAdapter adapter = new SlideTourImageAdapter(this);
-        vpTourImage.setAdapter(adapter);
+
 
 
 
@@ -127,13 +128,19 @@ public class TourActivity extends AppCompatActivity {
 
     }
 
-    void setSize(View view, int height)
-    {
+    void setSize(View view, int height){
         ViewGroup.LayoutParams params = view.getLayoutParams();
         if(height>0)
             params.height -=height;
         view.setLayoutParams(params);
 
+    }
+
+    @Override
+    public void showImages(Bitmap[] images, Integer numberofImages) {
+
+        SlideTourImageAdapter adapter = new SlideTourImageAdapter(images,numberofImages,this);
+        vpTourImage.setAdapter(adapter);
     }
 
 
@@ -235,16 +242,20 @@ public class TourActivity extends AppCompatActivity {
     }
     public class SlideTourImageAdapter extends PagerAdapter {
         LayoutInflater layoutInflater;
+        Bitmap[] images;
+        Integer n;
         Context context;
         ImageView imgv;
-        TextView txt;
-        public SlideTourImageAdapter(Context context)
+
+        public SlideTourImageAdapter(Bitmap[] images,Integer numberofImages,Context context)
         {
+            this.images=images;
             this.context=context;
+            n=numberofImages;
         }
         @Override
         public int getCount() {
-            return 10;
+            return n;
         }
 
         @Override
@@ -255,12 +266,10 @@ public class TourActivity extends AppCompatActivity {
         public Object instantiateItem(ViewGroup container, int position) {
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(R.layout.slide_tour_image, null);
-
-            // imgv=container.findViewById(R.id.imgvTourImage);
-            txt = view.findViewById(R.id.txtTourImage);
+            imgv=view.findViewById(R.id.imgvTourImage);
+            Log.e( "instantiateItem: ",position+"   "+(images[position]==null) );
+            imgv.setImageBitmap(images[position]);
             Log.e("pos",position+"");
-            txt.setText(position+"");
-
             container.addView(view);
             return view;
         }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
@@ -25,7 +27,14 @@ import com.example.administrator.travel.presenters.NewFeedPresenter;
 import com.example.administrator.travel.presenters.NewFeedPresenterImpl;
 import com.example.administrator.travel.views.NewFeedView;
 import com.example.administrator.travel.views.activities.TourActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +78,7 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), TourActivity.class);
+                intent.putExtra("tourId",view.getTag()+"");
                 intent.putExtra("mytour",false);
                   startActivity(intent);
 
@@ -89,6 +99,8 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
             }
 
         });
+
+
     }
 
     @Override
@@ -99,6 +111,9 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
 
     @Override
     public void showTours(List<Tour> listTour) {
+//        for(Tour tour:listTour)
+//            if(tour.image==null)
+//                return;
         Log.e( "NewFeedView ", "show tours" );
         NewsFeedAdapter a = new NewsFeedAdapter(listTour);
 //        for(Tour tour : listTour)
@@ -180,14 +195,16 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
                 TextView txtNumberofRating = convertView.findViewById(R.id.txtNumberofRating);
                 TextView txtTourPrice = convertView.findViewById(R.id.txtTourPrice);
                 TextView txtTourSaleprice = convertView.findViewById(R.id.txtTourSalePrice);
+                ImageView imgv = convertView.findViewById(R.id.imgvTour);
+                convertView.setTag(""+list.get(position).id);
                //set values
+                imgv.setImageBitmap(tour.image);
                 txtTourName.setText(tour.name);
                 txtDays.setText(tour.days+" ngày "+tour.nights+" đêm");
                 ratingBar.setRating(tour.rating);
                 txtNumberofRating.setText(tour.numberofRating+" bình chọn");
                 txtTourPrice.setText(tour.adultPrice + "đ");
                 txtTourSaleprice.setVisibility(View.INVISIBLE);
-
             return convertView;
         }
     }

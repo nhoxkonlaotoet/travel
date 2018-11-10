@@ -1,4 +1,6 @@
 package com.example.administrator.travel.models.entities;
+import android.graphics.Bitmap;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 /**
@@ -19,6 +21,8 @@ public class Tour {
     public Integer childrenPrice;
     public Integer babyPrice;
     public String owner;
+    public Bitmap image;
+    public Integer numberofImages;
     public Tour(){}
     public Tour(String name, String description, Integer days, Integer nights, String vihicle,
                 Float rating, Integer numberofRating, Boolean state, //1: hoat dong, 0: khoa
@@ -40,7 +44,8 @@ public class Tour {
     @Override
     public String toString()
     {
+
         return name+", "+days+", "+nights+", "+vihicle+", "+rating+", "+state+", "+rating+", "+numberofRating+", "+adultPrice+", "+
-                childrenPrice+", "+babyPrice+", "+owner;
+                childrenPrice+", "+babyPrice+", "+owner +", "+ (image==null)+"";
     }
 }

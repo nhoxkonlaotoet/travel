@@ -9,6 +9,6 @@ import java.util.List;
  */
 
 public interface NewFeedInteractor {
-    public List<Tour> getTour(final OnGetNewFeedItemFinishedListener listener);
+    public void getTour(final OnGetNewFeedItemFinishedListener listener);
 
 }
