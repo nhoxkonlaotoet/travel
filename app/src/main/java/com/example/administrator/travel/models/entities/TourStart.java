@@ -11,5 +11,5 @@ import java.util.Date;
 public class TourStart {
     public String id;
     public String Date;
-    
+
 }

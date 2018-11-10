@@ -1,7 +1,6 @@
 package com.example.administrator.travel.presenters;
 
 import android.util.Log;
-
 import com.example.administrator.travel.models.NewFeedInteractor;
 import com.example.administrator.travel.models.NewFeedInteractorImpl;
 import com.example.administrator.travel.models.OnGetNewFeedItemFinishedListener;

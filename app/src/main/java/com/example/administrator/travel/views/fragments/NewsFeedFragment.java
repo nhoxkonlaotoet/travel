@@ -19,7 +19,6 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.presenters.NewFeedPresenter;
@@ -170,7 +169,7 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if(position%1==0) {
+
                 Tour tour = list.get(position);
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.tour_item, null);
                //mapping
@@ -187,13 +186,7 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
                 txtNumberofRating.setText(tour.numberofRating+" bình chọn");
                 txtTourPrice.setText(tour.adultPrice + "đ");
                 txtTourSaleprice.setVisibility(View.INVISIBLE);
-            }
-            else
-            {
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.review_item, null);
-               // TextView txt = convertView.findViewById(R.id.txtUserName);
-               // txt.setText(list.get(position));
-            }
+
             return convertView;
         }
     }
