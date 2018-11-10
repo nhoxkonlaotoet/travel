@@ -4,16 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/parentlayout_login"
     tools:context="com.example.administrator.travel.views.activities.LoginActivity">
 
+    <EditText
+        android:id="@+id/edt_login_number"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="TLP number"
+        android:inputType="phone"
+        android:singleLine="true"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/edt_login_code"/>
+    <EditText
+        android:id="@+id/edt_login_code"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:hint="CODE"
+        android:inputType="number"
+        android:singleLine="true"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/btn_login"/>
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Sign in"
+        android:text="Send"
+        android:tag="@string/tag_send"
         tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="231dp"
-        android:onClick="btnSignIn_Click"/>
+        tools:layout_editor_absoluteY="231dp"/>
+    <TextView
+        android:id="@+id/tv_login_waittime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wait"
+        android:textSize="20sp"
+        android:layout_below="@id/btn_login"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
 </RelativeLayout>
