@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.presenters.TourPresenter;
@@ -27,9 +26,9 @@ import com.example.administrator.travel.views.TourView;
 import com.example.administrator.travel.views.fragments.ContactFragment;
 import com.example.administrator.travel.views.fragments.MapFragment;
 import com.example.administrator.travel.views.fragments.NearbyFragment;
-import com.example.administrator.travel.views.fragments.SelectTourFragment;
 import com.example.administrator.travel.views.fragments.StatusCommunicationFragment;
 import com.example.administrator.travel.views.fragments.TourDetailFragment;
+import com.example.administrator.travel.views.fragments.TourStartFragment;
 
 public class TourActivity extends AppCompatActivity implements TourView {
     Toolbar toolbar;
@@ -83,7 +82,6 @@ public class TourActivity extends AppCompatActivity implements TourView {
 
 
 
-
         Pager pager=new Pager(getSupportFragmentManager(),4);
 
         vpContainer.setAdapter(pager);
@@ -127,7 +125,11 @@ public class TourActivity extends AppCompatActivity implements TourView {
 
 
     }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
     void setSize(View view, int height){
         ViewGroup.LayoutParams params = view.getLayoutParams();
         if(height>0)
@@ -164,7 +166,7 @@ public class TourActivity extends AppCompatActivity implements TourView {
                         StatusCommunicationFragment fragment1 = new StatusCommunicationFragment();
                         return fragment1;
                     }else{
-                    SelectTourFragment fragment1 = new SelectTourFragment();
+                    TourStartFragment fragment1 = new TourStartFragment();
                     return fragment1;}
                 case 2:
                     if(isMyTour) {
