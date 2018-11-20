@@ -15,6 +15,7 @@ public class TourBooking {
     public Integer baby;
     public Map<String, String> bookingTime;
     public Integer money;
+    public Boolean accepted;
     public TourBooking(){}
     public TourBooking(String userId, Integer adult, Integer children, Integer baby, Map<String, String> bookingTime, Integer money)
     {
@@ -24,6 +25,7 @@ public class TourBooking {
         this.baby=baby;
         this.bookingTime=bookingTime;
         this.money=money;
+        accepted=false;
     }
 
 }

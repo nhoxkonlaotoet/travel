@@ -2,16 +2,18 @@ package com.example.administrator.travel.models.entities;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 30/10/2018.
  */
 @IgnoreExtraProperties
-public class TourStartDate {
+public class TourStartDate implements Serializable {
     public String id;
-    public String startDate;
+    public Long startDate;
     public Integer maxPeople;
     public Integer peopleBooking;
     public Integer participant;
@@ -20,7 +22,7 @@ public class TourStartDate {
     public Integer babyPrice;
     public Boolean available;
     public  TourStartDate(){}
-    public TourStartDate(String startDate, Integer adultPrice, Integer childrenPrice, Integer babyPrice,
+    public TourStartDate(Long startDate, Integer adultPrice, Integer childrenPrice, Integer babyPrice,
                          Integer maxPeople,Integer peopleBooking, Integer participant, Boolean available)
     {
         this.startDate=startDate;
@@ -35,6 +37,6 @@ public class TourStartDate {
     @Override
     public String toString()
     {
-        return startDate+", "+adultPrice+", "+childrenPrice+", "+babyPrice+", "+ peopleBooking;
+        return startDate.toString()+", "+adultPrice+", "+childrenPrice+", "+babyPrice+", "+ peopleBooking;
     }
 }

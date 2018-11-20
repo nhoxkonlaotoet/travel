@@ -2,6 +2,7 @@ package com.example.administrator.travel.views.fragments;
 
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,9 +21,14 @@ import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.presenters.TourStartPresenter;
 import com.example.administrator.travel.views.TourStartView;
+import com.example.administrator.travel.views.activities.BookTourActivity;
 
+import java.io.Serializable;
 import java.nio.channels.Selector;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,7 +36,9 @@ import java.util.List;
  */
 public class TourStartFragment extends Fragment implements TourStartView {
     ListView lstvSelectTour;
+    String tourId;
     TourStartPresenter presenter;
+    Boolean bookTourClicked;
     public TourStartFragment() {
         // Required empty public constructor
     }
@@ -48,26 +56,35 @@ public class TourStartFragment extends Fragment implements TourStartView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lstvSelectTour = getActivity().findViewById(R.id.lstvSelectTour);
+        bookTourClicked=false;
         presenter = new TourStartPresenter(this);
         Bundle bundle = getActivity().getIntent().getExtras();
-       String tourId=bundle.getString("tourId");
-        Toast.makeText(getActivity(), tourId, Toast.LENGTH_LONG).show();
+        tourId=bundle.getString("tourId");
         presenter.getTourStartDate(tourId);
 
     }
 
     @Override
     public void showTourStartDate(List<TourStartDate> listTourStartDate) {
-        BookTourAdapter adapter = new BookTourAdapter(listTourStartDate);
+        TourStartAdapter adapter = new TourStartAdapter(listTourStartDate);
         lstvSelectTour.setAdapter(adapter);
         Log.e("SelectTourFragment: ", "showTourStartDate");
     }
 
-    public class BookTourAdapter extends BaseAdapter {
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(bookTourClicked) {
+            presenter.getTourStartDate(tourId);
+            bookTourClicked=false;
+        }
+    }
+
+    public class TourStartAdapter extends BaseAdapter {
         List<TourStartDate> list;
         Button btnBookTour;
         TextView txtStartDay, txtNumberPeople;
-        public BookTourAdapter(List<TourStartDate> list)
+        public TourStartAdapter(List<TourStartDate> list)
         {
             if(list!=null) {
                 this.list = list;
@@ -82,7 +99,7 @@ public class TourStartFragment extends Fragment implements TourStartView {
 
         @Override
         public Object getItem(int position) {
-            return position;
+            return list.get(position);
         }
 
         @Override
@@ -91,30 +108,34 @@ public class TourStartFragment extends Fragment implements TourStartView {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.tour_start_date_item, null);
             txtStartDay = convertView.findViewById(R.id.txtStart);
             txtNumberPeople = convertView.findViewById(R.id.txtNumberPeople);
             btnBookTour=convertView.findViewById(R.id.btnBookTour);
 
+            Date date = new Date(list.get(position).startDate);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-            txtStartDay.setText(list.get(position).startDate);
+            txtStartDay.setText(dateFormat.format(date));
+
             txtNumberPeople.setText(list.get(position).peopleBooking+"");
             btnBookTour.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Dialog dialog = new Dialog(getActivity());
-                    dialog.setTitle("Đặt tour");
-                    dialog.setContentView(R.layout.dialog_book_tour);
-                    dialog.show();
+                    bookTourClicked=true;
+                    Intent intent = new Intent(getActivity(), BookTourActivity.class);
+                    int pos = position;
+                    intent.putExtra("tour", (Serializable) getItem(pos));
+                    startActivity(intent);
                 }
             });
             return convertView;
         }
     }
 
-//    @Override
+    //    @Override
 //    public void onDestroy() {
 //        super.onDestroy();
 //        Log.e("SelectTourFragment", "onDestroy: " );

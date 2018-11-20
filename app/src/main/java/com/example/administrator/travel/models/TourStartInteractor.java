@@ -7,8 +7,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +32,12 @@ public class TourStartInteractor {
                 for(DataSnapshot Snapshot: dataSnapshot.getChildren())
                 {
                     TourStartDate tourStartDate = Snapshot.getValue(TourStartDate.class);
+                    if(tourStartDate.startDate< System.currentTimeMillis() || !tourStartDate.available)
+                        continue;
                     tourStartDate.id = Snapshot.getKey();
                     list.add(tourStartDate);
+
                     listener.onSuccess(list);
-                    Log.e("onDataChange",tourStartDate.toString());
                 }
             }
 

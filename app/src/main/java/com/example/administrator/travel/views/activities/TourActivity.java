@@ -46,7 +46,6 @@ public class TourActivity extends AppCompatActivity implements TourView {
         vpTourImage = findViewById(R.id.vpTourImage);
         toolbar.bringToFront();
         tablayoutTour = findViewById(R.id.tablayoutTour);
-        toolbar.setTitle("Tour du lich Hội An");
         presenter = new TourPresenter(this);
         Bundle bundle = getIntent().getExtras();
         String tourId=bundle.getString("tourId");
