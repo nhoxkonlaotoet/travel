@@ -5,6 +5,6 @@ package com.example.administrator.travel.models;
  */
 
 public interface OnBookTourFinishedListener {
-    public void onSuccess();
-    public void onFailure(Exception ex);
+    public void onBookTourSuccess();
+    public void onBookTourFailure(Exception ex);
 }

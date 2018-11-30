@@ -46,10 +46,10 @@ public class TourActivity extends AppCompatActivity implements TourView {
         vpTourImage = findViewById(R.id.vpTourImage);
         toolbar.bringToFront();
         tablayoutTour = findViewById(R.id.tablayoutTour);
+
         presenter = new TourPresenter(this);
         Bundle bundle = getIntent().getExtras();
-        String tourId=bundle.getString("tourId");
-        presenter.getTourImages(tourId);
+
         if(bundle.getBoolean("mytour"))
         {
             tablayoutTour.addTab(tablayoutTour.newTab().setText("Chi tiết"));
@@ -64,6 +64,8 @@ public class TourActivity extends AppCompatActivity implements TourView {
         }
         else
         {
+            String tourId=bundle.getString("tourId");
+            presenter.getTourImages(tourId);
             tablayoutTour.addTab(tablayoutTour.newTab().setText("Chi tiết"));
             tablayoutTour.addTab(tablayoutTour.newTab().setText("Đặt tour"));
             tablayoutTour.addTab(tablayoutTour.newTab().setText("Liên hệ"));
@@ -71,6 +73,8 @@ public class TourActivity extends AppCompatActivity implements TourView {
         }
 
         vpContainer = findViewById(R.id.vpTabContainer);
+        // load 2 fragment bên cạnh
+        vpContainer.setOffscreenPageLimit(2);
      //   tablayoutTour.setupWithViewPager(vpTabContainer);
 
         setSupportActionBar(toolbar);
@@ -105,6 +109,7 @@ public class TourActivity extends AppCompatActivity implements TourView {
 
             }
         });
+
         tablayoutTour.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

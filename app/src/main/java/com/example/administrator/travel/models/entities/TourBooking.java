@@ -8,22 +8,23 @@ import java.util.Map;
  */
 
 public class TourBooking {
-    public String id;
     public String userId;
+    public Long bookingTime;
+    public String tourStartDateId;
     public Integer adult;
     public Integer children;
     public Integer baby;
-    public Map<String, String> bookingTime;
     public Integer money;
     public Boolean accepted;
     public TourBooking(){}
-    public TourBooking(String userId, Integer adult, Integer children, Integer baby, Map<String, String> bookingTime, Integer money)
+    public TourBooking(String userId, String tourStartDateId,Long bookingTime, Integer adult, Integer children, Integer baby, Integer money)
     {
         this.userId=userId;
+        this.tourStartDateId=tourStartDateId;
+        this.bookingTime=bookingTime;
         this.adult=adult;
         this.children=children;
         this.baby=baby;
-        this.bookingTime=bookingTime;
         this.money=money;
         accepted=false;
     }

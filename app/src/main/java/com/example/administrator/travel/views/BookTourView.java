@@ -9,10 +9,13 @@ public interface BookTourView {
     public static final String TYPE_CHILDREN    = "Children";
     public static final String TYPE_BABY        = "Baby";
 
-    public void changeNumberOfPeople(String type, Integer number);
-    public void sendBookingTour();
-    public void notifyBookingSuccess();
-    public void notifyBookingFailure();
-    public void close();
+    void changeNumberOfPeople(String type, Integer number);
+     void sendBookingTour();
+     void notifyBookingSuccess();
+     void notifyBookingFailure(Exception ex);
+     void close();
+     void receivedCurrentTime(Long time);
+     void receivedCurrentTime(Exception ex);
+
 }
 

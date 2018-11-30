@@ -14,12 +14,15 @@ import com.example.administrator.travel.models.entities.TourBooking;
 import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.presenters.BookTourPresenter;
 import com.example.administrator.travel.views.BookTourView;
-import com.google.firebase.database.ServerValue;
+
+
 public class BookTourActivity extends AppCompatActivity implements BookTourView {
 
-
+    static final String ACTION_BOOK_TOUR="book tour";
+    String action;
     RelativeLayout btnAccept, btnCancel;
     TourStartDate tourStart;
+    String tourId;
     TextView txtAdultPrice, txtChildrenPrice, txtBabyPrice,txtNumberofPeople,
             txtNumberofAdult,txtNumberofChildren,txtNumberofBaby;
     Button btnDecreaseAdult, btnIncreaseAdult,
@@ -33,6 +36,8 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_tour);
         tourStart = (TourStartDate) getIntent().getSerializableExtra("tour");
+        Bundle bundle = getIntent().getExtras();
+        tourId=bundle.getString("tourId");
         presenter=new BookTourPresenter(this);
         mapping();
         showPrice();
@@ -127,9 +132,11 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
 
     @Override
     public void sendBookingTour(){
-        TourBooking tourBooking = new TourBooking("-LELTicEhxKf9k4i_tHN",numberofAdult, numberofChildren, numberofBaby,
-                ServerValue.TIMESTAMP,money);
-        presenter.bookTour(tourStart.id, tourBooking);
+        // thời gian hệ thống trả về ở receivedCurrentTime(Long time)
+        // hành động đc cài đặt sẽ thực hiện sau khi nhận được thời gian
+        action=ACTION_BOOK_TOUR;
+        presenter.getCurrentTime();
+//
     }
 
     @Override
@@ -138,12 +145,29 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
     }
 
     @Override
-    public void notifyBookingFailure() {
-        Toast.makeText(this, "Đã xảy ra lỗi", Toast.LENGTH_SHORT).show();
+    public void notifyBookingFailure(Exception ex) {
+        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void close() {
         finish();
+    }
+    @Override
+    public void receivedCurrentTime(Long time)
+    {
+        if(action==null || action.isEmpty())
+            return;
+        if(action ==ACTION_BOOK_TOUR) {
+            money = tourStart.adultPrice * numberofAdult + tourStart.childrenPrice * numberofChildren + tourStart.babyPrice * numberofChildren;
+            TourBooking tourBooking = new TourBooking("-LELTicEhxKf9k4i_tHN", tourStart.id, time,
+                    numberofAdult, numberofChildren, numberofBaby, money *= 0);
+            presenter.bookTour(tourId, tourBooking);
+        }
+    }
+
+    @Override
+    public void receivedCurrentTime(Exception ex) {
+        Toast.makeText(this, "Không thể cập nhật thời gian hiện tại \r\n"+ex.toString(), Toast.LENGTH_LONG).show();
     }
 }

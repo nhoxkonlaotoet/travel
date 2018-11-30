@@ -128,6 +128,7 @@ public class TourStartFragment extends Fragment implements TourStartView {
                     Intent intent = new Intent(getActivity(), BookTourActivity.class);
                     int pos = position;
                     intent.putExtra("tour", (Serializable) getItem(pos));
+                    intent.putExtra("tourId", tourId);
                     startActivity(intent);
                 }
             });

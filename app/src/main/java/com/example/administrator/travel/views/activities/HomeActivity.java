@@ -7,17 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.models.entities.TourBooking;
-import com.example.administrator.travel.models.entities.TourStartDate;
+import com.example.administrator.travel.models.TourDetailInteractor;
+import com.example.administrator.travel.models.entities.Day;
+import com.example.administrator.travel.models.entities.MyLatLng;
+import com.example.administrator.travel.models.entities.Schedule;
 import com.example.administrator.travel.views.fragments.NewsFeedFragment;
 import com.example.administrator.travel.views.fragments.SelectMyTourFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class HomeActivity extends AppCompatActivity {
     Integer i=-1;
@@ -66,10 +65,14 @@ public class HomeActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference userRef = database.getReference("tours");
-        String key;
 
+        //init database
+
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference userRef = database.getReference("tours");
+//        String key;
+//
 //        userRef.child("-LQ2GIaiHuH4LmUVogi5").setValue(new Tour("DU LỊCH [ĐÓN NĂM MỚI 2019] ĐÀ NẴNG - HỘI AN - SUỐI KHOÁNG NÓNG NÚI THẦN TÀI - BÀ NÀ - CẦU VÀNG ",
 //                "",
 //                3,2,"Hàng không Vietjet",(float)4.5,23,true,
@@ -84,39 +87,81 @@ public class HomeActivity extends AppCompatActivity {
 //                "",
 //                3,2,"Vietjet Aviation",(float)3, 8,true,
 //                3729000,2679000,1640000,"-LELTicEhxKf9k4i_tHN"));
-
+//
 //        DatabaseReference tourStart = database.getReference("tour_start_date");
 //        DatabaseReference tourBooking = database.getReference("tour_booking");
-//
+////        TourBooking tourBooking = new TourBooking("-LELTicEhxKf9k4i_tHN",tourStart.id, timestampNow,
+////                numberofAdult, numberofChildren, numberofBaby,money);
 //        tourStart.removeValue();
 //        tourBooking.removeValue();
 //        key=tourStart.push().getKey();
 //        tourStart.child("-LQ2GIaiHuH4LmUVogi5").child(key).setValue(
-//                new TourStartDate("1/12/2018",5929000,4190000,2450000,
+//                new TourStartDate(1541824295000L,5929000,4190000,2450000,
 //                        50,0,0,true));
-//            String childKey = tourBooking.push().getKey();
-//            tourBooking.child(key).child(childKey).setValue(
-//                    new TourBooking("-LELM0FvJODmxnoRhFiG",5,1,0, ServerValue.TIMESTAMP, 0));
-//            childKey=tourBooking.push().getKey();
-//            tourBooking.child(key).child(childKey).setValue(
-//                    new TourBooking("-LELTicEhxKf9k4i_tHN",1,0,0, ServerValue.TIMESTAMP,0));
+////            tourBooking.child("-LQ2GIaiHuH4LmUVogi5").child(key+ServerValue.TIMESTAMP+"-LELM0FvJODmxnoRhFiG").setValue(
+////                    new TourBooking("-LELM0FvJODmxnoRhFiG",key,ServerValue.TIMESTAMP,1,1,0,  0));
+////            tourBooking.child("-LQ2GIaiHuH4LmUVogi5").child(key+ServerValue.TIMESTAMP+"-LELTicEhxKf9k4i_tHN").setValue(
+////                    new TourBooking("-LELTicEhxKf9k4i_tHN",key,ServerValue.TIMESTAMP,1,0,0,0));
 //            tourStart.child("-LQ2GIaiHuH4LmUVogi5").child(key).child("peopleBooking").setValue(7);
 //
 //
 //        key=tourStart.push().getKey();
 //        tourStart.child("-LQ2GIaiHuH4LmUVogi5").child(key).setValue(
-//                new TourStartDate("10/12/2018",5929000,4190000,2450000,
+//                new TourStartDate(1544502695000L,5929000,4190000,2450000,
 //                        50,0,0,true));
-//            childKey=tourBooking.push().getKey();
-//            tourBooking.child(key).child(childKey).setValue(
-//                    new TourBooking("-LELN8HiQSDzjnwHaPkH",2,0,1, ServerValue.TIMESTAMP,0));
+//
+////            tourBooking.child("-LQ2GIaiHuH4LmUVogi5").child(key+ServerValue.TIMESTAMP+"-LELN8HiQSDzjnwHaPkH").setValue(
+////                    new TourBooking("-LELN8HiQSDzjnwHaPkH",key, ServerValue.TIMESTAMP,2,0,1,0));
 //            tourStart.child("-LQ2GIaiHuH4LmUVogi5").child(key).child("peopleBooking").setValue(3);
 //
 //        key=tourStart.push().getKey();
 //        tourStart.child("-LQ2GIaiHuH4LmUVogi5").child(key).setValue(
-//                new TourStartDate("20/12/2018",5929000,4190000,2450000,
+//                new TourStartDate(1545539495000L,5929000,4190000,2450000,
 //                        50,0,0,true));
-
+//        DatabaseReference daytopicRef = database.getReference("days");
+//        DatabaseReference scheduleRef = database.getReference("schedules");
+//        String keyDay = daytopicRef.push().getKey();
+//        daytopicRef.child("-LQ2GIaiHuH4LmUVogi5").child(keyDay).setValue(new Day(1,"TP. HỒ CHÍ MINH - ĐÀ NẴNG (Ăn trưa, chiều)"));
+//        String keySchedule = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(keySchedule).setValue(
+//                new Schedule(keyDay,"5:30","Bay đi Đà Nẵng",
+//                        "Buổi sáng, quý khách tập trung tại cổng D4, Ga đi trong nước, sân bay Tân Sơn Nhất. Lên chuyến bay VJ622 lúc 06:15 đi Đà Nẵng",
+//                        new MyLatLng(10.8177103,106.6585133)));
+//        keySchedule = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(keySchedule).setValue(
+//                new Schedule(keyDay,"9:00","Tham quan bán đảo Sơn Trà",
+//                        "Đến Đà Nẵng, tham quan bán đảo Sơn Trà, ngắm cảng Tiên Sa",
+//                        new MyLatLng(16.0513156,108.1737577)));
+//        keySchedule = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(keySchedule).setValue(
+//                new Schedule(keyDay,"","Tham quan bán đảo Sơn Trà",
+//                        "Viếng chùa Linh Ứng Bãi Bụt, chiêm bái tượng Phật Quan Thế Âm",
+//                        new MyLatLng(16.1002935,108.275667)));
+//        keySchedule = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(keySchedule).setValue(
+//                new Schedule(keyDay,"","Tham quan bán đảo Sơn Trà",
+//                        "Tham quan thắng cảnh Ngũ Hành Sơn",
+//                        new MyLatLng(16.0045181,108.2595895)));
+//        keySchedule = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(keySchedule).setValue(
+//                new Schedule(keyDay,"","Tham quan bán đảo Sơn Trà",
+//                        "Tham quan làng điêu khắc đá Hòa Hải",
+//                        new MyLatLng(  15.9989193,108.2590161)));
+//        keySchedule = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(keySchedule).setValue(
+//                new Schedule(keyDay,"19:00","Tham quan tự túc",
+//                        "Tự do dạo phố, ngắm Cầu Rồng",
+//                        new MyLatLng(  16.0610422,108.2257837)));
+//        keySchedule = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(keySchedule).setValue(
+//                new Schedule(keyDay,"","Tham quan tự túc",
+//                        "cầu Trần Thị Lý",
+//                        new MyLatLng(  16.0501961,108.2266065)));
+//        keySchedule = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(keySchedule).setValue(
+//                new Schedule(keyDay,"","Tham quan tự túc",
+//                        "trải nghiệm \"Vòng quay mặt trời\"",
+//                        new MyLatLng(  16.0404923,108.2278089)));
 
 
 

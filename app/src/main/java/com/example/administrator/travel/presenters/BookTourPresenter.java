@@ -1,9 +1,9 @@
 package com.example.administrator.travel.presenters;
 
-import android.view.View;
-
 import com.example.administrator.travel.models.BookTourInteractor;
 import com.example.administrator.travel.models.OnBookTourFinishedListener;
+import com.example.administrator.travel.models.OnGetServerTimeFinishedListener;
+import com.example.administrator.travel.models.GetServerTimeInteractor;
 import com.example.administrator.travel.models.entities.TourBooking;
 import com.example.administrator.travel.views.BookTourView;
 
@@ -11,12 +11,14 @@ import com.example.administrator.travel.views.BookTourView;
  * Created by Administrator on 18/11/2018.
  */
 
-public class BookTourPresenter implements OnBookTourFinishedListener{
+public class BookTourPresenter implements OnBookTourFinishedListener, OnGetServerTimeFinishedListener{
     BookTourView view;
-    BookTourInteractor interactor;
+    BookTourInteractor bookTourInteractor;
+    GetServerTimeInteractor serverTimeInteractor;
     public BookTourPresenter(BookTourView view){
         this.view = view;
-        interactor = new BookTourInteractor();
+        bookTourInteractor = new BookTourInteractor();
+        serverTimeInteractor=new GetServerTimeInteractor();
     }
     public void onBtnAcceptClicked(){
         view.sendBookingTour();
@@ -42,17 +44,30 @@ public class BookTourPresenter implements OnBookTourFinishedListener{
     public void onBtnIncreaseBabyClicked(){
         view.changeNumberOfPeople(view.TYPE_BABY,1);
     }
-    public void bookTour(String tourStartId, TourBooking tourBooking){
-        interactor.bookTour(tourStartId,tourBooking,this);
+    public void getCurrentTime(){
+        serverTimeInteractor.getCurrentTime(this);
+    }
+    public void bookTour(String tourId, TourBooking tourBooking){
+        bookTourInteractor.bookTour(tourId,tourBooking,this);
     }
     @Override
-    public void onSuccess() {
+    public void onBookTourSuccess() {
         view.notifyBookingSuccess();
         view.close();
     }
 
     @Override
-    public void onFailure(Exception ex) {
-        view.notifyBookingFailure();
+    public void onBookTourFailure(Exception ex) {
+        view.notifyBookingFailure(ex);
+    }
+
+    @Override
+    public void onGetTimeSuccess(Long time) {
+        view.receivedCurrentTime(time);
+    }
+    @Override
+    public void onGetTimeFailure(Exception ex)
+    {
+        view.receivedCurrentTime(ex);
     }
 }
