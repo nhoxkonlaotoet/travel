@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.administrator.travel.views.activities.SignUpActivity">
+    <!--LOGO Image-->
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:layout_gravity="center_horizontal"
+        android:cropToPadding="false"
+        android:src="@drawable/background_circle" />
+
+    <!--  Name Edit -->
+    <EditText
+        android:id="@+id/edt_signup_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:hint="Nhập tên"
+        android:singleLine="true"
+        android:inputType="textCapWords" />
+
+    <!-- Email Edit -->
+    <EditText
+        android:id="@+id/edt_signup_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:hint="Nhập  địa chỉ email"
+        android:singleLine="true"
+        android:inputType="textEmailAddress" />
+
+    <!-- Password Edit -->
+    <EditText
+        android:id="@+id/edt_signup_pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:hint="Mật khẩu"
+        android:singleLine="true"
+        android:inputType="textPassword" />
+
+    <!-- Again Password Edit -->
+    <EditText
+        android:id="@+id/edt_signup_againpass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:hint="Nhập lại mật khẩu"
+        android:singleLine="true"
+        android:inputType="textPassword" />
+
+    <!--Sex Radio-->
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbtn_signup_male"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Nam" />
+
+        <RadioButton
+            android:id="@+id/rbtn_signup_female"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Nữ" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_signup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:background="@color/colorButton"
+        android:text="Tạo Tài Khoản"
+        android:textColor="@color/colorTextButton"
+        android:onClick="SignUpClick"/>
+
+    <TextView
+        android:id="@+id/tv_link_login"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="@string/move_login"
+        android:textSize="16dp" />
+</LinearLayout>

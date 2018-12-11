@@ -28,4 +28,7 @@
     <color name="transparent">#00000000</color>
 
     <color name="colorSelected">#CDD0D2</color>
+
+    <color name="colorButton">#01a8e0</color>
+    <color name="colorTextButton">#ffffff</color>
 </resources>

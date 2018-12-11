@@ -1,47 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
     android:id="@+id/parentlayout_login"
     tools:context="com.example.administrator.travel.views.activities.LoginActivity">
 
+    <!--LOGO Image-->
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:cropToPadding="false"
+        android:src="@drawable/background_circle" />
+    <!-- Email Label -->
     <EditText
-        android:id="@+id/edt_login_number"
-        android:layout_width="200dp"
+        android:id="@+id/edt_login_email"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="TLP number"
-        android:inputType="phone"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:hint="Nhập email tại đây"
         android:singleLine="true"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/edt_login_code"/>
+        android:inputType="textEmailAddress" />
+
+    <!-- Password Label -->
     <EditText
-        android:id="@+id/edt_login_code"
-        android:layout_width="80dp"
+        android:id="@+id/edt_login_password"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="CODE"
-        android:inputType="number"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:hint="Mật Khẩu"
         android:singleLine="true"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/btn_login"/>
+        android:inputType="textPassword" />
+
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Send"
-        android:tag="@string/tag_send"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="231dp"/>
-    <TextView
-        android:id="@+id/tv_login_waittime"
-        android:layout_width="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorButton"
+        android:onClick="LoginClick"
+        android:padding="12dp"
+        android:text="Đăng Nhập"
+        android:textColor="@color/colorTextButton" />
+
+    <TextView android:id="@+id/tv_link_signup"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Wait"
-        android:textSize="20sp"
-        android:layout_below="@id/btn_login"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"/>
-</RelativeLayout>
+        android:layout_marginBottom="24dp"
+        android:text="@string/move_signup"
+        android:gravity="center"
+        android:textSize="16dip">
+    </TextView>
+    <TextView android:id="@+id/tv_link_resetpass"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/move_resetPass"
+        android:gravity="center"
+        android:textSize="16dip">
+    </TextView>
+
+</LinearLayout>
