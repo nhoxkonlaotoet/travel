@@ -1,5 +1,6 @@
 package com.example.administrator.travel.views.activities;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,6 +12,8 @@ import com.example.administrator.travel.models.TourDetailInteractor;
 import com.example.administrator.travel.models.entities.Day;
 import com.example.administrator.travel.models.entities.MyLatLng;
 import com.example.administrator.travel.models.entities.Schedule;
+import com.example.administrator.travel.views.fragments.ChatFragment;
+import com.example.administrator.travel.views.fragments.ChatManagerFragment;
 import com.example.administrator.travel.views.fragments.NewsFeedFragment;
 import com.example.administrator.travel.views.fragments.SelectMyTourFragment;
 import com.google.firebase.database.DatabaseReference;
@@ -45,12 +48,19 @@ public class HomeActivity extends AppCompatActivity {
                     android.app.FragmentManager manager1= getFragmentManager();
                     manager1.beginTransaction().replace(R.id.contenLayout,f1,f1.getTag()).commit();
                     return true;
-                case R.id.navigation_more:
+                case R.id.navigation_chat:
                     if(i==2)
                         return false;
                     i=2;
+                    ChatManagerFragment chatManagerFragment = new ChatManagerFragment();
+                    android.app.FragmentManager manager2 = getFragmentManager();
+                    manager2.beginTransaction().replace(R.id.contenLayout,chatManagerFragment,chatManagerFragment.getTag()).commit();
                     return true;
-
+                case R.id.navigation_more:
+                    if(i==3)
+                        return false;
+                    i=3;
+                    return true;
             }
             return false;
         }

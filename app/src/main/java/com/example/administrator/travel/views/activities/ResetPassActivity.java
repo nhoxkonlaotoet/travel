@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.administrator.travel.R;
@@ -20,6 +21,7 @@ public class ResetPassActivity extends AppCompatActivity {
 
     EditText edtEmail;
     Button btnSend;
+    ImageButton ibtnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class ResetPassActivity extends AppCompatActivity {
 //        setWidgets
         edtEmail = (EditText) findViewById(R.id.edt_resetpass_email);
         btnSend = (Button) findViewById(R.id.btn_resetpass_send);
+        ibtnBack = (ImageButton) findViewById(R.id.ibtn_resetpass_back);
 
     }//end onCreate
 
@@ -57,4 +60,7 @@ public class ResetPassActivity extends AppCompatActivity {
         }
     }//end SendResetPass
 
+    public void PressBackButton(View view){
+        onBackPressed();
+    }//end PressBackButton
 }

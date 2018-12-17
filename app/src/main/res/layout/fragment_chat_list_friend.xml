@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.administrator.travel.views.fragments.ChatListFriendFragment">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout_chatlistfriend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/CustomTabLayout"
+        app:tabGravity="fill"
+        app:tabTextAppearance="@style/CustomTextAppearanceTab">
+
+
+    </android.support.design.widget.TabLayout>
+    <FrameLayout
+        android:id="@+id/conten_layout_chatlistfriend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+</LinearLayout>

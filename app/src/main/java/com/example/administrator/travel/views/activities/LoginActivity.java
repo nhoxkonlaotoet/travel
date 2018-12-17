@@ -2,6 +2,7 @@ package com.example.administrator.travel.views.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -54,15 +55,28 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvSignUp,tvResetPass;
     ProgressDialog mProgress;
 
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 //
         mAuth = FirebaseAuth.getInstance();
+//       sharedPreferences
+        sharedPreferences = getSharedPreferences("dataLogin",MODE_PRIVATE);
+        String AuthID = sharedPreferences.getString("AuthID","none");
+        boolean autoLogin = sharedPreferences.getBoolean("autoLogin",true);
+        if(!AuthID.equals("none") && autoLogin){
+            startActivity((new Intent(LoginActivity.this, HomeActivity.class))
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
+            finish();
+        }
 //        setWidget
         edtEmail = (EditText) findViewById(R.id.edt_login_email);
         edtPassword = (EditText) findViewById(R.id.edt_login_password);
+
 //        link to Sign Up
         ClickableSpan clickSignUp = new ClickableSpan() {
             @Override
@@ -99,15 +113,14 @@ public class LoginActivity extends AppCompatActivity {
         tvResetPass = (TextView) findViewById(R.id.tv_link_resetpass);
         tvResetPass.setText(stringResetPass, TextView.BufferType.SPANNABLE);
         tvResetPass.setMovementMethod(LinkMovementMethod.getInstance());
-
     }//end onCreate
 
     //override methods
     public void LoginClick(View view){
         mProgress = ProgressDialog.show(LoginActivity.this, "Đăng nhập", "Vui lòng đợi...");
 //        Get Email and Pass
-        String mEmail = edtEmail.getText().toString().trim();
-        String mPass = edtPassword.getText().toString();
+        final String mEmail = edtEmail.getText().toString().trim();
+        final String mPass = edtPassword.getText().toString();
         if(mEmail.isEmpty() || mPass.isEmpty()){
             Toast.makeText(LoginActivity.this, "Vui lòng kiểm tra lại Email và mật khẩu...",
                     Toast.LENGTH_LONG).show();
@@ -121,6 +134,11 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
 
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                String AuthID = mAuth.getCurrentUser().getUid();
+                                editor.putString("AuthID",AuthID);
+
+                                editor.commit();
                                 startActivity((new Intent(LoginActivity.this, HomeActivity.class))
                                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
@@ -134,6 +152,26 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    public void SignUp(final String mEmail, final String mPass){
+        mAuth.signInWithEmailAndPassword(mEmail, mPass)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+
+                            startActivity((new Intent(LoginActivity.this, HomeActivity.class))
+                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Vui lòng kiểm tra lại Email và mật khẩu...",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
 //    OnCreate use Phone Auth

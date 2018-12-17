@@ -12,6 +12,10 @@
         android:title="@string/title_my_tours"
         />
     <item
+        android:id="@+id/navigation_chat"
+        android:icon="@android:drawable/sym_action_chat"
+        android:title="Chat"/>
+    <item
         android:id="@+id/navigation_more"
         android:icon="@drawable/ic_more_horiz_black_24dp"
         android:title="@string/title_more" />

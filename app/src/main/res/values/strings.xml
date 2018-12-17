@@ -19,4 +19,9 @@
     <string name="move_signup">Bạn chưa có tài khoản? Đăng ký tại đây</string>
     <string name="move_resetPass">Bạn quên mật khẩu? Reset pass tại đây</string>
     <string name="menu_item_list_friend">Danh sách bạn bè</string>
+    <!--Chat Manager-->
+    <string name="title_chat_group">Chat</string>
+    <string name="title_listfriend">Contact</string>
+    <string name="title_timeline">TimeLine</string>
+    <string name="title_setting">Setting</string>
 </resources>
