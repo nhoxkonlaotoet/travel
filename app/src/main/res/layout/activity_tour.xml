@@ -9,7 +9,7 @@
         android:id="@+id/vpTourImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="#721">
+        android:background="@color/transparent">
     </android.support.v4.view.ViewPager>
 
     <android.support.v7.widget.Toolbar

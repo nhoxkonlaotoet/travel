@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.travel.NonScrollListView;
 import com.example.administrator.travel.R;
@@ -88,7 +89,10 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
         for (Day day : lstDay) {
             Log.e("showDays: ", day.toString());
         }
-        presenter.getSchedule(tourId, lstDay.get(0).id);
+        if(lstDay.size()==0)
+            Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
+        else
+            presenter.getSchedule(tourId, lstDay.get(0).id);
     }
 
     @Override

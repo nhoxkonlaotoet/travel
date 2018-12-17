@@ -44,6 +44,8 @@ public class SelectMyTourFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), TourActivity.class);
                 intent.putExtra("mytour",true);
+                intent.putExtra("tourId","-LQ2GIaiHuH4LmUVogi5");
+
                 startActivity(intent);
             }
         });
