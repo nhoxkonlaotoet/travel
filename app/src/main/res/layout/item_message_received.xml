@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--message received-->
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp">
+
+    <!--chat message-->
+    <TextView
+        android:id="@+id/tv_itemmessage_re_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Chau Khai Phong"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_itemmessage_re_message"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_rectangle_blue"
+        android:maxWidth="250dp"
+        android:padding="8dp"
+        android:text="aaa"
+        android:textColor="#000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_itemmessage_re_name"
+        app:layout_constraintWidth_max="wrap" />
+    <TextView
+        android:id="@+id/tv_itemmessage_re_time_message"
+        android:visibility="gone"
+        android:text="11:40, 02/04/2018"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="8sp"
+        android:layout_marginLeft="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_itemmessage_re_message"
+        app:layout_constraintStart_toStartOf="@+id/tv_itemmessage_re_message"/>
+
+    <!--LOAD IMAGE-->
+    <ImageView
+        android:id="@+id/img_itemmessage_re_image"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@color/colorButton"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:maxWidth="250dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_itemmessage_re_name"
+        app:layout_constraintWidth_max="wrap" />
+    <TextView
+        android:id="@+id/tv_itemmessage_re_time_image"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:textSize="8sp"
+        android:text="11:40, 02/04/2018"
+        app:layout_constraintStart_toStartOf="@+id/img_itemmessage_re_image"
+        app:layout_constraintTop_toBottomOf="@+id/img_itemmessage_re_image"/>
+
+    <!--LOAD AUDIO-->
+    <TextView
+        android:id="@+id/tv_itemmessage_re_totaltime_record"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:10"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="20dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_itemmessage_re_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_itemmessage_re_name"
+        tools:ignore="MissingConstraints" />
+    <ImageButton
+        android:id="@+id/ibtn_itemmessage_re_play_record"
+        android:visibility="gone"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/rounded_circle_blue"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_itemmessage_re_totaltime_record"
+        app:layout_constraintStart_toEndOf="@+id/tv_itemmessage_re_totaltime_record"
+        app:layout_constraintTop_toTopOf="@+id/tv_itemmessage_re_totaltime_record"
+        app:srcCompat="@android:drawable/ic_media_play" />
+    <TextView
+        android:id="@+id/tv_itemmessage_re_receive_record"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="audiotime"
+        app:layout_constraintTop_toBottomOf="@+id/ibtn_itemmessage_re_play_record"
+        app:layout_constraintEnd_toEndOf="@+id/ibtn_itemmessage_re_play_record" />
+
+</android.support.constraint.ConstraintLayout>

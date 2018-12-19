@@ -59,7 +59,7 @@ public class ChatSearchFriendsFragment extends Fragment implements ChatSearchFri
         mResultList.setAdapter(adapter);
         mResultList.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter.notifyDataSetChanged();
-
+//       presenter
         chatSearchFriendPresenter = new ChatSearchFriendPresenterImpl(this);
 
 //       sharedPreferences
@@ -76,7 +76,6 @@ public class ChatSearchFriendsFragment extends Fragment implements ChatSearchFri
                         listUserQuery.clear();
                         keyUser.clear();
                         chatSearchFriendPresenter.getSearchFriendPresenter(edtSearch.getText().toString());
-                        Toast.makeText(getActivity(), "Touch", Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 }
@@ -103,9 +102,8 @@ public class ChatSearchFriendsFragment extends Fragment implements ChatSearchFri
                 infoUserSearchFragment.setArguments(bundle);
 
                 android.app.FragmentManager manager = getFragmentManager();
-                manager.beginTransaction().addToBackStack("ChatSearch");
                 manager.beginTransaction().replace(R.id.conten_layout_chatlistfriend, infoUserSearchFragment,
-                        infoUserSearchFragment.getTag()).commit();
+                        infoUserSearchFragment.getTag()).addToBackStack("ChatSearch").commit();
             }
         });
         return view;

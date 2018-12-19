@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:id="@+id/item_chat_group_friend">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_chat_group_item_avatar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/colorButton" />
+
+    <TextView
+        android:id="@+id/tv_chat_group_item_name_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Jerry"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/img_chat_group_item_avatar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_chat_group_item_last_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Hello"
+        app:layout_constraintStart_toEndOf="@+id/img_chat_group_item_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/tv_chat_group_item_name_friend" />
+
+    <TextView
+        android:id="@+id/tv_chat_group_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12/05/2018"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

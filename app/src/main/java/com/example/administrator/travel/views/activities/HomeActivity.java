@@ -1,9 +1,13 @@
 package com.example.administrator.travel.views.activities;
 
 import android.app.Fragment;
+<<<<<<< HEAD
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+=======
+import android.app.FragmentManager;
+>>>>>>> 951d88f48f4b3450215386a453fe9c388f6ce2b9
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -187,6 +191,15 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
 
 
