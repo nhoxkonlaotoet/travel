@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.administrator.travel.R;
-
+// danh ba va tim kiem ban be hoan tat
 public class ChatListFriendFragment extends Fragment {
 
     TabLayout tableLayout;

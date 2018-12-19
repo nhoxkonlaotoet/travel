@@ -18,66 +18,7 @@ import java.util.List;
 import com.example.administrator.travel.R;
 import com.squareup.picasso.Picasso;
 
-/**
- * Created by Henry on 12/13/2018.
- */
 
-//public class CustomRecyclerSearchAdapter extends BaseAdapter{
-//
-//    Context context;
-//    List<UserInformation> listUser;
-//
-//    public CustomRecyclerSearchAdapter(Context context,List<UserInformation> userInformations){
-//        this.context = context;
-//        this.listUser = userInformations;
-//    }
-//
-//    @Override
-//    public int getCount() {
-//        return listUser.size();
-//    }
-//
-//    @Override
-//    public Object getItem(int i) {
-//        return listUser.get(i);
-//    }
-//
-//    @Override
-//    public long getItemId(int i) {
-//        return 0;
-//    }
-//
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        UsersViewHolder holder;
-//        if(convertView == null){
-//            holder = new UsersViewHolder();
-//            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            convertView = inflater.inflate(R.layout.item_search_friend,null);
-//
-//            holder.item_user    = (ConstraintLayout) convertView.findViewById(R.id.constrain_item_friend);
-//            holder.tvUserName   = (TextView) convertView.findViewById(R.id.tv_item_searchfriend_name_user);
-//            holder.imgAvatar    = (ImageView) convertView.findViewById(R.id.img_item_searchfriend_avartar);
-//
-//            convertView.setTag(holder);
-//        }else {
-//            holder = (UsersViewHolder) convertView.getTag();
-//        }
-//        UserInformation userInformation = listUser.get(position);
-//        holder.tvUserName.setText(userInformation.getName());
-//        Picasso.with(context)
-//                .load(userInformation.getUrlAvatar().toString())
-//                .into(holder.imgAvatar);
-//
-//        return convertView;
-//    }
-//
-//    private class UsersViewHolder{
-//        TextView tvUserName;
-//        ImageView imgAvatar;
-//        ConstraintLayout item_user;
-//    }
-//}
 
 public class CustomRecyclerSearchAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
     private List<UserInformation> listUser = new ArrayList<>();
@@ -123,13 +64,11 @@ public class CustomRecyclerSearchAdapter extends RecyclerView.Adapter <RecyclerV
     }
 
     public class UsersViewHolder extends RecyclerView.ViewHolder{
-        View view;
         TextView tvUserName;
         de.hdodenhof.circleimageview.CircleImageView imgAvatar;
         ConstraintLayout item_user;
-        public UsersViewHolder(View mItemView){
-            super(mItemView);
-            view = mItemView;
+        public UsersViewHolder(View view){
+            super(view);
             tvUserName = (TextView) view.findViewById(R.id.tv_item_searchfriend_name_user);
             imgAvatar = (de.hdodenhof.circleimageview.CircleImageView) view.findViewById(R.id.img_item_searchfriend_avartar);
             item_user = (ConstraintLayout) view.findViewById(R.id.constrain_item_friend);

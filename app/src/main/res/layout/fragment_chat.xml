@@ -7,10 +7,14 @@
     android:orientation="vertical"
     tools:context="com.example.administrator.travel.views.fragments.ChatFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:padding="8dp"
+        android:id="@+id/recyclerview_list_chat_group_friend"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Welcome to Chat Group Fragment\nNot code" />
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:scrollbars="vertical">
+
+    </android.support.v7.widget.RecyclerView>
+
 </LinearLayout>
