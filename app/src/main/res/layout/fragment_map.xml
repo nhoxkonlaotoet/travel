@@ -14,12 +14,7 @@
         android:layout_height="match_parent"
 
         />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="100sp"
-        android:text="100000"/>
+
 
 
 </FrameLayout>

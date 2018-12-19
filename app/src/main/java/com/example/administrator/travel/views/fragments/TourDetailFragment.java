@@ -84,6 +84,7 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
 //        });
     }
 
+
     @Override
     public void showDays(List<Day> lstDay) {
         for (Day day : lstDay) {

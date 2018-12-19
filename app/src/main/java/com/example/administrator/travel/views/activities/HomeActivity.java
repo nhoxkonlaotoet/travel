@@ -1,21 +1,27 @@
 package com.example.administrator.travel.views.activities;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.TourDetailInteractor;
 import com.example.administrator.travel.models.entities.Day;
 import com.example.administrator.travel.models.entities.MyLatLng;
+import com.example.administrator.travel.models.entities.Participant;
 import com.example.administrator.travel.models.entities.Schedule;
 import com.example.administrator.travel.views.fragments.ChatFragment;
 import com.example.administrator.travel.views.fragments.ChatManagerFragment;
 import com.example.administrator.travel.views.fragments.NewsFeedFragment;
 import com.example.administrator.travel.views.fragments.SelectMyTourFragment;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -60,11 +66,14 @@ public class HomeActivity extends AppCompatActivity {
                     if(i==3)
                         return false;
                     i=3;
+
                     return true;
             }
             return false;
         }
     };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

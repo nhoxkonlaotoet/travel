@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/imgvReviewer"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+    <RelativeLayout
+        android:id="@+id/layoutReviewer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@id/imgvReviewer">
+        <TextView
+            android:id="@+id/txtTourReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Review: DU LỊCH [ĐÓN NĂM MỚI 2019] ĐÀ NẴNG - HỘI AN - SUỐI KHOÁNG NÓNG NÚI THẦN TÀI - BÀ NÀ - CẦU VÀNG"
+            android:maxLines="2"
+            android:textColor="@color/colorText"
+
+            />
+        <TextView
+            android:id="@+id/txtReviewContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="asddddddddddddddddddddddddddddasdasdasgdfkjgkdflg"
+            android:maxLines="2"
+            android:layout_below="@id/txtTourReview"
+            />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

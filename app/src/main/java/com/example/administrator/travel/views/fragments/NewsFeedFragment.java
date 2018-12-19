@@ -3,9 +3,11 @@ package com.example.administrator.travel.views.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
@@ -21,28 +23,20 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.presenters.NewFeedPresenter;
 import com.example.administrator.travel.presenters.NewFeedPresenterImpl;
 import com.example.administrator.travel.views.NewFeedView;
 import com.example.administrator.travel.views.activities.TourActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class NewsFeedFragment extends Fragment implements NewFeedView{
-
     private String array_spinner[];
     Spinner spinner;
     ListView lstv;
@@ -80,10 +74,13 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
                 Intent intent = new Intent(getActivity(), TourActivity.class);
                 intent.putExtra("tourId",view.getTag()+"");
                 intent.putExtra("mytour",false);
-                  startActivity(intent);
+                startActivity(intent);
 
             }
         });
+
+
+
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.news_feed_spinner_item,R.id.txtSpinnerOption, array_spinner);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()

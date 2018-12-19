@@ -68,9 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         String AuthID = sharedPreferences.getString("AuthID","none");
         boolean autoLogin = sharedPreferences.getBoolean("autoLogin",true);
         if(!AuthID.equals("none") && autoLogin){
-            startActivity((new Intent(LoginActivity.this, HomeActivity.class))
-                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-
+            startActivity((new Intent(LoginActivity.this, HomeActivity.class)));
             finish();
         }
 //        setWidget
@@ -139,8 +137,8 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("AuthID",AuthID);
 
                                 editor.commit();
-                                startActivity((new Intent(LoginActivity.this, HomeActivity.class))
-                                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                            //    startActivity((new Intent(LoginActivity.this, HomeActivity.class))
+                             //           .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                                 finish();
                             } else {

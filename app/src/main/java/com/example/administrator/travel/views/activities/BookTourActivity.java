@@ -1,5 +1,8 @@
 package com.example.administrator.travel.views.activities;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +25,7 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
     String action;
     RelativeLayout btnAccept, btnCancel;
     TourStartDate tourStart;
-    String tourId;
+    String tourId,userId;
     TextView txtAdultPrice, txtChildrenPrice, txtBabyPrice,txtNumberofPeople,
             txtNumberofAdult,txtNumberofChildren,txtNumberofBaby;
     Button btnDecreaseAdult, btnIncreaseAdult,
@@ -35,12 +38,27 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_tour);
+
+        SharedPreferences prefs = getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        userId = prefs.getString("AuthID","");
+        if(userId.equals(""))
+        {
+            startActivity((new Intent(this, LoginActivity.class)));
+           // finish();
+        }
         tourStart = (TourStartDate) getIntent().getSerializableExtra("tour");
         Bundle bundle = getIntent().getExtras();
         tourId=bundle.getString("tourId");
         presenter=new BookTourPresenter(this);
         mapping();
         showPrice();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prefs = getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        userId = prefs.getString("AuthID","");
     }
 
     public void mapping(){
@@ -160,7 +178,7 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
             return;
         if(action ==ACTION_BOOK_TOUR) {
             money = tourStart.adultPrice * numberofAdult + tourStart.childrenPrice * numberofChildren + tourStart.babyPrice * numberofChildren;
-            TourBooking tourBooking = new TourBooking("-LELTicEhxKf9k4i_tHN", tourStart.id, time,
+            TourBooking tourBooking = new TourBooking(userId, tourStart.id, time,
                     numberofAdult, numberofChildren, numberofBaby, money *= 0);
             presenter.bookTour(tourId, tourBooking);
         }

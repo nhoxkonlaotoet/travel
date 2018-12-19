@@ -9,6 +9,7 @@ import java.util.List;
  */
 
 public interface TourStartView {
+    public void loadTourStartDate();
     public void showTourStartDate(List<TourStartDate> listTourStartDate);
 
 }

@@ -60,8 +60,8 @@ public class TourStartFragment extends Fragment implements TourStartView {
         presenter = new TourStartPresenter(this);
         Bundle bundle = getActivity().getIntent().getExtras();
         tourId=bundle.getString("tourId");
-        presenter.getTourStartDate(tourId);
 
+        loadTourStartDate();
     }
 
     @Override
@@ -70,7 +70,11 @@ public class TourStartFragment extends Fragment implements TourStartView {
         lstvSelectTour.setAdapter(adapter);
         Log.e("SelectTourFragment: ", "showTourStartDate");
     }
-
+    @Override
+    public void loadTourStartDate()
+    {
+        presenter.getTourStartDate(tourId);
+    }
     @Override
     public void onResume() {
         super.onResume();
