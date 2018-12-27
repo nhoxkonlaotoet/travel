@@ -3,6 +3,10 @@ import android.graphics.Bitmap;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Created by Administrator on 30/10/2018.
  */
@@ -22,11 +26,13 @@ public class Tour {
     public Integer babyPrice;
     public String owner;
     public Bitmap image;
+    public String origin;
+    public HashMap<String,Boolean> destination;
     public Integer numberofImages;
     public Tour(){}
     public Tour(String name, String description, Integer days, Integer nights, String vihicle,
                 Float rating, Integer numberofRating, Boolean state, //1: hoat dong, 0: khoa
-                Integer adultPrice, Integer childrenPrice, Integer babyPrice, String owner)
+                Integer adultPrice, Integer childrenPrice, Integer babyPrice,String origin, HashMap<String,Boolean> destination, String owner)
     {
         this.name=name;
         this.description=description;
@@ -39,6 +45,8 @@ public class Tour {
         this.adultPrice=adultPrice;
         this.childrenPrice=childrenPrice;
         this.babyPrice=babyPrice;
+        this.origin=origin;
+        this.destination=destination;
         this.owner=owner;
     }
     @Override

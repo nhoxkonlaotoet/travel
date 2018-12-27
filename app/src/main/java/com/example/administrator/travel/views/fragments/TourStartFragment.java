@@ -87,7 +87,7 @@ public class TourStartFragment extends Fragment implements TourStartView {
     public class TourStartAdapter extends BaseAdapter {
         List<TourStartDate> list;
         Button btnBookTour;
-        TextView txtStartDay, txtNumberPeople;
+        TextView txtStartDate, txtNumberPeople;
         public TourStartAdapter(List<TourStartDate> list)
         {
             if(list!=null) {
@@ -115,14 +115,14 @@ public class TourStartFragment extends Fragment implements TourStartView {
         public View getView(final int position, View convertView, ViewGroup parent) {
 
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.tour_start_date_item, null);
-            txtStartDay = convertView.findViewById(R.id.txtStart);
+            txtStartDate = convertView.findViewById(R.id.txtStart);
             txtNumberPeople = convertView.findViewById(R.id.txtNumberPeople);
             btnBookTour=convertView.findViewById(R.id.btnBookTour);
 
             Date date = new Date(list.get(position).startDate);
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-            txtStartDay.setText(dateFormat.format(date));
+            txtStartDate.setText(dateFormat.format(date));
 
             txtNumberPeople.setText(list.get(position).peopleBooking+"");
             btnBookTour.setOnClickListener(new View.OnClickListener() {

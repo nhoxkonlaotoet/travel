@@ -50,6 +50,8 @@ public class BookTourPresenter implements OnBookTourFinishedListener, OnGetServe
     public void bookTour(String tourId, TourBooking tourBooking){
         bookTourInteractor.bookTour(tourId,tourBooking,this);
     }
+
+
     @Override
     public void onBookTourSuccess() {
         view.notifyBookingSuccess();

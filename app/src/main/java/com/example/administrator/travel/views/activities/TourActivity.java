@@ -1,8 +1,23 @@
 package com.example.administrator.travel.views.activities;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.location.Location;
+
+import com.example.administrator.travel.adapter.Pager;
+import com.example.administrator.travel.adapter.SectionsPagerAdapter;
+import com.example.administrator.travel.adapter.SlideTourImageAdapter;
+import com.example.administrator.travel.models.OnTransmitMyLocationFinishedListener;
+import com.google.android.gms.location.LocationListener;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,12 +28,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.presenters.TourPresenter;
@@ -29,64 +46,60 @@ import com.example.administrator.travel.views.fragments.NearbyFragment;
 import com.example.administrator.travel.views.fragments.StatusCommunicationFragment;
 import com.example.administrator.travel.views.fragments.TourDetailFragment;
 import com.example.administrator.travel.views.fragments.TourStartFragment;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
-public class TourActivity extends AppCompatActivity implements TourView {
+public class TourActivity extends AppCompatActivity implements TourView,
+        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, LocationListener {
+    GoogleApiClient googleApiClient;
+    public Location myLocation;
     Toolbar toolbar;
     ViewPager vpTourImage, vpContainer;
     TabLayout tablayoutTour;
-    Boolean isMyTour=false;
     SectionsPagerAdapter mSectionsPagerAdapter;
     TourPresenter presenter;
+    OnTransmitMyLocationFinishedListener listener;
+    Location mylocation;
+    Boolean isMytour=false;
+    Pager pager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e( "onCreate: ", "tour activity");
         setContentView(R.layout.activity_tour);
 
         toolbar = findViewById(R.id.toolbar);
         vpTourImage = findViewById(R.id.vpTourImage);
         toolbar.bringToFront();
         tablayoutTour = findViewById(R.id.tablayoutTour);
+        vpContainer = findViewById(R.id.vpTabContainer);
 
         presenter = new TourPresenter(this);
         Bundle bundle = getIntent().getExtras();
 
-        if(bundle.getBoolean("mytour"))
-        {
-            tablayoutTour.addTab(tablayoutTour.newTab().setText("Chi tiết"));
-            tablayoutTour.addTab(tablayoutTour.newTab().setText("Hoạt động"));
-            tablayoutTour.addTab(tablayoutTour.newTab().setText("Gần đây"));
-            tablayoutTour.addTab(tablayoutTour.newTab().setText("Bản đồ"));
-            vpTourImage.setVisibility(View.GONE);
-            RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.BELOW, R.id.toolbar);
-            tablayoutTour.setLayoutParams(params);
-            isMyTour=true;
-        }
-        else
-        {
-            String tourId=bundle.getString("tourId");
-            presenter.getTourImages(tourId);
-            tablayoutTour.addTab(tablayoutTour.newTab().setText("Chi tiết"));
-            tablayoutTour.addTab(tablayoutTour.newTab().setText("Đặt tour"));
-            tablayoutTour.addTab(tablayoutTour.newTab().setText("Liên hệ"));
-            tablayoutTour.addTab(tablayoutTour.newTab().setText("Bản đồ"));
-        }
+        presenter.onViewLoad(bundle.getString("tourId"), bundle.getBoolean("mytour"));
 
-        vpContainer = findViewById(R.id.vpTabContainer);
-        // load 2 fragment bên cạnh
-        vpContainer.setOffscreenPageLimit(2);
-     //   tablayoutTour.setupWithViewPager(vpTabContainer);
+        // load n fragment bên cạnh
+        vpContainer.setOffscreenPageLimit(1);
+        //   tablayoutTour.setupWithViewPager(vpTabContainer);
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = this.getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
+        isMytour=bundle.getBoolean("mytour");
 
-
-
-
-        Pager pager=new Pager(getSupportFragmentManager(),4);
-
+        int tabCount;
+        if(!isMytour)
+        {
+            actionBar.setBackgroundDrawable(getResources().getDrawable (R.color.transparent));
+            actionBar.setDisplayShowTitleEnabled(false);
+            tabCount=4;
+        }
+        else
+            tabCount=5;
+        pager = new Pager(getSupportFragmentManager(), tabCount,isMytour);
         vpContainer.setAdapter(pager);
 
         vpContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -101,7 +114,7 @@ public class TourActivity extends AppCompatActivity implements TourView {
 
                 tablayoutTour.setSelected(true);
 
-                Log.e( "onPageSelected: ", position+"");
+                Log.e("onPageSelected: ", position + "");
             }
 
             @Override
@@ -109,11 +122,10 @@ public class TourActivity extends AppCompatActivity implements TourView {
 
             }
         });
-
         tablayoutTour.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                    vpContainer.setCurrentItem(tab.getPosition());
+                vpContainer.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -127,6 +139,18 @@ public class TourActivity extends AppCompatActivity implements TourView {
             }
         });
 
+    }
+
+
+    @Override
+    public void onAttachFragment(android.support.v4.app.Fragment fragment) {
+        super.onAttachFragment(fragment);
+
+        if(fragment.getClass().equals(NearbyFragment.class)) {
+
+            listener = (OnTransmitMyLocationFinishedListener) fragment;
+            presenter.onViewAttachFragment(myLocation);
+        }
 
     }
     @Override
@@ -134,154 +158,111 @@ public class TourActivity extends AppCompatActivity implements TourView {
         onBackPressed();
         return true;
     }
-    void setSize(View view, int height){
-        ViewGroup.LayoutParams params = view.getLayoutParams();
-        if(height>0)
-            params.height -=height;
-        view.setLayoutParams(params);
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
+
+    @Override
+    public void addTab(Boolean isMyTour) {
+        if (isMyTour) {
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Chi tiết"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Hoạt động"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Gần đây"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Đánh giá"));
+
+            vpTourImage.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.BELOW, R.id.toolbar);
+            tablayoutTour.setLayoutParams(params);
+
+        } else {
+
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Chi tiết"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Đặt tour"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Liên hệ"));
+            tablayoutTour.addTab(tablayoutTour.newTab().setText("Đánh giá"));
+        }
+    }
+
+    @Override
+    public void connectGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .build();
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void transmitLocationToFragment(Location location) {
+        Log.e("act_tour: location",location+" "+(listener==null) );
+        if(listener!=null)
+            listener.onDataChanged(location);
     }
 
     @Override
     public void showImages(Bitmap[] images, Integer numberofImages) {
 
-        SlideTourImageAdapter adapter = new SlideTourImageAdapter(images,numberofImages,this);
+        SlideTourImageAdapter adapter = new SlideTourImageAdapter(images, numberofImages, this);
         vpTourImage.setAdapter(adapter);
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        myLocation=location;
+        presenter.onLocationChanged(location);
 
-    public class Pager extends FragmentStatePagerAdapter {
-
-        int tabCount;
-
-        public Pager(FragmentManager fm, int tabCount){
-            super(fm);
-            this.tabCount=tabCount;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch(position){
-                case 0:
-                    TourDetailFragment fragment = new TourDetailFragment();
-                    return fragment;
-                case 1 :
-                    if(isMyTour) {
-                        StatusCommunicationFragment fragment1 = new StatusCommunicationFragment();
-                        return fragment1;
-                    }else{
-                    TourStartFragment fragment1 = new TourStartFragment();
-                    return fragment1;}
-                case 2:
-                    if(isMyTour) {
-                        NearbyFragment fragment2 = new NearbyFragment();
-                        return fragment2;
-                    }
-                    else
-                    {
-                        ContactFragment fragment2 = new ContactFragment();
-                        return fragment2;
-                    }
-                default :
-                    MapFragment fragment3 = new MapFragment();
-                    return fragment3;
-
-
-            }
-
-        }
-
-        @Override
-        public int getCount() {
-            return tabCount;
-        }
     }
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
 
 
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_tour_detail, container, false);
-            return rootView;
-        }
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+       presenter.onGoogleApiClientConnected();
     }
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+    @Override
+    public void onConnectionSuspended(int i) {
 
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
-        }
-
-        @Override
-        public int getCount() {
-            return 4;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION 1";
-                case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
-            }
-            return null;
-        }
     }
-    public class SlideTourImageAdapter extends PagerAdapter {
-        LayoutInflater layoutInflater;
-        Bitmap[] images;
-        Integer n;
-        Context context;
-        ImageView imgv;
 
-        public SlideTourImageAdapter(Bitmap[] images,Integer numberofImages,Context context)
-        {
-            this.images=images;
-            this.context=context;
-            n=numberofImages;
-        }
-        @Override
-        public int getCount() {
-            return n;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == (RelativeLayout) object;
-        }
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = layoutInflater.inflate(R.layout.slide_tour_image, null);
-            imgv=view.findViewById(R.id.imgvTourImage);
-            Log.e( "instantiateItem: ",position+"   "+(images[position]==null) );
-            imgv.setImageBitmap(images[position]);
-            Log.e("pos",position+"");
-            container.addView(view);
-            return view;
-        }
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((RelativeLayout)object);
-        }
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        presenter.onGoogleApiClientConnectFailed(connectionResult);
     }
+
+    @Override
+    protected void onStop() {
+        presenter.onViewStop();
+        super.onStop();
+    }
+    @Override
+    public void startLocationServices() {
+        LocationRequest request = LocationRequest.create().setPriority(LocationRequest.PRIORITY_LOW_POWER);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, request, this);
+
+    }
+
+    @Override
+    public void notifyConnectFailed(ConnectionResult connectionResult) {
+        Toast.makeText(this, "Kết nối thất bại "+connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void stopGoogleApiClient() {
+        if (googleApiClient != null)
+            if (googleApiClient.isConnected())
+                googleApiClient.disconnect();
+    }
+
+
+
+
+
 
 }

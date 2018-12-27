@@ -25,8 +25,8 @@ public class TourStartInteractor {
     {
         final List<TourStartDate> list = new ArrayList<>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference startDateRef = database.getReference("tour_start_date").child(tourId);
-        startDateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference startDateRef = database.getReference("tour_start_date");
+        startDateRef.orderByChild("tourId").equalTo(tourId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot Snapshot: dataSnapshot.getChildren())

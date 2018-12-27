@@ -1,10 +1,12 @@
 package com.example.administrator.travel.presenters;
 
-import com.example.administrator.travel.models.OnGetTourScheduleFinishedListener;
+import com.example.administrator.travel.models.OnGetTourDetailFinishedListener;
 import com.example.administrator.travel.models.TourDetailInteractor;
 import com.example.administrator.travel.models.entities.Day;
 import com.example.administrator.travel.models.entities.Schedule;
+import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.views.TourDetailView;
+import com.example.administrator.travel.views.fragments.TourDetailFragment;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.List;
  * Created by Administrator on 10/11/2018.
  */
 
-public class TourDetailPresenter  implements OnGetTourScheduleFinishedListener{
+public class TourDetailPresenter  implements OnGetTourDetailFinishedListener{
     TourDetailView view;
     TourDetailInteractor interactor;
 
@@ -20,13 +22,15 @@ public class TourDetailPresenter  implements OnGetTourScheduleFinishedListener{
         this.view=view;
         interactor=new TourDetailInteractor();
     }
-
-    public void getDays(String tourId){
-        interactor.getDays(tourId,this);
-    }
-    public void getSchedule(String tourId, String dayId)
+    public void onViewLoad()
     {
-        interactor.getSchedule(tourId,dayId,this);
+        interactor.getDays(((TourDetailFragment)view).tourId,this);
+        interactor.getInfor(((TourDetailFragment)view).tourId,this);
+
+    }
+    public void onSelectItemSpinnerDays(String day)
+    {
+        interactor.getSchedule(((TourDetailFragment)view).tourId,day,this);
     }
     @Override
     public void onGetDaySuccess(List<Day> lstDay) {
@@ -34,7 +38,8 @@ public class TourDetailPresenter  implements OnGetTourScheduleFinishedListener{
     }
 
     @Override
-    public void onGetDayFailure() {
+    public void onGetDayFailure(Exception ex) {
+        view.notifyFailure(ex);
 
     }
 
@@ -44,7 +49,18 @@ public class TourDetailPresenter  implements OnGetTourScheduleFinishedListener{
     }
 
     @Override
-    public void onGetScheduleFailure() {
+    public void onGetScheduleFailure(Exception ex) {
+        view.notifyFailure(ex);
 
+    }
+
+    @Override
+    public void onGetInforSuccess(Tour tour) {
+        view.showInfor(tour);
+    }
+
+    @Override
+    public void onGetInforFailure(Exception ex) {
+        view.notifyFailure(ex);
     }
 }

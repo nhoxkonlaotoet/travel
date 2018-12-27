@@ -1,5 +1,6 @@
 package com.example.administrator.travel.models;
 
+import com.example.administrator.travel.models.entities.City;
 import com.example.administrator.travel.models.entities.Tour;
 
 import java.util.List;
@@ -9,5 +10,8 @@ import java.util.List;
  */
 
 public interface OnGetNewFeedItemFinishedListener {
-    public void onSuccess(List<Tour> listTour);
+    void onGetItemsSuccess(List<Tour> listTour);
+    void onGetItemsFailure(Exception ex);
+    void onGetCitiesSuccess(List<City> lstCity);
+    void onGetCitesFailure(Exception ex);
 }

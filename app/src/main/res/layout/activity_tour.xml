@@ -16,16 +16,19 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
+        android:background="@color/colorGreen"
         android:minHeight="?attr/actionBarSize"
         app:title="Tour du lich Hội An"
-        app:titleTextColor="#000"
-        android:theme="?attr/actionBarTheme"
-
-        />
+        app:titleTextColor="#fff"
+        android:theme="?attr/actionBarTheme" />
 
 
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorSelected"
+        android:layout_below="@+id/vpTourImage" />
     <android.support.design.widget.TabLayout
         android:id="@+id/tablayoutTour"
         android:layout_width="match_parent"

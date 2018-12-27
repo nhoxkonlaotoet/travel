@@ -3,11 +3,8 @@ package com.example.administrator.travel.views.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
@@ -17,18 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.travel.R;
+import com.example.administrator.travel.adapter.NewsFeedAdapter;
+import com.example.administrator.travel.models.entities.City;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.presenters.NewFeedPresenter;
-import com.example.administrator.travel.presenters.NewFeedPresenterImpl;
 import com.example.administrator.travel.views.NewFeedView;
 import com.example.administrator.travel.views.activities.TourActivity;
 
@@ -37,8 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsFeedFragment extends Fragment implements NewFeedView{
+    Context context;
     private String array_spinner[];
-    Spinner spinner;
+    Spinner spinnerOrigin,spinnerDestination;
     ListView lstv;
     private NewFeedPresenter presenter;
     public NewsFeedFragment() {
@@ -49,13 +44,18 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
         array_spinner[2]="Địa điểm";
         array_spinner[3]="Đánh giá";
     }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        context=getActivity();
 
         return inflater.inflate(R.layout.fragment_news_feed, container, false);
     }
@@ -63,146 +63,123 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        presenter= new NewFeedPresenterImpl(this);
-        presenter.getTours();
+        presenter= new NewFeedPresenter(this);
+        presenter.onViewLoad();
         lstv = getActivity().findViewById(R.id.lstvNewsFeed);
-        spinner = getActivity().findViewById(R.id.spinner);
+        lstv.setSelector(R.color.transparent);
 
+        spinnerOrigin = getActivity().findViewById(R.id.spinnerOrigin);
+        spinnerDestination = getActivity().findViewById(R.id.spinnerDestination);
+
+
+        setItemListviewTourClick();
+        setItemSpinnerOriginSelect();
+        setItemSpinnerDestinationSelect();
+
+
+    }
+    void setItemListviewTourClick(){
         lstv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getActivity(), TourActivity.class);
-                intent.putExtra("tourId",view.getTag()+"");
-                intent.putExtra("mytour",false);
-                startActivity(intent);
+                String[] s = view.getTag().toString().split(" ");
+                presenter.onItemListViewTourClicked(s[0],s[1]);
 
             }
         });
-
-
-
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.news_feed_spinner_item,R.id.txtSpinnerOption, array_spinner);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+    }
+    void setItemSpinnerOriginSelect(){
+        spinnerOrigin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                presenter.onItemSpinnerOriginSelected(i);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-
         });
-
-
     }
+    void setItemSpinnerDestinationSelect(){
+        spinnerDestination.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                presenter.onItemSpinnerDestinationSelected(i);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void showCities(List<City> lstCity) {
+        String arr[] = new String[lstCity.size()+1];
+        int n=lstCity.size();
+        arr[0]="Không";
+        for(int i=1;i<=n;i++)
+            arr[i]=lstCity.get(i-1).name;
+        ArrayAdapter adapter = new ArrayAdapter(context, R.layout.news_feed_spinner_item,R.id.txtSpinnerOption, arr);
+        spinnerOrigin.setAdapter(adapter);
 
+        spinnerDestination.setAdapter(adapter);
     }
 
     @Override
     public void showTours(List<Tour> listTour) {
-//        for(Tour tour:listTour)
-//            if(tour.image==null)
-//                return;
-        Log.e( "NewFeedView ", "show tours" );
-        NewsFeedAdapter a = new NewsFeedAdapter(listTour);
-//        for(Tour tour : listTour)
-//        {
-//            Log.e("showTours: ", tour.toString());
-//        }
-        lstv.setAdapter(a);
-        lstv.setSelector(R.color.transparent);
+        if(context!=null) {
+            Log.e( "showTours: ", "fragment "+listTour.size());
+            NewsFeedAdapter a = new NewsFeedAdapter(context, listTour);
+            lstv.setAdapter(a);
+        }
+    }
+
+    @Override
+    public void gogotActivityTour(String tourId, String ownerId) {
+
+        Intent intent = new Intent(getActivity(), TourActivity.class);
+        intent.putExtra("tourId",tourId);
+        intent.putExtra("mytour",false);
+        intent.putExtra("owner",ownerId);
+        startActivity(intent);
     }
 
     //chua su dung
-    public class NewsFeedArrayAdapter extends  ArrayAdapter{
-
-        public NewsFeedArrayAdapter(@NonNull Context context, int resource) {
-            super(context, resource);
-        }
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            TextView v = (TextView) super.getView(position, convertView, parent);
-            if (v == null) {
-                v = new TextView(getActivity());
-            }
-            v.setTextColor(Color.BLACK);
-            v.setText(array_spinner[position]);
-            return v;
-        }
-
-        @Override
-        public String getItem(int position) {
-            return array_spinner[position];
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = convertView;
-
-            if (v == null) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                v = inflater.inflate(R.layout.news_feed_spinner_item, null);
-            }
-            TextView lbl = (TextView) v.findViewById(R.id.txtSpinnerOption);
-            lbl.setTextColor(Color.BLACK);
-            lbl.setText(array_spinner[position]);
-            return convertView;
-        }
-    }
-
-    public class NewsFeedAdapter extends BaseAdapter {
-        List<Tour> list= new ArrayList();
-
-        public NewsFeedAdapter(List<Tour> listTour)
-        {
-            this.list = listTour;
-        }
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-                Tour tour = list.get(position);
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.tour_item, null);
-               //mapping
-                TextView txtTourName = convertView.findViewById(R.id.txtTourName);
-                TextView txtDays = convertView.findViewById(R.id.txtDays);
-                RatingBar ratingBar = convertView.findViewById(R.id.ratebarTourRating);
-                TextView txtNumberofRating = convertView.findViewById(R.id.txtNumberofRating);
-                TextView txtTourPrice = convertView.findViewById(R.id.txtTourPrice);
-                TextView txtTourSaleprice = convertView.findViewById(R.id.txtTourSalePrice);
-                ImageView imgv = convertView.findViewById(R.id.imgvTour);
-                convertView.setTag(""+list.get(position).id);
-               //set values
-                imgv.setImageBitmap(tour.image);
-                txtTourName.setText(tour.name);
-                txtDays.setText(tour.days+" ngày "+tour.nights+" đêm");
-                ratingBar.setRating(tour.rating);
-                txtNumberofRating.setText(tour.numberofRating+" bình chọn");
-                txtTourPrice.setText(tour.adultPrice + "đ");
-                txtTourSaleprice.setVisibility(View.INVISIBLE);
-            return convertView;
-        }
-    }
+//    public class NewsFeedArrayAdapter extends  ArrayAdapter{
+//
+//        public NewsFeedArrayAdapter(@NonNull Context context, int resource) {
+//            super(context, resource);
+//        }
+//        @Override
+//        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+//            TextView v = (TextView) super.getView(position, convertView, parent);
+//            if (v == null) {
+//                v = new TextView(getActivity());
+//            }
+//            v.setTextColor(Color.BLACK);
+//            v.setText(array_spinner[position]);
+//            return v;
+//        }
+//
+//        @Override
+//        public String getItem(int position) {
+//            return array_spinner[position];
+//        }
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            View v = convertView;
+//
+//            if (v == null) {
+//                LayoutInflater inflater = getActivity().getLayoutInflater();
+//                v = inflater.inflate(R.layout.news_feed_spinner_item, null);
+//            }
+//            TextView lbl = (TextView) v.findViewById(R.id.txtSpinnerOption);
+//            lbl.setTextColor(Color.BLACK);
+//            lbl.setText(array_spinner[position]);
+//            return convertView;
+//        }
+//    }
 }

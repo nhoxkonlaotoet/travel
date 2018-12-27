@@ -12,15 +12,16 @@ public class Participant {
     public Boolean shareLocation;
     public MyLatLng latLng;
     public Long joinedTime;
-
+    public Long lastTimeShareLocation;
     public Participant() {
     }
 
-    public Participant(String userId, String tourStartId, Boolean shareLocation, MyLatLng latLng, Long joinedTime) {
+    public Participant(String userId, String tourStartId, Boolean shareLocation, MyLatLng latLng, Long joinedTime,Long lastTimeShareLocation) {
         this.userId = userId;
         this.tourStartId=tourStartId;
         this.shareLocation = shareLocation;
         this.latLng = latLng;
         this.joinedTime = joinedTime;
+        this.lastTimeShareLocation=lastTimeShareLocation;
     }
 }

@@ -4,14 +4,112 @@
     android:layout_height="match_parent"
     tools:context="com.example.administrator.travel.views.fragments.NearbyFragment">
 
-   <RelativeLayout
+   <LinearLayout
        android:layout_width="match_parent"
-       android:layout_height="match_parent">
-    <ListView
-        android:id="@+id/lstvNearby"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="30dp"
+           android:orientation="horizontal"
+           android:layout_marginTop="10dp">
+           <Spinner
+               android:id="@+id/spinnerPlaceType"
+               android:layout_width="150dp"
+               android:layout_height="match_parent"/>
+           <Button
+               android:id="@+id/btnOption"
+               android:layout_width="70dp"
+               android:layout_height="match_parent"
+               android:text="Tùy chọn"
+               android:textAllCaps="false"
+               android:background="@drawable/background_small_button"
+               android:layout_alignParentRight="true"
+               android:layout_marginRight="30dp"/>
+       </RelativeLayout>
 
-   </RelativeLayout>
+       <LinearLayout
+           android:id="@+id/layoutOption"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_marginTop="5dp"
+           android:layout_marginBottom="5dp"
+           android:visibility="gone">
+           <View
+               android:layout_width="wrap_content"
+               android:layout_height="1dp"
+               android:background="@color/colorSelected" />
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal">
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Phạm vi:"
+                   android:textColor="@color/colorText"
+                   android:layout_marginRight="10dp"/>
+               <TextView
+                   android:id="@+id/txtRadius"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="0m"
+                   android:textColor="@color/colorText"/>
+           </LinearLayout>
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="0m"
+                  android:textColor="@color/colorText"
+                  android:layout_alignTop="@+id/seekBarRadius"
+                  android:layout_alignBottom="@+id/seekBarRadius"
+                  android:gravity="center"
+                  android:layout_toLeftOf="@id/seekBarRadius"/>
+               <SeekBar
+                   android:id="@+id/seekBarRadius"
+                   android:layout_width="250dp"
+                   android:layout_height="30dp"
+                   android:layout_centerHorizontal="true"/>
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="5km"
+                  android:textColor="@color/colorText"
+                  android:layout_alignTop="@+id/seekBarRadius"
+                  android:layout_alignBottom="@+id/seekBarRadius"
+                  android:gravity="center"
+                  android:layout_toRightOf="@+id/seekBarRadius"/>
+          </RelativeLayout>
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:padding="10dp"
+               android:gravity="center">
+               <Button
+                   android:id="@+id/btnSearch"
+                   android:layout_width="wrap_content"
+                   android:layout_height="35dp"
+                   android:background="@drawable/background_button_participate_tour"
+                   android:text="Tìm"
+                   android:textAllCaps="false"
+                   android:textColor="#fff" />
+           </LinearLayout>
+           <View
+               android:layout_width="wrap_content"
+               android:layout_height="1dp"
+               android:background="@color/colorSelected" />
+       </LinearLayout>
+
+
+        <ListView
+            android:id="@+id/lstvNearby"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+
+   </LinearLayout>
 
 </FrameLayout>

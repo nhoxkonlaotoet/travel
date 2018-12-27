@@ -4,7 +4,7 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_event_note_black_24dp"
-        android:title="@string/title_home" />
+        android:title="@string/title_tours" />
 
     <item
         android:id="@+id/navigation_my_tours"
@@ -14,11 +14,13 @@
     <item
         android:id="@+id/navigation_chat"
         android:icon="@android:drawable/sym_action_chat"
-        android:title="Chat"/>
+        android:title="@string/title_chat"/>
     <item
-        android:id="@+id/navigation_more"
-        android:icon="@drawable/ic_more_horiz_black_24dp"
-        android:title="@string/title_more" />
+        android:id="@+id/navigation_setting"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="@string/title_setting0"
+
+        />
 
 
 </menu>

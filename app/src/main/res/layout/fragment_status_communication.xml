@@ -39,14 +39,14 @@
                 android:textColor="@color/colorHintText"
                 android:layout_marginLeft="15dp"/>
         </RelativeLayout>
-        <com.example.administrator.travel.NonScrollListView
+        <com.example.administrator.travel.adapter.NonScrollListView
             android:id="@+id/lstvStatus"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/layoutStatusPost"
             android:layout_marginTop="20dp">
 
-        </com.example.administrator.travel.NonScrollListView>
+        </com.example.administrator.travel.adapter.NonScrollListView>
 
     </RelativeLayout>
     </ScrollView>

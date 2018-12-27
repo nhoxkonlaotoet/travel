@@ -21,9 +21,11 @@ public class TourStartDate implements Serializable {
     public Integer childrenPrice;
     public Integer babyPrice;
     public Boolean available;
+
+    public String tourId;
     public  TourStartDate(){}
     public TourStartDate(Long startDate, Integer adultPrice, Integer childrenPrice, Integer babyPrice,
-                         Integer maxPeople,Integer peopleBooking, Integer participant, Boolean available)
+                         Integer maxPeople,Integer peopleBooking, Integer participant, Boolean available,String tourId)
     {
         this.startDate=startDate;
         this.adultPrice=adultPrice;
@@ -33,10 +35,11 @@ public class TourStartDate implements Serializable {
         this.peopleBooking=peopleBooking;
         this.participant=participant;
         this.available=available;
+        this.tourId=tourId;
     }
     @Override
     public String toString()
     {
-        return startDate.toString()+", "+adultPrice+", "+childrenPrice+", "+babyPrice+", "+ peopleBooking;
+        return startDate.toString()+", "+adultPrice+", "+childrenPrice+", "+babyPrice+", "+ peopleBooking+ ", "+tourId;
     }
 }

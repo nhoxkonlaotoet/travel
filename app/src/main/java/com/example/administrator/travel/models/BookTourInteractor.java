@@ -25,7 +25,7 @@ public class BookTourInteractor {
     public void bookTour(final String tourId, final TourBooking tourBooking, final OnBookTourFinishedListener listener){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference tourStartDateRef = database.getReference("tour_start_date");
-        tourStartDateRef.child(tourId).child(tourBooking.tourStartDateId).addListenerForSingleValueEvent(new ValueEventListener() {
+        tourStartDateRef.child(tourBooking.tourStartDateId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TourStartDate tourStartDate  = dataSnapshot.getValue(TourStartDate.class);

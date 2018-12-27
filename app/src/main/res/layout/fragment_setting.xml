@@ -1,0 +1,132 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.administrator.travel.views.fragments.SettingFragment">
+    <!-- TODO: Update blank fragment layout -->
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorGreen"
+            android:minHeight="?attr/actionBarSize"
+            app:title="Cài đặt"
+            app:titleTextColor="#fff"
+            android:theme="?attr/actionBarTheme"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:background="@drawable/background_button_contact">
+            <ImageView
+                android:id="@+id/imgvShareLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_location_on_black_24dp"/>
+            <TextView
+                android:id="@+id/txtShareLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chia sẻ vị trí"
+                android:textColor="@color/colorText"
+                android:layout_toRightOf="@+id/imgvShareLocation"
+                android:layout_alignBottom="@+id/imgvShareLocation"
+                android:layout_alignTop="@+id/imgvShareLocation"
+                android:gravity="center|left"
+                android:layout_marginLeft="10dp"
+                android:textSize="18sp"/>
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchShareLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+
+                />
+        </RelativeLayout>
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorSelected"/>
+        <RelativeLayout
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:clickable="true"
+            android:background="@drawable/background_button_contact">
+            <ImageView
+                android:id="@+id/imgvLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_user_black_24dp"/>
+            <TextView
+                android:id="@+id/txtLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đăng nhập"
+                android:textColor="@color/colorText"
+                android:layout_toRightOf="@+id/imgvLogin"
+                android:layout_alignBottom="@+id/imgvLogin"
+                android:layout_alignTop="@+id/imgvLogin"
+                android:gravity="center|left"
+                android:layout_marginLeft="10dp"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorSelected"/>
+        <RelativeLayout
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:clickable="true"
+            android:background="@drawable/background_button_contact">
+            <ImageView
+                android:id="@+id/imgvLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_logout_black_24dp"/>
+            <TextView
+                android:id="@+id/txtLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đăng xuất"
+                android:textColor="@color/colorText"
+                android:layout_toRightOf="@+id/imgvLogout"
+                android:layout_alignBottom="@+id/imgvLogout"
+                android:layout_alignTop="@+id/imgvLogout"
+                android:gravity="center|left"
+                android:layout_marginLeft="10dp"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorSelected" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phiên bản: "
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/txtVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.1.1.1"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

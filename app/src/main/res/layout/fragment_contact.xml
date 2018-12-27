@@ -12,17 +12,20 @@
        android:layout_height="wrap_content"
        android:orientation="vertical">
        <TextView
+           android:id="@+id/txtOwnerName"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:text="Công ty du lich Viettravel"
            android:textColor="@color/colorText"
            android:textSize="20sp"
            android:layout_margin="15dp"/>
+
        <View
            android:layout_width="match_parent"
            android:layout_height="1dp"
            android:background="#CDD0D2"/>
        <RelativeLayout
+           android:id="@+id/btnWebsite"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:padding="20dp"
@@ -50,6 +53,7 @@
            android:layout_height="1dp"
            android:background="#CDD0D2"/>
        <RelativeLayout
+           android:id="@+id/btnPhoneNumber"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:padding="20dp"
@@ -77,6 +81,7 @@
            android:layout_height="1dp"
            android:background="#CDD0D2"/>
        <RelativeLayout
+           android:id="@+id/btnAddress"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:padding="20dp"
@@ -88,7 +93,7 @@
                android:layout_height="wrap_content"
                app:srcCompat="@drawable/ic_location_on_black_24dp"/>
            <TextView
-               android:id="@+id/txtLocation"
+               android:id="@+id/txtAddress"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:text="Số 123 Hoàng Diệu 2, Linh Chiểu, Thủ Đức,..."
@@ -97,7 +102,8 @@
                android:layout_alignBottom="@+id/imgvLocation"
                android:layout_alignTop="@+id/imgvLocation"
                android:gravity="center|left"
-               android:layout_marginLeft="10dp"/>
+               android:layout_marginLeft="10dp"
+               android:maxLines="1"/>
        </RelativeLayout>
        <View
            android:layout_width="match_parent"

@@ -10,114 +10,178 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bảng giá:"
+                android:textColor="@color/colorText"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="18sp"/>
             <TableLayout
                 android:id="@+id/tableLayoutCost"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="1"
                 android:background="@drawable/newsfeed_item_background"
-
-                >
+                android:layout_margin="10dp">
 
                 <TableRow
-                    android:background="#ECEFF1">
+                    android:background="#ECEFF1"
+                    android:paddingLeft="5dp">
                     <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/table_row_height"
                         android:text="Loại khách"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/colorText">
                     </TextView>
                     <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/table_row_height"
                         android:text="Giá tour"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/colorText">
                     </TextView>
                     <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/table_row_height"
                         android:text="Khuyến mãi"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/colorText">
                     </TextView>
 
                 </TableRow>
-                <TableRow>
+                <TableRow
+                    android:paddingLeft="5dp">
                     <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/table_row_height"
                         android:text="Người lớn"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/colorText">
                     </TextView>
-                    <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/txtAdultPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/table_row_height"
                         android:text="10000000đ"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/colorText">
                     </TextView>
                     <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="8990000đ"
-                        android:layout_weight="1">
+                        android:layout_height="@dimen/table_row_height"
+                        android:text=""
+                        android:layout_weight="1"
+                        android:gravity="center|left">
                     </TextView>
 
                 </TableRow>
-                <TableRow>
+                <TableRow
+                    android:paddingLeft="5dp">
                     <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/table_row_height"
                         android:text="Trẻ em"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/colorText">
                     </TextView>
-                    <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/txtChildrenPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/table_row_height"
                         android:text="7000000đ"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/colorText">
                     </TextView>
                     <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/table_row_height"
                         android:text=""
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/colorText">
                     </TextView>
 
                 </TableRow>
-                <TableRow>
+                <TableRow
+                    android:layout_marginLeft="5dp">
                     <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/table_row_height"
                         android:text="Em bé"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/colorText">
                     </TextView>
-                    <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/txtBabyPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/table_row_height"
                         android:text="5000000đ"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/colorText">
                     </TextView>
                     <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/table_row_height"
                         android:text=""
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/colorText">
                     </TextView>
                 </TableRow>
             </TableLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phương tiện: "
+                    android:textColor="@color/colorText"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/txtVehicle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VIETJET"
+                    android:textColor="@color/colorText"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Lịch trình:   Ngày "
+                android:textColor="@color/colorText"
+                android:gravity="center"
+                android:textSize="18sp"/>
+            <Spinner
+                android:id="@+id/spinnerDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"/>
+        </LinearLayout>
 
-            <TextView
-                android:id="@+id/txtVehicle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tableLayoutCost"
-                android:text="Phương tiện di chuyển: "/>
-            <TextView
-                android:id="@+id/txtSchedule"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Lịch trình: "
-                android:layout_below="@id/txtVehicle"/>
-            <com.example.administrator.travel.NonScrollListView
+            <com.example.administrator.travel.adapter.NonScrollListView
                 android:id="@+id/lstvSchedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtSchedule"
                 android:divider="@null"
                 android:dividerHeight="0dp"/>
-        </RelativeLayout>
+        </LinearLayout>
 
 
 

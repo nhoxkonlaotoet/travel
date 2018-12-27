@@ -1,5 +1,8 @@
 package com.example.administrator.travel.views;
 
+import android.view.View;
+
+import com.example.administrator.travel.models.entities.City;
 import com.example.administrator.travel.models.entities.Tour;
 
 import java.util.List;
@@ -9,6 +12,7 @@ import java.util.List;
  */
 
 public interface NewFeedView {
-    public void showTours(List<Tour> listTour);
-
+    void showCities(List<City> lstCity);
+    void showTours(List<Tour> listTour);
+    void gogotActivityTour(String tourId, String ownerId);
 }

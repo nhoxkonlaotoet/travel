@@ -11,42 +11,53 @@
         <LinearLayout
             android:id="@+id/layoutToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorGreen"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            android:paddingTop="10dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Điểm khởi hành"
+                    android:textColor="#fff"
+                    android:textSize="12sp"/>
                 <Spinner
-                    android:id="@+id/spinner"
+                    android:id="@+id/spinnerOrigin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:scrollbars="vertical"
                     />
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/layoutSearch"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/newsfeed_item_background"
-                android:layout_weight="1">
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    app:srcCompat="@drawable/ic_search_black_24dp"
-                    android:background="@color/transparent"/>
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/transparent"
-                    android:hint="Tìm kiếm tour"/>
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Điểm đến"
+                    android:textColor="#fff"
+                    android:textSize="12sp"/>
+                <Spinner
+                    android:id="@+id/spinnerDestination"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scrollbars="vertical"
+                    />
+            </LinearLayout>
         </LinearLayout>
     <ListView
         android:id="@+id/lstvNewsFeed"
@@ -57,6 +68,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:scrollbars="none"
-        android:layout_below="@+id/layoutToolbar"/>
+        android:layout_below="@+id/layoutToolbar"
+        android:paddingTop="10dp"/>
     </RelativeLayout>
 </FrameLayout>
