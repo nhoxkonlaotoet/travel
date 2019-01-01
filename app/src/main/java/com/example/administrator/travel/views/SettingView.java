@@ -10,6 +10,9 @@ public interface SettingView {
     void hideBtnLogout();
     void showBtnLogout();
     void gotoLoginActivity();
-
     void notifyLogoutFailure(Exception ex);
+    void turnOnSwitchShareLocation();
+    void turnOffSwitchShareLocation();
+    void showLayoutShareLocation();
+    void hideLayoutShareLocation();
 }

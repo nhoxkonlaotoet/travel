@@ -14,10 +14,13 @@ public interface SelectMyTourView {
     void showMyTours(List<Tour> lstTour, List<TourStartDate> lstTourStart);
     void gotoCamera();
     void gotoTourActivity(String tourId, String tourStartId);
-    void loadMyTours();
+    void showBtnScan();
+    void hideBtnScan();
     void showLayoutLogin();
     void hideLayoutLogin();
     void hideLayoutMyTours();
     void showLayoutMyTours();
     void gotoLoginActivity();
+    void notifyInvalidScanString();
+    void notifyJoinTourFailure(Exception ex);
 }

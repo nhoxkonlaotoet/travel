@@ -1,6 +1,7 @@
 package com.example.administrator.travel.models;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,6 +29,33 @@ import java.util.List;
  */
 
 public class ReviewInteractor {
+    public void checkRated(String tourId, Context context, final OnGetRatingFinishedListener listener)
+    {
+        SharedPreferences prefs = context.getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        String userId = prefs.getString("AuthID","");
+        if(!userId.equals("none")) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference rateRef = database.getReference("rating").child(tourId);
+            Query query = rateRef.orderByChild("ratingPeopleId").equalTo(userId);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getChildrenCount()>0)
+                        listener.onCheckRatedSuccess(true);
+                    else
+                        listener.onCheckRatedSuccess(false);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else
+            listener.onCheckRatedFailure(new Exception("Bạn chưa đăng nhập"));
+    }
+
     public void rate(final String tourId, final Rating rating, final List<Bitmap> lstImage, final OnGetRatingFinishedListener listener){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference timeRef = database.getReference("SystemTime");
@@ -37,14 +66,13 @@ public class ReviewInteractor {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         DatabaseReference ratingRef = database.getReference("rating");
-                        final String key=ratingRef.push().getKey();
-                        ratingRef.child(tourId).child(key).setValue(rating).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        ratingRef.child(tourId).child(rating.ratingPeopleId).setValue(rating).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 if(lstImage!=null && lstImage.size()!=0){
                                     FirebaseStorage storage = FirebaseStorage.getInstance();
                                     StorageReference ratingStorageRef = storage.getReference().child("reviews/")
-                                            .child(tourId).child(key);
+                                            .child(tourId).child(rating.ratingPeopleId);
                                     for(int i=0;i<lstImage.size();i++)
                                     {
                                         UploadTask uploadTask= ratingStorageRef.child(i+".png").putBytes(bitmapToBytes(lstImage.get(i)));

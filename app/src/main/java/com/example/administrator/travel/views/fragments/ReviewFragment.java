@@ -280,4 +280,15 @@ public class ReviewFragment extends Fragment implements ReviewView{
             startActivity(intent);
         }
     }
+
+    @Override
+    public void enableRatingBar() {
+        ratingBarReview.setEnabled(true);
+    }
+
+    @Override
+    public void disableRatingBar() {
+        ratingBarReview.setEnabled(false);
+
+    }
 }

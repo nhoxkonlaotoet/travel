@@ -53,13 +53,16 @@
 
         <activity
             android:name=".views.activities.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"></activity>
         <activity android:name=".views.activities.MyTourActivity" />
         <activity android:name=".views.activities.BookTourActivity" />
         <activity android:name=".views.activities.SignUpActivity" />
         <activity android:name=".views.activities.ResetPassActivity" />
         <activity android:name=".views.activities.ScanQRActivity" />
-        <activity android:name=".views.activities.ReviewDetailActivity"></activity>
+        <activity android:name=".views.activities.ReviewDetailActivity" />
+        <activity android:name=".views.activities.PostActivity">
+
+        </activity>
     </application>
 
 </manifest>

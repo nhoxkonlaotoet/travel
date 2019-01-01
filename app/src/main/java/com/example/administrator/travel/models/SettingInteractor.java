@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 /**
  * Created by Administrator on 22/12/2018.
  */
@@ -39,6 +42,40 @@ public class SettingInteractor {
         }
         catch (Exception ex){
             listener.onLogoutFailure(ex);
+        }
+    }
+    public void getShareLoction(OnGetShareLocationListenter listenter){
+        try {
+            String userId = prefs.getString("AuthID", "");
+            boolean shareLocation = prefs.getBoolean("shareLocation" + userId, false);
+            listenter.onGetShareLocationSuccess(shareLocation);
+        }
+        catch (Exception ex){
+            listenter.onGetShareLocationFailure(ex);
+        }
+
+    }
+    public void setShareLocation(boolean checked,OnSetShareLocationFinishedListener listener){
+        try {
+            String userId = prefs.getString("AuthID", "");
+            if(!userId.equals("none")) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("shareLocation"+userId, checked);
+                editor.apply();
+                String tourStartId = prefs.getString("participatingTourStart" + userId, "");
+                if(!tourStartId.equals("")) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference shareLocationRef = database.getReference("participants")
+                            .child(tourStartId + "+" + userId).child("shareLocation");
+                    shareLocationRef.setValue(checked);
+                }
+                listener.onTurnOnShareLocationSuccess();
+            }
+            else
+                listener.onTurnOnShareLocationFailrue(new Exception("Bạn chưa đăng nhập"));
+        }
+        catch (Exception ex){
+            listener.onTurnOnShareLocationFailrue(ex);
         }
     }
 }

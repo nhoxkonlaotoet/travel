@@ -9,15 +9,17 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class Company {
     public String id;
     public String companyName;
+    public String shortName;
     public String phoneNumber;
     public String website;
     public MyLatLng location;
     public String address;
     public Company(){}
 
-    public Company(String companyName, String phoneNumber, String website, MyLatLng location,String address) {
+    public Company(String companyName, String shortName, String phoneNumber, String website, MyLatLng location,String address) {
         this.id = id;
         this.companyName = companyName;
+        this.shortName=shortName;
         this.phoneNumber = phoneNumber;
         this.website = website;
         this.location = location;

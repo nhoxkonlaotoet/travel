@@ -27,6 +27,7 @@ public class SelectMyTourPresenter implements OnGetMyToursFinishedListener,OnGet
     SettingInteractor settingInteractor;
     String  tourStartId,userId;
     Boolean firstEnter=true;
+    boolean isCompany=false;
     public SelectMyTourPresenter(SelectMyTourView view){
         this.view = view;
         myToursInteractor = new SelectMyTourInteractor();
@@ -34,13 +35,7 @@ public class SelectMyTourPresenter implements OnGetMyToursFinishedListener,OnGet
     }
     public void onViewLoad()
     {
-        Log.e( "viewload: ", "presenter");
-        if(firstEnter) {
-            myToursInteractor.checkJoiningTour(((SelectMyTourFragment) view).getActivity(), this);
-            firstEnter=false;
-        }
-        settingInteractor.getUserId(this,((SelectMyTourFragment)view).getActivity());
-
+        myToursInteractor.checkCompany(((SelectMyTourFragment)view).getActivity(),this);
     }
     public void onBtnScanQRClick()
     {
@@ -56,10 +51,20 @@ public class SelectMyTourPresenter implements OnGetMyToursFinishedListener,OnGet
     {
         view.gotoLoginActivity();
     }
-    public void onViewScanned(String tourStartId)
+    public void onLogged(){
+        view.showLayoutMyTours();
+        settingInteractor.getUserId(this,((SelectMyTourFragment)view).getActivity());
+    }
+    public void onViewScanned(String resultString)
     {
-        this.tourStartId=tourStartId;
-        myToursInteractor.joinTour(tourStartId,((SelectMyTourFragment)view).getActivity(),this);
+        if(resultString.contains("/") )
+        {
+            view.notifyInvalidScanString();
+        }
+        else{
+            this.tourStartId = resultString;
+            myToursInteractor.joinTour(tourStartId, ((SelectMyTourFragment) view).getActivity(), this);
+        }
     }
 
     @Override
@@ -70,16 +75,21 @@ public class SelectMyTourPresenter implements OnGetMyToursFinishedListener,OnGet
 
     @Override
     public void onJoinTourFailure(Exception ex) {
-
+        if(ex.getMessage().equals("1"))
+            view.notifyInvalidScanString();
+        else
+            view.notifyJoinTourFailure(ex);
     }
 
     @Override
     public void isJoiningTourTrue(String tourId, String tourStartId) {
         view.gotoTourActivity(tourId,tourStartId);
+        view.hideBtnScan();
     }
 
     @Override
     public void isJoiningTourFalse() {
+        view.showBtnScan();
     }
 
     @Override
@@ -89,11 +99,13 @@ public class SelectMyTourPresenter implements OnGetMyToursFinishedListener,OnGet
 
     @Override
     public void onGetMyToursFailure(Exception ex) {
+
     }
 
     @Override
     public void onRememberTourSuccess(String tourId, String tourStartId){
         view.gotoTourActivity(tourId,tourStartId);
+        view.hideBtnScan();
     }
 
     @Override
@@ -102,16 +114,39 @@ public class SelectMyTourPresenter implements OnGetMyToursFinishedListener,OnGet
     }
 
     @Override
+    public void onCheckCompanySuccess(boolean isCompany) {
+        this.isCompany=isCompany;
+        settingInteractor.getUserId(this,((SelectMyTourFragment)view).getActivity());
+
+    }
+
+    @Override
+    public void onCheckCompanyFailure(Exception ex) {
+
+    }
+
+    @Override
     public void onGetUserIdSuccess(String userId) {
         this.userId=userId;
-        myToursInteractor.getMyTours(userId,this);
-        view.showLayoutMyTours();
-        view.hideLayoutLogin();
+        if(isCompany) {
+            myToursInteractor.getCompanyTour(userId,this);
+            view.hideBtnScan();
+        }
+        else {
+            myToursInteractor.getMyTours(userId, this);
+            if (firstEnter) {
+                myToursInteractor.checkJoiningTour(((SelectMyTourFragment) view).getActivity(), this);
+                firstEnter = false;
+            }
+            view.showLayoutMyTours();
+            view.hideLayoutLogin();
+        }
     }
 
     @Override
     public void onGetUserIdFailure(Exception ex) {
         view.showLayoutLogin();
         view.hideLayoutMyTours();
+        view.showBtnScan();
     }
 }

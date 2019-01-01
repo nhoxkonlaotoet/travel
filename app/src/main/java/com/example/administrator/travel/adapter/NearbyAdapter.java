@@ -2,12 +2,14 @@ package com.example.administrator.travel.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
@@ -22,10 +24,11 @@ import java.util.List;
 
 public class NearbyAdapter extends BaseAdapter {
     Context context;
-    List<Nearby> lstNearby = new ArrayList<>();
+    public List<Nearby> lstNearby = new ArrayList<>();
     Location mylocation;
     String open,close, pricelv0,pricelv1,pricelv2,pricelv3,pricelv4;
     int idhalfstar,idnostar,idclose;
+
     public NearbyAdapter(Context context, List<Nearby> lstNearby, Location mylocation)
     {
         this.context=context;
@@ -42,6 +45,7 @@ public class NearbyAdapter extends BaseAdapter {
         idnostar = R.drawable.ic_star_gray_24dp;
         idclose = R.drawable.ic_close_door_24dp;
     }
+
     @Override
     public int getCount() {
         return lstNearby.size();
@@ -69,13 +73,19 @@ public class NearbyAdapter extends BaseAdapter {
         TextView txtPriceLevel = convertView.findViewById(R.id.txtPriceLevel);
         ImageView imgvPriceLevel= convertView.findViewById(R.id.imgvPriceLevel);
         ImageView imgvOpen = convertView.findViewById(R.id.imgvOpen);
+        ImageView imgvNearby = convertView.findViewById(R.id.imgvNearby);
+        ProgressBar progressbarImageNearby = convertView.findViewById(R.id.progressbarImageNearby);
+
         Nearby nearby = lstNearby.get(position);
 
         float[] result = new float[1];
         Location.distanceBetween(mylocation.getLatitude(), mylocation.getLongitude(),
                 nearby.location.latitude,nearby.location.longitude, result);
 
-
+        if(nearby.photo!=null) {
+            imgvNearby.setImageBitmap(nearby.photo);
+            progressbarImageNearby.setVisibility(View.INVISIBLE);
+        }
         txtNearbyName.setText(nearby.name);
         float km,m;
         m=result[0];

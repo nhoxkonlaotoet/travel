@@ -5,6 +5,7 @@ import android.location.Location;
 import android.util.Log;
 
 import com.example.administrator.travel.models.OnGetTourImagesFinishedListener;
+import com.example.administrator.travel.models.OnTourFinishedListener;
 import com.example.administrator.travel.models.TourInteractor;
 import com.example.administrator.travel.views.NewFeedView;
 import com.example.administrator.travel.views.TourView;
@@ -15,7 +16,7 @@ import com.google.android.gms.common.ConnectionResult;
  * Created by Administrator on 10/11/2018.
  */
 
-public class TourPresenter implements OnGetTourImagesFinishedListener{
+public class TourPresenter implements OnGetTourImagesFinishedListener,OnTourFinishedListener{
     TourView view;
     TourInteractor interactor;
     Boolean isMyTour=false;
@@ -30,6 +31,7 @@ public class TourPresenter implements OnGetTourImagesFinishedListener{
             interactor.getImages(tourId,this);
         view.addTab(isMyTour);
         view.connectGoogleApiClient();
+        interactor.setTourFinishListener(((TourActivity)view).getApplicationContext(),this);
 
     }
     public void onViewAttachFragment(Location myLocation){
@@ -64,5 +66,10 @@ public class TourPresenter implements OnGetTourImagesFinishedListener{
     @Override
     public void onFailure() {
 
+    }
+
+    @Override
+    public void onTourFinished() {
+        view.closebyTourFinished();
     }
 }

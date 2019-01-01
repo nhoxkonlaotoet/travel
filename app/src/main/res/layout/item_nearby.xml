@@ -5,18 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp">
-<ImageView
-    android:id="@+id/imgvNearby"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    android:scaleType="fitXY"
-    android:src="@drawable/food"/>
+    <RelativeLayout
+        android:id="@+id/layoutImageNearby"
+        android:layout_width="100dp"
+        android:layout_height="100dp">
+        <ProgressBar
+            android:id="@+id/progressbarImageNearby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+        <ImageView
+            android:id="@+id/imgvNearby"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"/>
+
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/imgvNearby">
+        android:layout_toRightOf="@+id/layoutImageNearby">
         <TextView
             android:id="@+id/txtNearbyName"
             android:layout_width="match_parent"

@@ -18,4 +18,6 @@ public interface OnGetMyToursFinishedListener {
      void onGetMyToursFailure(Exception ex);
      void onRememberTourSuccess(String tourId, String tourStartId);
      void onRememberTourFailure(Exception ex);
+     void onCheckCompanySuccess(boolean isCompany);
+     void onCheckCompanyFailure(Exception ex);
 }

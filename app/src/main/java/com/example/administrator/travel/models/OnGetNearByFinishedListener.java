@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public interface OnGetNearByFinishedListener {
-    void onGetNearbySuccess(List<Nearby> lstNearby);
+    void onGetNearbySuccess(List<Nearby> lstNearby, String nextPageToken);
     void onGetNearbyFailure(Exception ex);
     void onGetPlaceTypeSuccess(List<NearbyType> lstPlaceType);
     void onGetPlaceTypeFailure(Exception ex);

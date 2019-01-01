@@ -4,11 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.administrator.travel.views.fragments.ActivityFragment;
 import com.example.administrator.travel.views.fragments.ContactFragment;
 import com.example.administrator.travel.views.fragments.MapFragment;
 import com.example.administrator.travel.views.fragments.NearbyFragment;
 import com.example.administrator.travel.views.fragments.ReviewFragment;
-import com.example.administrator.travel.views.fragments.StatusCommunicationFragment;
 import com.example.administrator.travel.views.fragments.TourDetailFragment;
 import com.example.administrator.travel.views.fragments.TourStartFragment;
 
@@ -34,7 +34,7 @@ public class Pager extends FragmentStatePagerAdapter {
                 return fragment;
             case 1 :
                 if(isMyTour) {
-                    StatusCommunicationFragment fragment1 = new StatusCommunicationFragment();
+                    ActivityFragment fragment1 = new ActivityFragment();
                     return fragment1;
                 }else{
                     TourStartFragment fragment1 = new TourStartFragment();

@@ -2,9 +2,12 @@ package com.example.administrator.travel.views.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatDelegate;
@@ -12,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -25,12 +29,19 @@ import android.widget.TextView;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.NearbyAdapter;
+import com.example.administrator.travel.models.DownLoadImageTask;
 import com.example.administrator.travel.models.OnTransmitMyLocationFinishedListener;
 import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.entities.NearbyType;
 import com.example.administrator.travel.presenters.NearbyPresenter;
 import com.example.administrator.travel.views.NearbyView;
+import com.example.administrator.travel.views.activities.MapsActivity;
+import com.example.administrator.travel.views.activities.ScanQRActivity;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
+import com.google.android.gms.tasks.Task;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,11 +55,10 @@ public class NearbyFragment extends Fragment implements NearbyView, OnTransmitMy
     Spinner spinnerPlaceType;
     NearbyPresenter presenter = new NearbyPresenter(this);
     Boolean firstLoad = true;
-    SeekBar seekbarRadius;
-    TextView txtRadius;
-    Button btnOption,btnSearch;
-    LinearLayout layoutOption;
+    List<Nearby> lstNearby=new ArrayList<>();
     List<NearbyType> lstPlacetype= new ArrayList<>();
+
+    NearbyAdapter adapter;
     public NearbyFragment() {
         // Required empty public constructor
     }
@@ -68,23 +78,40 @@ public class NearbyFragment extends Fragment implements NearbyView, OnTransmitMy
         super.onViewCreated(view, savedInstanceState);
         lstvNearby = getActivity().findViewById(R.id.lstvNearby);
         spinnerPlaceType=getActivity().findViewById(R.id.spinnerPlaceType);
-        seekbarRadius = getActivity().findViewById(R.id.seekBarRadius);
-        txtRadius = getActivity().findViewById(R.id.txtRadius);
-        btnOption = getActivity().findViewById(R.id.btnOption);
-        btnSearch = getActivity().findViewById(R.id.btnSearch);
-        layoutOption = getActivity().findViewById(R.id.layoutOption);
-
         setOnSelectItemSpinner();
-        setOnChangeSeekbarRadius();
-        seekbarRadius.setProgress(5);
-
-        setBtnOptionClick();
-        setBtnSearchClick();
+        setLstvNearbyItemClick();
+        setLstvNearbyScroll();
         presenter.onViewLoad();
 
     }
 
+    void setLstvNearbyScroll(){
+        lstvNearby.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+                if (i == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                        && (lstvNearby.getLastVisiblePosition() - lstvNearby.getHeaderViewsCount() -
+                        lstvNearby.getFooterViewsCount()) >= (adapter.getCount() - 1)) {
+                    presenter.onListViewNearbyScrollBottom();
+                }
+            }
 
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+
+            }
+        });
+    }
+    void setLstvNearbyItemClick(){
+        lstvNearby.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                intent.putExtra("action","nearby");
+                startActivity(intent);
+            }
+        });
+    }
 
     void setOnSelectItemSpinner()
     {
@@ -101,54 +128,7 @@ public class NearbyFragment extends Fragment implements NearbyView, OnTransmitMy
 
         });
     }
-    void setOnChangeSeekbarRadius(){
-        seekbarRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                presenter.onSeekbarRadiusChanged(i);
-            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-    }
-    void setBtnOptionClick(){
-        btnOption.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.onBtnOptionClicked();
-            }
-        });
-    }
-    void setBtnSearchClick(){
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.onBtnSearchClicked();
-            }
-        });
-    }
-    @Override
-    public void setTextRadius(String text) {
-        txtRadius.setText(text);
-    }
-
-    @Override
-    public void showLayoutOption() {
-        layoutOption.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideLayoutOption() {
-        layoutOption.setVisibility(View.GONE);
-    }
 
     @Override
     public void showPlacetypes(List<NearbyType> lstPlacetype) {
@@ -164,12 +144,30 @@ public class NearbyFragment extends Fragment implements NearbyView, OnTransmitMy
     @Override
     public void showNearbys(List<Nearby> lstNearby, Location mylocation) {
       //  Log.e("count nearby: ", lstNearby.size()+"");
-        lstvNearby.setAdapter(new NearbyAdapter(context, lstNearby, mylocation));
+        this.lstNearby=lstNearby;
+        adapter=new NearbyAdapter(context, lstNearby, mylocation);
+        lstvNearby.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void appendNearbys(List<Nearby> lstNearby) {
+        for(int i=0;i<lstNearby.size();i++)
+            adapter.lstNearby.add(lstNearby.get(i));
+        Log.e( "appendNearbys: ", adapter.lstNearby.size()+"");
+        adapter.notifyDataSetChanged();
+
     }
 
     @Override
     public void notifyGetNearbyFailure(Exception ex) {
 
+    }
+
+    @Override
+    public void updateListViewImages(int index, Bitmap bitmap) {
+     if(index<adapter.lstNearby.size())
+         adapter.lstNearby.get(index).photo=bitmap;
     }
 
     @Override

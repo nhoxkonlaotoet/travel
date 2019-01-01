@@ -43,7 +43,6 @@ import com.example.administrator.travel.views.TourView;
 import com.example.administrator.travel.views.fragments.ContactFragment;
 import com.example.administrator.travel.views.fragments.MapFragment;
 import com.example.administrator.travel.views.fragments.NearbyFragment;
-import com.example.administrator.travel.views.fragments.StatusCommunicationFragment;
 import com.example.administrator.travel.views.fragments.TourDetailFragment;
 import com.example.administrator.travel.views.fragments.TourStartFragment;
 import com.google.android.gms.common.ConnectionResult;
@@ -97,8 +96,10 @@ public class TourActivity extends AppCompatActivity implements TourView,
             actionBar.setDisplayShowTitleEnabled(false);
             tabCount=4;
         }
-        else
-            tabCount=5;
+        else {
+            tabCount = 4;
+
+        }
         pager = new Pager(getSupportFragmentManager(), tabCount,isMytour);
         vpContainer.setAdapter(pager);
 
@@ -198,7 +199,7 @@ public class TourActivity extends AppCompatActivity implements TourView,
 
     @Override
     public void transmitLocationToFragment(Location location) {
-        Log.e("act_tour: location",location+" "+(listener==null) );
+     //   Log.e("act_tour: location",location+" "+(listener==null) );
         if(listener!=null)
             listener.onDataChanged(location);
     }
@@ -208,6 +209,13 @@ public class TourActivity extends AppCompatActivity implements TourView,
 
         SlideTourImageAdapter adapter = new SlideTourImageAdapter(images, numberofImages, this);
         vpTourImage.setAdapter(adapter);
+    }
+
+    @Override
+    public void closebyTourFinished() {
+        Intent intent = getIntent();
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override

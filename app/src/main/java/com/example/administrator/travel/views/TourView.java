@@ -19,4 +19,5 @@ public interface TourView {
     void notifyConnectFailed(ConnectionResult connectionResult);
     void stopGoogleApiClient();
     void showImages(Bitmap[] images, Integer numberofImages);
+    void closebyTourFinished();
 }

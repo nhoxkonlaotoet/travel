@@ -1,0 +1,150 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.administrator.travel.views.fragments.UpdateStatusFragment">
+
+    <RelativeLayout
+        android:id="@+id/rlupdatestatus"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorGreen">
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@color/transparent"
+            app:srcCompat="@drawable/ic_arrow_back_white_24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"/>
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Thêm hoạt động"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:layout_marginLeft="60dp"/>
+        <Button
+            android:id="@+id/btnPost"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:text="Gửi"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:textSize="18sp"
+        />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/edittxtContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="Bạn đang nghĩ gì?"
+        android:ems="10"
+        android:gravity="start"
+        android:inputType="textMultiLine"
+        android:layout_below="@id/rlupdatestatus"
+        android:layout_above="@+id/layoutOption"
+        android:background="@null"
+        android:padding="5dp"/>
+
+
+
+    <LinearLayout
+        android:id="@+id/layoutOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layoutContainer"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGreenLight"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/btnOpenPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/background_small_button"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginRight="10dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/ic_picture" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/btnMarkLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/background_small_button"
+               android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:clickable="true">
+                <ImageView
+                    android:id="@+id/imgvLocation"
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+
+                    app:srcCompat="@drawable/ic_location_on_black_24dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:text="Địa điểm"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:layout_toRightOf="@+id/imgvLocation"/>
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/txtFileCount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
+                android:gravity="center|right"
+                android:textColor="@color/colorGreenDark"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGreenLight"/>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layoutContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <ScrollView
+            android:id="@+id/scrollviewPicture"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:visibility="gone">
+            <GridLayout
+                android:id="@+id/layoutPictures"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:scrollbarSize="10dp"
+                android:scrollbarStyle="insideOverlay"
+                android:orientation="vertical"/>
+        </ScrollView>
+    </RelativeLayout>
+</RelativeLayout>

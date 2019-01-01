@@ -25,4 +25,6 @@ public interface ReviewView {
     void showRatingBar();
     void hideRatingBar();
     void gotoReviewActivity(String reviewId);
+    void enableRatingBar();
+    void disableRatingBar();
 }

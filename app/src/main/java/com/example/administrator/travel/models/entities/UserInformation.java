@@ -1,16 +1,19 @@
 package com.example.administrator.travel.models.entities;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Henry on 12/10/2018.
  */
 
 public class UserInformation {
+    public String id;
     public String name;
     public String sex;
     public String mail;
     public String sdt;
     public String urlAvatar;
-
+    public Bitmap avatar;
     public UserInformation(){
 
     }

@@ -7,9 +7,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -24,6 +26,8 @@ import com.example.administrator.travel.views.activities.LoginActivity;
 public class SettingFragment extends Fragment implements SettingView {
     RelativeLayout btnLogin, btnLogout;
     SettingPresenter presenter;
+    SwitchCompat switchShareLocation;
+    RelativeLayout layoutShareLocation;
     public SettingFragment() {
         // Required empty public constructor
     }
@@ -41,10 +45,13 @@ public class SettingFragment extends Fragment implements SettingView {
         super.onViewCreated(view, savedInstanceState);
         btnLogin = getActivity().findViewById(R.id.btnLogin);
         btnLogout=getActivity().findViewById(R.id.btnLogout);
+        switchShareLocation = getActivity().findViewById(R.id.switchShareLocation);
+        layoutShareLocation = getActivity().findViewById(R.id.layoutShareLocation);
 
         presenter=new SettingPresenter(this);
         setBtnLoginClick();
         setBtnLogoutClick();
+        setSwitchShareLocationCheckChange();
     }
 
     @Override
@@ -52,7 +59,14 @@ public class SettingFragment extends Fragment implements SettingView {
         super.onStart();
         presenter.onViewStart();
     }
-
+    public void setSwitchShareLocationCheckChange(){
+        switchShareLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                presenter.onSwitchShareLocationCheckedChanged(b);
+            }
+        });
+    }
     public void setBtnLoginClick()
     {
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +115,26 @@ public class SettingFragment extends Fragment implements SettingView {
     @Override
     public void notifyLogoutFailure(Exception ex) {
         Toast.makeText(getActivity(),"Không thể đăng xuất \r\n" + ex.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void turnOnSwitchShareLocation() {
+        switchShareLocation.setChecked(true);
+    }
+
+    @Override
+    public void turnOffSwitchShareLocation() {
+        switchShareLocation.setChecked(false);
+    }
+
+    @Override
+    public void showLayoutShareLocation() {
+        layoutShareLocation.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLayoutShareLocation() {
+        layoutShareLocation.setVisibility(View.GONE);
     }
 
 }

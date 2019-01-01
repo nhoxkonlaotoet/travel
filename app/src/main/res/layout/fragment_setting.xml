@@ -23,6 +23,7 @@
             android:theme="?attr/actionBarTheme"/>
 
         <RelativeLayout
+            android:id="@+id/layoutShareLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="20dp"

@@ -10,6 +10,8 @@ import java.util.List;
  */
 
 public interface OnGetRatingFinishedListener {
+    void onCheckRatedSuccess(boolean rated);
+    void onCheckRatedFailure(Exception ex);
     void onGetRatingSuccess(float rating, long numberofRating);
     void onGetRatingFailure(Exception ex);
     void onGetReviewsSuccess(List<Rating> lstReview);

@@ -19,12 +19,14 @@ import java.util.List;
 public class ReviewPresenter implements OnGetRatingFinishedListener{
     ReviewView view;
     ReviewInteractor reviewInteractor;
-    Boolean isCollapsed = true;
+    Boolean isCollapsed = true, rated=false;
     public ReviewPresenter(ReviewView view){
         this.view=view;
         reviewInteractor=new ReviewInteractor();
     }
     public void onViewLoad(String tourId){
+        view.disableRatingBar();
+        reviewInteractor.checkRated(tourId,((ReviewFragment)view).getActivity(),this);
         reviewInteractor.getRating(tourId,this);
         reviewInteractor.getReviews(tourId,this);
     }
@@ -65,6 +67,22 @@ public class ReviewPresenter implements OnGetRatingFinishedListener{
     public void onListviewReviewItemClicked(String reviewId){
         view.gotoReviewActivity(reviewId);
     }
+
+    @Override
+    public void onCheckRatedSuccess(boolean rated) {
+        this.rated=rated;
+        if(rated)
+            view.disableRatingBar();
+        else
+            view.enableRatingBar();
+
+    }
+
+    @Override
+    public void onCheckRatedFailure(Exception ex) {
+
+    }
+
     @Override
     public void onGetRatingSuccess(float rating, long numberofRating) {
         view.showRating(rating,numberofRating);

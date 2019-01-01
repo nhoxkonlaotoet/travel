@@ -28,6 +28,7 @@
                 android:scaleType="fitXY"
                 android:background="@drawable/background_circle"/>
             <TextView
+                android:id="@+id/txtActivityContent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Hãy thêm một hoạt động mới!"

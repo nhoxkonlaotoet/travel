@@ -76,11 +76,11 @@ public class NearbyInteractor extends AsyncTask<Object, String, String> {
             }
         });
     }
-    public void getNearby(LatLng location, String type, Integer radius, String apiKey)
+    public void getNearby(LatLng location, String type, String pagetoken, String apiKey)
     {
 
-        Log.e("getNearby: ", location + type+ radius+ (this.listener==null));
-        String url=getUrl(location,type,radius,apiKey);
+        Log.e("getNearby: ", location + type+ pagetoken+ (this.listener==null));
+        String url=getUrl(location,type,pagetoken,apiKey);
         this.execute(url);
     }
     @Override
@@ -93,7 +93,7 @@ public class NearbyInteractor extends AsyncTask<Object, String, String> {
         {
             //Log.e("onPostExecute: ", nearbyPlaceList.get(i).toString());
         }
-        listener.onGetNearbySuccess(lstNearby);
+        listener.onGetNearbySuccess(lstNearby,parser.nextPageToken );
       //  showNearbyPlaces(nearbyPlaceList);
     }
 
@@ -159,14 +159,21 @@ public class NearbyInteractor extends AsyncTask<Object, String, String> {
 
         return data;
     }
-    private String getUrl(LatLng location , String type, Integer radius, String api_key)
+    private String getUrl(LatLng location , String type, String pagetoken, String api_key)
     {
         StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlaceUrl.append("location="+ location.latitude+","+location.longitude);
-        googlePlaceUrl.append("&radius="+radius);
+       // googlePlaceUrl.append("&radius="+radius);
+        googlePlaceUrl.append("&rankby=distance");
         googlePlaceUrl.append("&type="+type);
         //     googlePlaceUrl.append("&sensor=true");
         googlePlaceUrl.append("&key="+ api_key);
+        if(!pagetoken.equals(""))
+        {
+            googlePlaceUrl.append("&hasNextPage=true");
+            googlePlaceUrl.append("&nextPage()=true");
+            googlePlaceUrl.append("&pagetoken="+pagetoken);
+        }
         Log.e("MapsActivity", "url = "+googlePlaceUrl.toString());
         return googlePlaceUrl.toString();
     }

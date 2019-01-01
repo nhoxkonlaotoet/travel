@@ -47,7 +47,7 @@ import java.util.List;
 public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
     ListView lstvSelectMyTour;
     LinearLayout btnScan;
-    public static final Integer SCAN_QR_CODE = 100;
+    public static final Integer SCAN_QR_CODE = 100,TOUR_CODE=102, LOGIN_CODE=103;
     SelectMyTourPresenter presenter;
     RelativeLayout layoutLogin,layoutMyTours;
     Button btnLogin;
@@ -72,12 +72,6 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
         setBtnScanClick();
         setBtnLoginClick();
         presenter.onViewLoad();
-    }
-
-
-
-    @Override
-    public void loadMyTours(){
     }
     public void mapping(){
         btnScan = getActivity().findViewById(R.id.btnScan);
@@ -125,8 +119,18 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
         intent.putExtra("mytour",true);
         intent.putExtra("tourId",tourId);
         intent.putExtra("tourStartId",tourStartId);
-        startActivity(intent);
+        startActivityForResult(intent,TOUR_CODE);
         Log.e( "gotoTourActivity: ", "_________________________");
+    }
+
+    @Override
+    public void showBtnScan() {
+        btnScan.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideBtnScan() {
+        btnScan.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -151,8 +155,20 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
 
     @Override
     public void gotoLoginActivity() {
-        startActivity((new Intent(getActivity(), LoginActivity.class)));
+        startActivityForResult((new Intent(getActivity(), LoginActivity.class)),LOGIN_CODE);
     }
+
+    @Override
+    public void notifyInvalidScanString() {
+        Toast.makeText(getActivity(), "Mã QR không đúng, vui lòng nhập lại", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void notifyJoinTourFailure(Exception ex) {
+        Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_SHORT).show();
+
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -163,6 +179,12 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
 
                 presenter.onViewScanned(barcode.displayValue);
             }
+        }
+        if(requestCode == LOGIN_CODE){
+            presenter.onLogged();
+        }
+        if(requestCode== TOUR_CODE && resultCode == getActivity().RESULT_OK){
+            presenter.onViewLoad();
         }
     }
 

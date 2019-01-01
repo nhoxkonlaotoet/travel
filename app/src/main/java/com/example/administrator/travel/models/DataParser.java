@@ -16,6 +16,7 @@ import java.util.List;
  */
 
 public class DataParser {
+    public String nextPageToken="";
     private Nearby getPlace(JSONObject googlePlaceJson)
     {
         Nearby nearBy = new Nearby();
@@ -26,15 +27,16 @@ public class DataParser {
         String[] types;
         Double latitude;
         Double longitude;
-        String reference="";
+        String photo_reference="";
         Boolean openNow=null;
         Integer priceLevel=-1;
         Double rating=0D;
-
+        String iconURL="";
         Log.d("DataParser","jsonobject ="+googlePlaceJson.toString());
 
 
         try {
+
             if (!googlePlaceJson.isNull("name")) {
                 placeName = googlePlaceJson.getString("name");
             }
@@ -46,6 +48,12 @@ public class DataParser {
             {
                  openNow= googlePlaceJson.getJSONObject("opening_hours").getBoolean("open_now");
             }
+            if(!googlePlaceJson.isNull("photos")) {
+                JSONArray photoArr = googlePlaceJson.getJSONArray("photos");
+                JSONObject jsonObject = photoArr.getJSONObject(0);
+                if(!jsonObject.isNull("photo_reference"))
+                    photo_reference = jsonObject.getString("photo_reference");
+            }
             if(!googlePlaceJson.isNull("price_level"))
                 priceLevel=googlePlaceJson.getInt("price_level");
             if(!googlePlaceJson.isNull("rating"))
@@ -54,13 +62,13 @@ public class DataParser {
             longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
             JSONArray arr =  googlePlaceJson.getJSONArray("types");
             id = googlePlaceJson.getString("id");
-
+            iconURL= googlePlaceJson.getString("icon");
             types= new String[arr.length()];
             for(int i=0;i<arr.length();i++)
             {
                 types[i] = arr.get(i).toString();
             }
-            reference = googlePlaceJson.getString("reference");
+
 
             nearBy.id=id;
             nearBy.name=placeName;
@@ -70,6 +78,8 @@ public class DataParser {
             nearBy.rating=rating;
             nearBy.types=types;
             nearBy.location=new LatLng(latitude,longitude);
+            nearBy.photo_reference=photo_reference;
+            nearBy.iconURl=iconURL;
           //  Log.e("nearby",nearBy.toString() );
 
         }
@@ -107,6 +117,8 @@ public class DataParser {
 
         try {
             jsonObject = new JSONObject(jsonData);
+            if(!jsonObject.isNull("next_page_token"))
+                nextPageToken=jsonObject.getString("next_page_token");
             jsonArray = jsonObject.getJSONArray("results");
          //   for(int i=0;i<jsonArray.length();i++)
          //       Log.e( "parse: ", jsonArray.getJSONObject(i).toString());

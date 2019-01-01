@@ -1,5 +1,7 @@
 package com.example.administrator.travel.models;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -23,8 +25,6 @@ import com.google.firebase.storage.StorageReference;
 public class TourInteractor {
     public void getImages(final String tourId, final OnGetTourImagesFinishedListener listener)
     {
-
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference dbtourRef = database.getReference().child("tours").child(tourId).child("numberofImages");
         dbtourRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -61,6 +61,7 @@ public class TourInteractor {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             // Handle any errors
+                            listener.onFailure();
                         }
                     });
 
@@ -69,8 +70,41 @@ public class TourInteractor {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                listener.onFailure();
             }
         });
+    }
+    public void setTourFinishListener(Context context, final OnTourFinishedListener listener)
+    {
+        final SharedPreferences prefs =context.getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        final String userId = prefs.getString("AuthID", "");
+        if(!userId.equals("none")){
+            String tourStartId = prefs.getString("participatingTourStart" + userId, "");
+            if(!tourStartId.equals("")){
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference tourFinishRef = database.getReference("tour_start_date")
+                        .child(tourStartId).child("finished");
+                tourFinishRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Boolean isFinished = dataSnapshot.getValue(Boolean.class);
+                        if(isFinished) {
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString("participatingTourStart"+userId, "");
+                            editor.putString("participatingTour"+userId, "");
+                            editor.apply();
+                            listener.onTourFinished();
+
+                        }
+                        Log.e("listenr tour finish: ", isFinished+"");
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.entities.MyLatLng;
 import com.example.administrator.travel.models.entities.Participant;
 import com.example.administrator.travel.models.entities.Tour;
@@ -15,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
@@ -27,6 +29,7 @@ import java.util.List;
  */
 
 public class SelectMyTourInteractor {
+
     public void getMyTours(String userId, final OnGetMyToursFinishedListener listener)
     {
         Log.e( "getmytour ", userId);
@@ -101,39 +104,60 @@ public class SelectMyTourInteractor {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         SharedPreferences prefs =context.getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         final String userId = prefs.getString("AuthID","");
+        final boolean isShared = prefs.getBoolean("shareLocation" + userId, false);
+
         DatabaseReference timeRef = database.getReference("SystemTime");
         timeRef.setValue(ServerValue.TIMESTAMP);
         timeRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Long time = dataSnapshot.getValue(Long.class);
-                Participant participant = new Participant(userId,tourStartId,false,
-                        new MyLatLng(0, 0),time,0L);
-                DatabaseReference participantsRef = database.getReference("participants");
-                participantsRef.child(tourStartId+"+"+userId).setValue(participant).addOnSuccessListener(new OnSuccessListener<Void>() {
+                final Long time = dataSnapshot.getValue(Long.class);
+                DatabaseReference tourstartRef = database.getReference("tour_start_date").child(tourStartId);
+                tourstartRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        listener.onJoinTourSuccess();
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.e( "onDataChange: ", dataSnapshot.getValue()+"");
+                        if(dataSnapshot.getValue()!=null && !dataSnapshot.getValue().equals("")) {
+                            Participant participant = new Participant(userId, tourStartId, isShared,
+                                    new MyLatLng(0, 0), time, 0L);
+                            DatabaseReference participantsRef = database.getReference("participants");
+                            participantsRef.child(tourStartId + "+" + userId).setValue(participant).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    listener.onJoinTourSuccess();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    listener.onJoinTourFailure(e);
+                                }
+                            });
+                        }
+                        else
+                            listener.onJoinTourFailure(new Exception("1"));
+
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        listener.onJoinTourFailure(e);
+                    public void onCancelled(DatabaseError databaseError) {
+                        listener.onJoinTourFailure(databaseError.toException());
+
                     }
                 });
+
+
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                listener.onJoinTourFailure(databaseError.toException());
             }
         });
 
     }
-
     public void rememberTour(final String tourStartId, final Context context, final OnGetMyToursFinishedListener listener)
     {
-
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference tourstartRef = database.getReference("tour_start_date").child(tourStartId).child("tourId");
             tourstartRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -143,9 +167,12 @@ public class SelectMyTourInteractor {
                     try {
 
                         SharedPreferences prefs = context.getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+                        String userId = prefs.getString("AuthID", "");
+                        if(userId.equals("none"))
+                            listener.onRememberTourFailure(new Exception("Bạn chưa đăng nhập"));
                         SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("participatingTour", tourId);
-                        editor.putString("participatingTourStart", tourStartId);
+                        editor.putString("participatingTour"+userId, tourId);
+                        editor.putString("participatingTourStart"+userId, tourStartId);
                         editor.apply();
                         listener.onRememberTourSuccess(tourId, tourStartId);
                     }
@@ -160,14 +187,92 @@ public class SelectMyTourInteractor {
             });
 
     }
-
-    public void checkJoiningTour(Context context, OnGetMyToursFinishedListener listener){
+    public void checkJoiningTour(Context context, final OnGetMyToursFinishedListener listener)
+    {
+            SharedPreferences prefs = context.getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+            String userId = prefs.getString("AuthID", "");
+            if (userId.equals("none"))
+                listener.isJoiningTourFalse();
+            final String tourId = prefs.getString("participatingTour" + userId, "");
+            final String tourStartId = prefs.getString("participatingTourStart" + userId, "");
+            Log.e("checkJoiningTour: ", tourId + " " + tourStartId);
+            if (!tourId.equals("") && !tourStartId.equals("")) {
+               listener.isJoiningTourTrue(tourId,tourStartId);
+            }
+            else
+                listener.isJoiningTourFalse();
+    }
+    public void checkCompany(Context context, final OnGetMyToursFinishedListener listener)
+    {
         SharedPreferences prefs = context.getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
-        String tourId = prefs.getString("participatingTour","");
-        String tourStartId = prefs.getString("participatingTourStart","");
-        if(tourId!="" && tourStartId!="")
-            listener.isJoiningTourTrue(tourId,tourStartId);
+        String userId = prefs.getString("AuthID","");
+        if(!userId.equals("none"))
+        {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("companies").child(userId);
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue()!=null)
+                        listener.onCheckCompanySuccess(true);
+                    else
+                        listener.onCheckCompanySuccess(false);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    listener.onCheckCompanyFailure(databaseError.toException());
+                }
+            });
+        }
         else
-            listener.isJoiningTourFalse();
+            listener.onCheckCompanyFailure(new Exception("Bạn chưa đăng nhập"));
+    }
+    public void getCompanyTour(String companyId, final OnGetMyToursFinishedListener listener)
+    {
+        final List<TourStartDate> lstTourStartDate = new ArrayList<>();
+        final List<Tour> lstTour = new ArrayList<>();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference tourRef = database.getReference("tours");
+        Query tourQuery = tourRef.orderByChild("owner").equalTo(companyId);
+        tourQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long i=0;
+                final long n=dataSnapshot.getChildrenCount();
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    i++;
+                    Tour tour = ds.getValue(Tour.class);
+                    tour.id = ds.getKey();
+                    lstTour.add(tour);
+                    DatabaseReference tourStartRef = database.getReference("tour_start_date");
+                    Query tourStartQuery = tourStartRef.orderByChild("tourId").equalTo(tour.id);
+                    final long finalI = i;
+                    tourStartQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot ds1: dataSnapshot.getChildren())
+                            {
+                                TourStartDate tourStartDate = ds1.getValue(TourStartDate.class);
+                                tourStartDate.id=ds1.getKey();
+                                lstTourStartDate.add(tourStartDate);
+                            }
+                            if(finalI ==n)
+                                listener.onGetMyToursSuccess(lstTour,lstTourStartDate);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            listener.onGetMyToursFailure(databaseError.toException());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onGetMyToursFailure(databaseError.toException());
+            }
+        });
     }
 }
