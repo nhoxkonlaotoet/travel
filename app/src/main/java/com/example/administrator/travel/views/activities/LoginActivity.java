@@ -1,8 +1,12 @@
 package com.example.administrator.travel.views.activities;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -44,6 +48,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -57,10 +63,24 @@ public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
+    String[] permissions= new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.CAMERA,
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.INTERNET,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.RECORD_AUDIO};
+
+    public static final int MULTIPLE_PERMISSIONS = 2019;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        checkPermissions();
 //
         mAuth = FirebaseAuth.getInstance();
 //       sharedPreferences
@@ -68,7 +88,9 @@ public class LoginActivity extends AppCompatActivity {
         String AuthID = sharedPreferences.getString("AuthID","none");
         boolean autoLogin = sharedPreferences.getBoolean("autoLogin",true);
         if(!AuthID.equals("none") && autoLogin){
-            startActivity((new Intent(LoginActivity.this, HomeActivity.class)));
+            startActivity((new Intent(LoginActivity.this, HomeActivity.class))
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
             finish();
         }
 //        setWidget
@@ -82,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity((new Intent(LoginActivity.this, SignUpActivity.class))
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
-                finish();
+//                finish();
             }
         };
 
@@ -98,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity((new Intent(LoginActivity.this,ResetPassActivity.class))
-                        );
+                );
 
 //                finish();
             }
@@ -137,8 +159,8 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("AuthID",AuthID);
 
                                 editor.commit();
-                            //    startActivity((new Intent(LoginActivity.this, HomeActivity.class))
-                             //           .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                startActivity((new Intent(LoginActivity.this, HomeActivity.class))
+                                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                                 finish();
                             } else {
@@ -170,6 +192,22 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private  boolean checkPermissions() {
+        int result;
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for (String p:permissions) {
+            result = ContextCompat.checkSelfPermission(getApplicationContext(),p);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(p);
+            }
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),MULTIPLE_PERMISSIONS );
+            return false;
+        }
+        return true;
     }
 
 //    OnCreate use Phone Auth

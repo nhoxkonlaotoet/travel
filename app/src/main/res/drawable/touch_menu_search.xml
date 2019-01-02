@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:state_pressed="true">
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="#5233ffe7"/>
+                    <corners android:radius="4dp" />
+                    <stroke android:width="2px" android:color="#FFFFFF" />
+                </shape>
+            </item>
+            <item android:drawable="@android:drawable/ic_menu_search"/>
+        </layer-list>
+    </item>
+
+    <item android:state_pressed="false">
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="#ffffff"/>
+                    <corners android:radius="4dp" />
+                    <stroke android:width="2px" android:color="#FFFFFF" />
+                </shape>
+            </item>
+            <item android:drawable="@android:drawable/ic_menu_search"/>
+        </layer-list>
+    </item>
+</selector>

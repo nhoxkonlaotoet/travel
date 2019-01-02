@@ -33,7 +33,7 @@ public class ChatInteractorImpl implements ChatInteractor {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        databaseReference.child("members").addChildEventListener(new ChildEventListener() {
+        databaseReference.child("friends").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
@@ -47,6 +47,36 @@ public class ChatInteractorImpl implements ChatInteractor {
                                 if(dataSnapshot.getKey().equals(mKeyGroup)){
                                     Chats chat = dataSnapshot.getValue(Chats.class);
                                     lstLastChat.add(chat);
+                                    lstUserGroup.add(mKeyGroup);
+                                    //add Key Friend
+                                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference();
+
+                                    reference1.child("friends/"+mKeyGroup).addChildEventListener(new ChildEventListener() {
+                                        @Override
+                                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                            if(!dataSnapshot.getKey().equals(AuthID)){
+                                                lstKeyFriend.add(dataSnapshot.getKey());
+//
+                                                listener.onResultGetChatListener(lstLastChat,lstKeyFriend,lstUserGroup);
+                                            }
+                                        }
+                                        @Override
+                                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                        }
+                                        @Override
+                                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                        }
+                                        @Override
+                                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                        }
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            Log.d("Error","Unable to get keyGroup Chat: " + databaseError.getMessage());
+                                        }
+                                    });
                                     //call listener
                                     listener.onResultGetChatListener(lstLastChat,lstKeyFriend,lstUserGroup);
                                 }
@@ -68,15 +98,11 @@ public class ChatInteractorImpl implements ChatInteractor {
                                 Log.d("Error","Unable to get last Chat: " + databaseError.getMessage());
                             }
                         });
-                        //add Key Friend
-                        for (DataSnapshot snapshotAgain : dataSnapshot.getChildren()){
-                            if (!snapshotAgain.getKey().equals(AuthID))
-                                lstKeyFriend.add(snapshotAgain.getKey());
-                        }
+
                         //add Key Group Chat
-                        lstUserGroup.add(dataSnapshot.getKey());
+//                        lstUserGroup.add(dataSnapshot.getKey());
                         //call listener
-                        listener.onResultGetChatListener(lstLastChat,lstKeyFriend,lstUserGroup);
+//                        listener.onResultGetChatListener(lstLastChat,lstKeyFriend,lstUserGroup);
                     }
                 }
             }

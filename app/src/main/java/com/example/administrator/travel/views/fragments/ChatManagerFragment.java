@@ -1,5 +1,6 @@
 package com.example.administrator.travel.views.fragments;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +14,13 @@ import android.view.ViewGroup;
 
 import com.example.administrator.travel.R;
 
+/**
+ * Created by Henry
+ */
+
 public class ChatManagerFragment extends Fragment {
+    static android.widget.LinearLayout linearLayoutMain;
+    static android.widget.FrameLayout frameLayoutMain;
 
     public ChatManagerFragment() {
         // Required empty public constructor
@@ -37,6 +44,12 @@ public class ChatManagerFragment extends Fragment {
         BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.navigation_chatmanager);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_chat_group);
+
+        linearLayoutMain = (android.widget.LinearLayout) view.findViewById(R.id.ll_frm_chatmanager);
+        frameLayoutMain = (android.widget.FrameLayout) view.findViewById(R.id.conten_chatmanager_fullscreen);
+
+
+        rechangeFrmLayoutManager();
 
         return view;
     }
@@ -87,14 +100,34 @@ public class ChatManagerFragment extends Fragment {
                             if(i==2)
                                 return false;
                             i=2;
+                            ChatTimeLineFragment chatTimeLineFragment = new ChatTimeLineFragment();
+
+                            android.app.FragmentManager manager3 = getFragmentManager();
+                            manager3.beginTransaction().replace(R.id.conten_layout_chatmanager,chatTimeLineFragment,
+                                    chatTimeLineFragment.getTag()).commit();
                             return true;
                         case R.id.navigation_chat_setting:
                             if(i==3)
                                 return false;
                             i=3;
+                            ChatProfileFragment chatProfileFragment = new ChatProfileFragment();
+
+                            android.app.FragmentManager manager2 = getFragmentManager();
+                            manager2.beginTransaction().replace(R.id.conten_layout_chatmanager,chatProfileFragment,
+                                    chatProfileFragment.getTag()).commit();
+
                             return true;
                     }
                     return false;
                 }
-    };
+            };
+
+    public static void changeFrmLayoutManager() {
+        linearLayoutMain.setVisibility(View.GONE);
+        frameLayoutMain.setVisibility(View.VISIBLE);
+    }
+    public static void rechangeFrmLayoutManager() {
+        linearLayoutMain.setVisibility(View.VISIBLE);
+        frameLayoutMain.setVisibility(View.GONE);
+    }
 }

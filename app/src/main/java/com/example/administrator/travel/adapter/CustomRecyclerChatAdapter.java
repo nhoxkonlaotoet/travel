@@ -60,7 +60,7 @@ public class CustomRecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView
 
         chatViewHolder.tvLastMessage.setText(chat.getLastMessage());
         chatViewHolder.tvLastTime.setText(((DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT))
-        .format(new java.util.Date(chat.getTimestamp()))).toString());
+                .format(new java.util.Date(chat.getTimestamp()))).toString());
 
         chatViewHolder.item_friend.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -16,11 +16,14 @@ import com.example.administrator.travel.presenters.InfoUserSearchPresenter;
 import com.example.administrator.travel.presenters.InfoUserSearchPresenterImpl;
 import com.example.administrator.travel.views.InfoUserSearchView;
 
+/**
+ * Created by Henry
+ */
 
 public class InfoUserSearchFragment extends Fragment implements InfoUserSearchView{
 
 
-//                bundle.putString("name",user.getName());
+    //                bundle.putString("name",user.getName());
 //                bundle.putString("sex",user.getSex());
 //                bundle.putString("sdt",user.getSdt());
 //                bundle.putString("mail",user.getMail());

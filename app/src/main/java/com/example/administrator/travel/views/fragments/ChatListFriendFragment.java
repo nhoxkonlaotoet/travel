@@ -1,6 +1,7 @@
 package com.example.administrator.travel.views.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -11,6 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.administrator.travel.R;
+import com.example.administrator.travel.views.activities.ChatSearchFriendsActivity;
+
+/**
+ * Created by Henry
+ */
+
 // danh ba va tim kiem ban be hoan tat
 public class ChatListFriendFragment extends Fragment {
 
@@ -48,15 +55,22 @@ public class ChatListFriendFragment extends Fragment {
 //                        chatFragment.getTag()).commit();
                 int position = tab.getPosition();
                 if(position == 0){//contact list friends
+                    ChatManagerFragment.rechangeFrmLayoutManager();
                     ChatContactFriendFragment contactFriendFragment = new ChatContactFriendFragment();
                     android.app.FragmentManager manager = getFragmentManager();
                     manager.beginTransaction().replace(R.id.conten_layout_chatlistfriend, contactFriendFragment,
                             contactFriendFragment.getTag()).commit();
                 }else if(position == 1){// search friends
-                    ChatSearchFriendsFragment searchFriendsFragment = new ChatSearchFriendsFragment();
-                    android.app.FragmentManager manager1 = getFragmentManager();
-                    manager1.beginTransaction().replace(R.id.conten_layout_chatlistfriend, searchFriendsFragment,
-                            searchFriendsFragment.getTag()).commit();
+//                    ChatManagerFragment.changeFrmLayoutManager();
+//                    ChatSearchFriendsFragment searchFriendsFragment = new ChatSearchFriendsFragment();
+//                    android.app.FragmentManager manager1 = getFragmentManager();
+//                    manager1.beginTransaction().replace(R.id.conten_chatmanager_fullscreen, searchFriendsFragment,
+//                            searchFriendsFragment.getTag())
+//                            .addToBackStack("searchChatListFriends").commit();
+
+                    tableLayout.setSelected(false);
+                    tableLayout.setSelected(true);
+                    startActivity(new Intent(getActivity(), ChatSearchFriendsActivity.class));
                 }
             }
 
@@ -95,5 +109,6 @@ public class ChatListFriendFragment extends Fragment {
         super.onDetach();
 //        mListener = null;
     }
+
 
 }

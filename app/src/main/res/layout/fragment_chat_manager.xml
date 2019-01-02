@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,34 +8,45 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.administrator.travel.views.fragments.ChatManagerFragment">
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--android:id="@+id/toolbar_chatmanager"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@color/transparent"-->
-        <!--android:minHeight="?attr/actionBarSize"-->
-        <!--app:title="Name"-->
-        <!--app:titleTextColor="#000"-->
-        <!--android:theme="?attr/actionBarTheme" />-->
-    <!--<android.support.design.widget.TabLayout-->
-        <!--android:id="@+id/tablayout_chatmanager"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--style="@style/CustomTabLayout"-->
-        <!--app:tabGravity="fill"-->
-        <!--app:tabTextAppearance="@style/CustomTextAppearanceTab">-->
-    <!--</android.support.design.widget.TabLayout>-->
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation_chatmanager"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="?android:attr/windowBackground"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/navigation_chat" />
     <FrameLayout
-        android:id="@+id/conten_layout_chatmanager"
+        android:id="@+id/conten_chatmanager_fullscreen"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        xmlns:android="http://schemas.android.com/apk/res/android">
     </FrameLayout>
+    <!--<android.support.v7.widget.Toolbar-->
+    <!--android:id="@+id/toolbar_chatmanager"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/transparent"-->
+    <!--android:minHeight="?attr/actionBarSize"-->
+    <!--app:title="Name"-->
+    <!--app:titleTextColor="#000"-->
+    <!--android:theme="?attr/actionBarTheme" />-->
+    <!--<android.support.design.widget.TabLayout-->
+    <!--android:id="@+id/tablayout_chatmanager"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--style="@style/CustomTabLayout"-->
+    <!--app:tabGravity="fill"-->
+    <!--app:tabTextAppearance="@style/CustomTextAppearanceTab">-->
+    <!--</android.support.design.widget.TabLayout>-->
+    <LinearLayout
+        android:id="@+id/ll_frm_chatmanager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation_chatmanager"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?android:attr/windowBackground"
+            android:layout_alignParentBottom="true"
+            app:menu="@menu/navigation_chat" />
+        <FrameLayout
+            android:id="@+id/conten_layout_chatmanager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 </LinearLayout>
+

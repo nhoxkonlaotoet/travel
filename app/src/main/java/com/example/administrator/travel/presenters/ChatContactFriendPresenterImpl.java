@@ -25,7 +25,7 @@ public class ChatContactFriendPresenterImpl implements ChatContactFriendPresente
 
     @Override
     public void getFriendsPresenter(SharedPreferences sharedPreferences) {
-            chatContactFriendInteractor.getFriendsInteractor(this,sharedPreferences);
+        chatContactFriendInteractor.getFriendsInteractor(this,sharedPreferences);
     }
 
     @Override
