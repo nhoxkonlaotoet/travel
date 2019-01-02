@@ -23,7 +23,7 @@ import com.squareup.picasso.Picasso;
 public class CustomRecyclerSearchAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
     private List<UserInformation> listUser = new ArrayList<>();
     private int Sum = 0;
-    private CustomRecyclerSearchAdapter.OnItemClickedListener onItemClickedListener;
+    private OnItemClickedListener onItemClickedListener;
 
     public CustomRecyclerSearchAdapter(List<UserInformation> listUser){
         this.listUser = listUser;

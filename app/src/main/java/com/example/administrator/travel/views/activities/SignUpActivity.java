@@ -53,7 +53,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView{
             @Override
             public void onClick(View view) {
                 startActivity((new Intent(SignUpActivity.this, LoginActivity.class))
-                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                 finish();
             }
@@ -78,7 +78,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView{
 
     }//end onCreate
 
-//    override Methods
+    //    override Methods
     public void SignUpClick(View view){
         final String mUser = edtEmail.getText ().toString ();
         String mPassword = edtPass.getText ().toString ();
@@ -110,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView{
                                         "Đăng ký thành công! \nMời bạn đăng nhập lại", Toast.LENGTH_SHORT).show ();
 
                                 startActivity((new Intent(SignUpActivity.this,LoginActivity.class))
-                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                                 finish();
                             }else if(task.getException().toString().trim()
                                     .equals("com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The email address is badly formatted.")) {

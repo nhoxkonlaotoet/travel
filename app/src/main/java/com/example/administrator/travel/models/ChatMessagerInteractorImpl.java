@@ -26,7 +26,7 @@ public class ChatMessagerInteractorImpl implements ChatMessagerInteractor {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        databaseReference.child("messagers/"+KeyGroup).addChildEventListener(new ChildEventListener() {
+        databaseReference.child("messenger/"+KeyGroup).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Message chat = dataSnapshot.getValue(Message.class);
@@ -67,7 +67,7 @@ public class ChatMessagerInteractorImpl implements ChatMessagerInteractor {
 
         Chats lastChat = new Chats(message,time);
 
-        FirebaseDatabase.getInstance().getReference().child("messagers/"+KeyGroup)
+        FirebaseDatabase.getInstance().getReference().child("messenger/"+KeyGroup)
                 .push().setValue(addMess);
 
         FirebaseDatabase.getInstance().getReference().child("the_last_chat/"+KeyGroup)

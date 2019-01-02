@@ -31,6 +31,7 @@
     <string name="title_listfriend">Contact</string>
     <string name="title_timeline">TimeLine</string>
     <string name="title_setting">Setting</string>
+    <string name="title_profile">Profile</string>
 
     <string name="ACTION_BOOKTOUR">book tour</string>
 

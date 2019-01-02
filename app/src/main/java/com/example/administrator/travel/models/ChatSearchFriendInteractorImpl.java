@@ -62,7 +62,7 @@ public class ChatSearchFriendInteractorImpl implements ChatSearchFriendInteracto
         keyUser.clear();
         final String AuthID = sharedPreferences.getString("AuthID","none");
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

@@ -18,7 +18,7 @@
     <item
         android:id="@+id/navigation_chat_setting"
         android:icon="@drawable/ic_settings_black_24dp"
-        android:title="@string/title_setting" />
+        android:title="@string/title_profile" />
 
 
 </menu>

@@ -26,7 +26,7 @@ public class InfoUserSearchInteractorImpl implements InfoUserSearchInteractor {
         if(!AuthID.equals(UserIDAddFr)) {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-            databaseReference.child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReference.child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 //
@@ -86,33 +86,29 @@ public class InfoUserSearchInteractorImpl implements InfoUserSearchInteractor {
             map.put(UserIDAddFr, false);
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-            userGroup = databaseReference.child("members").push().getKey();
-            FirebaseDatabase.getInstance().getReference().child("members/" + userGroup).setValue(map);
+            userGroup = databaseReference.child("friends").push().getKey();
+            FirebaseDatabase.getInstance().getReference().child("friends/" + userGroup).setValue(map);
         }
     }
 
     @Override
     public void CancelAddFriendInteractor() {
         if(!AuthID.equals(UserIDAddFr)) {
-            FirebaseDatabase.getInstance().getReference().child("members/").child(userGroup).removeValue();
+            FirebaseDatabase.getInstance().getReference().child("friends/").child(userGroup).removeValue();
         }
     }
 
     @Override
     public void AcceptAddFriendInteractor() {
         if(!AuthID.equals(UserIDAddFr)) {
-            FirebaseDatabase.getInstance().getReference().child("members/" + userGroup).child(AuthID).setValue(true);
+            FirebaseDatabase.getInstance().getReference().child("friends/" + userGroup).child(AuthID).setValue(true);
         }
     }
 
     @Override
     public void UnFriendInteractor() {
-
-        Log.d("user id","value "+UserIDAddFr + " Auth id "+AuthID+" start");
         if(!AuthID.equals(UserIDAddFr)) {
-            FirebaseDatabase.getInstance().getReference().child("members/" + userGroup).child(AuthID).setValue(false);
+            FirebaseDatabase.getInstance().getReference().child("friends/" + userGroup).child(AuthID).setValue(false);
         }
-
-        Log.d("user id","value "+UserIDAddFr + " Auth id "+AuthID+" finish");
     }
 }

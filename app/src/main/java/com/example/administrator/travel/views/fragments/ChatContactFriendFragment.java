@@ -1,6 +1,7 @@
 package com.example.administrator.travel.views.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,11 +16,16 @@ import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.CustomRecyclerContactAdapter;
 import com.example.administrator.travel.presenters.ChatContactFriendPresenter;
 import com.example.administrator.travel.presenters.ChatContactFriendPresenterImpl;
+import com.example.administrator.travel.views.activities.ChatMessagerActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+/**
+ * Created by Henry
+ */
 
 public class ChatContactFriendFragment extends Fragment implements ChatContactFriendView{
 
@@ -71,15 +77,19 @@ public class ChatContactFriendFragment extends Fragment implements ChatContactFr
             @Override
             public void onItemClick(String username, int index) {
 //                chuyen qua man hinh chat
-                ChatMessagerFragment chatMessagerFragment = new ChatMessagerFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("UserName",username);
-                bundle.putString("KeyUserGroup",listUserGroup.get(index));
-                chatMessagerFragment.setArguments(bundle);
-                android.app.FragmentManager manager1 = getFragmentManager();
-                manager1.beginTransaction().replace(R.id.conten_layout_chatmanager, chatMessagerFragment,
-                        chatMessagerFragment.getTag())
-                        .addToBackStack("ChatMessager").commit();
+//                ChatMessagerFragment chatMessagerFragment = new ChatMessagerFragment();
+//                Bundle bundle = new Bundle();
+//                bundle.putString("UserName",username);
+//                bundle.putString("KeyUserGroup",listUserGroup.get(index));
+//                chatMessagerFragment.setArguments(bundle);
+//                android.app.FragmentManager manager1 = getFragmentManager();
+//                manager1.beginTransaction().replace(R.id.conten_layout_chatmanager, chatMessagerFragment,
+//                        chatMessagerFragment.getTag())
+//                        .addToBackStack("ChatMessager").commit();
+
+                startActivity(new Intent(getActivity(), ChatMessagerActivity.class)
+                        .putExtra("UserName",username)
+                        .putExtra("KeyUserGroup",listUserGroup.get(index)));
             }
         });
 

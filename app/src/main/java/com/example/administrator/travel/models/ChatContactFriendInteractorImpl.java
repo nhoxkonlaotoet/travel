@@ -29,7 +29,7 @@ public class ChatContactFriendInteractorImpl implements ChatContactFriendInterac
         listUserGr.clear();
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //

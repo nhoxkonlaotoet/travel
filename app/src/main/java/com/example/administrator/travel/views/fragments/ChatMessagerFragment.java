@@ -25,6 +25,9 @@ import com.example.administrator.travel.views.ChatMessagerView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Henry
+ */
 
 public class ChatMessagerFragment extends Fragment implements ChatMessagerView{
 

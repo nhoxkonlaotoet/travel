@@ -34,7 +34,7 @@ public class ResetPassActivity extends AppCompatActivity {
 
     }//end onCreate
 
-//    methods
+    //    methods
     public void SendResetPass(View view){
         String email = edtEmail.getText ().toString ().trim();
         if(email.isEmpty()){
@@ -61,6 +61,6 @@ public class ResetPassActivity extends AppCompatActivity {
     }//end SendResetPass
 
     public void PressBackButton(View view){
-        onBackPressed();
+        finish();
     }//end PressBackButton
 }

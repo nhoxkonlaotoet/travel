@@ -6,8 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.administrator.travel.views.fragments.InfoUserSearchFragment">
+    tools:context="com.example.administrator.travel.views.activities.InfoUserSearchActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorButton">
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/touch_btn_back"
+            android:onClick="OnButtonBackInfoSearch"/>
+    </LinearLayout>
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_gravity="center_horizontal"
         android:id="@+id/img_info_user_search_avatar"

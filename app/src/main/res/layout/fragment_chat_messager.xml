@@ -4,22 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.administrator.travel.views.fragments.ChatMessagerFragment">
+    tools:context="com.example.administrator.travel.views.activities.ChatMessagerActivity">
 
-    <TextView
-        android:id="@+id/tv_chat_message_name_friend"
+
+    <LinearLayout
+        android:id="@+id/ll_chat_message_temp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/colorButton"
-        android:paddingBottom="5dp"
-        android:paddingLeft="50dp"
-        android:paddingTop="5dp"
-        android:text="Welcome chat messager"
-        android:textColor="@color/colorNewsFeedItemBackground"
-        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
+        <Button
+            android:onClick="OnClickBackChatMessage"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:background="@drawable/touch_btn_back"
+            android:gravity="center"
+            tools:ignore="OnClick" />
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/tv_chat_message_name_friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="Welcome chat messager"
+            android:textColor="@color/colorNewsFeedItemBackground"
+            android:textSize="25sp"/>
+    </LinearLayout>
+
     <!--END 1-->
 
     <!-- A horizontal line between the chatbox and RecyclerView -->
@@ -33,7 +49,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_chat_message_name_friend">
+        app:layout_constraintTop_toBottomOf="@+id/ll_chat_message_temp">
 
     </android.support.v7.widget.RecyclerView>
     <!--END 2-->
@@ -62,13 +78,13 @@
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:layout_gravity="bottom"
-            android:background="@android:drawable/ic_btn_speak_now"/>
+            android:background="@drawable/touch_btn_speak_now"/>
         <Button
             android:id="@+id/btn_chat_message_camera"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="bottom"
-            android:background="@android:drawable/ic_menu_camera"
+            android:background="@drawable/touch_menu_camera"
             app:layout_constraintBottom_toBottomOf="@+id/layout_chatbox"/>
         <EditText
             android:id="@+id/edt_chat_message_chatbox"
@@ -86,8 +102,7 @@
             android:layout_width="64dp"
             android:layout_height="48dp"
             android:layout_gravity="bottom"
-            android:background="@android:drawable/ic_menu_send"
-            android:backgroundTint="@android:color/holo_blue_dark"
+            android:background="@drawable/touch_menu_send"
             android:gravity="center" />
     </LinearLayout>
 
