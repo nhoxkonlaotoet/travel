@@ -13,7 +13,7 @@ public interface SelectMyTourView {
 
     void showMyTours(List<Tour> lstTour, List<TourStartDate> lstTourStart);
     void gotoCamera();
-    void gotoTourActivity(String tourId, String tourStartId);
+    void gotoTourActivity(String tourId, String tourStartId,boolean isCompany);
     void showBtnScan();
     void hideBtnScan();
     void showLayoutLogin();

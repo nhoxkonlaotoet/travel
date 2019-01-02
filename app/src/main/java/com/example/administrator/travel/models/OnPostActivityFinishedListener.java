@@ -1,4 +1,4 @@
-package com.example.administrator.travel;
+package com.example.administrator.travel.models;
 
 /**
  * Created by Administrator on 31/12/2018.

@@ -61,7 +61,7 @@ public class TourActivity extends AppCompatActivity implements TourView,
     TourPresenter presenter;
     OnTransmitMyLocationFinishedListener listener;
     Location mylocation;
-    Boolean isMytour=false;
+    Boolean isMytour=false, isCompany;
     Pager pager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,8 @@ public class TourActivity extends AppCompatActivity implements TourView,
 
         presenter = new TourPresenter(this);
         Bundle bundle = getIntent().getExtras();
-
+        Log.e("onCreate: ", ""+bundle.getBoolean("isCompany"));
+        isCompany = bundle.getBoolean("isCompany");
         presenter.onViewLoad(bundle.getString("tourId"), bundle.getBoolean("mytour"));
 
         // load n fragment bên cạnh
@@ -89,18 +90,21 @@ public class TourActivity extends AppCompatActivity implements TourView,
         actionBar.setDisplayHomeAsUpEnabled(true);
         isMytour=bundle.getBoolean("mytour");
 
+
         int tabCount;
+        tabCount=4;
         if(!isMytour)
         {
             actionBar.setBackgroundDrawable(getResources().getDrawable (R.color.transparent));
             actionBar.setDisplayShowTitleEnabled(false);
-            tabCount=4;
-        }
-        else {
-            tabCount = 4;
 
         }
-        pager = new Pager(getSupportFragmentManager(), tabCount,isMytour);
+        else {
+            if(isCompany)
+                tabCount = 3;
+        }
+
+        pager = new Pager(getSupportFragmentManager(), tabCount,isMytour,isCompany);
         vpContainer.setAdapter(pager);
 
         vpContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -168,10 +172,14 @@ public class TourActivity extends AppCompatActivity implements TourView,
 
     @Override
     public void addTab(Boolean isMyTour) {
+
         if (isMyTour) {
             tablayoutTour.addTab(tablayoutTour.newTab().setText("Chi tiết"));
             tablayoutTour.addTab(tablayoutTour.newTab().setText("Hoạt động"));
-            tablayoutTour.addTab(tablayoutTour.newTab().setText("Gần đây"));
+            if(isCompany)
+                tablayoutTour.addTab(tablayoutTour.newTab().setText("Duyệt mua"));
+            else
+                tablayoutTour.addTab(tablayoutTour.newTab().setText("Gần đây"));
             tablayoutTour.addTab(tablayoutTour.newTab().setText("Đánh giá"));
 
             vpTourImage.setVisibility(View.GONE);
@@ -182,7 +190,8 @@ public class TourActivity extends AppCompatActivity implements TourView,
         } else {
 
             tablayoutTour.addTab(tablayoutTour.newTab().setText("Chi tiết"));
-            tablayoutTour.addTab(tablayoutTour.newTab().setText("Đặt tour"));
+            if(!isCompany)
+                tablayoutTour.addTab(tablayoutTour.newTab().setText("Đặt tour"));
             tablayoutTour.addTab(tablayoutTour.newTab().setText("Liên hệ"));
             tablayoutTour.addTab(tablayoutTour.newTab().setText("Đánh giá"));
         }

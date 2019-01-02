@@ -13,8 +13,6 @@ import java.util.List;
 public interface OnGetTourDetailFinishedListener {
     void onGetDaySuccess(List<Day> lstDay);
     void onGetDayFailure(Exception ex);
-    void onGetScheduleSuccess(List<Schedule> lstSchedule);
-    void onGetScheduleFailure(Exception ex);
     void onGetInforSuccess(Tour tour);
     void onGetInforFailure(Exception ex);
 }

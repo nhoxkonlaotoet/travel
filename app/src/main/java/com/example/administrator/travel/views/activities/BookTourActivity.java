@@ -21,44 +21,25 @@ import com.example.administrator.travel.views.BookTourView;
 
 public class BookTourActivity extends AppCompatActivity implements BookTourView {
 
-    static final String ACTION_BOOK_TOUR="book tour";
-    String action;
     RelativeLayout btnAccept, btnCancel;
-    TourStartDate tourStart;
-    String tourId,userId;
     TextView txtAdultPrice, txtChildrenPrice, txtBabyPrice,txtNumberofPeople,
             txtNumberofAdult,txtNumberofChildren,txtNumberofBaby;
     Button btnDecreaseAdult, btnIncreaseAdult,
             btnDecreaseChildren, btnIncreaseChildren,
             btnDecreaseBaby, btnIncreaseBaby;
-    Integer numberofAdult, numberofChildren, numberofBaby, money;
     BookTourPresenter presenter;
-
+    String tourStartId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_tour);
-
-        SharedPreferences prefs = getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
-        userId = prefs.getString("AuthID","");
-        if(userId.equals(""))
-        {
-            startActivity((new Intent(this, LoginActivity.class)));
-           // finish();
-        }
-        tourStart = (TourStartDate) getIntent().getSerializableExtra("tour");
-        Bundle bundle = getIntent().getExtras();
-        tourId=bundle.getString("tourId");
-        presenter=new BookTourPresenter(this);
         mapping();
-        showPrice();
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences prefs = getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
-        userId = prefs.getString("AuthID","");
+        Bundle bundle = getIntent().getExtras();
+        tourStartId = bundle.getString("tourStartId");
+        Log.e( "onCreate: ",tourStartId );
+        presenter=new BookTourPresenter(this);
+        presenter.onViewLoad(tourStartId);
     }
 
     public void mapping(){
@@ -78,16 +59,19 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
         txtNumberofChildren=findViewById(R.id.txtNumberofChildren);
         txtNumberofBaby=findViewById(R.id.txtNumberofBaby);
     }
+    @Override
+    public void showPrice(int adultPrice, int childrenPrice, int babyPrice, int availableNumber){
+        txtAdultPrice.setText(adultPrice+"");
+        txtChildrenPrice.setText(childrenPrice+"");
+        txtBabyPrice.setText(babyPrice+"");
+        txtNumberofPeople.setText(availableNumber+"");
+    }
 
-    public void showPrice(){
-        txtAdultPrice.setText(tourStart.adultPrice.toString());
-        txtChildrenPrice.setText(tourStart.childrenPrice.toString());
-        txtBabyPrice.setText(tourStart.babyPrice.toString());
-        txtNumberofPeople.setText(tourStart.peopleBooking.toString());
-        numberofAdult=0;
-        numberofChildren=0;
-        numberofBaby=0;
-        money=0;
+    @Override
+    public void showNumberPeople(int adultNumber, int childrenNumber, int babyNumber) {
+        txtNumberofAdult.setText(adultNumber+"");
+        txtNumberofChildren.setText(childrenNumber+"");
+        txtNumberofBaby.setText(babyNumber+"");
     }
 
     public void btnAccept_Click(View view){
@@ -122,39 +106,30 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
         presenter.onBtnIncreaseBabyClicked();
     }
 
+
     @Override
-    public void changeNumberOfPeople(String type, Integer number) {
-        switch (type) {
-            case TYPE_ADULT:
-                if(numberofAdult+number<0)
-                    return;
-                numberofAdult += number;
-                txtNumberofAdult.setText(numberofAdult.toString());
-                break;
-            case TYPE_CHILDREN:
-                if(numberofChildren+number<0)
-                    return;
-                numberofChildren += number;
-                txtNumberofChildren.setText(numberofChildren.toString());
-                break;
-            case TYPE_BABY:
-                if(numberofBaby+number<0)
-                    return;
-                numberofBaby += number;
-                txtNumberofBaby.setText(numberofBaby.toString());
-                break;
-            default: break;
-        }
-        money = tourStart.adultPrice*numberofAdult + tourStart.childrenPrice*numberofChildren + tourStart.babyPrice*numberofBaby;
+    public void disableBtnAccept() {
+        btnAccept.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public void sendBookingTour(){
-        // thời gian hệ thống trả về ở receivedCurrentTime(Long time)
-        // hành động đc cài đặt sẽ thực hiện sau khi nhận được thời gian
-        action=ACTION_BOOK_TOUR;
-        presenter.getCurrentTime();
-//
+    public void enableBtnAccept() {
+        btnAccept.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void updateAdultNumber(int number) {
+        txtNumberofAdult.setText(number+"");
+    }
+
+    @Override
+    public void updateChildrenNumber(int number) {
+        txtNumberofChildren.setText(number+"");
+    }
+
+    @Override
+    public void updateBabyNumber(int number) {
+        txtNumberofBaby.setText(number+"");
     }
 
     @Override
@@ -171,21 +146,6 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
     public void close() {
         finish();
     }
-    @Override
-    public void receivedCurrentTime(Long time)
-    {
-        if(action==null || action.isEmpty())
-            return;
-        if(action ==ACTION_BOOK_TOUR) {
-            money = tourStart.adultPrice * numberofAdult + tourStart.childrenPrice * numberofChildren + tourStart.babyPrice * numberofChildren;
-            TourBooking tourBooking = new TourBooking(userId, tourStart.id, time,
-                    numberofAdult, numberofChildren, numberofBaby, money *= 0);
-            presenter.bookTour(tourId, tourBooking);
-        }
-    }
 
-    @Override
-    public void receivedCurrentTime(Exception ex) {
-        Toast.makeText(this, "Không thể cập nhật thời gian hiện tại \r\n"+ex.toString(), Toast.LENGTH_LONG).show();
-    }
+
 }

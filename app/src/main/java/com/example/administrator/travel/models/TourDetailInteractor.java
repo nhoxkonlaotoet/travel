@@ -65,7 +65,7 @@ public class TourDetailInteractor {
         });
 
     }
-    public void getSchedule(String tourId, String dayId, final OnGetTourDetailFinishedListener listener)
+    public void getSchedule(String tourId, String dayId, final OnGetScheduleFinishedListener listener)
     {
         final List<Schedule> lstSchedule = new ArrayList<>();
         schedulesRef = database.getReference("schedules").child(tourId);

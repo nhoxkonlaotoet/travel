@@ -4,13 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Location;
-import android.media.Image;
 import android.os.Environment;
-import android.os.LocaleList;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.administrator.travel.OnPostActivityFinishedListener;
 import com.example.administrator.travel.models.entities.Activity;
 import com.example.administrator.travel.models.entities.MyLatLng;
 import com.google.android.gms.tasks.OnFailureListener;

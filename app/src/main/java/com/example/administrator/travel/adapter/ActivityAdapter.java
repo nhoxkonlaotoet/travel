@@ -124,14 +124,14 @@ public class ActivityAdapter extends BaseAdapter {
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 if(activity.lstPicture!=null && activity.lstPicture.size()>i && activity.lstPicture.get(i)!=null) {
                     imageView.setImageBitmap(activity.lstPicture.get(i));
-                    Log.e( "getView: ",activity.id+"" +activity.lstPicture.get(i));
+                 //   Log.e( "getView: ",activity.id+"" +activity.lstPicture.get(i));
 
                 }
                 layoutPicture.addView(imageView, i);
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.e( "onClick: ", activity.id);
+                       // Log.e( "onClick: ", activity.id);
                     }
                 });
             }
@@ -157,7 +157,7 @@ public class ActivityAdapter extends BaseAdapter {
         {
             if(activity.id.equals(activityId)) {
                 activity.lstPicture.add( Bitmap);
-                Log.e( "updateImage: ", activity.id+","+ activity.lstPicture.get(activity.lstPicture.size()-1)+"" );
+               // Log.e( "updateImage: ", activity.id+","+ activity.lstPicture.get(activity.lstPicture.size()-1)+"" );
                 break;
             }
         }

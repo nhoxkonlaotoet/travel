@@ -1,5 +1,6 @@
 package com.example.administrator.travel.presenters;
 
+import com.example.administrator.travel.models.OnGetScheduleFinishedListener;
 import com.example.administrator.travel.models.OnGetTourDetailFinishedListener;
 import com.example.administrator.travel.models.TourDetailInteractor;
 import com.example.administrator.travel.models.entities.Day;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by Administrator on 10/11/2018.
  */
 
-public class TourDetailPresenter  implements OnGetTourDetailFinishedListener{
+public class TourDetailPresenter  implements OnGetTourDetailFinishedListener,OnGetScheduleFinishedListener{
     TourDetailView view;
     TourDetailInteractor interactor;
 

@@ -1,24 +1,18 @@
 package com.example.administrator.travel.views.activities;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.administrator.travel.models.entities.Nearby;
+import com.example.administrator.travel.models.entities.Route;
 import com.example.administrator.travel.presenters.MapPresenter;
 import com.example.administrator.travel.views.MapView;
 import com.google.android.gms.common.ConnectionResult;
@@ -32,15 +26,21 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.administrator.travel.R;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener, MapView {
     GoogleApiClient googleApiClient;
-    public Location myLocation;
+    Location myLocation;
+    LatLng destination;
     private GoogleMap mMap;
     MapPresenter presenter;
+    List<PolylineOptions> polylinePaths = new ArrayList<>();
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +51,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         Bundle bundle = getIntent().getExtras();
-        String action = bundle.getString("action");
+
+
         presenter = new MapPresenter(this);
-        presenter.onViewLoad(action, bundle);
+        presenter.onViewLoad(bundle);
     }
 
 
@@ -73,6 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
 
     }
+
     @Override
     public void connectGoogleApiClient() {
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -88,6 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (googleApiClient.isConnected())
                 googleApiClient.disconnect();
     }
+
     @Override
     public void startLocationServices() {
         LocationRequest request = LocationRequest.create().setPriority(LocationRequest.PRIORITY_LOW_POWER);
@@ -104,8 +107,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void showActivities() {
+    public void addActivities() {
 
+    }
+
+    @Override
+    public void addDirection(List<Route> lstRoute) {
+        for (Route route : lstRoute) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
+            PolylineOptions polylineOptions = new PolylineOptions().
+                    geodesic(true).
+                    color(getResources().getColor(R.color.colorGreen)).
+                    width(10);
+
+            for (int i = 0; i < route.points.size(); i++) {
+                polylineOptions.add(route.points.get(i));
+            }
+            polylinePaths.add(polylineOptions);
+        }
+        mapRefesh();
+    }
+
+    @Override
+    public void addDestination(LatLng des) {
+        destination=des;
     }
 
     @Override
@@ -131,7 +156,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(),location.getLongitude())));
-        Log.e("onLocationChanged: ", location+"");
+        presenter.onViewLocationChanged(location);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+        Log.e("onLocationChanged: ", location + "");
+    }
+
+    @Override
+    public void mapRefesh() {
+        mMap.clear();
+        for (PolylineOptions polylineOptions : polylinePaths) {
+            Polyline line = mMap.addPolyline(polylineOptions);
+            line.setClickable(true);
+        }
+        if(destination!=null)
+            mMap.addMarker(new MarkerOptions()
+                    .position(destination));
+    }
+
+    @Override
+    public void showDialog() {
+        progressDialog = ProgressDialog.show(this, "",
+                "Vui lòng chờ lấy vị trí", true);
+    }
+
+    @Override
+    public void closeDialog() {
+        if(progressDialog.isShowing())
+            progressDialog.hide();
     }
 }

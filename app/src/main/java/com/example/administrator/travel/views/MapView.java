@@ -1,6 +1,9 @@
 package com.example.administrator.travel.views;
 
 import com.example.administrator.travel.models.entities.Nearby;
+import com.example.administrator.travel.models.entities.Route;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
 
 import java.util.List;
 
@@ -13,6 +16,10 @@ public interface MapView {
     void stopGoogleApiClient();
     void startLocationServices();
     void showNearbys(List<Nearby> lstNearby);
-    void showActivities();
-
+    void addActivities();
+    void addDirection(List<Route> lstRoute);
+    void addDestination(LatLng des);
+    void mapRefesh();
+    void showDialog();
+    void closeDialog();
 }

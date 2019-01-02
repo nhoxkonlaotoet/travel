@@ -108,6 +108,8 @@ public class NearbyFragment extends Fragment implements NearbyView, OnTransmitMy
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
                 intent.putExtra("action","nearby");
+                String destination = view.getTag().toString();
+                intent.putExtra("destination", destination);
                 startActivity(intent);
             }
         });

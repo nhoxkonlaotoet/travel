@@ -114,11 +114,12 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
     }
 
     @Override
-    public void gotoTourActivity(String tourId, String tourStartId){
+    public void gotoTourActivity(String tourId, String tourStartId, boolean isCompany){
         Intent intent = new Intent(getActivity(), TourActivity.class);
         intent.putExtra("mytour",true);
         intent.putExtra("tourId",tourId);
         intent.putExtra("tourStartId",tourStartId);
+        intent.putExtra("isCompany",isCompany);
         startActivityForResult(intent,TOUR_CODE);
         Log.e( "gotoTourActivity: ", "_________________________");
     }

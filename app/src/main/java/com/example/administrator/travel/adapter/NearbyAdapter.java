@@ -77,6 +77,7 @@ public class NearbyAdapter extends BaseAdapter {
         ProgressBar progressbarImageNearby = convertView.findViewById(R.id.progressbarImageNearby);
 
         Nearby nearby = lstNearby.get(position);
+        convertView.setTag(nearby.location.latitude+","+nearby.location.longitude);
 
         float[] result = new float[1];
         Location.distanceBetween(mylocation.getLatitude(), mylocation.getLongitude(),

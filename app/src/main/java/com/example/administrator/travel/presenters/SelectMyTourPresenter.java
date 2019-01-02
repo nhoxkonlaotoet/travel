@@ -45,7 +45,7 @@ public class SelectMyTourPresenter implements OnGetMyToursFinishedListener,OnGet
     {
         //tag= tourId+" "+tourStartId;
         String[] s=item.getTag().toString().split(" ");
-        view.gotoTourActivity(s[0],s[1]);
+        view.gotoTourActivity(s[0],s[1],isCompany);
     }
     public void onBtnLoginClicked()
     {
@@ -83,7 +83,7 @@ public class SelectMyTourPresenter implements OnGetMyToursFinishedListener,OnGet
 
     @Override
     public void isJoiningTourTrue(String tourId, String tourStartId) {
-        view.gotoTourActivity(tourId,tourStartId);
+        view.gotoTourActivity(tourId,tourStartId,isCompany);
         view.hideBtnScan();
     }
 
@@ -104,7 +104,7 @@ public class SelectMyTourPresenter implements OnGetMyToursFinishedListener,OnGet
 
     @Override
     public void onRememberTourSuccess(String tourId, String tourStartId){
-        view.gotoTourActivity(tourId,tourStartId);
+        view.gotoTourActivity(tourId,tourStartId,isCompany);
         view.hideBtnScan();
     }
 

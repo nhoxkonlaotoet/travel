@@ -223,7 +223,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đã có "
+            android:text="Còn "
             android:textSize="18sp"
             android:textColor="@color/colorText"/>
         <TextView
@@ -236,7 +236,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" người đăng ký"
+            android:text=" chỗ"
             android:textSize="18sp"
             android:textColor="@color/colorText"/>
     </LinearLayout>

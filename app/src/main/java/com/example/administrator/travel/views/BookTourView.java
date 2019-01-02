@@ -5,17 +5,16 @@ package com.example.administrator.travel.views;
  */
 
 public interface BookTourView {
-    public static final String TYPE_ADULT       = "Adult";
-    public static final String TYPE_CHILDREN    = "Children";
-    public static final String TYPE_BABY        = "Baby";
 
-    void changeNumberOfPeople(String type, Integer number);
-     void sendBookingTour();
-     void notifyBookingSuccess();
-     void notifyBookingFailure(Exception ex);
-     void close();
-     void receivedCurrentTime(Long time);
-     void receivedCurrentTime(Exception ex);
-
+    void disableBtnAccept();
+    void enableBtnAccept();
+    void updateAdultNumber(int number);
+    void updateChildrenNumber(int number);
+    void updateBabyNumber(int number);
+    void notifyBookingSuccess();
+    void notifyBookingFailure(Exception ex);
+    void close();
+    void showPrice(int adultPrice, int childrenPrice, int babyPrice, int availableNumber);
+    void showNumberPeople(int adultNumber, int childrenNumber, int babyNumber);
 }
 
