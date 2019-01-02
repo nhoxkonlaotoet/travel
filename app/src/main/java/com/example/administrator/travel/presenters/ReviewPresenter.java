@@ -5,8 +5,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
 import com.example.administrator.travel.models.OnGetRatingFinishedListener;
+import com.example.administrator.travel.models.OnGetUserInforFinishedListener;
 import com.example.administrator.travel.models.ReviewInteractor;
+import com.example.administrator.travel.models.UserInformationInteractor;
 import com.example.administrator.travel.models.entities.Rating;
+import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.views.ReviewView;
 import com.example.administrator.travel.views.fragments.ReviewFragment;
 
@@ -16,13 +19,15 @@ import java.util.List;
  * Created by Administrator on 25/12/2018.
  */
 
-public class ReviewPresenter implements OnGetRatingFinishedListener{
+public class ReviewPresenter implements OnGetRatingFinishedListener,OnGetUserInforFinishedListener {
     ReviewView view;
     ReviewInteractor reviewInteractor;
+    UserInformationInteractor userInformationInteractor;
     Boolean isCollapsed = true, rated=false;
     public ReviewPresenter(ReviewView view){
         this.view=view;
         reviewInteractor=new ReviewInteractor();
+        userInformationInteractor = new UserInformationInteractor();
     }
     public void onViewLoad(String tourId){
         view.disableRatingBar();
@@ -96,6 +101,10 @@ public class ReviewPresenter implements OnGetRatingFinishedListener{
     @Override
     public void onGetReviewsSuccess(List<Rating> lstReview) {
         view.showReviews(lstReview);
+        for(int i=0;i<lstReview.size();i++)
+        {
+            userInformationInteractor.getUserInfor(lstReview.get(0).ratingPeopleId,this);
+        }
     }
 
     @Override
@@ -114,5 +123,37 @@ public class ReviewPresenter implements OnGetRatingFinishedListener{
     public void onRateFailure(Exception ex) {
         view.notifyRateFailure(ex);
         view.closeDialog();
+    }
+
+    @Override
+    public void onGetUserInforSuccess(UserInformation info) {
+        view.addUserInfo(info);
+    }
+
+    @Override
+    public void onGetUserInforFailure(Exception ex) {
+
+    }
+
+
+
+
+
+
+
+    //
+    @Override
+    public void onCheckTourGuideTrue() {
+
+    }
+
+    @Override
+    public void onCheckTourGuideFalse(String tourGuideId) {
+
+    }
+
+    @Override
+    public void onCheckTourGuideFailure(Exception ex) {
+
     }
 }

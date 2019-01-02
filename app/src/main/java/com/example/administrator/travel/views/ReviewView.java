@@ -1,8 +1,10 @@
 package com.example.administrator.travel.views;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.example.administrator.travel.models.entities.Rating;
+import com.example.administrator.travel.models.entities.UserInformation;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ public interface ReviewView {
     void notifyGetRatingFailure(Exception ex);
     void showReviews(List<Rating> lstReview);
     void notifyGetReviewsFailure(Exception ex);
+    void addUserInfo(UserInformation user);
     void notifyRateSuccess();
     void notifyRateFailure(Exception ex);
     void showRatingBar();

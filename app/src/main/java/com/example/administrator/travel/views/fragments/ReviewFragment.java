@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.ReviewAdapter;
 import com.example.administrator.travel.models.entities.Rating;
+import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.presenters.ReviewPresenter;
 import com.example.administrator.travel.views.ReviewView;
 import com.example.administrator.travel.views.activities.ReviewDetailActivity;
@@ -63,6 +64,7 @@ public class ReviewFragment extends Fragment implements ReviewView{
     int imgvHeight, imgvWidth;
     String tourId;
     RelativeLayout layoutImage;
+    ReviewAdapter adapter;
     public ReviewFragment() {
         // Required empty public constructor
         lstImage=new ArrayList<>();
@@ -237,7 +239,7 @@ public class ReviewFragment extends Fragment implements ReviewView{
     @Override
     public void showReviews(List<Rating> lstReview) {
        if(context!=null) {
-           ReviewAdapter adapter = new ReviewAdapter(context, lstReview);
+           adapter = new ReviewAdapter(context, lstReview);
            lstvReview.setAdapter(adapter);
        }
     }
@@ -247,6 +249,13 @@ public class ReviewFragment extends Fragment implements ReviewView{
         if(context!=null)
             Toast.makeText(context, "Không thể lấy được bài đánh giá "+ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void addUserInfo(UserInformation user) {
+        Log.e( "addUserInfo: ", user+"");
+        adapter.updateReviewerInfo(user);
+    }
+
 
     @Override
     public void notifyRateSuccess() {

@@ -37,9 +37,21 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
 
         Bundle bundle = getIntent().getExtras();
         tourStartId = bundle.getString("tourStartId");
+
         Log.e( "onCreate: ",tourStartId );
         presenter=new BookTourPresenter(this);
         presenter.onViewLoad(tourStartId);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences refs = getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        String userId = refs.getString("AuthID","");
+        if(userId.equals("none"))
+        {
+            startActivity(new Intent(BookTourActivity.this,LoginActivity.class));
+        }
     }
 
     public void mapping(){

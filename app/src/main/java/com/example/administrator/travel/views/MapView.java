@@ -18,10 +18,13 @@ public interface MapView {
     void startLocationServices();
     void showNearbys(List<Nearby> lstNearby);
     void addActivities();
+    void moveCamera(LatLng location);
+    void addMyClickLocation(LatLng location);
     void addSchedule(List<Schedule> lstSchedule);
     void addDirection(List<Route> lstRoute);
     void addDestination(LatLng des);
     void mapRefesh();
     void showDialog();
     void closeDialog();
+    void closeActivityForResult(LatLng location);
 }

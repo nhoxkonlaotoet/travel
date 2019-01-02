@@ -1,5 +1,6 @@
 package com.example.administrator.travel.views.activities;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,11 +28,12 @@ import com.example.administrator.travel.models.LoadImageTask;
 import com.example.administrator.travel.models.OnDownloadImageFinishedListener;
 import com.example.administrator.travel.presenters.PostPresenter;
 import com.example.administrator.travel.views.PostView;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 
 public class PostActivity extends AppCompatActivity implements PostView {
-    RelativeLayout btnOpenPicture;
+    RelativeLayout btnOpenPicture,btnMarkLocation;
     GridLayout layoutPictures;
     PictureItem pictureItem;
     View.OnClickListener clickListener;
@@ -42,6 +44,7 @@ public class PostActivity extends AppCompatActivity implements PostView {
     EditText edittxtContent;
     Button btnPost;
     ImageButton btnBack;
+    final static int LOCATION_REQUEST =111;
     int n=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,7 @@ public class PostActivity extends AppCompatActivity implements PostView {
         setOnBtnOpenPictureClick();
         setOnBtnPostClick();
         setOnBtnBackClick();
-
+        setOnBtnMarkLocationClick();
         presenter = new PostPresenter(this);
         presenter.onViewLoad();
     }
@@ -71,6 +74,7 @@ public class PostActivity extends AppCompatActivity implements PostView {
         layoutPictures = findViewById(R.id.layoutPictures);
         scrollviewPicture = findViewById(R.id.scrollviewPicture);
         txtFileCount = findViewById(R.id.txtFileCount);
+        btnMarkLocation = findViewById(R.id.btnMarkLocation);
         edittxtContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +94,14 @@ public class PostActivity extends AppCompatActivity implements PostView {
     void setOnPictureClick(View view){
         view.setOnClickListener(clickListener);
     }
-
+    void setOnBtnMarkLocationClick(){
+        btnMarkLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onBtnMarkLocationClicked();
+            }
+        });
+    }
     void setOnBtnOpenPictureClick(){
         btnOpenPicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +167,25 @@ public class PostActivity extends AppCompatActivity implements PostView {
             txtFileCount.setText(count+" ảnh");
         else
             txtFileCount.setText("");
+    }
+
+    @Override
+    public void gotoMapActivity() {
+        Intent intent = new Intent(PostActivity.this,MapsActivity.class);
+        intent.putExtra("action", "choose");
+        startActivityForResult(intent,LOCATION_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==LOCATION_REQUEST) {
+           // Log.e("onActivityResult: ", data.getExtras().getString("chosenLocation") + "");
+            String[] arr =data.getExtras().getString("chosenLocation").split(",");
+
+            LatLng location = new LatLng( Double.parseDouble(arr[0]),Double.parseDouble(arr[1]));
+            presenter.onActivityResult(location);
+        }
     }
 
     @Override

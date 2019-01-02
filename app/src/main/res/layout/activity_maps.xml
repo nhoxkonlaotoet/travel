@@ -1,4 +1,5 @@
-<RelativeLayout android:layout_width="match_parent"
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,5 +9,66 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/background_small_button">
+        <ImageView
+            android:id="@+id/imgvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_location_on_black_24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn vị trí của tôi"
+            android:layout_toRightOf="@+id/imgvLocation"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/btnPrevious"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Điểm trước"
+            android:textAllCaps="false"
+            android:background="@drawable/background_small_button"
+            android:layout_marginRight="3dp"
+            android:onClick="btnPrevious_Click"/>
+
+        <Button
+            android:id="@+id/btnNow"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Hiện tại"
+            android:textAllCaps="false"
+            android:background="@drawable/background_small_button"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:onClick="btnNow_Click"/>
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Điểm sau"
+            android:textAllCaps="false"
+            android:background="@drawable/background_small_button"
+            android:layout_marginLeft="3dp"
+            android:onClick="btnNext_Click"/>
+
+    </LinearLayout>
+
 
 </RelativeLayout>

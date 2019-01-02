@@ -2,6 +2,7 @@ package com.example.administrator.travel.views.activities;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -10,6 +11,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.entities.Route;
@@ -36,8 +39,9 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener, MapView {
     GoogleApiClient googleApiClient;
+   // Button btnPrevious, btnNow, btnNext;
     Location myLocation;
-    LatLng destination;
+    LatLng destination, myClick;
     private GoogleMap mMap;
     MapPresenter presenter;
     List<PolylineOptions> polylinePaths = new ArrayList<>();
@@ -47,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -58,7 +63,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         presenter.onViewLoad(bundle);
     }
 
-
+    void setMapClick(){
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+             presenter.onMapClick(latLng);
+            }
+        });
+    }
+    public void btnPrevious_Click(View btn){
+        presenter.onBtnPreviousClicked();
+    }
+    public void btnNow_Click(View btn){
+        presenter.onBtnNowClicked();
+    }
+    public void btnNext_Click(View btn){
+        presenter.onBtnNextClicked();
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -73,6 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         mMap.setMyLocationEnabled(true);
+        setMapClick();
 
     }
 
@@ -110,6 +132,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void addActivities() {
 
+    }
+
+    @Override
+    public void moveCamera(LatLng location) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+    }
+
+    @Override
+    public void addMyClickLocation(LatLng location) {
+        myClick=location;
+        mapRefesh();
+        closeActivityForResult(location);
     }
 
     @Override
@@ -175,6 +209,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Polyline line = mMap.addPolyline(polylineOptions);
             line.setClickable(true);
         }
+        if(myClick!=null)
+        {
+            mMap.addMarker(new MarkerOptions().position(myClick));
+        }
+
         if(destination!=null)
             mMap.addMarker(new MarkerOptions()
                     .position(destination));
@@ -197,5 +236,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void closeDialog() {
         if(progressDialog.isShowing())
             progressDialog.hide();
+    }
+
+    @Override
+    public void closeActivityForResult(LatLng location) {
+        Intent intent = getIntent();
+        intent.putExtra("chosenLocation",location.latitude+","+location.longitude);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

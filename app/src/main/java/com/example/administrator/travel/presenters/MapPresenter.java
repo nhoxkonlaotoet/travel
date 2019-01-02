@@ -27,7 +27,9 @@ public class MapPresenter  implements OnFindDirectionFinishListener,OnGetSchedul
     TourDetailInteractor tourDetailInteractor;
     Location myLocation;
     LatLng  destination;
-    String action;
+    String action, scheduleId;
+    List<Schedule> lstSchedule;
+    int pos=0;
     public MapPresenter(MapView view){
         this.view=view;
         tourDetailInteractor=new TourDetailInteractor();
@@ -40,6 +42,7 @@ public class MapPresenter  implements OnFindDirectionFinishListener,OnGetSchedul
             case "nearby":
                 String des = bundle.getString("destination");
                 String[] arr = des.split(",");
+
                 destination =new LatLng(Double.parseDouble(arr[0]),Double.parseDouble(arr[1]));
                 view.showDialog();
                 view.addDestination(destination);
@@ -47,7 +50,7 @@ public class MapPresenter  implements OnFindDirectionFinishListener,OnGetSchedul
             case "schedule":
                 String tourId= bundle.getString("tourId");
                 String dayId = bundle.getString("dayId");
-                String scheduleId = bundle.getString("scheduleId");
+                scheduleId = bundle.getString("scheduleId");
                 tourDetailInteractor.getSchedule(tourId,dayId,this);
                 break;
             case "activity":
@@ -75,6 +78,29 @@ public class MapPresenter  implements OnFindDirectionFinishListener,OnGetSchedul
             e.printStackTrace();
         }
     }
+    public void onBtnPreviousClicked(){
+        if(pos==0)
+            return;
+        pos--;
+        view.moveCamera(lstSchedule.get(pos).latLng.getLatLng());
+    }
+    public void onBtnNowClicked(){
+        for(int i=0;i<lstSchedule.size();i++)
+            if(lstSchedule.get(i).id.equals(scheduleId))
+                view.moveCamera(lstSchedule.get(i).latLng.getLatLng());
+    }
+    public void onBtnNextClicked(){
+        if(pos==lstSchedule.size()-1)
+            return;
+        pos++;
+        view.moveCamera(lstSchedule.get(pos).latLng.getLatLng());
+    }
+    public void onMapClick(LatLng location){
+        if(action.equals("choose"))
+        {
+            view.addMyClickLocation(location);
+        }
+    }
     public void onViewConnectedGoogleApiClient(){
         view.startLocationServices();
     }
@@ -97,7 +123,9 @@ public class MapPresenter  implements OnFindDirectionFinishListener,OnGetSchedul
     @Override
     public void onGetScheduleSuccess(List<Schedule> lstSchedule) {
         Log.e( "onGetScheduleSuccess: ", lstSchedule.size()+"");
+        this.lstSchedule=lstSchedule;
         view.addSchedule(lstSchedule);
+
     }
 
     @Override

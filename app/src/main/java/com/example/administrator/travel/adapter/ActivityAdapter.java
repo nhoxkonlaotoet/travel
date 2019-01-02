@@ -84,7 +84,7 @@ public class ActivityAdapter extends BaseAdapter {
         Date date = new Date(activity.postTime);
 
         txtActivityTime.setText(dateFormat.format(date));
-        txtUserName.setText(activity.userId);
+       // txtUserName.setText(activity.userId);
         for(int i=0;i<lstUser.size();i++)
             if(lstUser.get(i).id.equals(activity.userId)) {
                 txtUserName.setText(lstUser.get(i).name);

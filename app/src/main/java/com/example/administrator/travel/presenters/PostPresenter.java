@@ -10,6 +10,7 @@ import com.example.administrator.travel.models.OnLoadImageFinishedListener;
 import com.example.administrator.travel.models.PostInteractor;
 import com.example.administrator.travel.views.PostView;
 import com.example.administrator.travel.views.activities.PostActivity;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class PostPresenter implements OnLoadImageFinishedListener,OnPostActivity
     PostView view;
     PostInteractor interactor;
     boolean firstLoad=true,showPicture=false;
-    Location location;
+    LatLng location;
     List<Bitmap> lstImage;
     String tourStartId;
     public PostPresenter(PostView view)
@@ -48,6 +49,12 @@ public class PostPresenter implements OnLoadImageFinishedListener,OnPostActivity
             showPicture=true;
             view.showLayoutPicture();
         }
+    }
+    public void onActivityResult(LatLng location){
+        this.location=location;
+    }
+    public void onBtnMarkLocationClicked(){
+        view.gotoMapActivity();
     }
     public void onPitureItemClicked(PictureItem view){
         if(view.isChosen())

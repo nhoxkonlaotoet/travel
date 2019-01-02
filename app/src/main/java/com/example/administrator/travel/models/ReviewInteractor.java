@@ -4,6 +4,7 @@ package com.example.administrator.travel.models;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 
 import com.example.administrator.travel.models.entities.Rating;
@@ -173,4 +174,5 @@ public class ReviewInteractor {
             }
         });
     }
+
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.administrator.travel.models.entities.Activity;
 import com.example.administrator.travel.models.entities.MyLatLng;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -45,18 +46,15 @@ public class PostInteractor {
             listener.onGetImageCountFailure(ex);
         }
     }
-    public void postActivity(final String tourStartId, final boolean focus, final String content, final List<Bitmap> listImage, Location location, Context context, final OnPostActivityFinishedListener listener){
+    public void postActivity(final String tourStartId, final boolean focus, final String content, final List<Bitmap> listImage, LatLng location, Context context, final OnPostActivityFinishedListener listener){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         if(context!=null) {
             SharedPreferences prefs = context.getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
             final String userId = prefs.getString("AuthID", "");
             Log.e( "1: ", "___________________________________________________");
             if(!userId.equals("none")) {
-                final MyLatLng latLng;
-                if(location!=null)
-                    latLng= new MyLatLng(location.getLatitude(),location.getLongitude());
-                else 
-                    latLng=null;
+                final MyLatLng latLng=new MyLatLng(location.latitude,location.longitude);
+
                 final DatabaseReference timeRef = database.getReference("SystemTime");
                 timeRef.setValue(ServerValue.TIMESTAMP).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -69,7 +67,9 @@ public class PostInteractor {
                                 Log.e( "3: ", "___________________________________________________");
 
                                 int n = 0;
-                                if(listImage!=null)
+                                if(listImage==null || listImage.size()==0)
+                                    listener.onPostSuccess();
+                                else if(listImage!=null)
                                     n=listImage.size();
                                 Long time = dataSnapshot.getValue(Long.class);
                                 DatabaseReference ref = database.getReference("activities");
