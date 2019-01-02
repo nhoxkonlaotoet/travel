@@ -367,17 +367,44 @@ public class HomeActivity extends AppCompatActivity {
 //        names.put("Ben", "Ben");
 //        ref.child(testkey).setValue(names);
 
-//        DatabaseReference ratingRef = database.getReference("rating");
-//        DatabaseReference reviewRef = database.getReference("reviews");
-//        String ratingKey= ratingRef.push().getKey();
-//        ratingRef.child("-LQ2GIaiHuH4LmUVogi5").child(ratingKey).setValue(new Rating(4,"14FjAkNax8S35zBDWEL13yGveyT2"));
-//        reviewRef.child("-LQ2GIaiHuH4LmUVogi5").child(ratingKey).setValue(new Review(1544543228000L,3,
-//                "giá hợp lý, hướng dẫn viên dễ thương <3","14FjAkNax8S35zBDWEL13yGveyT2"));
+//        DatabaseReference dayRef = database.getReference("days");
+//        DatabaseReference scheduleRef = database.getReference("schedules");
 //
-//        ratingKey= ratingRef.push().getKey();
-//        ratingRef.child("-LQ2GIaiHuH4LmUVogi5").child(ratingKey).setValue(new Rating(3,"14FjAkNax8S35zBDWEL13yGveyT2"));
-//        reviewRef.child("-LQ2GIaiHuH4LmUVogi5").child(ratingKey).setValue(new Review(1546098428000L,0,
-//                "bị giật đồ không vui tí nào :(","BzlTfPkRrKaG3QfUVvg9APlC8zY2"));
+//        String daykey = dayRef.push().getKey();
+//        dayRef.child("-LQ2GIaiHuH4LmUVogi5").child(daykey)
+//                .setValue(new Day(2,"NGÀY 02: ĐÀ NẴNG - SUỐI KHOÁNG NÓNG NÚI THẦN TÀI - HỘI AN"));
+//        String scheduleKey = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(scheduleKey)
+//                .setValue(new Schedule(daykey,"9:00","Tham quan Công viên Suối khoáng nóng Núi Thần Tài","tắm khoáng thư giãn tại các hồ tự nhiên ngoài trời, thư giãn với xông hơi khô - ướt, vui chơi tại Công viên nước, tham quan và ngâm chân trực tiếp tại một trong những điểm phát lộ tại mỏ khoáng",new MyLatLng(15.9678684,108.0111086)));
+//        scheduleKey = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(scheduleKey)
+//                .setValue(new Schedule(daykey,"13:00","Tham quan Phố cổ Hội An","",new MyLatLng(15.9184459,108.347032)));
+//        scheduleKey = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(scheduleKey)
+//                .setValue(new Schedule(daykey,"","Tham quan Phố cổ Hội An", "Tham quan Chùa Cầu Nhật Bản",new MyLatLng(15.8771233,108.3239153)));
+//        scheduleKey = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(scheduleKey)
+//                .setValue(new Schedule(daykey,"","Tham quan Phố cổ Hội An","Tham quan Chùa ông",new MyLatLng(15.8775826,108.3291653)));
+//
+//        daykey = dayRef.push().getKey();
+//        dayRef.child("-LQ2GIaiHuH4LmUVogi5").child(daykey)
+//                .setValue(new Day(3,"Ngày 03: ĐÀ NẴNG - KDL BÀ NÀ - TP HCM"));
+//        scheduleKey = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(scheduleKey)
+//                .setValue(new Schedule(daykey,"8:00","Đến khu du lịch Bà Nà Hills","Buổi sáng, sau khi trả phòng, khởi hành đến KDL Bà Nà Hills. Lên Bà Nà bằng hệ thống cáp treo đạt 2 kỷ lục Guinness, ngắm toàn cảnh núi non hùng vỹ và tận hưởng khí hậu trong lành",new MyLatLng(15.9977403,107.9858885)));
+//        scheduleKey = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(scheduleKey)
+//                .setValue(new Schedule(daykey, "","Đến khu du lịch Bà Nà Hills"," Dạo bước trên cầu vàng với thiết kế độc đáo và ấn tượng, đầy mềm mại tựa một dải lụa, được nâng đỡ bởi đôi bàn tay khổng lồ loang lổ rêu phong giữa cảnh sắc nên thơ tuyệt diệu của Bà Nà – Núi Chúa.",new MyLatLng(15.9957137,107.9952803)));
+//        scheduleKey = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(scheduleKey)
+//                .setValue(new Schedule(daykey,"","Đến khu du lịch Bà Nà Hills","Fantasy Park: khu vui chơi giải trí trong nhà đẳng cấp quốc tế (miễn phí 105 trò chơi) và trò chơi Hiệp sĩ Thần thoại (Máng trượt)",new MyLatLng(15.9969551,107.9879323)));
+//        scheduleKey = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(scheduleKey)
+//                .setValue(new Schedule(daykey,"","Đến khu du lịch Bà Nà Hills","trải nghiệm Tàu hỏa leo núi, tham quan 9 vườn hoa, Hầm rượu cổ Debay",new MyLatLng(15.9979484,107.985859)));
+//        scheduleKey = scheduleRef.push().getKey();
+//        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(scheduleKey)
+//                .setValue(new Schedule(daykey,"16:45","Trở về TP. HCM","trên chuyến bay VJ623 lúc 16:45. Kết thúc chương trình (Quý khách tự túc phương tiện từ sân bay về nhà)",new MyLatLng(16.0562785,108.2003724)));
+
     }
 
 

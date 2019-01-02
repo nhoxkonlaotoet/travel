@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.administrator.travel.views.fragments.StatusCommunicationFragment">
+    tools:context="com.example.administrator.travel.views.fragments.ActivityFragment">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,8 +38,20 @@
                 android:gravity="center|left"
                 android:textSize="16sp"
                 android:textColor="@color/colorHintText"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="15dp"
+                android:layout_toLeftOf="@id/btnMap"
+                android:layout_marginRight="5dp"/>
+            <ImageButton
+                android:id="@+id/btnMap"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:srcCompat="@drawable/ic_map_location"
+                android:background="@drawable/background_small_button"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"/>
         </RelativeLayout>
+
         <com.example.administrator.travel.adapter.NonScrollListView
             android:id="@+id/lstvStatus"
             android:layout_width="match_parent"

@@ -10,23 +10,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <RelativeLayout
+        android:id="@+id/layoutPlaceAutoComplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/background_small_button">
+
+        <fragment
+            android:id="@+id/place_autocomplete"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/btnChooseMyLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/background_small_button">
-        <ImageView
-            android:id="@+id/imgvLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_location_on_black_24dp"/>
+        android:padding="5dp"
+        android:background="@drawable/background_small_button"
+        android:onClick="btnChooseMyLocation_Click"
+        android:layout_below="@+id/layoutPlaceAutoComplete"
+        android:layout_centerHorizontal="true">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chọn vị trí của tôi"
-            android:layout_toRightOf="@+id/imgvLocation"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
     </RelativeLayout>
 
 

@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.administrator.travel.models.entities.MyLatLng;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseException;
@@ -23,6 +25,7 @@ import com.google.firebase.storage.StorageReference;
  */
 
 public class TourInteractor {
+    SharedPreferences  prefs;
     public void getImages(final String tourId, final OnGetTourImagesFinishedListener listener)
     {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -105,6 +108,25 @@ public class TourInteractor {
                     }
                 });
             }
+        }
+    }
+
+    public boolean isShareLocation(Context context){
+        prefs = context.getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        String userId = prefs.getString("AuthID","");
+        if(!userId.equals("none")) {
+            return prefs.getBoolean("shareLocation" + userId,false);
+
+        }
+        return false;
+    }
+    public void updateMyLocation(String tourStartId, double lat, double lng){
+        String userId = prefs.getString("AuthID","");
+        if(!userId.equals("none")) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("participants").child(tourStartId+"+"+userId).child("latLng");
+            ref.setValue(new MyLatLng(lat,lng));
+
         }
     }
 }

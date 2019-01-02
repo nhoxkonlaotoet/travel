@@ -79,7 +79,11 @@ public class TourActivity extends AppCompatActivity implements TourView,
         Bundle bundle = getIntent().getExtras();
         Log.e("onCreate: ", ""+bundle.getBoolean("isCompany"));
         isCompany = bundle.getBoolean("isCompany");
-        presenter.onViewLoad(bundle.getString("tourId"), bundle.getBoolean("mytour"));
+        boolean isMyTour= bundle.getBoolean("mytour");
+        String tourStartId="";
+        if(isMyTour)
+            tourStartId = bundle.getString("tourStartId");
+        presenter.onViewLoad(bundle.getString("tourId"),tourStartId,isMyTour);
 
         // load n fragment bên cạnh
         vpContainer.setOffscreenPageLimit(1);

@@ -35,6 +35,9 @@ public class ActivityPresenter implements OnGetActivityFinishedListener, OnGetUs
         activityInteractor.getActivities(tourStartId,this);
         userInformationInteractor.isTourGuide(tourStartId,((ActivityFragment)view).getActivity().getApplicationContext(),this);
     }
+    public void onBtnMapClicked(){
+        view.gotoMapActivty(tourStartId);
+    }
     public void onTxtContentClicked(){
         view.gotoPostActiivty(tourStartId,isTourGuide);
     }

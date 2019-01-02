@@ -13,16 +13,23 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.administrator.travel.models.entities.Nearby;
+import com.example.administrator.travel.models.entities.Participant;
 import com.example.administrator.travel.models.entities.Route;
 import com.example.administrator.travel.models.entities.Schedule;
 import com.example.administrator.travel.presenters.MapPresenter;
 import com.example.administrator.travel.views.MapView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -39,30 +46,53 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener, MapView {
     GoogleApiClient googleApiClient;
-   // Button btnPrevious, btnNow, btnNext;
+    Button btnPrevious, btnNow, btnNext;
+    RelativeLayout btnChooseMyLocation;
     Location myLocation;
     LatLng destination, myClick;
     private GoogleMap mMap;
     MapPresenter presenter;
+    Place placeResult;
     List<PolylineOptions> polylinePaths = new ArrayList<>();
     ProgressDialog progressDialog;
     List<Schedule> lstSchedule = new ArrayList<>();
+    List<Participant> lstParticipant =new ArrayList<>();
+    PlaceAutocompleteFragment placeAutocompleteFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
+        btnChooseMyLocation=findViewById(R.id.btnChooseMyLocation);
+        btnPrevious = findViewById(R.id.btnPrevious);
+        btnNext = findViewById(R.id.btnNext);
+        btnNow = findViewById(R.id.btnNow);
+        placeAutocompleteFragment =
+                (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete);
+        placeAutocompleteFragment.setHint("Tìm kiếm");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         Bundle bundle = getIntent().getExtras();
 
-
+        setAutocompletePlaceSlectec();
         presenter = new MapPresenter(this);
         presenter.onViewLoad(bundle);
     }
+    void setAutocompletePlaceSlectec(){
+        placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Toast.makeText(MapsActivity.this, place + "", Toast.LENGTH_SHORT).show();
+                presenter.onAutoCompleteSelected(place);
+            }
 
+            @Override
+            public void onError(Status status) {
+
+            }
+        });
+    }
     void setMapClick(){
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -80,14 +110,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void btnNext_Click(View btn){
         presenter.onBtnNextClicked();
     }
+    public void btnChooseMyLocation_Click(View btn){
+        presenter.btnChooseMyLocationClicked();
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16));
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -130,13 +161,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void addActivities() {
-
+    public void addPeopleLocations(List<Participant> lstParticipant) {
+        this.lstParticipant=lstParticipant;
+        mapRefesh();
     }
+
 
     @Override
     public void moveCamera(LatLng location) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,15));
     }
 
     @Override
@@ -198,7 +231,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
         presenter.onViewLocationChanged(location);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+      //  mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
         Log.e("onLocationChanged: ", location + "");
     }
 
@@ -213,7 +246,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             mMap.addMarker(new MarkerOptions().position(myClick));
         }
-
+        if(placeResult!=null)
+            mMap.addMarker(new MarkerOptions().position(placeResult.getLatLng())
+            .title(placeResult.getAddress().toString()));
         if(destination!=null)
             mMap.addMarker(new MarkerOptions()
                     .position(destination));
@@ -222,6 +257,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .position(schedule.latLng.getLatLng())
                     .title(schedule.content));
             Log.e( "mapRefesh: ", schedule.toString());
+        }
+        for(Participant participant : lstParticipant)
+        {
+            mMap.addMarker(new MarkerOptions()
+                    .position(participant.latLng.getLatLng())
+                    .title(participant.userId));
         }
 
     }
@@ -244,5 +285,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         intent.putExtra("chosenLocation",location.latitude+","+location.longitude);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public void hideControlBtns() {
+        btnPrevious.setVisibility(View.INVISIBLE);
+        btnNow.setVisibility(View.INVISIBLE);
+        btnNext.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showControlBtns() {
+        btnPrevious.setVisibility(View.VISIBLE);
+        btnNow.setVisibility(View.VISIBLE);
+        btnNext.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideBtnNow() {
+        btnNow.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showBtnNow() {
+        btnNow.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void addPlaceResult(Place place) {
+        this.placeResult=place;
+        mapRefesh();
+    }
+
+    @Override
+    public void hideBtnChooseMyLocation() {
+        btnChooseMyLocation.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showBtnChooseMyLocation() {
+        btnChooseMyLocation.setVisibility(View.VISIBLE);
     }
 }

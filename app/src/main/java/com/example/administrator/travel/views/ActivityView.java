@@ -12,6 +12,7 @@ import java.util.List;
  */
 
 public interface ActivityView {
+    void gotoMapActivty(String tourStartId);
     void showActivities(List<Activity> lstActivity, Long currentTime);
     void notifyGetActivitiesFailure(Exception ex);
     void addUserInfor(UserInformation info);

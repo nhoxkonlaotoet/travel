@@ -69,7 +69,10 @@ public class ScheduleAdapter extends BaseAdapter {
                 ((position < lstSchedule.size() - 1) && !schedule.title.equals(lstSchedule.get(position + 1).title)))
             vSpacing.setVisibility(View.VISIBLE);
         {
-            txtScheduleAddress.setText(getAddress(schedule.latLng.getLatLng()));
+            String address = getAddress(schedule.latLng.getLatLng());
+            if(address==null)
+                address="";
+            txtScheduleAddress.setText(address);
             txtScheduleDescription.setText(schedule.content);
             txtScheduleTime.setText(schedule.hour);
             if (position == 0) {
@@ -87,6 +90,8 @@ public class ScheduleAdapter extends BaseAdapter {
         List<Address> addresses;
         try {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            if(addresses.size()==0)
+                return null;
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             String city = addresses.get(0).getLocality();
             String state = addresses.get(0).getAdminArea();

@@ -36,6 +36,7 @@ public class TourDetailPresenter  implements OnGetTourDetailFinishedListener,OnG
         interactor.getSchedule(((TourDetailFragment)view).tourId,day,this);
     }
     public void onScheduleItemClicked(String scheduleId){
+
         view.gotoMapActivity(tourId,dayId,scheduleId);
     }
     @Override

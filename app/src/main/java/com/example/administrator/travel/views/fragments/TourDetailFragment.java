@@ -41,6 +41,7 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
     Spinner spinnerDays;
     List<Day> lstDay = new ArrayList<>();
     Context context;
+    boolean isMyTour=false;
     public TourDetailFragment() {
     }
 
@@ -69,6 +70,7 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
         txtVehicle=getActivity().findViewById(R.id.txtVehicle);;
         Bundle bundle = getActivity().getIntent().getExtras();
         tourId = bundle.getString("tourId");
+        isMyTour= bundle.getBoolean("mytour");
         presenter = new TourDetailPresenter(this);
         presenter.onViewLoad();
         setOnSelectItemSpinner();
@@ -147,6 +149,7 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
         intent.putExtra("dayId",dayId);
         intent.putExtra("scheduleId",scheduleId);
         intent.putExtra("action","schedule");
+        intent.putExtra("mytour",isMyTour);
         startActivity(intent);
     }
 

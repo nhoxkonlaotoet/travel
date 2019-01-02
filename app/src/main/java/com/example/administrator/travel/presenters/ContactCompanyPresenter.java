@@ -13,6 +13,7 @@ import com.example.administrator.travel.views.ContactCompanyView;
 public class ContactCompanyPresenter implements OnGetCompanyContactFinishedListener{
     ContactCompanyView view;
     ContactCompanyInteractor contactCompanyInteractor;
+    Company company;
     public ContactCompanyPresenter(ContactCompanyView view)
     {
         this.view=view;
@@ -32,7 +33,7 @@ public class ContactCompanyPresenter implements OnGetCompanyContactFinishedListe
     }
     public void onBtnAddressClicked()
     {
-        view.gotoMap();
+        view.gotoMap(company.location.getLatLng());
     }
 
     @Override
@@ -40,6 +41,7 @@ public class ContactCompanyPresenter implements OnGetCompanyContactFinishedListe
         if(!isValidPhoneNumber(company.phoneNumber))
             view.hideBtnPhoneNumber();
         view.showContact(company);
+        this.company=company;
     }
 
     @Override

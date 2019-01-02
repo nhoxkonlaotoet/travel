@@ -170,6 +170,7 @@ public class NearbyFragment extends Fragment implements NearbyView, OnTransmitMy
     public void updateListViewImages(int index, Bitmap bitmap) {
      if(index<adapter.lstNearby.size())
          adapter.lstNearby.get(index).photo=bitmap;
+        adapter.notifyDataSetChanged();
     }
 
     @Override

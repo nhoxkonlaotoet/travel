@@ -22,6 +22,8 @@ import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.presenters.ContactCompanyPresenter;
 import com.example.administrator.travel.views.ContactCompanyView;
+import com.example.administrator.travel.views.activities.MapsActivity;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -164,7 +166,11 @@ public class ContactFragment extends Fragment implements ContactCompanyView {
     }
 
     @Override
-    public void gotoMap() {
-
+    public void gotoMap(LatLng location) {
+        Intent intent = new Intent(getActivity(), MapsActivity.class);
+        intent.putExtra("action","nearby");
+        String destination =location.latitude+","+location.longitude;
+        intent.putExtra("destination", destination);
+        startActivity(intent);
     }
 }

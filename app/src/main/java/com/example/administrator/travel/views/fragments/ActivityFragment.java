@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.administrator.travel.adapter.ActivityAdapter;
@@ -24,6 +25,7 @@ import com.example.administrator.travel.models.entities.Activity;
 import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.presenters.ActivityPresenter;
 import com.example.administrator.travel.views.ActivityView;
+import com.example.administrator.travel.views.activities.MapsActivity;
 import com.example.administrator.travel.views.activities.PostActivity;
 
 import java.io.File;
@@ -38,6 +40,7 @@ public class ActivityFragment extends Fragment implements ActivityView {
     ActivityAdapter adapter;
     ActivityPresenter presenter;
     Context context;
+    ImageButton btnMap;
     public ActivityFragment(){
         // Required empty public constructor
     }
@@ -51,7 +54,7 @@ public class ActivityFragment extends Fragment implements ActivityView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        btnMap=getActivity().findViewById(R.id.btnMap);
         Bundle bundle = getActivity().getIntent().getExtras();
         final String tourStartId= bundle.getString("tourStartId");
         Log.e( "activity frament: ",tourStartId );
@@ -65,13 +68,27 @@ public class ActivityFragment extends Fragment implements ActivityView {
                presenter.onTxtContentClicked();
             }
         });
+        setBtnMapClick();
         presenter=new ActivityPresenter(this);
         presenter.onViewLoad(tourStartId);
 
 
     }
-
-
+    void setBtnMapClick(){
+        btnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            presenter.onBtnMapClicked();
+            }
+        });
+    }
+    @Override
+    public void gotoMapActivty(String tourStartId){
+        Intent intent = new Intent(getActivity(), MapsActivity.class);
+        intent.putExtra("action","activity");
+        intent.putExtra("tourStartId",tourStartId);
+        startActivity(intent);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

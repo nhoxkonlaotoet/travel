@@ -19,20 +19,25 @@ import com.google.android.gms.common.ConnectionResult;
 public class TourPresenter implements OnGetTourImagesFinishedListener,OnTourFinishedListener{
     TourView view;
     TourInteractor interactor;
-    Boolean isMyTour=false;
+    Boolean isMyTour=false, isShareLocation;
+    String tourStartId;
     public TourPresenter(TourView view)
     {
         this.view=view;
         interactor=new TourInteractor();
     }
 
-    public void onViewLoad(String tourId, Boolean isMyTour){
+    public void onViewLoad(String tourId,String tourStartId, Boolean isMyTour){
         if(!isMyTour)
             interactor.getImages(tourId,this);
+        else
+        {
+            this.tourStartId=tourStartId;
+        }
         view.addTab(isMyTour);
         view.connectGoogleApiClient();
         interactor.setTourFinishListener(((TourActivity)view).getApplicationContext(),this);
-
+        isShareLocation=interactor.isShareLocation((TourActivity)view);
     }
     public void onViewAttachFragment(Location myLocation){
         if(myLocation!=null)
@@ -51,6 +56,8 @@ public class TourPresenter implements OnGetTourImagesFinishedListener,OnTourFini
     }
     public void onLocationChanged(Location location){
         view.transmitLocationToFragment(location);
+        if(isShareLocation)
+            interactor.updateMyLocation(tourStartId,location.getLatitude(),location.getLongitude());
     }
 
     @Override
