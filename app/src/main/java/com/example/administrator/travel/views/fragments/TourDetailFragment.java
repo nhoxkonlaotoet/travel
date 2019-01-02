@@ -1,6 +1,7 @@
 package com.example.administrator.travel.views.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.example.administrator.travel.models.entities.Schedule;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.presenters.TourDetailPresenter;
 import com.example.administrator.travel.views.TourDetailView;
+import com.example.administrator.travel.views.activities.MapsActivity;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -70,30 +72,19 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
         presenter = new TourDetailPresenter(this);
         presenter.onViewLoad();
         setOnSelectItemSpinner();
-//        final List<String[]> values = new LinkedList<String[]>();
-//        values.add(new String[]{"Title 1", "Subtitle 1"});
-//        values.add(new String[]{"Title 2", "Subtitle 2"});
-//        values.add(new String[]{"Title 3", "Subtitle 3"});
-//        values.add(new String[]{"Title 4", "Subtitle 4"});
-//        values.add(new String[]{"Title 5", "Subtitle 5"});
-//        values.add(new String[]{"Title 6", "Subtitle 6"});
-//        values.add(new String[]{"Title 7", "Subtitle 7"});
-//        values.add(new String[]{"Title 8", "Subtitle 8"});
-//
-//        lstvSchedule.setAdapter(new ArrayAdapter<String[]>(getActivity(), android.R.layout.simple_expandable_list_item_2, android.R.id.text1, values) {
-//
-//            @Override
-//            public View getView(int position, View convertView, ViewGroup parent) {
-//                View view = super.getView(position, convertView, parent);
-//
-//                return view;
-//            }
-//        });
+        setOnScheduleItemClick();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
+    void setOnScheduleItemClick()
+    {
+        lstvSchedule.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String scheduleId = view.getTag().toString();
+               presenter.onScheduleItemClicked(scheduleId);
+
+            }
+        });
     }
 
     void setOnSelectItemSpinner()
@@ -147,6 +138,16 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
     @Override
     public void notifyFailure(Exception ex) {
         Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void gotoMapActivity(String tourId, String dayId, String scheduleId) {
+        Intent intent = new Intent(getActivity(),MapsActivity.class);
+        intent.putExtra("tourId",tourId);
+        intent.putExtra("dayId",dayId);
+        intent.putExtra("scheduleId",scheduleId);
+        intent.putExtra("action","schedule");
+        startActivity(intent);
     }
 
 

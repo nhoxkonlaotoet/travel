@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.entities.Route;
+import com.example.administrator.travel.models.entities.Schedule;
 import com.example.administrator.travel.presenters.MapPresenter;
 import com.example.administrator.travel.views.MapView;
 import com.google.android.gms.common.ConnectionResult;
@@ -41,7 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     MapPresenter presenter;
     List<PolylineOptions> polylinePaths = new ArrayList<>();
     ProgressDialog progressDialog;
-
+    List<Schedule> lstSchedule = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +113,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
+    public void addSchedule(List<Schedule> lstSchedule) {
+       this.lstSchedule=lstSchedule;
+        mapRefesh();
+    }
+
+    @Override
     public void addDirection(List<Route> lstRoute) {
         for (Route route : lstRoute) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
@@ -171,6 +178,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(destination!=null)
             mMap.addMarker(new MarkerOptions()
                     .position(destination));
+        for(Schedule schedule : lstSchedule){
+            mMap.addMarker(new MarkerOptions()
+                    .position(schedule.latLng.getLatLng())
+                    .title(schedule.content));
+            Log.e( "mapRefesh: ", schedule.toString());
+        }
+
     }
 
     @Override

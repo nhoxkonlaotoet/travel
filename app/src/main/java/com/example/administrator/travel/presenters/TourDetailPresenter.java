@@ -18,20 +18,25 @@ import java.util.List;
 public class TourDetailPresenter  implements OnGetTourDetailFinishedListener,OnGetScheduleFinishedListener{
     TourDetailView view;
     TourDetailInteractor interactor;
-
+    String dayId, tourId;
     public TourDetailPresenter( TourDetailView view){
         this.view=view;
         interactor=new TourDetailInteractor();
     }
     public void onViewLoad()
     {
+        this.tourId=((TourDetailFragment)view).tourId;
         interactor.getDays(((TourDetailFragment)view).tourId,this);
         interactor.getInfor(((TourDetailFragment)view).tourId,this);
 
     }
     public void onSelectItemSpinnerDays(String day)
     {
+        dayId=day;
         interactor.getSchedule(((TourDetailFragment)view).tourId,day,this);
+    }
+    public void onScheduleItemClicked(String scheduleId){
+        view.gotoMapActivity(tourId,dayId,scheduleId);
     }
     @Override
     public void onGetDaySuccess(List<Day> lstDay) {

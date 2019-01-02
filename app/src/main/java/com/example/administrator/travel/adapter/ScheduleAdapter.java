@@ -59,7 +59,7 @@ public class ScheduleAdapter extends BaseAdapter {
         TextView txtScheduleDescription = convertView.findViewById(R.id.txtScheduleDescription);
         TextView txtScheduleTime = convertView.findViewById(R.id.txtScheduleTime);
         View vSpacing = convertView.findViewById(R.id.vSpacing);
-
+        convertView.setTag(lstSchedule.get(position).id);
         if (position > 0 && schedule.title.equals(lstSchedule.get(position - 1).title))
             txtScheduleTitle.setVisibility(View.GONE);
         else {

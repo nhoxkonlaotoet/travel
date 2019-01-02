@@ -15,4 +15,5 @@ public interface TourDetailView {
     void showDays(List<Day> lstDay);
     void showSchedules(List<Schedule> lstSchedule);
     void notifyFailure(Exception ex);
+    void gotoMapActivity(String tourId, String dayId, String scheduleId);
 }

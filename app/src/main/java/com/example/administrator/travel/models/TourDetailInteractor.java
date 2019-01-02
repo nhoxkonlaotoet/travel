@@ -77,6 +77,7 @@ public class TourDetailInteractor {
                     Schedule schedule = dataSnapshot1.getValue(Schedule.class);
                     schedule.id=dataSnapshot1.getKey();
                     lstSchedule.add(schedule);
+                    Log.e( "onDataChange: ",dataSnapshot1.getValue()+"" );
                 }
                 listener.onGetScheduleSuccess(lstSchedule);
             }

@@ -26,9 +26,8 @@ public class MapPresenter  implements OnFindDirectionFinishListener,OnGetSchedul
     MapView view;
     TourDetailInteractor tourDetailInteractor;
     Location myLocation;
-    List<Nearby> lstNearby;
-    LatLng origin, destination;
-
+    LatLng  destination;
+    String action;
     public MapPresenter(MapView view){
         this.view=view;
         tourDetailInteractor=new TourDetailInteractor();
@@ -36,7 +35,7 @@ public class MapPresenter  implements OnFindDirectionFinishListener,OnGetSchedul
 
     public void onViewLoad(Bundle bundle){
         view.connectGoogleApiClient();
-        String action = bundle.getString("action");
+        action = bundle.getString("action");
         switch (action){
             case "nearby":
                 String des = bundle.getString("destination");
@@ -48,7 +47,7 @@ public class MapPresenter  implements OnFindDirectionFinishListener,OnGetSchedul
             case "schedule":
                 String tourId= bundle.getString("tourId");
                 String dayId = bundle.getString("dayId");
-
+                String scheduleId = bundle.getString("scheduleId");
                 tourDetailInteractor.getSchedule(tourId,dayId,this);
                 break;
             case "activity":
@@ -68,6 +67,7 @@ public class MapPresenter  implements OnFindDirectionFinishListener,OnGetSchedul
     }
     public void onViewLocationChanged(Location location){
         myLocation=location;
+        if(action.equals("nearby"))
         try {
             new DirectionFinder(this, myLocation.getLatitude()+","+myLocation.getLongitude(),
                     destination.latitude+","+destination.longitude).execute();
@@ -96,7 +96,8 @@ public class MapPresenter  implements OnFindDirectionFinishListener,OnGetSchedul
 
     @Override
     public void onGetScheduleSuccess(List<Schedule> lstSchedule) {
-        
+        Log.e( "onGetScheduleSuccess: ", lstSchedule.size()+"");
+        view.addSchedule(lstSchedule);
     }
 
     @Override
