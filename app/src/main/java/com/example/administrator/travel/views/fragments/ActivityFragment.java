@@ -123,6 +123,7 @@ public class ActivityFragment extends Fragment implements ActivityView {
     public void gotoPostActiivty(String tourStartId, boolean isTourGuide) {
         Intent intent = new Intent(getActivity(), PostActivity.class);
         intent.putExtra("tourStartId",tourStartId);
+        intent.putExtra("isActivity",true);
         intent.putExtra("isTourGuide", isTourGuide);
         startActivity(intent);
     }

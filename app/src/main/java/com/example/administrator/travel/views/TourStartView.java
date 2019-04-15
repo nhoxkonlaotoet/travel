@@ -1,5 +1,8 @@
 package com.example.administrator.travel.views;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.example.administrator.travel.models.entities.TourStartDate;
 
 import java.util.List;
@@ -9,7 +12,8 @@ import java.util.List;
  */
 
 public interface TourStartView {
-    public void loadTourStartDate();
-    public void showTourStartDate(List<TourStartDate> listTourStartDate);
-
+    void showTourStartDate(List<TourStartDate> listTourStartDate);
+    void notifyFailure(Exception ex);
+    void gotoBooktourActivity(Intent intent);
+    Context getContext();
 }

@@ -1,63 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/newsfeed_item_background"
->
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/newsfeed_item_background">
+
     <ImageView
         android:id="@+id/imgvTour"
         android:layout_width="121dp"
         android:layout_height="121dp"
-        app:srcCompat="@drawable/tour"
-        android:scaleType="centerCrop"/>
-    <View
-        android:id="@+id/line"
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_toRightOf="@id/imgvTour"
-        android:background="@color/colorNewsFeedBackground"/>
+        android:scaleType="centerCrop" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toRightOf="@id/line"
-        android:orientation="vertical"
-       >
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="59dp"
-           android:orientation="vertical"
-           android:paddingLeft="10dp"
-          >
-        <TextView
-            android:id="@+id/txtTourName"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgvTour"
+        android:orientation="vertical">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorText"
-            android:textSize="16sp"
-            android:maxLines = "2"
-            android:text="Tour TP.HCM - Hội An"/>
+            android:layout_height="59dp"
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
 
-           <TextView
-               android:id="@+id/txtDays"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:text="2 ngày 1 đêm"
+            <TextView
+                android:id="@+id/txtTourName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="Tour TP.HCM - Hội An"
+                android:textColor="@color/colorText"
+                android:textSize="16sp" />
 
-               android:layout_marginLeft="10dp"/>
+            <TextView
+                android:id="@+id/txtDays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
 
-       </LinearLayout>
+                android:text="2 ngày 1 đêm" />
+
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorNewsFeedBackground"/>
+            android:background="@color/colorNewsFeedBackground" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,15 +87,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="12sp"
-                    android:text="Viettravel" />
+                    android:text="Viettravel"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/txtTourPrice"
@@ -110,8 +103,7 @@
                     android:gravity="center"
                     android:text="2.357.478 đ"
                     android:textColor="@color/colorTourPrice"
-                    android:textSize="20sp"
-                    />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/txtTourSalePrice"

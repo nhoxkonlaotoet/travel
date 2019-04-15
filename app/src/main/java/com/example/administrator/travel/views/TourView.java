@@ -1,5 +1,6 @@
 package com.example.administrator.travel.views;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.location.Location;
 
@@ -12,12 +13,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 public interface TourView {
 
-    void addTab(Boolean isMyTour);
-    void connectGoogleApiClient();
-    void transmitLocationToFragment(Location location);
-    void startLocationServices();
-    void notifyConnectFailed(ConnectionResult connectionResult);
-    void stopGoogleApiClient();
-    void showImages(Bitmap[] images, Integer numberofImages);
+    void addTabLayoutTab(String tabText);
+    void showTourImages(Bitmap[] images);
     void closebyTourFinished();
+    void hideImagePanel();
+    void setActionbarTransparent();
+    void initVpContainer(int tabCount, boolean isMyTour, boolean isCompany);
+    Context getContext();
+    void notifyTourFinished();
 }

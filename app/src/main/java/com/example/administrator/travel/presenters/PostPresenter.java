@@ -19,90 +19,91 @@ import java.util.List;
  * Created by Administrator on 31/12/2018.
  */
 
-public class PostPresenter implements OnLoadImageFinishedListener,OnPostActivityFinishedListener {
-    boolean isActivty;
-    PostView view;
-    PostInteractor interactor;
-    boolean firstLoad=true,showPicture=false;
-    LatLng location;
-    List<Bitmap> lstImage;
-    String tourStartId;
-    public PostPresenter(PostView view)
-    {
-        this.view=view;
-        interactor=new PostInteractor();
-        lstImage=new ArrayList<>();
-    }
-    public void onViewLoad(){
-        isActivty=true;
-    }
-    public void onBtnPictureClicked(){
-        if (firstLoad) {
-            interactor.loadExternalPictures(this);
-            firstLoad=false;
-        }
-        if(showPicture) {
-            showPicture=false;
-            view.hideLayoutPicture();
-        }
-        else {
-            showPicture=true;
-            view.showLayoutPicture();
-        }
-    }
-    public void onActivityResult(LatLng location){
-        this.location=location;
-    }
-    public void onBtnMarkLocationClicked(){
-        view.gotoMapActivity();
-    }
-    public void onPitureItemClicked(PictureItem view){
-        if(view.isChosen())
-            lstImage.add(view.getImageBitmap());
-        else
-            lstImage.remove(view.getImageBitmap());
-
-        Log.e("list files", lstImage.size()+"" );
-        this.view.showFileCount(lstImage.size());
-    }
-
-    public void onBtnPostClicked(String tourStartId, String content){
-
-        interactor.postActivity(tourStartId,false,content,lstImage,location,((PostActivity)view).getApplicationContext(),this);
-    }
-
-    public void onBtnBackClicked(){
-        view.close();
-    }
-
-    @Override
-    public void onGetImageCoutnSuccess(int length) {
-        view.showFramePictures(length);
-    }
-
-    @Override
-    public void onGetImageCountFailure(Exception ex) {
-
-    }
-
-    @Override
-    public void onGetImageSuccess(int index, Bitmap bitmap, String path) {
-        view.addPicture(index,bitmap,path);
-    }
-
-    @Override
-    public void onGetImageFailure(Exception ex) {
-
-    }
-
-    @Override
-    public void onPostSuccess() {
-        Log.e( "onPostSuccess: ", "");
-        view.close();
-    }
-
-    @Override
-    public void onPostFailure(Exception ex) {
-
-    }
-}
+public class PostPresenter{}
+//        implements OnLoadImageFinishedListener,OnPostActivityFinishedListener {
+//    boolean isActivty;
+//    PostView view;
+//    PostInteractor interactor;
+//    boolean firstLoad=true,showPicture=false;
+//    LatLng location;
+//    List<Bitmap> lstImage;
+//    String tourStartId;
+//    public PostPresenter(PostView view)
+//    {
+//        this.view=view;
+//        interactor=new PostInteractor();
+//        lstImage=new ArrayList<>();
+//    }
+//    public void onViewLoad(){
+//        isActivty=true;
+//    }
+//    public void onBtnPictureClicked(){
+//        if (firstLoad) {
+//            interactor.loadExternalPictures(this);
+//            firstLoad=false;
+//        }
+//        if(showPicture) {
+//            showPicture=false;
+//            view.hideLayoutPicture();
+//        }
+//        else {
+//            showPicture=true;
+//            view.showLayoutPicture();
+//        }
+//    }
+//    public void onActivityResult(LatLng location){
+//        this.location=location;
+//    }
+//    public void onBtnMarkLocationClicked(){
+//        view.gotoMapActivity();
+//    }
+//    public void onPitureItemClicked(PictureItem view){
+//        if(view.isChosen())
+//            lstImage.add(view.getImageBitmap());
+//        else
+//            lstImage.remove(view.getImageBitmap());
+//
+//        Log.e("list files", lstImage.size()+"" );
+//        this.view.showFileCount(lstImage.size());
+//    }
+//
+//    public void onBtnPostClicked(String tourStartId, String content){
+//
+//        interactor.postActivity(tourStartId,false,content,lstImage,location,((PostActivity)view).getApplicationContext(),this);
+//    }
+//
+//    public void onBtnBackClicked(){
+//        view.close();
+//    }
+//
+//    @Override
+//    public void onGetImageCoutnSuccess(int length) {
+//        view.showFramePictures(length);
+//    }
+//
+//    @Override
+//    public void onGetImageCountFailure(Exception ex) {
+//
+//    }
+//
+//    @Override
+//    public void onGetImageSuccess(int index, Bitmap bitmap, String path) {
+//        view.addPicture(index,bitmap,path);
+//    }
+//
+//    @Override
+//    public void onGetImageFailure(Exception ex) {
+//
+//    }
+//
+//    @Override
+//    public void onPostSuccess() {
+//        Log.e( "onPostSuccess: ", "");
+//        view.close();
+//    }
+//
+//    @Override
+//    public void onPostFailure(Exception ex) {
+//
+//    }
+//}

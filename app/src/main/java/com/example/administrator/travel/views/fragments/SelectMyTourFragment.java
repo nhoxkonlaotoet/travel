@@ -1,9 +1,9 @@
 package com.example.administrator.travel.views.fragments;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
@@ -12,34 +12,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.SelectMyTourAdapter;
-import com.example.administrator.travel.models.entities.MyLatLng;
-import com.example.administrator.travel.models.entities.Participant;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.TourStartDate;
-import com.example.administrator.travel.presenters.SelectMyTourPresenter;
+import com.example.administrator.travel.presenters.bases.SelectMyTourPresenter;
+import com.example.administrator.travel.presenters.impls.SelectMyTourPresenterImpl;
 import com.example.administrator.travel.views.SelectMyTourView;
-import com.example.administrator.travel.views.activities.HomeActivity;
 import com.example.administrator.travel.views.activities.LoginActivity;
 import com.example.administrator.travel.views.activities.ScanQRActivity;
 import com.example.administrator.travel.views.activities.TourActivity;
 import com.google.android.gms.vision.barcode.Barcode;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,6 +40,8 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
     SelectMyTourPresenter presenter;
     RelativeLayout layoutLogin,layoutMyTours;
     Button btnLogin;
+    ProgressDialog waitDialog;
+    SelectMyTourAdapter adapter;
     public SelectMyTourFragment() {
         // Required empty public constructor
     }
@@ -67,12 +58,13 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mapping();
-        presenter = new SelectMyTourPresenter(this);
+        presenter = new SelectMyTourPresenterImpl(this);
         setListviewItemClick();
         setBtnScanClick();
         setBtnLoginClick();
-        presenter.onViewLoad();
+        presenter.onViewCreated();
     }
+
     public void mapping(){
         btnScan = getActivity().findViewById(R.id.btnScan);
         layoutLogin = getActivity().findViewById(R.id.layoutLogin);
@@ -156,17 +148,19 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
 
     @Override
     public void gotoLoginActivity() {
-        startActivityForResult((new Intent(getActivity(), LoginActivity.class)),LOGIN_CODE);
+        Intent intent = new Intent(getActivity(),LoginActivity.class);
+        intent.putExtra("requestCode", LOGIN_CODE);
+        startActivityForResult(intent,LOGIN_CODE);
     }
 
     @Override
     public void notifyInvalidScanString() {
-        Toast.makeText(getActivity(), "Mã QR không đúng, vui lòng nhập lại", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Mã QR không đúng, vui lòng quét lại", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void notifyJoinTourFailure(Exception ex) {
-        Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -178,23 +172,42 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
                 final Barcode barcode = data.getParcelableExtra("barcode");
                 //Toast.makeText(getActivity(), barcode.displayValue, Toast.LENGTH_LONG).show();
 
-                presenter.onViewScanned(barcode.displayValue);
+                presenter.onViewResult(barcode.displayValue);
             }
         }
         if(requestCode == LOGIN_CODE){
-            presenter.onLogged();
+            presenter.onViewCreated();
         }
         if(requestCode== TOUR_CODE && resultCode == getActivity().RESULT_OK){
-            presenter.onViewLoad();
+            presenter.onViewCreated();
         }
     }
 
 
     @Override
-    public void showMyTours(List<Tour> lstTour, List<TourStartDate> lstTourStart) {
-        lstvSelectMyTour.setAdapter(new SelectMyTourAdapter(getActivity(),lstTour,lstTourStart));
+    public void showMyTours(int n) {
+        adapter = new SelectMyTourAdapter(getActivity(),n);
+        lstvSelectMyTour.setAdapter(adapter);
     }
 
+    @Override
+    public void updateTourInfo(int pos, Tour tour, TourStartDate tourStartDate) {
+        adapter.updateTourInfo(pos,tour,tourStartDate);
+    }
 
+    @Override
+    public void showWaitDialog(){
+        waitDialog = ProgressDialog.show(this.getContext(), "Đang xử lý", "Vui lòng đợi...");
+    }
 
+    @Override
+    public void dismissWaitDialog(){
+        if(waitDialog.isShowing())
+            waitDialog.dismiss();
+    }
+
+    @Override
+    public Context getContext() {
+        return getActivity();
+    }
 }

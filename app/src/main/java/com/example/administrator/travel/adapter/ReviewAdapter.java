@@ -27,27 +27,29 @@ import java.util.List;
  */
 
 public class ReviewAdapter extends BaseAdapter {
-    List<Rating> list;
+    List<Rating> ratingList;
     Context context;
     DateFormat dateFormat;
-    List<UserInformation> lstUser;
-    public ReviewAdapter(Context context, List<Rating> list)
-    {
+    List<String> userNameList;
+    List<Bitmap> userAvatarList;
 
-        this.list=list;
+    public ReviewAdapter(Context context, List<Rating> ratingList) {
+
+        this.ratingList = ratingList;
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        this.context=context;
-        lstUser = new ArrayList<>();
-
+        this.context = context;
+        userNameList = new ArrayList<>();
+        userAvatarList = new ArrayList<>();
     }
+
     @Override
     public int getCount() {
-        return list.size();
+        return ratingList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return list.get(position);
+        return ratingList.get(position);
     }
 
     @Override
@@ -57,8 +59,9 @@ public class ReviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
-        convertView = ((Activity)context).getLayoutInflater().inflate(R.layout.item_review, null);
+        if (context == null)
+            return null;
+        convertView = ((Activity) context).getLayoutInflater().inflate(R.layout.item_review, null);
         TextView txtReviewerName = convertView.findViewById(R.id.txtReviewerName);
         TextView txtRatingDate = convertView.findViewById(R.id.txtRatingDate);
         RatingBar ratingBarReview = convertView.findViewById(R.id.ratingBarReview);
@@ -66,16 +69,14 @@ public class ReviewAdapter extends BaseAdapter {
         ImageView imgvReviewer = convertView.findViewById(R.id.imgvReviewer);
 
 
-
-        Date date = new Date(list.get(position).ratingTime);
-        Rating rating = list.get(position);
+        Date date = new Date(ratingList.get(position).ratingTime);
+        Rating rating = ratingList.get(position);
         convertView.setTag(rating.id);
-
-        for(int i=0;i<lstUser.size();i++){
-            if(rating.ratingPeopleId.equals(lstUser.get(i).id)) {
-                txtReviewerName.setText(lstUser.get(i).getName());
-                imgvReviewer.setImageBitmap(lstUser.get(i).avatar);
-            }
+        if (userNameList.size() > 0 && userNameList.get(position) != null) {
+            txtReviewerName.setText(userNameList.get(position));
+        }
+        if (userAvatarList.size() > 0 && userAvatarList.get(position) != null) {
+            imgvReviewer.setImageBitmap(userAvatarList.get(position));
         }
 
         txtRatingDate.setText(dateFormat.format(date));
@@ -84,13 +85,13 @@ public class ReviewAdapter extends BaseAdapter {
 
         return convertView;
     }
-    public void updateReviewerInfo(UserInformation user) {
-      for(int i=0;i<lstUser.size();i++)
-      {
-          if(lstUser.get(i).id.equals(user.id))
-              return;
-      }
-      lstUser.add(user);
-      notifyDataSetChanged();
+
+    public void updateUserName(String username, int pos) {
+        userNameList.add(pos, username);
+        notifyDataSetChanged();
+    }
+    public void updateUserAvatar(Bitmap userAvatar, int pos) {
+        userAvatarList.add(pos, userAvatar);
+        notifyDataSetChanged();
     }
 }

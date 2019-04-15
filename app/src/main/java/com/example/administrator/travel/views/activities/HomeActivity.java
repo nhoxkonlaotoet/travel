@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.administrator.travel.LocationService;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.TourDetailInteractor;
 import com.example.administrator.travel.models.entities.City;
@@ -86,6 +87,11 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this,LocationService.class));
+    }
 
 
     @Override
@@ -97,6 +103,7 @@ public class HomeActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);
 
+        startService(new Intent(HomeActivity.this, LocationService.class));
 
         //init database
 

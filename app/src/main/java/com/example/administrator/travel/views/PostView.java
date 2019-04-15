@@ -1,5 +1,7 @@
 package com.example.administrator.travel.views;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -12,11 +14,12 @@ public interface PostView {
     void showLayoutPicture();
     void hideLayoutPicture();
     void showFramePictures(int length);
-    void addPicture(int index, Bitmap bitmap, String path);
-    int getScreenWidth();
+    void addPicture(int index, Bitmap bitmap);
     void showFileCount(int count);
-    void gotoMapActivity();
+    void gotoMapActivity(Intent intent, int requestCode);
     void viewOnPost();
     void viewOnReview();
-    void close();
+    void finishView();
+    void notifyFail(String message);
+    Context getContext();
 }

@@ -55,7 +55,8 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity {
-
+    static final int LOGIN_CODE=103;
+    int requestCode;
     private FirebaseAuth mAuth;
     EditText edtEmail,edtPassword;
     TextView tvSignUp,tvResetPass;
@@ -81,14 +82,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         checkPermissions();
-//
+        requestCode = getIntent().getIntExtra("requestCode",0);
         mAuth = FirebaseAuth.getInstance();
 //       sharedPreferences
         sharedPreferences = getSharedPreferences("dataLogin",MODE_PRIVATE);
         String AuthID = sharedPreferences.getString("AuthID","none");
         boolean autoLogin = sharedPreferences.getBoolean("autoLogin",true);
         if(!AuthID.equals("none") && autoLogin){
-            startActivity((new Intent(LoginActivity.this, HomeActivity.class))
+            startActivity((new Intent(LoginActivity.this, PreLoadingActivity.class))
                     .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
             finish();
@@ -153,15 +154,19 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 String AuthID = mAuth.getCurrentUser().getUid();
                                 editor.putString("AuthID",AuthID);
 
                                 editor.commit();
-                                startActivity((new Intent(LoginActivity.this, HomeActivity.class))
+                                if(requestCode==LOGIN_CODE)
+                                {
+                                    Log.e("onComplete: ", requestCode+" "+LOGIN_CODE);
+                                    finish();
+                                    return;
+                                }
+                                startActivity((new Intent(LoginActivity.this, PreLoadingActivity.class))
                                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-
                                 finish();
                             } else {
                                 Toast.makeText(LoginActivity.this, "Vui lòng kiểm tra lại Email và mật khẩu...",
@@ -181,8 +186,12 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-
-                            startActivity((new Intent(LoginActivity.this, HomeActivity.class))
+                            if(requestCode==LOGIN_CODE)
+                            {
+                                Log.e("onComplete: ", requestCode+"");
+                                finish();
+                            }
+                            startActivity((new Intent(LoginActivity.this, PreLoadingActivity.class))
                                     .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                             finish();

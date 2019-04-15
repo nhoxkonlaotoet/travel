@@ -1,5 +1,7 @@
 package com.example.administrator.travel.views;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
@@ -22,12 +24,14 @@ public interface ReviewView {
     void notifyGetRatingFailure(Exception ex);
     void showReviews(List<Rating> lstReview);
     void notifyGetReviewsFailure(Exception ex);
-    void addUserInfo(UserInformation user);
+    void updateUserName(String username, int pos);
+    void updateUserAvatar(Bitmap avatar, int pos);
     void notifyRateSuccess();
     void notifyRateFailure(Exception ex);
     void showRatingBar();
     void hideRatingBar();
-    void gotoReviewActivity(String reviewId);
+    void gotoReviewDetailActivity(Intent intent);
     void enableRatingBar();
     void disableRatingBar();
+    Context getContext();
 }

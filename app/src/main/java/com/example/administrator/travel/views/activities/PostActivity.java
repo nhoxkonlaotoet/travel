@@ -1,69 +1,56 @@
 package com.example.administrator.travel.views.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Icon;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.PictureItem;
-import com.example.administrator.travel.models.LoadImageTask;
-import com.example.administrator.travel.models.OnDownloadImageFinishedListener;
-import com.example.administrator.travel.presenters.PostPresenter;
+import com.example.administrator.travel.adapter.StoragePictureAdapter;
+import com.example.administrator.travel.presenters.bases.PostPresenter;
+import com.example.administrator.travel.presenters.impls.PostPresenterImpl;
 import com.example.administrator.travel.views.PostView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 
-public class PostActivity extends AppCompatActivity implements PostView {
+public class PostActivity extends AppCompatActivity implements PostView, StoragePictureAdapter.PictureClickListener {
     RelativeLayout btnOpenPicture,btnMarkLocation;
-    GridLayout layoutPictures;
-    PictureItem pictureItem;
-    View.OnClickListener clickListener;
     TextView txtFileCount;
     PostPresenter presenter;
-    ScrollView scrollviewPicture;
-        String tourStartId;
     EditText edittxtContent;
     Button btnPost;
     ImageButton btnBack;
-    final static int LOCATION_REQUEST =111;
+    RecyclerView recyclerViewPicture;
+    StoragePictureAdapter storagePictureAdapter;
     int n=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         mapping();
-
         Bundle bundle = getIntent().getExtras();
-        tourStartId= bundle.getString("tourStartId");
-
-
-        layoutPictures.setColumnCount(3);
-        createOnPictureClick();
         setOnBtnOpenPictureClick();
         setOnBtnPostClick();
         setOnBtnBackClick();
         setOnBtnMarkLocationClick();
-        presenter = new PostPresenter(this);
-        presenter.onViewLoad();
+        presenter = new PostPresenterImpl(this);
+        presenter.onViewCreated(bundle);
     }
 
     void mapping(){
@@ -71,34 +58,23 @@ public class PostActivity extends AppCompatActivity implements PostView {
         btnPost = findViewById(R.id.btnPost);
         btnBack = findViewById(R.id.btnBack);
         btnOpenPicture = findViewById(R.id.btnOpenPicture);
-        layoutPictures = findViewById(R.id.layoutPictures);
-        scrollviewPicture = findViewById(R.id.scrollviewPicture);
         txtFileCount = findViewById(R.id.txtFileCount);
         btnMarkLocation = findViewById(R.id.btnMarkLocation);
+        recyclerViewPicture=findViewById(R.id.recyclerviewPicture);
         edittxtContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hideLayoutPicture();
+                presenter.onEditTextContentClicked();
             }
         });
     }
-    void createOnPictureClick(){
-        clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((PictureItem)view).onClicked();
-                presenter.onPitureItemClicked((PictureItem)view);
-            }
-        };
-    }
-    void setOnPictureClick(View view){
-        view.setOnClickListener(clickListener);
-    }
+
+
     void setOnBtnMarkLocationClick(){
         btnMarkLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.onBtnMarkLocationClicked();
+                presenter.onButtonMarkLocationClicked();
             }
         });
     }
@@ -106,7 +82,7 @@ public class PostActivity extends AppCompatActivity implements PostView {
         btnOpenPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.onBtnPictureClicked();
+                presenter.onButtonPictureClicked();
             }
         });
     }
@@ -114,7 +90,7 @@ public class PostActivity extends AppCompatActivity implements PostView {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.onBtnPostClicked(tourStartId,edittxtContent.getText().toString());
+                presenter.onButtonSendClicked(edittxtContent.getText().toString());
             }
         });
     }
@@ -122,43 +98,34 @@ public class PostActivity extends AppCompatActivity implements PostView {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.onBtnBackClicked();
+                presenter.onButtonBackClicked();
             }
         });
     }
-    @Override
-    public int getScreenWidth() {
-        return Resources.getSystem().getDisplayMetrics().widthPixels;
-    }
+
+
 
     @Override
     public void showLayoutPicture() {
-        scrollviewPicture.setVisibility(View.VISIBLE);
+        recyclerViewPicture.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLayoutPicture() {
-        scrollviewPicture.setVisibility(View.GONE);
+        recyclerViewPicture.setVisibility(View.GONE);
     }
 
     @Override
     public void showFramePictures(int length) {
-        layoutPictures.setRowCount(length/3);
-        ViewGroup.LayoutParams params =new ViewGroup.LayoutParams(getScreenWidth()/3,getScreenWidth()/3);
-
-        for(int i=0;i<length;i++) {
-            pictureItem = new PictureItem(this);
-            pictureItem.setLayoutParams(params);
-            layoutPictures.addView(pictureItem,i);
-            setOnPictureClick(pictureItem);
-        }
+        storagePictureAdapter = new StoragePictureAdapter(this, length);
+        storagePictureAdapter.setClickListener(this);
+        recyclerViewPicture.setAdapter(storagePictureAdapter);
+        recyclerViewPicture.setLayoutManager(new GridLayoutManager(this, 3));
     }
 
     @Override
-    public void addPicture(int index, Bitmap bitmap, String path) {
-        ((PictureItem)layoutPictures.getChildAt(index)).setImage(bitmap);
-        ((PictureItem)layoutPictures.getChildAt(index)).setImagePath(path);
-
+    public void addPicture(int index, Bitmap bitmap) {
+      storagePictureAdapter.updateImage(index, bitmap);
     }
 
     @Override
@@ -170,22 +137,16 @@ public class PostActivity extends AppCompatActivity implements PostView {
     }
 
     @Override
-    public void gotoMapActivity() {
-        Intent intent = new Intent(PostActivity.this,MapsActivity.class);
-        intent.putExtra("action", "choose");
-        startActivityForResult(intent,LOCATION_REQUEST);
+    public void gotoMapActivity(Intent intent, int requestCode) {
+        startActivityForResult(intent,requestCode);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==LOCATION_REQUEST) {
-           // Log.e("onActivityResult: ", data.getExtras().getString("chosenLocation") + "");
-            String[] arr =data.getExtras().getString("chosenLocation").split(",");
 
-            LatLng location = new LatLng( Double.parseDouble(arr[0]),Double.parseDouble(arr[1]));
-            presenter.onActivityResult(location);
-        }
+        presenter.onActivityResult(requestCode, resultCode, data);
+
     }
 
     @Override
@@ -200,7 +161,22 @@ public class PostActivity extends AppCompatActivity implements PostView {
     }
 
     @Override
-    public void close() {
+    public void finishView() {
         finish();
+    }
+
+    @Override
+    public void notifyFail(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public Context getContext(){
+        return this;
+    }
+
+    @Override
+    public void onPictureClick(View view, Bitmap image) {
+        presenter.onPictureItemClicked(view, image);
     }
 }

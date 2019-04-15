@@ -1,20 +1,20 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.administrator.travel.views.fragments.SelectTourFragment">
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:gravity="center"-->
-        <!--android:text="asdasdasd"-->
-        <!--android:textSize="50sp"/>-->
-    <!-- TODO: Update blank fragment layout -->
-   <ListView
-       android:id="@+id/lstvSelectTour"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+    tools:context="com.example.administrator.travel.views.fragments.TourStartFragment">
 
-   </ListView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerviewTourStart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:scrollbars="none"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />/>
+    </RelativeLayout>
 </FrameLayout>

@@ -3,11 +3,17 @@ package com.example.administrator.travel.views.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.SuperscriptSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +36,13 @@ import com.example.administrator.travel.views.activities.TourActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsFeedFragment extends Fragment implements NewFeedView{
+public class NewsFeedFragment extends Fragment implements NewFeedView,NewsFeedAdapter.ItemClickListener{
     Context context;
     private String array_spinner[];
     Spinner spinnerOrigin,spinnerDestination;
-    ListView lstv;
+    RecyclerView lstv;
     private NewFeedPresenter presenter;
+    NewsFeedAdapter adapter;
     public NewsFeedFragment() {
         // Required empty public constructor
         array_spinner=new String[4];
@@ -66,28 +73,26 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
         presenter= new NewFeedPresenter(this);
         presenter.onViewLoad();
         lstv = getActivity().findViewById(R.id.lstvNewsFeed);
-        lstv.setSelector(R.color.transparent);
+        //lstv.setSelector(R.color.transparent);
 
         spinnerOrigin = getActivity().findViewById(R.id.spinnerOrigin);
         spinnerDestination = getActivity().findViewById(R.id.spinnerDestination);
 
 
-        setItemListviewTourClick();
+       // setItemListviewTourClick();
         setItemSpinnerOriginSelect();
         setItemSpinnerDestinationSelect();
-
-
     }
-    void setItemListviewTourClick(){
-        lstv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String[] s = view.getTag().toString().split(" ");
-                presenter.onItemListViewTourClicked(s[0],s[1]);
-
-            }
-        });
-    }
+//    void setItemListviewTourClick(){
+//        lstv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                String[] s = view.getTag().toString().split(" ");
+//                presenter.onItemListViewTourClicked(s[0],s[1]);
+//
+//            }
+//        });
+//    }
     void setItemSpinnerOriginSelect(){
         spinnerOrigin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -130,10 +135,15 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
     @Override
     public void showTours(List<Tour> listTour) {
         if(context!=null) {
-            Log.e( "showTours: ", "fragment "+listTour.size());
-            NewsFeedAdapter a = new NewsFeedAdapter(context, listTour);
-            lstv.setAdapter(a);
+            adapter = new NewsFeedAdapter(context, listTour);
+            adapter.setClickListener(this);
+            lstv.setAdapter(adapter);
         }
+    }
+
+    @Override
+    public void updateTourImage(String tourId, Bitmap img) {
+        adapter.updateImage(tourId,img);
     }
 
     @Override
@@ -144,6 +154,11 @@ public class NewsFeedFragment extends Fragment implements NewFeedView{
         intent.putExtra("mytour",false);
         intent.putExtra("owner",ownerId);
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(View view, String tourId, String ownerId) {
+        presenter.onItemListViewTourClicked(tourId,ownerId);
     }
 
     //chua su dung

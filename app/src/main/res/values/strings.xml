@@ -20,6 +20,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
+    <!-- Tour tab layout-->
+    <string name="title_tour_detail">Chi tiết</string>
+    <string name="title_tour_activity">Hoạt động</string>
+    <string name="title_tour_contact">Liên hệ</string>
+    <string name="title_tour_nearby">Gần đây</string>
+    <string name="title_tour_rating">Đánh giá</string>
+    <string name="title_tour_accept_booking">Duyệt mua</string>
+    <string name="title_tour_booking">Đặt tour</string>
+    <!-- tour tab layout-->
+
+    <string name="notify_tour_finished">Tour đã kết thúc</string>
 
     <!--Sing Up-->
     <string name="move_login">Bạn đã có tài khoản? Đăng nhập tại đây</string>

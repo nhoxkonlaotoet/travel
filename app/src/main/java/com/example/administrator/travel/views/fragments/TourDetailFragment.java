@@ -22,7 +22,8 @@ import com.example.administrator.travel.adapter.ScheduleAdapter;
 import com.example.administrator.travel.models.entities.Day;
 import com.example.administrator.travel.models.entities.Schedule;
 import com.example.administrator.travel.models.entities.Tour;
-import com.example.administrator.travel.presenters.TourDetailPresenter;
+import com.example.administrator.travel.presenters.bases.TourDetailPresenter;
+import com.example.administrator.travel.presenters.impls.TourDetailPresenterImpl;
 import com.example.administrator.travel.views.TourDetailView;
 import com.example.administrator.travel.views.activities.MapsActivity;
 import com.google.android.gms.maps.model.LatLng;
@@ -36,12 +37,9 @@ import java.util.Locale;
 public class TourDetailFragment extends Fragment implements TourDetailView {
     NonScrollListView lstvSchedule;
     TourDetailPresenter presenter;
-    public String dayId, tourId;
     TextView txtAdultPrice, txtChildrenPrice, txtBabyPrice, txtVehicle;
     Spinner spinnerDays;
     List<Day> lstDay = new ArrayList<>();
-    Context context;
-    boolean isMyTour=false;
     public TourDetailFragment() {
     }
 
@@ -54,43 +52,42 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        context=getActivity();
-
         return inflater.inflate(R.layout.fragment_tour_detail, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        lstvSchedule = getActivity().findViewById(R.id.lstvSchedule);
-        txtAdultPrice=getActivity().findViewById(R.id.txtAdultPrice);
-        txtChildrenPrice=getActivity().findViewById(R.id.txtChildrenPrice);
-        txtBabyPrice=getActivity().findViewById(R.id.txtBabyPrice);
-        spinnerDays=getActivity().findViewById(R.id.spinnerDays);
-        txtVehicle=getActivity().findViewById(R.id.txtVehicle);;
+        mapping();
+
         Bundle bundle = getActivity().getIntent().getExtras();
-        tourId = bundle.getString("tourId");
-        isMyTour= bundle.getBoolean("mytour");
-        presenter = new TourDetailPresenter(this);
-        presenter.onViewLoad();
+        presenter = new TourDetailPresenterImpl(this);
+        presenter.onViewCreated(bundle);
         setOnSelectItemSpinner();
         setOnScheduleItemClick();
     }
 
-    void setOnScheduleItemClick()
-    {
+    void mapping() {
+        lstvSchedule = getActivity().findViewById(R.id.lstvSchedule);
+        txtAdultPrice = getActivity().findViewById(R.id.txtAdultPrice);
+        txtChildrenPrice = getActivity().findViewById(R.id.txtChildrenPrice);
+        txtBabyPrice = getActivity().findViewById(R.id.txtBabyPrice);
+        spinnerDays = getActivity().findViewById(R.id.spinnerDays);
+        txtVehicle = getActivity().findViewById(R.id.txtVehicle);
+    }
+
+    void setOnScheduleItemClick() {
         lstvSchedule.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String scheduleId = view.getTag().toString();
-               presenter.onScheduleItemClicked(scheduleId);
+                presenter.onScheduleItemClicked(scheduleId);
 
             }
         });
     }
 
-    void setOnSelectItemSpinner()
-    {
+    void setOnSelectItemSpinner() {
         spinnerDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -105,54 +102,48 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
         });
 
     }
+
     @Override
-    public void showInfor(Tour tour)
-    {
+    public void showInfor(Tour tour) {
         txtAdultPrice.setText(String.valueOf(tour.adultPrice));
         txtChildrenPrice.setText(String.valueOf(tour.childrenPrice));
         txtBabyPrice.setText(String.valueOf(tour.babyPrice));
         txtVehicle.setText(String.valueOf(tour.vihicle));
     }
+
     @Override
     public void showDays(List<Day> lstDay) {
-        this.lstDay=lstDay;
+        this.lstDay = lstDay;
         List<Integer> lstSpinnerDay = new ArrayList<>();
         for (Day day : lstDay) {
-        //    Log.e("showDays: ", day.toString());
+            //    Log.e("showDays: ", day.toString());
             lstSpinnerDay.add(day.day);
         }
-        if(!(lstDay.size()==0)) {
-            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, lstSpinnerDay);
+        if (!(lstSpinnerDay.size() == 0) && getContext()!=null){
+            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, lstSpinnerDay);
             spinnerDays.setAdapter(adapter);
-          // presenter.getSchedule(tourId, lstDay.get(0).id);
         }
     }
 
     @Override
     public void showSchedules(List<Schedule> lstSchedule) {
-      //  for (Schedule schedule : lstSchedule) {
-         //   Log.e("showSchedules: ", schedule.toString());
-      //  }
-        ScheduleAdapter scheduleAdapter = new ScheduleAdapter(getContext(),lstSchedule);
+        ScheduleAdapter scheduleAdapter = new ScheduleAdapter(getContext(), lstSchedule);
         lstvSchedule.setAdapter(scheduleAdapter);
     }
 
     @Override
     public void notifyFailure(Exception ex) {
-        Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_LONG).show();
     }
-
     @Override
-    public void gotoMapActivity(String tourId, String dayId, String scheduleId) {
-        Intent intent = new Intent(getActivity(),MapsActivity.class);
-        intent.putExtra("tourId",tourId);
-        intent.putExtra("dayId",dayId);
-        intent.putExtra("scheduleId",scheduleId);
-        intent.putExtra("action","schedule");
-        intent.putExtra("mytour",isMyTour);
+    public void gotoMapActivity(Intent intent) {
         startActivity(intent);
     }
 
+    @Override
+    public Context getContext() {
+        return getActivity();
+    }
 
     public String getAddress(LatLng latLng) {
         Geocoder geocoder;

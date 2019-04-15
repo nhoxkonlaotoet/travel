@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
@@ -13,6 +14,7 @@ import com.example.administrator.travel.models.entities.TourStartDate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,17 +26,20 @@ public class SelectMyTourAdapter extends BaseAdapter {
     Context context;
     List<Tour> lstTour;
     List<TourStartDate> lstTourStart;
-    DateFormat dateFormat ;
-    public SelectMyTourAdapter(Context context, List<Tour> lstTour, List<TourStartDate> lstTourStart)
-    {
-        this.context=context;
-        this.lstTour=lstTour;
-        this.lstTourStart=lstTourStart;
+    int n;
+    DateFormat dateFormat;
+
+    public SelectMyTourAdapter(Context context, int n) {
+        this.context = context;
+        this.n = n;
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        lstTour = new ArrayList<>();
+        lstTourStart = new ArrayList<>();
     }
+
     @Override
     public int getCount() {
-        return lstTourStart.size();
+        return n;
     }
 
     @Override
@@ -49,22 +54,33 @@ public class SelectMyTourAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        convertView = ((Activity)context).getLayoutInflater().inflate(R.layout.item_select_my_tour, null);
-        convertView.setTag(lstTourStart.get(position).tourId+" "+lstTourStart.get(position).id);
+        if (context == null)
+            return null;
+        convertView = ((Activity) context).getLayoutInflater().inflate(R.layout.item_select_my_tour, null);
         TextView txtTourName = convertView.findViewById(R.id.txtMyTourName);
         TextView txtStartDate = convertView.findViewById(R.id.txtStartDate);
-        Date date = new Date(lstTourStart.get(position).startDate);
-        txtStartDate.setText(dateFormat.format(date));
-        String tourname="";
-        for(Tour tour:lstTour)
-            if(tour.id.equals(lstTourStart.get(position).tourId))
-            {
-                tourname=tour.name;
-                break;
-            }
-        txtTourName.setText(tourname);
+        ProgressBar progressBarWaitTourName = convertView.findViewById(R.id.progressbarWaitTourName);
+        ProgressBar progressBarWaitTourStartDate = convertView.findViewById(R.id.progressbarWaitTourStartDate);
+        if (lstTourStart.size() > 0 && lstTourStart.get(position) != null) {
+            Date date = new Date(lstTourStart.get(position).startDate);
+            txtStartDate.setText(dateFormat.format(date));
+            progressBarWaitTourStartDate.setVisibility(View.GONE);
 
+            if (lstTourStart.size() > 0 && lstTour.get(position) != null) {
+                String tourname = lstTour.get(position).name;
+                txtTourName.setText(tourname);
+                progressBarWaitTourName.setVisibility(View.GONE);
+                convertView.setTag(lstTourStart.get(position).tourId+" "+lstTourStart.get(position).id);
+            }
+        }
         return convertView;
+    }
+
+    public void updateTourInfo(int pos, Tour tour, TourStartDate tourStartDate) {
+        if (!lstTour.contains(tour))
+            lstTour.add(pos, tour);
+        if (!lstTourStart.contains(tourStartDate))
+            lstTourStart.add(pos, tourStartDate);
+        notifyDataSetChanged();
     }
 }

@@ -69,7 +69,8 @@ public class ActivityAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        if(context==null)
+            return null;
         convertView = ((Activity)context).getLayoutInflater().inflate(R.layout.status_item, null);
         convertView.setTag(lstActivity.get(position).id);
         ImageView imgvUserAvatar = convertView.findViewById(R.id.imgvUserAvatar);

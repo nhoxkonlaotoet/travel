@@ -119,7 +119,7 @@ public class SelectMyTourInteractor {
                         Log.e( "onDataChange: ", dataSnapshot.getValue()+"");
                         if(dataSnapshot.getValue()!=null && !dataSnapshot.getValue().equals("")) {
                             Participant participant = new Participant(userId, tourStartId, isShared,
-                                    new MyLatLng(0, 0), time, 0L);
+                                    new MyLatLng(0, 0));
                             DatabaseReference participantsRef = database.getReference("participants");
                             participantsRef.child(tourStartId + "+" + userId).setValue(participant).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override

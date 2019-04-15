@@ -1,39 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp">
-    <RelativeLayout
-        android:id="@+id/layoutMyTourNameandStartDay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/txtMyTourName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tour du lịch Đà Lạt"
-            android:textColor="@color/colorText"
-            android:layout_marginBottom="5dp"/>
-        <LinearLayout
-            android:id="@+id/layoutMyTourStartDay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtMyTourName">
-            <TextView
 
+    <LinearLayout
+        android:id="@+id/layoutMyTourNameandStartDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtMyTourName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thời gian "
-                android:textColor="@color/colorText"/>
+                android:textColor="@color/colorText" />
+
+            <ProgressBar
+                android:id="@+id/progressbarWaitTourName"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/txtMyTourName"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
+                android:indeterminateDuration="1000" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/viewCenterHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true" />
+
             <TextView
                 android:id="@+id/txtStartDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1/10/2018 - 5/1/2018"
-                android:textColor="@color/colorText"/>
+                android:textColor="@color/colorText" />
 
-        </LinearLayout>
-    </RelativeLayout>
+            <ProgressBar
+                android:id="@+id/progressbarWaitTourStartDate"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_alignRight="@+id/viewCenterHorizontal"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/txtStartDate"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
+                android:indeterminateDuration="1000" />
+        </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

@@ -33,20 +33,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "873456647127-co0k550etm88u8jlrntg1847gie7nf94.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
@@ -67,6 +60,14 @@
           }
         },
         {
+          "client_id": "873456647127-esrcgrbbqfb1rsugikoomgppaq0agvpu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.administrator.travel",
+            "certificate_hash": "79c4c7c4f7923a1d5af6d20c92e16c135392a168"
+          }
+        },
+        {
           "client_id": "873456647127-co0k550etm88u8jlrntg1847gie7nf94.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -77,20 +78,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "873456647127-co0k550etm88u8jlrntg1847gie7nf94.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

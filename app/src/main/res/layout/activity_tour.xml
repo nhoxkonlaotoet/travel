@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.administrator.travel.views.activities.TourActivity">
+
     <android.support.v4.view.ViewPager
         android:id="@+id/vpTourImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/transparent">
-    </android.support.v4.view.ViewPager>
+        android:background="@color/transparent"></android.support.v4.view.ViewPager>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -18,33 +18,29 @@
         android:layout_height="wrap_content"
         android:background="@color/colorGreen"
         android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:title="Tour du lich Hội An"
-        app:titleTextColor="#fff"
-        android:theme="?attr/actionBarTheme" />
-
-
+        app:titleTextColor="#fff" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorSelected"
-        android:layout_below="@+id/vpTourImage" />
+        android:layout_below="@+id/vpTourImage"
+        android:background="@color/colorSelected" />
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tablayoutTour"
+        style="@style/CustomTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/CustomTabLayout"
         android:layout_below="@+id/vpTourImage"
         app:tabGravity="fill"
-        app:tabTextAppearance="@style/CustomTextAppearanceTab">
+        app:tabTextAppearance="@style/CustomTextAppearanceTab"></android.support.design.widget.TabLayout>
 
-
-    </android.support.design.widget.TabLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/vpTabContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tablayoutTour">
+        android:layout_below="@id/tablayoutTour"></android.support.v4.view.ViewPager>
 
-    </android.support.v4.view.ViewPager>
 </RelativeLayout>

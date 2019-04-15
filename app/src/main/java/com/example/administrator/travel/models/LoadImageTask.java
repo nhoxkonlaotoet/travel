@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
+import com.example.administrator.travel.models.listeners.Listener;
+
 import java.io.InputStream;
 import java.net.URL;
 
@@ -12,10 +14,10 @@ import java.net.URL;
  */
 
 public class LoadImageTask extends AsyncTask<String,Void,Bitmap> {
-    OnLoadImageFinishedListener listener;
+    Listener.OnLoadImageFinishedListener listener;
     int index;
     String path;
-    public LoadImageTask(OnLoadImageFinishedListener listener){
+    public LoadImageTask(Listener.OnLoadImageFinishedListener listener){
         this.listener=listener;
     }
 
@@ -30,25 +32,26 @@ public class LoadImageTask extends AsyncTask<String,Void,Bitmap> {
             path = urls[1];
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize=15;
-
             logo = BitmapFactory.decodeFile(path,options);
 
         }catch(Exception e){
             e.printStackTrace();
-            if(listener!=null)
-                listener.onGetImageFailure(e);
         }
         return logo;
     }
 
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+
+    }
+
     /*
-        onPostExecute(Result result)
-            Runs on the UI thread after doInBackground(Params...).
-     */
+            onPostExecute(Result result)
+                Runs on the UI thread after doInBackground(Params...).
+         */
     protected void onPostExecute(Bitmap result){
-        if(listener!=null)
-            listener.onGetImageSuccess(index,result,path);
-        //Log.e( "onPostExecute: ", result.getByteCount()+"");
+        listener.onLoadImageSuccess(index,result);
     }
 
 }

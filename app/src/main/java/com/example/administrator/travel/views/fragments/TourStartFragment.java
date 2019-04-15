@@ -1,48 +1,37 @@
 package com.example.administrator.travel.views.fragments;
 
 
-import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.travel.R;
+import com.example.administrator.travel.adapter.TourStartAdapter;
 import com.example.administrator.travel.models.entities.TourStartDate;
-import com.example.administrator.travel.presenters.TourStartPresenter;
+import com.example.administrator.travel.presenters.bases.TourStartPresenter;
+import com.example.administrator.travel.presenters.impls.TourStartPresenterImpl;
 import com.example.administrator.travel.views.TourStartView;
-import com.example.administrator.travel.views.activities.BookTourActivity;
 
-import java.io.Serializable;
-import java.nio.channels.Selector;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TourStartFragment extends Fragment implements TourStartView {
-    ListView lstvSelectTour;
-    String tourId;
+public class TourStartFragment extends Fragment implements TourStartView, TourStartAdapter.ItemClickListener {
+    RecyclerView recyclerviewTourStart;
     TourStartPresenter presenter;
-    Boolean bookTourClicked;
+    TourStartAdapter tourStartAdapter;
     public TourStartFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,86 +44,39 @@ public class TourStartFragment extends Fragment implements TourStartView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        lstvSelectTour = getActivity().findViewById(R.id.lstvSelectTour);
-        bookTourClicked=false;
-        presenter = new TourStartPresenter(this);
+        recyclerviewTourStart = getActivity().findViewById(R.id.recyclerviewTourStart);
+        presenter = new TourStartPresenterImpl(this);
         Bundle bundle = getActivity().getIntent().getExtras();
-        tourId=bundle.getString("tourId");
-
-        loadTourStartDate();
+        presenter.onViewCreated(bundle);
     }
 
     @Override
     public void showTourStartDate(List<TourStartDate> listTourStartDate) {
-        TourStartAdapter adapter = new TourStartAdapter(listTourStartDate);
-        lstvSelectTour.setAdapter(adapter);
+
+        tourStartAdapter = new TourStartAdapter(getContext(), listTourStartDate);
+        tourStartAdapter.setClickListener(this);
+        recyclerviewTourStart.setAdapter(tourStartAdapter);
         Log.e("SelectTourFragment: ", "showTourStartDate");
     }
+
     @Override
-    public void loadTourStartDate()
-    {
-        presenter.getTourStartDate(tourId);
+    public void notifyFailure(Exception ex) {
+
     }
+
     @Override
-    public void onResume() {
-        super.onResume();
-        if(bookTourClicked) {
-            presenter.getTourStartDate(tourId);
-            bookTourClicked=false;
-        }
+    public void gotoBooktourActivity(Intent intent) {
+        startActivity(intent);
     }
 
-    public class TourStartAdapter extends BaseAdapter {
-        List<TourStartDate> list;
-        Button btnBookTour;
-        TextView txtStartDate, txtNumberPeople;
-        public TourStartAdapter(List<TourStartDate> list)
-        {
-            if(list!=null) {
-                this.list = list;
-            }
-            else
-                this.list=new ArrayList<>();
-        }
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.tour_start_date_item, null);
-            txtStartDate = convertView.findViewById(R.id.txtStart);
-            txtNumberPeople = convertView.findViewById(R.id.txtNumberPeople);
-            btnBookTour=convertView.findViewById(R.id.btnBookTour);
-
-            Date date = new Date(list.get(position).startDate);
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-            txtStartDate.setText(dateFormat.format(date));
-
-            txtNumberPeople.setText(list.get(position).peopleBooking+"");
-            btnBookTour.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    bookTourClicked=true;
-                    Intent intent = new Intent(getActivity(), BookTourActivity.class);
-                    intent.putExtra("tourStartId",  list.get(position).id);
-                    startActivity(intent);
-                }
-            });
-            return convertView;
-        }
+    @Override
+    public Context getContext(){
+        return getActivity();
     }
+
+    @Override
+    public void onTourStartItemClick(View view, String tourStartId) {
+        presenter.onTourStartItemClick(tourStartId);
+    }
+
 }

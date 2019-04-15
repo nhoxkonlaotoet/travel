@@ -11,15 +11,27 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:orientation="vertical">
-       <TextView
-           android:id="@+id/txtOwnerName"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:text="Công ty du lich Viettravel"
-           android:textColor="@color/colorText"
-           android:textSize="20sp"
-           android:layout_margin="15dp"/>
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+            <TextView
+                android:id="@+id/txtCompanyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorText"
+                android:textSize="20sp"/>
+            <ProgressBar
+                android:id="@+id/progressbarCompanyName"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/txtCompanyName"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
+                android:indeterminateDuration="1000" />
+        </RelativeLayout>
        <View
            android:layout_width="match_parent"
            android:layout_height="1dp"
@@ -38,15 +50,24 @@
                app:srcCompat="@drawable/ic_web_link"/>
            <TextView
                android:id="@+id/txtWeblink"
-               android:layout_width="match_parent"
+               android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="Website"
                android:textColor="@color/colorText"
                android:layout_toRightOf="@+id/imgvWeblink"
                android:layout_alignBottom="@+id/imgvWeblink"
                android:layout_alignTop="@+id/imgvWeblink"
                android:gravity="center|left"
                android:layout_marginLeft="10dp"/>
+           <ProgressBar
+               android:id="@+id/progressbarWeb"
+               style="?android:attr/progressBarStyleHorizontal"
+               android:layout_width="match_parent"
+               android:layout_height="10dp"
+               android:layout_centerVertical="true"
+               android:layout_toRightOf="@+id/txtWeblink"
+               android:indeterminate="true"
+               android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
+               android:indeterminateDuration="1000" />
        </RelativeLayout>
        <View
            android:layout_width="match_parent"
@@ -66,15 +87,24 @@
                app:srcCompat="@drawable/ic_phone_black_24dp"/>
            <TextView
                android:id="@+id/txtPhoneNumber"
-               android:layout_width="match_parent"
+               android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="01633580156"
                android:textColor="@color/colorText"
                android:layout_toRightOf="@+id/imgvPhoneNumber"
                android:layout_alignBottom="@+id/imgvPhoneNumber"
                android:layout_alignTop="@+id/imgvPhoneNumber"
                android:gravity="center|left"
                android:layout_marginLeft="10dp"/>
+           <ProgressBar
+               android:id="@+id/progressbarPhone"
+               style="?android:attr/progressBarStyleHorizontal"
+               android:layout_width="match_parent"
+               android:layout_height="10dp"
+               android:layout_centerVertical="true"
+               android:layout_toRightOf="@+id/txtPhoneNumber"
+               android:indeterminate="true"
+               android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
+               android:indeterminateDuration="1000" />
        </RelativeLayout>
        <View
            android:layout_width="match_parent"
@@ -94,9 +124,8 @@
                app:srcCompat="@drawable/ic_location_on_black_24dp"/>
            <TextView
                android:id="@+id/txtAddress"
-               android:layout_width="match_parent"
+               android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="Số 123 Hoàng Diệu 2, Linh Chiểu, Thủ Đức,..."
                android:textColor="@color/colorText"
                android:layout_toRightOf="@+id/imgvLocation"
                android:layout_alignBottom="@+id/imgvLocation"
@@ -104,6 +133,16 @@
                android:gravity="center|left"
                android:layout_marginLeft="10dp"
                android:maxLines="1"/>
+           <ProgressBar
+               android:id="@+id/progressbarAddress"
+               style="?android:attr/progressBarStyleHorizontal"
+               android:layout_width="match_parent"
+               android:layout_height="10dp"
+               android:layout_centerVertical="true"
+               android:layout_toRightOf="@+id/txtAddress"
+               android:indeterminate="true"
+               android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
+               android:indeterminateDuration="1000" />
        </RelativeLayout>
        <View
            android:layout_width="match_parent"
