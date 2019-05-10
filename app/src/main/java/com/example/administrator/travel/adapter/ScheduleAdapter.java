@@ -52,7 +52,7 @@ public class ScheduleAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        convertView = ((Activity)context).getLayoutInflater().inflate(R.layout.schedule_tour_item, null);
+        convertView = ((Activity)context).getLayoutInflater().inflate(R.layout.item_schedule_tour, null);
         Schedule schedule = lstSchedule.get(position);
         TextView txtScheduleTitle = convertView.findViewById(R.id.txtScheduleTitle);
         TextView txtScheduleAddress = convertView.findViewById(R.id.txtScheduleAddress);

@@ -4,9 +4,11 @@ package com.example.administrator.travel.views.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.administrator.travel.R;
+import com.example.administrator.travel.adapter.NewsFeedAdapter;
 import com.example.administrator.travel.adapter.SelectMyTourAdapter;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.TourStartDate;
@@ -30,18 +33,23 @@ import com.example.administrator.travel.views.activities.ScanQRActivity;
 import com.example.administrator.travel.views.activities.TourActivity;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
-    ListView lstvSelectMyTour;
+public class SelectMyTourFragment extends Fragment implements SelectMyTourView,
+        SelectMyTourAdapter.ItemClickListener, NewsFeedAdapter.ItemClickListener {
+    RecyclerView recyclerViewMyTour;
     LinearLayout btnScan;
-    public static final Integer SCAN_QR_CODE = 100,TOUR_CODE=102, LOGIN_CODE=103;
+    public static final Integer SCAN_QR_CODE = 100, TOUR_CODE = 102, LOGIN_CODE = 103;
     SelectMyTourPresenter presenter;
-    RelativeLayout layoutLogin,layoutMyTours;
+    RelativeLayout layoutLogin, layoutMyTours;
     Button btnLogin;
     ProgressDialog waitDialog;
-    SelectMyTourAdapter adapter;
+    SelectMyTourAdapter selectMyTourAdapter;
+    NewsFeedAdapter newsFeedAdapter;
+
     public SelectMyTourFragment() {
         // Required empty public constructor
     }
@@ -59,29 +67,20 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
         super.onViewCreated(view, savedInstanceState);
         mapping();
         presenter = new SelectMyTourPresenterImpl(this);
-        setListviewItemClick();
         setBtnScanClick();
         setBtnLoginClick();
         presenter.onViewCreated();
     }
 
-    public void mapping(){
+    public void mapping() {
         btnScan = getActivity().findViewById(R.id.btnScan);
         layoutLogin = getActivity().findViewById(R.id.layoutLogin);
         layoutMyTours = getActivity().findViewById(R.id.layoutMyTours);
-        lstvSelectMyTour = getActivity().findViewById(R.id.lstvSelectMyTour);
+        recyclerViewMyTour = getActivity().findViewById(R.id.recyclerviewMyTour);
         btnLogin = getActivity().findViewById(R.id.btnLogin);
     }
-    public void setListviewItemClick(){
-        lstvSelectMyTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                presenter.onItemTourClicked(view);
-            }
-        });
-    }
-    public void setBtnScanClick()
-    {
+
+    public void setBtnScanClick() {
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,8 +88,8 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
             }
         });
     }
-    public void setBtnLoginClick()
-    {
+
+    public void setBtnLoginClick() {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,22 +97,24 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
             }
         });
     }
+
     @Override
-    public void gotoCamera()
-    {
+    public void gotoCamera() {
         Intent intent = new Intent(getActivity(), ScanQRActivity.class);
-        startActivityForResult(intent,SCAN_QR_CODE );
+        startActivityForResult(intent, SCAN_QR_CODE);
     }
 
     @Override
-    public void gotoTourActivity(String tourId, String tourStartId, boolean isCompany){
+    public void gotoTourActivity(String tourId, String tourStartId, String owner, boolean isCompany) {
         Intent intent = new Intent(getActivity(), TourActivity.class);
-        intent.putExtra("mytour",true);
-        intent.putExtra("tourId",tourId);
-        intent.putExtra("tourStartId",tourStartId);
-        intent.putExtra("isCompany",isCompany);
-        startActivityForResult(intent,TOUR_CODE);
-        Log.e( "gotoTourActivity: ", "_________________________");
+        intent.putExtra("mytour", true);
+        intent.putExtra("tourId", tourId);
+        if (tourStartId != null)
+            intent.putExtra("tourStartId", tourStartId);
+        if (owner != null)
+            intent.putExtra("owner", owner);
+        startActivityForResult(intent, TOUR_CODE);
+        Log.e("gotoTourActivity: ", "_________________________");
     }
 
     @Override
@@ -148,9 +149,9 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
 
     @Override
     public void gotoLoginActivity() {
-        Intent intent = new Intent(getActivity(),LoginActivity.class);
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
         intent.putExtra("requestCode", LOGIN_CODE);
-        startActivityForResult(intent,LOGIN_CODE);
+        startActivityForResult(intent, LOGIN_CODE);
     }
 
     @Override
@@ -159,26 +160,26 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
     }
 
     @Override
-    public void notifyJoinTourFailure(Exception ex) {
-        Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+    public void notifyJoinTourFailure(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == SCAN_QR_CODE && resultCode ==getActivity().RESULT_OK){
-            if(data != null){
+        if (requestCode == SCAN_QR_CODE && resultCode == getActivity().RESULT_OK) {
+            if (data != null) {
                 final Barcode barcode = data.getParcelableExtra("barcode");
                 //Toast.makeText(getActivity(), barcode.displayValue, Toast.LENGTH_LONG).show();
 
                 presenter.onViewResult(barcode.displayValue);
             }
         }
-        if(requestCode == LOGIN_CODE){
+        if (requestCode == LOGIN_CODE) {
             presenter.onViewCreated();
         }
-        if(requestCode== TOUR_CODE && resultCode == getActivity().RESULT_OK){
+        if (requestCode == TOUR_CODE && resultCode == getActivity().RESULT_OK) {
             presenter.onViewCreated();
         }
     }
@@ -186,28 +187,58 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView {
 
     @Override
     public void showMyTours(int n) {
-        adapter = new SelectMyTourAdapter(getActivity(),n);
-        lstvSelectMyTour.setAdapter(adapter);
+        selectMyTourAdapter = new SelectMyTourAdapter(getActivity(), n);
+        selectMyTourAdapter.setClickListener(this);
+        recyclerViewMyTour.setAdapter(selectMyTourAdapter);
     }
 
     @Override
     public void updateTourInfo(int pos, Tour tour, TourStartDate tourStartDate) {
-        adapter.updateTourInfo(pos,tour,tourStartDate);
+        selectMyTourAdapter.updateTourInfo(pos, tour, tourStartDate);
     }
 
     @Override
-    public void showWaitDialog(){
+    public void showWaitDialog() {
         waitDialog = ProgressDialog.show(this.getContext(), "Đang xử lý", "Vui lòng đợi...");
     }
 
     @Override
-    public void dismissWaitDialog(){
-        if(waitDialog.isShowing())
+    public void dismissWaitDialog() {
+        if (waitDialog.isShowing())
             waitDialog.dismiss();
+    }
+
+    @Override
+    public void showMyTours(List<Tour> tourList) {
+        newsFeedAdapter = new NewsFeedAdapter(getActivity(), tourList);
+        newsFeedAdapter.setClickListener(this);
+        recyclerViewMyTour.setAdapter(newsFeedAdapter);
+
+    }
+
+    @Override
+    public void updateTourImage(int pos, String tourId, Bitmap image) {
+        newsFeedAdapter.updateImage(pos, tourId, image);
+    }
+
+    @Override
+    public void notifyGetMyTourFail(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public Context getContext() {
         return getActivity();
+    }
+
+
+    @Override
+    public void onTourItemClick(View view, String tourId, String ownerId) {
+        presenter.onMyOwnedTourItemClicked(tourId, ownerId);
+    }
+
+    @Override
+    public void onMyTourItemClick(View view, String tourId, String tourStartId) {
+        presenter.onMyTourItemClicked(tourId, tourStartId);
     }
 }

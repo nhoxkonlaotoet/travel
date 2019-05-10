@@ -12,11 +12,30 @@ import com.example.administrator.travel.models.listeners.Listener;
 public interface ParticipantInteractor {
     void joinTour(String userId, boolean isShareLocation, String tourStartId,
                   Listener.OnJoinTourFinishedListener listener);
-    void rememberTour(String tourStartId, String tourId, Context context, Listener.OnRememberTourFinishedListener listener);
-    boolean isJoiningTour(Context context);
-    String getJoiningTourId(Context context);
-    String getJoiningTourStartId(Context context);
-    void updateLocation(String tourStartId, String userId,MyLatLng location);
-    void setTourFinishStream(String tourStartId, String userId, Context context, Listener.OnFinishTourFinishedListener listener);
-    void removeTour(String userId, Context context);
+
+    void rememberTour(String userId, String tourStartId, String tourId, Context context);
+
+    boolean isJoiningTour(String userId, Context context);
+
+    void checkJoiningTour(String userId, Listener.OnCheckJoiningTourFinishedListener listener);
+
+    String getJoiningTourId(String UserId, Context context);
+
+    String getJoiningTourStartId(String userId, Context context);
+
+    void updateLocation(String tourStartId, String userId, MyLatLng location);
+
+    void setTourFinishStream(String tourStartId, Context context, Listener.OnFinishTourFinishedListener listener);
+
+    void removeparticipatingTour(String userId, Context context);
+
+    boolean isShareLocation(String userId, Context context);
+
+    void checkShareLoction(String userId, String tourStartId, Listener.OnCheckShareLocationFinishedListener listener);
+
+    void setShareLocation(String userId, String tourStartId, boolean shareLocation, Context context, Listener.OnSetShareLocationFinishedListener listener);
+
+    void getMyToursId(String userId, Listener.OnGetMyTourIdsFinishedListener listener);
+
+    void setStreamPeopleLocationChange(String tourStartId, Listener.OnGetPeopleLocationFinishedListener listener);
 }

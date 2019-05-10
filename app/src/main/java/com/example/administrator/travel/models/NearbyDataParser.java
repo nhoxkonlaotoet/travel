@@ -15,13 +15,13 @@ import java.util.List;
  * Created by Administrator on 23/12/2018.
  */
 
-public class DataParser {
+public class NearbyDataParser {
     public String nextPageToken="";
     private Nearby getPlace(JSONObject googlePlaceJson)
     {
         Nearby nearBy = new Nearby();
         HashMap<String, String> googlePlaceMap = new HashMap<>();
-        String id="";
+        String placeId="";
         String placeName = "--NA--";
         String vicinity= "--NA--";
         String[] types;
@@ -32,7 +32,6 @@ public class DataParser {
         Integer priceLevel=-1;
         Double rating=0D;
         String iconURL="";
-        Log.d("DataParser","jsonobject ="+googlePlaceJson.toString());
 
 
         try {
@@ -61,7 +60,7 @@ public class DataParser {
             latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
             longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
             JSONArray arr =  googlePlaceJson.getJSONArray("types");
-            id = googlePlaceJson.getString("id");
+            placeId = googlePlaceJson.getString("place_id");
             iconURL= googlePlaceJson.getString("icon");
             types= new String[arr.length()];
             for(int i=0;i<arr.length();i++)
@@ -70,7 +69,7 @@ public class DataParser {
             }
 
 
-            nearBy.id=id;
+            nearBy.placeId=placeId;
             nearBy.name=placeName;
             nearBy.vicinity=vicinity;
             nearBy.openNow=openNow;

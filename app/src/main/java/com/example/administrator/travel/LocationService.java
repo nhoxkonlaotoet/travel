@@ -39,16 +39,16 @@ public class LocationService extends Service implements GoogleApiClient.OnConnec
     ParticipantInteractor participantInteractor;
     UserInteractor userInteractor;
     String tourStartId, userId;
+    IBinder mBinder = new LocalBinder();
 
     @Override
     public void onCreate() {
         super.onCreate();
         participantInteractor = new ParticipantInteractorImpl();
         userInteractor = new UserInteractorImpl();
-        Log.e("onCreate: ", "service create");
 
-        tourStartId = participantInteractor.getJoiningTourStartId(this);
         userId = userInteractor.getUserId(this);
+        tourStartId = participantInteractor.getJoiningTourStartId(userId,this);
     }
 
 
@@ -67,7 +67,13 @@ public class LocationService extends Service implements GoogleApiClient.OnConnec
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
+    }
+
+    public class LocalBinder extends Binder {
+        public LocationService getServerInstance() {
+            return LocationService.this;
+        }
     }
 
     @Override
@@ -102,7 +108,8 @@ public class LocationService extends Service implements GoogleApiClient.OnConnec
     public void onLocationChanged(Location location) {
         MyLatLng myLatLng = new MyLatLng(location.getLatitude(), location.getLongitude());
         LocationObservable.getInstance().updateLocation(myLatLng);
-        participantInteractor.updateLocation(tourStartId, userId, myLatLng);
+        if (!tourStartId.equals("") && !userId.equals("none") && participantInteractor.isShareLocation(userId,this))
+            participantInteractor.updateLocation(tourStartId, userId, myLatLng);
         Log.e("service: ", location + "");
     }
 
@@ -121,7 +128,7 @@ public class LocationService extends Service implements GoogleApiClient.OnConnec
             return null;
         }
         Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        MyLatLng result= new MyLatLng(location.getLatitude(),location.getLongitude());
+        MyLatLng result = new MyLatLng(location.getLatitude(), location.getLongitude());
         return result;
     }
 }

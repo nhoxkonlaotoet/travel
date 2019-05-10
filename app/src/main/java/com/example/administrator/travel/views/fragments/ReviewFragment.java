@@ -53,13 +53,10 @@ public class ReviewFragment extends Fragment implements ReviewView {
     ImageView imgvAdd;
 
     TourRatingPresenterImpl presenter;
-    List<Bitmap> lstImage;
-    int imgvHeight, imgvWidth;
     ReviewAdapter adapter;
 
     public ReviewFragment() {
         // Required empty public constructor
-        lstImage = new ArrayList<>();
     }
 
 
@@ -67,8 +64,6 @@ public class ReviewFragment extends Fragment implements ReviewView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.e("onCreateView: ", "++++++++++++++++++++++++++++++++++");
-
         return inflater.inflate(R.layout.fragment_review, container, false);
     }
 
@@ -82,17 +77,15 @@ public class ReviewFragment extends Fragment implements ReviewView {
         Bundle bundle = getActivity().getIntent().getExtras();
         presenter.onViewCreated(bundle);
         initDialog();
-        setRatingbarReviewOnTouch();
-        Log.e("onViewCreated: ", "____________________________");
+        setOnRatingbarReviewChange();
 
     }
 
-    void setRatingbarReviewOnTouch() {
-        ratingBarReview.setOnTouchListener(new View.OnTouchListener() {
+    void setOnRatingbarReviewChange() {
+        ratingBarReview.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                presenter.OnRatingBarTouched(ratingBarReview.getRating());
-                return false;
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                presenter.OnRatingBarChanged(ratingBarReview.getRating());
             }
         });
     }
@@ -105,12 +98,12 @@ public class ReviewFragment extends Fragment implements ReviewView {
             layoutImage = dialog.findViewById(R.id.layoutImage);
             final EditText txtContent = dialog.findViewById(R.id.edittxtContent);
             Button btnSendReview = dialog.findViewById(R.id.btnSendReview);
-            Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+            Button btnCancel =  dialog.findViewById(R.id.btnCancel);
             imgvAdd = dialog.findViewById(R.id.imgvAdd);
             btnSendReview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    presenter.onBtnSendReviewClicked(ratingBarReview.getRating(), txtContent.getText().toString(), lstImage);
+                    presenter.onBtnSendReviewClicked();
                 }
             });
             imgvAdd.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +118,12 @@ public class ReviewFragment extends Fragment implements ReviewView {
                     dialog.cancel();
                 }
             });
-
+            txtContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    presenter.onEditTextContentClicked();
+                }
+            });
         }
     }
 
@@ -156,45 +154,10 @@ public class ReviewFragment extends Fragment implements ReviewView {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.e("onStart: ", "____________________________");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.e("onStop: ", "____________________________");
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.e("onDestroy: ", "____________________________");
-
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (data != null) {
-                    try {
-                        Log.e("onActivityResult: ", data.getData() + "");
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
-                        lstImage.add(bitmap);
-                        presenter.onGetImageResult();
-                        ;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
-            }
-        }
+       // super.onActivityResult(requestCode, resultCode, data);
+       presenter.onViewResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -204,37 +167,7 @@ public class ReviewFragment extends Fragment implements ReviewView {
         }
     }
 
-    @Override
-    public void addImage() {
-        int n = lstImage.size();
-        if (n > 0) {
-            ImageView imgv;
-            imgv = new ImageView(getContext());
-            imgv.setScaleType(ImageView.ScaleType.FIT_XY);
-            imgv.setImageBitmap(lstImage.get(n - 1));
-            layoutImage.addView(imgv, imgvWidth, imgvHeight);
-            imgv.setBackgroundResource(R.drawable.background_small_button);
-            imgv.setX((imgvWidth + 20) * (n % 4));
-            imgv.setY(((imgvHeight + 20) * (n / 4)));
-            ViewGroup.LayoutParams params = layoutImage.getLayoutParams();
-            params.height = (imgvHeight + 10) * ((n / 4) + 1);
-            layoutImage.setLayoutParams(params);
-            Log.e("updateDialog: ", imgvWidth + "" + imgvHeight);
-        }
-    }
 
-    @Override
-    public void gotoGallary() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, REQUEST_IMAGE);
-        if (imgvHeight == 0 && imgvWidth == 0) {
-            imgvHeight = imgvAdd.getHeight();
-            imgvWidth = imgvAdd.getWidth();
-        }
-    }
 
     @Override
     public void closeDialog() {
@@ -317,6 +250,12 @@ public class ReviewFragment extends Fragment implements ReviewView {
     @Override
     public void disableRatingBar() {
         ratingBarReview.setEnabled(false);
+
+    }
+
+    @Override
+    public void gotoPostActivity(Intent intent, int requestCode) {
+        startActivityForResult(intent,requestCode);
 
     }
 

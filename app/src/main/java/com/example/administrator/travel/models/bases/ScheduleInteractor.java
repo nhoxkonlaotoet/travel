@@ -7,5 +7,6 @@ import com.example.administrator.travel.models.listeners.Listener;
  */
 
 public interface ScheduleInteractor {
-    void getSchedule(String tourId, String dayId, Listener.OnGetScheduleFinishedListener listener);
+    void getSchedules(String tourId, String dayId, Listener.OnGetSchedulesFinishedListener listener);
+
 }

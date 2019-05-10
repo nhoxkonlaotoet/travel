@@ -25,4 +25,5 @@ public interface PostPresenter {
     void onEditTextContentClicked();
 
     void onButtonBackClicked();
+
 }

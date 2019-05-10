@@ -9,7 +9,8 @@ import android.view.View;
 public interface SelectMyTourPresenter {
     void onViewCreated();
     void onBtnScanQRClick();
-    void onItemTourClicked(View item);
+    void onMyTourItemClicked(String tourId, String tourStartId);
+    void onMyOwnedTourItemClicked(String tourId, String owner);
     void onBtnLoginClicked();
-    void onViewResult(String resultString);
+    void onViewResult(String tourStartId);
 }

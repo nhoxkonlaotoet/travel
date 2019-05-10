@@ -2,10 +2,16 @@ package com.example.administrator.travel.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
@@ -22,65 +28,89 @@ import java.util.List;
  * Created by Administrator on 24/12/2018.
  */
 
-public class SelectMyTourAdapter extends BaseAdapter {
-    Context context;
-    List<Tour> lstTour;
-    List<TourStartDate> lstTourStart;
-    int n;
+public class SelectMyTourAdapter extends RecyclerView.Adapter<SelectMyTourAdapter.ViewHolder> {
+    List<Tour> tourList;
+    List<TourStartDate> tourStartDateList;
     DateFormat dateFormat;
+    int n;
+    private LayoutInflater mInflater;
+    private SelectMyTourAdapter.ItemClickListener mClickListener;
 
     public SelectMyTourAdapter(Context context, int n) {
-        this.context = context;
+        if (context == null)
+            return;
+        mInflater = LayoutInflater.from(context);
         this.n = n;
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        lstTour = new ArrayList<>();
-        lstTourStart = new ArrayList<>();
+        tourList = new ArrayList<>();
+        tourStartDateList = new ArrayList<>();
     }
 
     @Override
-    public int getCount() {
+    @NonNull
+    public SelectMyTourAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (mInflater == null)
+            return null;
+        View view = mInflater.inflate(R.layout.item_select_my_tour, parent, false);
+        return new SelectMyTourAdapter.ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SelectMyTourAdapter.ViewHolder holder, int position) {
+        if (tourStartDateList.size() > 0 && tourStartDateList.get(position) != null) {
+            Date date = new Date(tourStartDateList.get(position).startDate);
+            holder.txtStartDate.setText(dateFormat.format(date));
+            holder.progressBarWaitTourStartDate.setVisibility(View.GONE);
+            if (tourList.size() > 0 && tourList.get(position) != null) {
+                String tourname = tourList.get(position).name;
+                holder.txtTourName.setText(tourname);
+                holder.progressBarWaitTourName.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    public int getItemCount() {
         return n;
     }
 
-    @Override
-    public Object getItem(int position) {
-        return lstTourStart.get(position);
-    }
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView txtTourName, txtStartDate;
+        ProgressBar progressBarWaitTourName, progressBarWaitTourStartDate;
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (context == null)
-            return null;
-        convertView = ((Activity) context).getLayoutInflater().inflate(R.layout.item_select_my_tour, null);
-        TextView txtTourName = convertView.findViewById(R.id.txtMyTourName);
-        TextView txtStartDate = convertView.findViewById(R.id.txtStartDate);
-        ProgressBar progressBarWaitTourName = convertView.findViewById(R.id.progressbarWaitTourName);
-        ProgressBar progressBarWaitTourStartDate = convertView.findViewById(R.id.progressbarWaitTourStartDate);
-        if (lstTourStart.size() > 0 && lstTourStart.get(position) != null) {
-            Date date = new Date(lstTourStart.get(position).startDate);
-            txtStartDate.setText(dateFormat.format(date));
-            progressBarWaitTourStartDate.setVisibility(View.GONE);
-
-            if (lstTourStart.size() > 0 && lstTour.get(position) != null) {
-                String tourname = lstTour.get(position).name;
-                txtTourName.setText(tourname);
-                progressBarWaitTourName.setVisibility(View.GONE);
-                convertView.setTag(lstTourStart.get(position).tourId+" "+lstTourStart.get(position).id);
-            }
+        ViewHolder(View itemView) {
+            super(itemView);
+            txtTourName = itemView.findViewById(R.id.txtMyTourName);
+            txtStartDate = itemView.findViewById(R.id.txtStartDate);
+            progressBarWaitTourName = itemView.findViewById(R.id.progressbarWaitTourName);
+            progressBarWaitTourStartDate = itemView.findViewById(R.id.progressbarWaitTourStartDate);
+            itemView.setOnClickListener(this);
         }
-        return convertView;
+
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null)
+                mClickListener.onMyTourItemClick(view, tourStartDateList.get(getAdapterPosition()).tourId, tourStartDateList.get(getAdapterPosition()).id);
+        }
     }
+
+
+    // allows clicks events to be caught
+    public void setClickListener(SelectMyTourAdapter.ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    // parent activity will implement this method to respond to click events
+    public interface ItemClickListener {
+        void onMyTourItemClick(View view, String tourId, String tourStartId);
+    }
+
 
     public void updateTourInfo(int pos, Tour tour, TourStartDate tourStartDate) {
-        if (!lstTour.contains(tour))
-            lstTour.add(pos, tour);
-        if (!lstTourStart.contains(tourStartDate))
-            lstTourStart.add(pos, tourStartDate);
+        if (!tourList.contains(tour))
+            tourList.add(pos, tour);
+        if (!tourStartDateList.contains(tourStartDate))
+            tourStartDateList.add(pos, tourStartDate);
         notifyDataSetChanged();
     }
 }

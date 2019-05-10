@@ -3,8 +3,8 @@ package com.example.administrator.travel.models;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.ImageView;
+
+import com.example.administrator.travel.models.listeners.Listener;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -13,9 +13,9 @@ import java.net.URL;
  * Created by Administrator on 12/05/2018.
  */
 public class DownLoadImageTask extends AsyncTask<String,Void,Bitmap> {
-    OnDownloadImageFinishedListener listener;
-    int id;
-    public DownLoadImageTask(OnDownloadImageFinishedListener listener){
+    Listener.OnDownloadImageFinishedListener listener;
+    int pos;
+    public DownLoadImageTask(Listener.OnDownloadImageFinishedListener listener){
         this.listener=listener;
     }
 
@@ -26,7 +26,7 @@ public class DownLoadImageTask extends AsyncTask<String,Void,Bitmap> {
     protected Bitmap doInBackground(String...urls){
         Bitmap logo = null;
         try{
-            id= Integer.parseInt(urls[0]);
+            pos=Integer.parseInt(urls[0]);
             String urlOfImage = urls[1];
 
             InputStream is = new URL(urlOfImage).openStream();
@@ -38,7 +38,7 @@ public class DownLoadImageTask extends AsyncTask<String,Void,Bitmap> {
         }catch(Exception e){ // Catch the download exception
             e.printStackTrace();
             if(listener!=null)
-                listener.onDownloadImageFailure(e);
+                listener.onDownloadImageFail(e);
         }
         return logo;
     }
@@ -49,7 +49,7 @@ public class DownLoadImageTask extends AsyncTask<String,Void,Bitmap> {
      */
     protected void onPostExecute(Bitmap result){
         if(listener!=null)
-            listener.onDownloadImageSuccess(id,result);
+            listener.onDownloadImageSuccess(pos,result);
         //Log.e( "onPostExecute: ", result.getByteCount()+"");
     }
 

@@ -8,7 +8,7 @@ import com.example.administrator.travel.models.OnGetUserIdFinishedListener;
 import com.example.administrator.travel.models.OnSetShareLocationFinishedListener;
 import com.example.administrator.travel.models.OnUserLogoutFinishedListener;
 import com.example.administrator.travel.models.SettingInteractor;
-import com.example.administrator.travel.views.SettingView;
+import com.example.administrator.travel.views.bases.SettingView;
 import com.example.administrator.travel.views.fragments.SettingFragment;
 
 /**
@@ -64,8 +64,7 @@ public class SettingPresenter implements OnGetUserIdFinishedListener,OnUserLogou
     }
 
     @Override
-    public void onLogoutFailure(Exception ex) {
-        view.notifyLogoutFailure(ex);
+    public void onLogoutFailure(Exception ex){
     }
 
     @Override

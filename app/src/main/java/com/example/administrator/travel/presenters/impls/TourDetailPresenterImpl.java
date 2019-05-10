@@ -24,7 +24,7 @@ import java.util.List;
  */
 
 public class TourDetailPresenterImpl implements TourDetailPresenter,
-        Listener.OnGetDaysFinishedListener, Listener.OnGetScheduleFinishedListener, Listener.OnGetTourFinishedListener {
+        Listener.OnGetDaysFinishedListener, Listener.OnGetSchedulesFinishedListener, Listener.OnGetTourFinishedListener {
     TourDetailView view;
     TourInteractor tourInteractor;
     DayInteractor dayInteractor;
@@ -51,7 +51,7 @@ public class TourDetailPresenterImpl implements TourDetailPresenter,
     @Override
     public void onSelectItemSpinnerDays(String day) {
         dayId = day;
-        scheduleInteractor.getSchedule(tourId, day, this);
+        scheduleInteractor.getSchedules(tourId, day, this);
     }
 
     @Override
@@ -66,12 +66,12 @@ public class TourDetailPresenterImpl implements TourDetailPresenter,
     }
 
     @Override
-    public void onGetScheduleSuccess(List<Schedule> lstSchedule) {
+    public void onGetSchedulesSuccess(List<Schedule> lstSchedule) {
         view.showSchedules(lstSchedule);
     }
 
     @Override
-    public void onGetScheduleFail(Exception ex) {
+    public void onGetSchedulesFail(Exception ex) {
 
     }
 

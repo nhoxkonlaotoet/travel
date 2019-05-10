@@ -87,28 +87,21 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        stopService(new Intent(this,LocationService.class));
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);
 
-        startService(new Intent(HomeActivity.this, LocationService.class));
 
         //init database
 
 
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
+ //           FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        DatabaseReference userRef = database.getReference("tours");
 ////        String key;
 ////

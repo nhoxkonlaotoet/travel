@@ -18,7 +18,7 @@ public class ContactCompanyPresenter {//implements OnGetCompanyContactFinishedLi
 //        this.view=view;
 //        contactCompanyInteractor = new TourStartInteractorImpl.ContactCompanyInteractor();
 //    }
-//    public void onViewLoad(String ownerId)
+//    public void onViewCreated(String ownerId)
 //    {
 //        contactCompanyInteractor.getCompanyContact(ownerId,this);
 //    }

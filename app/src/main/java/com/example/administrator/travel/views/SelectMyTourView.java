@@ -1,6 +1,7 @@
 package com.example.administrator.travel.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.TourStartDate;
@@ -16,7 +17,7 @@ public interface SelectMyTourView {
     void showMyTours(int n);
     void updateTourInfo(int pos, Tour tour, TourStartDate tourStartDate);
     void gotoCamera();
-    void gotoTourActivity(String tourId, String tourStartId,boolean isCompany);
+    void gotoTourActivity(String tourId, String tourStartId, String owner, boolean isCompany);
     void showBtnScan();
     void hideBtnScan();
     void showLayoutLogin();
@@ -25,8 +26,11 @@ public interface SelectMyTourView {
     void showLayoutMyTours();
     void gotoLoginActivity();
     void notifyInvalidScanString();
-    void notifyJoinTourFailure(Exception ex);
+    void notifyJoinTourFailure(String message);
     void showWaitDialog();
     void dismissWaitDialog();
+    void showMyTours(List<Tour> tourList);
+    void updateTourImage(int pos, String tourId, Bitmap image);
+    void notifyGetMyTourFail(String message);
     Context getContext();
 }

@@ -1,5 +1,6 @@
 package com.example.administrator.travel.views.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -144,7 +146,6 @@ public class PostActivity extends AppCompatActivity implements PostView, Storage
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         presenter.onActivityResult(requestCode, resultCode, data);
 
     }
@@ -165,6 +166,13 @@ public class PostActivity extends AppCompatActivity implements PostView, Storage
         finish();
     }
 
+    @Override
+    public void finishViewReturnResult(int resultCode){
+        Log.e( "finishViewReturnOK: ","_________________" );
+        Intent returnIntent = new Intent();
+        setResult(resultCode,returnIntent);
+        finish();
+    }
     @Override
     public void notifyFail(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

@@ -34,7 +34,7 @@ public class PostPresenter{}
 //        interactor=new PostInteractor();
 //        lstImage=new ArrayList<>();
 //    }
-//    public void onViewLoad(){
+//    public void onViewCreated(){
 //        isActivty=true;
 //    }
 //    public void onBtnPictureClicked(){

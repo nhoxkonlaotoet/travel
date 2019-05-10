@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.example.administrator.travel.models.bases.CompanyContactInteractor;
+import com.example.administrator.travel.models.bases.CompanyInteractor;
 import com.example.administrator.travel.models.entities.Company;
-import com.example.administrator.travel.models.impls.CompanyContactInteractorImpl;
+import com.example.administrator.travel.models.impls.CompanyInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.CompanyContactPresenter;
 import com.example.administrator.travel.views.CompanyContactView;
@@ -20,18 +20,18 @@ import com.example.administrator.travel.views.activities.MapsActivity;
 
 public class CompanyContactPresenterImpl implements CompanyContactPresenter, Listener.OnGetCompanyContactFinishedListener {
     CompanyContactView view;
-    CompanyContactInteractor companyContactInteractor;
+    CompanyInteractor companyInteractor;
     Company company;
 
     public CompanyContactPresenterImpl(CompanyContactView view) {
         this.view = view;
-        companyContactInteractor = new CompanyContactInteractorImpl();
+        companyInteractor = new CompanyInteractorImpl();
     }
 
     @Override
     public void onViewCreated(Bundle bundle) {
         String companyId = bundle.getString("owner");
-        companyContactInteractor.getCompanyContact(companyId, this);
+        companyInteractor.getCompanyContact(companyId, this);
     }
 
     @Override

@@ -26,6 +26,6 @@ public class TourStartPresenter implements OnGetTourStartDateFinishedListener {
     }
     @Override
     public void onSuccess(List<TourStartDate> listTourStartDate) {
-        view.showTourStartDate(listTourStartDate);
+        view.showTourStartDate(listTourStartDate,false);
     }
 }

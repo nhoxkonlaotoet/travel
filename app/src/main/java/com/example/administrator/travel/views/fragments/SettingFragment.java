@@ -3,7 +3,6 @@ package com.example.administrator.travel.views.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -11,13 +10,13 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.presenters.SettingPresenter;
-import com.example.administrator.travel.views.SettingView;
+import com.example.administrator.travel.presenters.bases.SettingPresenter;
+import com.example.administrator.travel.presenters.impls.SettingPresenterImpl;
+import com.example.administrator.travel.views.bases.SettingView;
 import com.example.administrator.travel.views.activities.LoginActivity;
 
 /**
@@ -28,6 +27,7 @@ public class SettingFragment extends Fragment implements SettingView {
     SettingPresenter presenter;
     SwitchCompat switchShareLocation;
     RelativeLayout layoutShareLocation;
+
     public SettingFragment() {
         // Required empty public constructor
     }
@@ -43,48 +43,59 @@ public class SettingFragment extends Fragment implements SettingView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnLogin = getActivity().findViewById(R.id.btnLogin);
-        btnLogout=getActivity().findViewById(R.id.btnLogout);
-        switchShareLocation = getActivity().findViewById(R.id.switchShareLocation);
-        layoutShareLocation = getActivity().findViewById(R.id.layoutShareLocation);
+        mapping();
 
-        presenter=new SettingPresenter(this);
+        presenter = new SettingPresenterImpl(this);
         setBtnLoginClick();
         setBtnLogoutClick();
-        setSwitchShareLocationCheckChange();
+        setSwitchShareLocationClick();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        presenter.onViewStart();
+        presenter.onViewStarted();
     }
-    public void setSwitchShareLocationCheckChange(){
-        switchShareLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+    void mapping() {
+        btnLogin = getActivity().findViewById(R.id.btnLogin);
+        btnLogout = getActivity().findViewById(R.id.btnLogout);
+        switchShareLocation = getActivity().findViewById(R.id.switchShareLocation);
+        layoutShareLocation = getActivity().findViewById(R.id.layoutShareLocation);
+    }
+
+    public void setSwitchShareLocationClick() {
+        switchShareLocation.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                presenter.onSwitchShareLocationCheckedChanged(b);
+            public void onClick(View view) {
+                presenter.onShareLocationSwitchClicked();
             }
         });
     }
-    public void setBtnLoginClick()
-    {
+
+    public void setBtnLoginClick() {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            presenter.onBtnLoginClicked();
+                presenter.onButtonLoginClicked();
             }
         });
     }
-    public void setBtnLogoutClick()
-    {
+
+    public void setBtnLogoutClick() {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //startActivity((new Intent(getActivity(), LoginActivity.class)));
-            presenter.onBtnLogoutClick();
+                presenter.onButtonLogoutClicked();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        onStart();
     }
 
     @Override
@@ -113,11 +124,6 @@ public class SettingFragment extends Fragment implements SettingView {
     }
 
     @Override
-    public void notifyLogoutFailure(Exception ex) {
-        Toast.makeText(getActivity(),"Không thể đăng xuất \r\n" + ex.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void turnOnSwitchShareLocation() {
         switchShareLocation.setChecked(true);
     }
@@ -125,6 +131,16 @@ public class SettingFragment extends Fragment implements SettingView {
     @Override
     public void turnOffSwitchShareLocation() {
         switchShareLocation.setChecked(false);
+    }
+
+    @Override
+    public void disableSwitchShareLocation() {
+        switchShareLocation.setClickable(false);
+    }
+
+    @Override
+    public void enableSwitchShareLocation() {
+        switchShareLocation.setClickable(true);
     }
 
     @Override
@@ -137,4 +153,18 @@ public class SettingFragment extends Fragment implements SettingView {
         layoutShareLocation.setVisibility(View.GONE);
     }
 
+    @Override
+    public void setSwitchShareLocationState(boolean value) {
+        switchShareLocation.setChecked(value);
+    }
+
+    @Override
+    public void notifySetShareLocationFail(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public Context getContext() {
+        return getActivity();
+    }
 }

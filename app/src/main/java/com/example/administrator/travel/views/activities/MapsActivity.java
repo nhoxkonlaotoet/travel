@@ -1,32 +1,44 @@
 package com.example.administrator.travel.views.activities;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.travel.models.PlaceDetailTask;
 import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.entities.Participant;
+import com.example.administrator.travel.models.entities.PlacePhoto;
 import com.example.administrator.travel.models.entities.Route;
 import com.example.administrator.travel.models.entities.Schedule;
-import com.example.administrator.travel.presenters.MapPresenter;
+import com.example.administrator.travel.models.listeners.Listener;
+import com.example.administrator.travel.presenters.bases.MapPresenter;
+import com.example.administrator.travel.presenters.impls.MapPresenterImpl;
 import com.example.administrator.travel.views.MapView;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -35,51 +47,56 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.administrator.travel.R;
+import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener, MapView {
-    GoogleApiClient googleApiClient;
-    Button btnPrevious, btnNow, btnNext;
-    RelativeLayout btnChooseMyLocation;
-    Location myLocation;
-    LatLng destination, myClick;
+public class MapsActivity extends FragmentActivity implements MapView, OnMapReadyCallback {
+    private MapPresenter presenter;
     private GoogleMap mMap;
-    MapPresenter presenter;
-    Place placeResult;
-    List<PolylineOptions> polylinePaths = new ArrayList<>();
-    ProgressDialog progressDialog;
-    List<Schedule> lstSchedule = new ArrayList<>();
-    List<Participant> lstParticipant =new ArrayList<>();
-    PlaceAutocompleteFragment placeAutocompleteFragment;
+    private ProgressDialog progressDialog;
+    private PlaceAutocompleteFragment placeAutocompleteFragment;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
+    private ImageView imgvNavHeader;
+    private TextView txtNavHeader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        btnChooseMyLocation=findViewById(R.id.btnChooseMyLocation);
-        btnPrevious = findViewById(R.id.btnPrevious);
-        btnNext = findViewById(R.id.btnNext);
-        btnNow = findViewById(R.id.btnNow);
-        placeAutocompleteFragment =
-                (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete);
-        placeAutocompleteFragment.setHint("Tìm kiếm");
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        Bundle bundle = getIntent().getExtras();
-
+        mapping();
+        setImgvNavHeaderClick();
         setAutocompletePlaceSlectec();
-        presenter = new MapPresenter(this);
-        presenter.onViewLoad(bundle);
+        presenter = new MapPresenterImpl(this);
+        Bundle bundle = getIntent().getExtras();
+        presenter.onViewCreated(bundle);
+
+
     }
-    void setAutocompletePlaceSlectec(){
+
+    private void mapping() {
+        txtNavHeader = findViewById(R.id.txtNavHeader);
+        imgvNavHeader = findViewById(R.id.imgvNavHeader);
+        navigationView = findViewById(R.id.navView);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        placeAutocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete);
+        placeAutocompleteFragment.setHint("Tìm kiếm");
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    private void setAutocompletePlaceSlectec() {
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -93,26 +110,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
-    void setMapClick(){
+
+    private void setMapClick() {
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-             presenter.onMapClick(latLng);
+                presenter.onMapClicked(latLng);
             }
         });
     }
-    public void btnPrevious_Click(View btn){
-        presenter.onBtnPreviousClicked();
+
+    private void setMarkerClick() {
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                presenter.onMarkerClicked(marker);
+                return false;
+            }
+        });
     }
-    public void btnNow_Click(View btn){
-        presenter.onBtnNowClicked();
+
+    private void setImgvNavHeaderClick() {
+        imgvNavHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (((BitmapDrawable) imgvNavHeader.getDrawable()).getBitmap() != null)
+                    presenter.onImageViewNavHeaderClicked(((BitmapDrawable) imgvNavHeader.getDrawable()).getBitmap());
+            }
+        });
     }
-    public void btnNext_Click(View btn){
-        presenter.onBtnNextClicked();
+
+    private void setMapPOIClick() {
+        mMap.setOnPoiClickListener(new GoogleMap.OnPoiClickListener() {
+            @Override
+            public void onPoiClick(PointOfInterest pointOfInterest) {
+                Toast.makeText(MapsActivity.this, pointOfInterest.placeId, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-    public void btnChooseMyLocation_Click(View btn){
-        presenter.btnChooseMyLocationClicked();
-    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -126,145 +162,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mMap.setMyLocationEnabled(true);
         setMapClick();
-
-    }
-
-    @Override
-    public void connectGoogleApiClient() {
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addApi(LocationServices.API)
-                .build();
-        googleApiClient.connect();
-    }
-
-    @Override
-    public void stopGoogleApiClient() {
-        if (googleApiClient != null)
-            if (googleApiClient.isConnected())
-                googleApiClient.disconnect();
-    }
-
-    @Override
-    public void startLocationServices() {
-        LocationRequest request = LocationRequest.create().setPriority(LocationRequest.PRIORITY_LOW_POWER);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, request, this);
-
-    }
-
-    @Override
-    public void showNearbys(List<Nearby> lstNearby) {
-
-    }
-
-    @Override
-    public void addPeopleLocations(List<Participant> lstParticipant) {
-        this.lstParticipant=lstParticipant;
-        mapRefesh();
+        setMarkerClick();
+        setMapPOIClick();
     }
 
 
     @Override
     public void moveCamera(LatLng location) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
     }
 
-    @Override
-    public void addMyClickLocation(LatLng location) {
-        myClick=location;
-        mapRefesh();
-        closeActivityForResult(location);
-    }
-
-    @Override
-    public void addSchedule(List<Schedule> lstSchedule) {
-       this.lstSchedule=lstSchedule;
-        mapRefesh();
-    }
-
-    @Override
-    public void addDirection(List<Route> lstRoute) {
-        for (Route route : lstRoute) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
-            PolylineOptions polylineOptions = new PolylineOptions().
-                    geodesic(true).
-                    color(getResources().getColor(R.color.colorGreen)).
-                    width(10);
-
-            for (int i = 0; i < route.points.size(); i++) {
-                polylineOptions.add(route.points.get(i));
-            }
-            polylinePaths.add(polylineOptions);
-        }
-        mapRefesh();
-    }
-
-    @Override
-    public void addDestination(LatLng des) {
-        destination=des;
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        presenter.onViewConnectedGoogleApiClient();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        presenter.onViewLocationChanged(location);
-      //  mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-        Log.e("onLocationChanged: ", location + "");
-    }
 
     @Override
     public void mapRefesh() {
         mMap.clear();
-        for (PolylineOptions polylineOptions : polylinePaths) {
-            Polyline line = mMap.addPolyline(polylineOptions);
-            line.setClickable(true);
-        }
-        if(myClick!=null)
-        {
-            mMap.addMarker(new MarkerOptions().position(myClick));
-        }
-        if(placeResult!=null)
-            mMap.addMarker(new MarkerOptions().position(placeResult.getLatLng())
-            .title(placeResult.getAddress().toString()));
-        if(destination!=null)
-            mMap.addMarker(new MarkerOptions()
-                    .position(destination));
-        for(Schedule schedule : lstSchedule){
-            mMap.addMarker(new MarkerOptions()
-                    .position(schedule.latLng.getLatLng())
-                    .title(schedule.content));
-            Log.e( "mapRefesh: ", schedule.toString());
-        }
-        for(Participant participant : lstParticipant)
-        {
-            mMap.addMarker(new MarkerOptions()
-                    .position(participant.latLng.getLatLng())
-                    .title(participant.userId));
-        }
+        presenter.onMapRefreshed();
+    }
 
+    @Override
+    public void addMarker(MarkerOptions markerOptions) {
+        mMap.addMarker(markerOptions);
+    }
+
+    @Override
+    public void addMarker(MarkerOptions markerOptions, Object tag) {
+        mMap.addMarker(markerOptions).setTag(tag);
+    }
+
+    @Override
+    public void addPolyline(PolylineOptions polylineOptions) {
+        Polyline line = mMap.addPolyline(polylineOptions);
+        line.setClickable(true);
     }
 
     @Override
@@ -275,55 +203,78 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void closeDialog() {
-        if(progressDialog.isShowing())
+        if (progressDialog.isShowing())
             progressDialog.hide();
+    }
+
+    @Override
+    public void openDrawerLayout() {
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    @Override
+    public void closeDrawerLayout() {
+        drawerLayout.closeDrawers();
+    }
+
+    @Override
+    public void setNavigationHeaderPhoto(int pos, Bitmap photo) {
+        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+        imgvNavHeader.setImageBitmap(photo);
+        imgvNavHeader.setTag(pos);
+    }
+
+    @Override
+    public void setNavigationHeaderPhoto(String photoUrl) {
+        Log.e("setNavigationPhoto: ", photoUrl);
+
+        Picasso.with(this).load(photoUrl).into(new Target() {
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                imgvNavHeader.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void clearNavigationHeaderPhoto() {
+        imgvNavHeader.setImageBitmap(null);
+    }
+
+    @Override
+    public void setNavigationHeaderTitle(String title) {
+        txtNavHeader.setText(title);
+    }
+
+    @Override
+    public void clearNavigationHeaderTitile() {
+
     }
 
     @Override
     public void closeActivityForResult(LatLng location) {
         Intent intent = getIntent();
-        intent.putExtra("chosenLocation",location.latitude+","+location.longitude);
+        intent.putExtra("chosenLocation", location.latitude + "," + location.longitude);
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    @Override
-    public void hideControlBtns() {
-        btnPrevious.setVisibility(View.INVISIBLE);
-        btnNow.setVisibility(View.INVISIBLE);
-        btnNext.setVisibility(View.INVISIBLE);
-    }
 
     @Override
-    public void showControlBtns() {
-        btnPrevious.setVisibility(View.VISIBLE);
-        btnNow.setVisibility(View.VISIBLE);
-        btnNext.setVisibility(View.VISIBLE);
+    public Context getContext() {
+        return this;
     }
 
-    @Override
-    public void hideBtnNow() {
-        btnNow.setVisibility(View.GONE);
-    }
 
-    @Override
-    public void showBtnNow() {
-        btnNow.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void addPlaceResult(Place place) {
-        this.placeResult=place;
-        mapRefesh();
-    }
-
-    @Override
-    public void hideBtnChooseMyLocation() {
-        btnChooseMyLocation.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void showBtnChooseMyLocation() {
-        btnChooseMyLocation.setVisibility(View.VISIBLE);
-    }
 }

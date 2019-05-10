@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,6 +28,8 @@ import com.example.administrator.travel.presenters.ActivityPresenter;
 import com.example.administrator.travel.views.ActivityView;
 import com.example.administrator.travel.views.activities.MapsActivity;
 import com.example.administrator.travel.views.activities.PostActivity;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import java.io.File;
 import java.util.HashMap;
@@ -57,7 +60,6 @@ public class ActivityFragment extends Fragment implements ActivityView {
         btnMap=getActivity().findViewById(R.id.btnMap);
         Bundle bundle = getActivity().getIntent().getExtras();
         final String tourStartId= bundle.getString("tourStartId");
-        Log.e( "activity frament: ",tourStartId );
 
         txtActivityContent=getActivity().findViewById(R.id.txtActivityContent);
         lstvActivities = getActivity().findViewById(R.id.lstvStatus);
@@ -121,6 +123,9 @@ public class ActivityFragment extends Fragment implements ActivityView {
 
     @Override
     public void gotoPostActiivty(String tourStartId, boolean isTourGuide) {
+
+
+
         Intent intent = new Intent(getActivity(), PostActivity.class);
         intent.putExtra("tourStartId",tourStartId);
         intent.putExtra("isActivity",true);

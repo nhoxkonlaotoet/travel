@@ -19,6 +19,7 @@ import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.presenters.bases.TourStartPresenter;
 import com.example.administrator.travel.presenters.impls.TourStartPresenterImpl;
 import com.example.administrator.travel.views.TourStartView;
+import com.example.administrator.travel.views.activities.BookTourActivity;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class TourStartFragment extends Fragment implements TourStartView, TourSt
     RecyclerView recyclerviewTourStart;
     TourStartPresenter presenter;
     TourStartAdapter tourStartAdapter;
+
     public TourStartFragment() {
         // Required empty public constructor
     }
@@ -51,9 +53,9 @@ public class TourStartFragment extends Fragment implements TourStartView, TourSt
     }
 
     @Override
-    public void showTourStartDate(List<TourStartDate> listTourStartDate) {
+    public void showTourStartDate(List<TourStartDate> listTourStartDate, boolean isCompany) {
 
-        tourStartAdapter = new TourStartAdapter(getContext(), listTourStartDate);
+        tourStartAdapter = new TourStartAdapter(getContext(), isCompany, listTourStartDate);
         tourStartAdapter.setClickListener(this);
         recyclerviewTourStart.setAdapter(tourStartAdapter);
         Log.e("SelectTourFragment: ", "showTourStartDate");
@@ -65,12 +67,14 @@ public class TourStartFragment extends Fragment implements TourStartView, TourSt
     }
 
     @Override
-    public void gotoBooktourActivity(Intent intent) {
+    public void gotoBooktourActivity(String tourStartId) {
+        Intent intent = new Intent(getActivity(),BookTourActivity.class);
+        intent.putExtra("tourStartId",tourStartId);
         startActivity(intent);
     }
 
     @Override
-    public Context getContext(){
+    public Context getContext() {
         return getActivity();
     }
 

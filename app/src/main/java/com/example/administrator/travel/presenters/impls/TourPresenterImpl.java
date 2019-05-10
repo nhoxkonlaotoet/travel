@@ -1,8 +1,11 @@
 package com.example.administrator.travel.presenters.impls;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import com.example.administrator.travel.LocationService;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.bases.CompanyInteractor;
 import com.example.administrator.travel.models.bases.ParticipantInteractor;
@@ -21,7 +24,7 @@ import com.example.administrator.travel.views.TourView;
  */
 
 public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImagesFinishedListener, Listener.OnFinishTourFinishedListener {
-    boolean isMytour, isCompany;
+    boolean onMyTour, isCompany, isOwned;
     String tourId;
     TourInteractor tourInteractor;
     TourView view;
@@ -41,43 +44,46 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
 
     @Override
     public void onViewCreated(Bundle bundle) {
-        isMytour = bundle.getBoolean("mytour");
+        onMyTour = bundle.getBoolean("mytour");
+        String owner = bundle.getString("owner");
         tourId = bundle.getString("tourId");
-        isCompany = companyInteractor.isCompany(view.getContext());
-
-
+        if (userInteractor.isLogged(view.getContext())) {
+            String userId = userInteractor.getUserId(view.getContext());
+            isCompany = companyInteractor.isCompany(userId, view.getContext());
+            if (userId.equals(owner))
+                isOwned = true;
+        }
+        Toast.makeText(view.getContext(), isCompany + "", Toast.LENGTH_SHORT).show();
         if (view.getContext() == null)
             return;
-        if (isMytour && !isCompany) {
+        if (onMyTour && !isCompany) {
             String tourStartId = bundle.getString("tourStartId");
-            String userId = userInteractor.getUserId(view.getContext());
-            participantInteractor.setTourFinishStream(tourStartId, userId, view.getContext(), this);
+            participantInteractor.setTourFinishStream(tourStartId, view.getContext(), this);
         }
 
-        if (!isMytour && isCompany)
-            tabCount = 3;
-        else tabCount = 4;
+        tabCount = 4;
 
-        view.initVpContainer(tabCount, isMytour, isCompany);
+        view.initVpContainer(tabCount, onMyTour, isCompany);
 
-        if (isMytour) {
-            view.hideImagePanel();
-
+        if (onMyTour) {
             view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_detail));
-            view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_activity));
-            if (isCompany)
+            if (isCompany) {
+                view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_start_date));
+                view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_contact));
+                view.setActionbarTransparent();
+                tourInteractor.getTourImages(tourId, this);
+            } else {
+                view.hideImagePanel();
                 view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_activity));
-            else
                 view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_nearby));
+            }
             view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_rating));
         } else {
             view.setActionbarTransparent();
-
-            tourInteractor.getTourImage(tourId, this);
-
+            tourInteractor.getTourImages(tourId, this);
             view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_detail));
-            if (!isCompany)
-                view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_booking));
+            if (!isCompany || (isCompany && isOwned))
+                view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_start_date));
             view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_contact));
             view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_rating));
         }
@@ -95,7 +101,13 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
 
     @Override
     public void onTourFinished() {
+        String userId = userInteractor.getUserId(view.getContext());
+        if (!userId.equals("none"))
+            participantInteractor.removeparticipatingTour(userId, view.getContext());
         view.notifyTourFinished();
+
+        view.getContext().stopService(new Intent(view.getContext(), LocationService.class));
+
         view.closebyTourFinished();
     }
 }

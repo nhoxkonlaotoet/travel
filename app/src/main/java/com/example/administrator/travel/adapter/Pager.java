@@ -19,60 +19,54 @@ import com.example.administrator.travel.views.fragments.TourStartFragment;
 public class Pager extends FragmentStatePagerAdapter {
 
     int tabCount;
-    Boolean isMyTour,isCompany;
-    public Pager(FragmentManager fm, int tabCount, Boolean isMyTour, Boolean isCompany){
+    Boolean isMyTour, isCompany;
+
+    public Pager(FragmentManager fm, int tabCount, Boolean isMyTour, Boolean isCompany) {
         super(fm);
-        this.tabCount=tabCount;
-        this.isMyTour=isMyTour;
-        this.isCompany=isCompany;
+        this.tabCount = tabCount;
+        this.isMyTour = isMyTour;
+        this.isCompany = isCompany;
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch(position){
+        switch (position) {
             case 0:
                 TourDetailFragment fragment = new TourDetailFragment();
                 return fragment;
-            case 1 :
-                if(isMyTour) {
+            case 1:
+                if (isMyTour && !isCompany) {
                     ActivityFragment fragment1 = new ActivityFragment();
                     return fragment1;
-                }else
-                    if(isCompany) {
-                        CompanyContactFragment fragment1 = new CompanyContactFragment();
-                        return fragment1;
-                    }
-                    else{
-                        TourStartFragment fragment1 = new TourStartFragment();
-                        return fragment1;}
+                } else {
+                    TourStartFragment fragment1 = new TourStartFragment();
+                    return fragment1;
+                }
+
 
             case 2:
 
-                if(isMyTour) {
-                    if(isCompany){
-                        AcceptBookingFragment fragment2 = new AcceptBookingFragment();
+                if (isMyTour) {
+                    if (isCompany) {
+                        CompanyContactFragment fragment2 = new CompanyContactFragment();
                         return fragment2;
-                    }
-                    else {
+                    } else {
                         NearbyFragment fragment2 = new NearbyFragment();
                         return fragment2;
                     }
-                }
-                else
-                {
-                    if(isCompany){
+                } else {
+                    if (isCompany) {
                         ReviewFragment fragment2 = new ReviewFragment();
                         return fragment2;
-                    }
-                    else {
+                    } else {
                         CompanyContactFragment fragment2 = new CompanyContactFragment();
                         return fragment2;
                     }
                 }
-            default :
+            default:
+
                 ReviewFragment fragment3 = new ReviewFragment();
                 return fragment3;
-
 
         }
 

@@ -1,17 +1,5 @@
 package com.example.administrator.travel.presenters;
 
-import android.graphics.Bitmap;
-import android.location.Location;
-import android.util.Log;
-
-import com.example.administrator.travel.models.OnGetTourImagesFinishedListener;
-import com.example.administrator.travel.models.OnTourFinishedListener;
-import com.example.administrator.travel.models.TourInteractor;
-import com.example.administrator.travel.views.NewFeedView;
-import com.example.administrator.travel.views.TourView;
-import com.example.administrator.travel.views.activities.TourActivity;
-import com.google.android.gms.common.ConnectionResult;
-
 /**
  * Created by Administrator on 10/11/2018.
  */
@@ -27,7 +15,7 @@ public class TourPresenter{// implements OnGetTourImagesFinishedListener,OnTourF
 //        interactor=new TourInteractor();
 //    }
 //
-//    public void onViewLoad(String tourId,String tourStartId, Boolean isMyTour){
+//    public void onViewCreated(String tourId,String tourStartId, Boolean isMyTour){
 //        if(!isMyTour)
 //            interactor.getImages(tourId,this);
 //        else

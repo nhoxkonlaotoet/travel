@@ -7,7 +7,7 @@
     <color name="colorAccent">#f4427d</color>
 
     <color name="colorHintText">#6C767C</color>
-
+    <color name="colorPlaceholder">#dddddd</color>
     <color name="colorText">#333</color>
     <color name="colorTourName">#365899</color>
     <color name="colorNewsFeedBackground">#e8eaf6</color>

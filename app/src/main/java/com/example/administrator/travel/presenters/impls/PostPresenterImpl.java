@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 
 import com.example.administrator.travel.models.LoadImageTask;
 import com.example.administrator.travel.models.bases.ActivityInteractor;
+import com.example.administrator.travel.models.bases.RatingInteractor;
 import com.example.administrator.travel.models.bases.UserInteractor;
 import com.example.administrator.travel.models.entities.Activity;
 import com.example.administrator.travel.models.entities.MyLatLng;
+import com.example.administrator.travel.models.entities.Rating;
 import com.example.administrator.travel.models.impls.ActivityInteractorImpl;
+import com.example.administrator.travel.models.impls.RatingInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.PostPresenter;
@@ -24,26 +28,31 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Admin on 4/15/2019.
  */
 
 public class PostPresenterImpl implements PostPresenter,
         Listener.OnLoadImageFinishedListener,
-        Listener.OnPostActivityFinishedListener {
+        Listener.OnPostActivityFinishedListener, Listener.OnRateTourFinishedListener {
     PostView view;
     final static int LOCATION_REQUEST = 111;
     ActivityInteractor activityInteractor;
+    RatingInteractor ratingInteractor;
     UserInteractor userInteractor;
-    String tourStartId;
+    String tourStartId, tourId;
+    float rating;
     MyLatLng location;
     List<Bitmap> selectedImageList;
-    boolean isLayoutPictureShown = false, firstClickPicture = true;
-
+    boolean isActivity,isLayoutPictureShown = false, firstClickPicture = true;
     public PostPresenterImpl(PostView view) {
         this.view = view;
         activityInteractor = new ActivityInteractorImpl();
         userInteractor = new UserInteractorImpl();
+        ratingInteractor=new RatingInteractorImpl();
         selectedImageList = new ArrayList<>();
         location=new MyLatLng(0,0);
     }
@@ -51,19 +60,29 @@ public class PostPresenterImpl implements PostPresenter,
     @Override
     public void onViewCreated(Bundle bundle) {
         tourStartId = bundle.getString("tourStartId");
-        boolean isActivity = bundle.getBoolean("isActivity");
+        isActivity = bundle.getBoolean("isActivity");
         if (isActivity)
             view.viewOnPost();
-        else
+        else {
             view.viewOnReview();
+            rating = bundle.getFloat("rating");
+            tourId = bundle.getString("tourId");
+        }
     }
 
     @Override
     public void onButtonSendClicked(String content) {
         String userId = userInteractor.getUserId(view.getContext());
         if (!userId.equals("none")) {
-            Activity activity = new Activity(userId, false, content, location, selectedImageList.size());
-            activityInteractor.postActivity(tourStartId, userId, activity, selectedImageList, this);
+            if(isActivity) {
+                Activity activity = new Activity(userId, false, content, location, selectedImageList.size());
+                activityInteractor.postActivity(tourStartId, userId, activity, selectedImageList, this);
+            }
+            else
+            {
+                Rating rating = new Rating(this.rating,userId,selectedImageList.size(),content);
+                ratingInteractor.rateTour(tourId, rating,selectedImageList,this);
+            }
         }
 
     }
@@ -136,11 +155,23 @@ public class PostPresenterImpl implements PostPresenter,
 
     @Override
     public void onPostActivitySuccess() {
-        view.finishView();
+        view.finishViewReturnResult(RESULT_OK);
     }
 
     @Override
     public void onPostActivityFail(Exception ex) {
         view.notifyFail(ex.getMessage());
+        view.finishViewReturnResult(RESULT_CANCELED);
+    }
+
+    @Override
+    public void onRateTourSuccess() {
+        view.finishViewReturnResult(RESULT_OK);
+    }
+
+    @Override
+    public void onRateTourFail(Exception ex) {
+        view.notifyFail(ex.getMessage());
+        view.finishViewReturnResult(RESULT_CANCELED);
     }
 }

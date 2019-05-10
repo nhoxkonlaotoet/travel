@@ -18,11 +18,15 @@ public interface TourInteractor {
 
     void getTour(String tourId, Listener.OnGetTourFinishedListener listener);
 
-    void updateFirstImage(String tourId, Listener.OnGetFirstImageFinishedListener listener);
+    void getFirstImage(int pos, String tourId, Listener.OnGetFirstImageFinishedListener listener);
 
-    void getMyToursId(String userId, Listener.OnGetMyTourIdsFinishedListener listener);
+    void getMyOwnedTours(String companyId, Listener.OnGetMyOwnedTourIdsFinishedListener listener);
 
-    void getMyTourInfo(int pos, String tourStartId, final Listener.OnGetMyTourInfoFinishedListener listener);
+    void getMyTourInfo(int pos, String tourStartId, Listener.OnGetMyTourInfoFinishedListener listener);
 
-    void getTourImage(final String tourId, final Listener.OnGetTourImagesFinishedListener listener);
+    void getTourImages(String tourId, Listener.OnGetTourImagesFinishedListener listener);
+
+    void getTourImage(int pos, String tourId, Listener.OnGetTourImageFinishedListener listener);
+
+    void getTourImageTitle(int pos, String tourId, Listener.OnGetTourImageTitleFinishedListener listener);
 }

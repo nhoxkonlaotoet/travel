@@ -3,18 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="5dp">
     <RelativeLayout
         android:id="@+id/layoutImageNearby"
         android:layout_width="100dp"
         android:layout_height="100dp">
-        <ProgressBar
-            android:id="@+id/progressbarImageNearby"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
         <ImageView
             android:id="@+id/imgvNearby"
             android:layout_width="100dp"
@@ -24,7 +18,7 @@
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/layoutImageNearby">

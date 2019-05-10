@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 
 public class Nearby{
-    public String id;
+    public String placeId;
     public LatLng location;
     public String name;
     public Boolean openNow;
@@ -25,8 +25,8 @@ public class Nearby{
     public Bitmap photo;
     public String iconURl;
     public Nearby(){}
-    public Nearby(String id, LatLng location, String name, Boolean openNow, Integer priceLevel, Double rating, String[] types, String vicinity, String photo_reference) {
-        this.id = id;
+    public Nearby(String placeId, LatLng location, String name, Boolean openNow, Integer priceLevel, Double rating, String[] types, String vicinity, String photo_reference) {
+        this.placeId = placeId;
         this.location = location;
         this.name = name;
         this.openNow = openNow;
@@ -40,7 +40,7 @@ public class Nearby{
 
     @Override
     public String toString() {
-        return id+"," + location+", "+name+", "+openNow+", "+priceLevel+", "+rating+", "+types[0]+", "+vicinity;
+        return placeId+"," + location+", "+name+", "+openNow+", "+priceLevel+", "+rating+", "+types[0]+", "+vicinity;
     }
 
 }

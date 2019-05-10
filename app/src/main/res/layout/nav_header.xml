@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutHeader"
+    android:layout_width="match_parent"
+    android:layout_height="192dp"
+    android:gravity="bottom"
+    android:clickable="true"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <ImageView
+        android:id="@+id/imgvNavHeader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/background_gradient"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:paddingTop="20dp"
+        app:layout_constraintBottom_toBottomOf="@id/imgvNavHeader">
+
+        <TextView
+            android:id="@+id/txtNavHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My header title"
+            android:textColor="@color/colorWhite"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@id/imgvNavHeader"
+        app:layout_constraintBottom_toBottomOf="@id/imgvNavHeader"
+        app:srcCompat="@drawable/ic_expand_button"
+        app:layout_constraintRight_toRightOf="@id/imgvNavHeader"
+        app:layout_constraintLeft_toLeftOf="@id/imgvNavHeader"/>
+</android.support.constraint.ConstraintLayout>

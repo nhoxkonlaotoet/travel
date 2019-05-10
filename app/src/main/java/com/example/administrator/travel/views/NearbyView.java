@@ -1,8 +1,10 @@
 package com.example.administrator.travel.views;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.location.Location;
 
+import com.example.administrator.travel.models.entities.MyLatLng;
 import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.entities.NearbyType;
 
@@ -15,9 +17,14 @@ import java.util.List;
 public interface NearbyView {
 
     void showPlacetypes(List<NearbyType> lstPlacetype);
-    void showNearbys(List<Nearby> lstNearby,Location mylocation);
+
+    void showNearbys(List<Nearby> lstNearby, MyLatLng mylocation);
+
     void appendNearbys(List<Nearby> lstNearby);
+
     void notifyGetNearbyFailure(Exception ex);
+
     void updateListViewImages(int index, Bitmap bitmap);
 
+    Context getContext();
 }

@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ScheduleInteractorImpl implements ScheduleInteractor {
     @Override
-    public void getSchedule(String tourId, String dayId, final Listener.OnGetScheduleFinishedListener listener) {
+    public void getSchedules(String tourId, String dayId, final Listener.OnGetSchedulesFinishedListener listener) {
         final List<Schedule> lstSchedule = new ArrayList<>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference schedulesRef = database.getReference("schedules").child(tourId);
@@ -34,12 +34,12 @@ public class ScheduleInteractorImpl implements ScheduleInteractor {
                     schedule.id=dataSnapshot1.getKey();
                     lstSchedule.add(schedule);
                 }
-                listener.onGetScheduleSuccess(lstSchedule);
+                listener.onGetSchedulesSuccess(lstSchedule);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                listener.onGetScheduleFail(databaseError.toException());
+                listener.onGetSchedulesFail(databaseError.toException());
             }
         });
     }

@@ -20,6 +20,8 @@ public interface PostView {
     void viewOnPost();
     void viewOnReview();
     void finishView();
+    void finishViewReturnResult(int resultCode);
+
     void notifyFail(String message);
     Context getContext();
 }

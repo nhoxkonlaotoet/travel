@@ -17,8 +17,6 @@ import java.util.List;
 public interface ReviewView {
 
     void showDialog();
-    void addImage();
-    void gotoGallary();
     void closeDialog();
     void showRating(float rating, long numberofRating);
     void notifyGetRatingFailure(Exception ex);
@@ -33,5 +31,6 @@ public interface ReviewView {
     void gotoReviewDetailActivity(Intent intent);
     void enableRatingBar();
     void disableRatingBar();
+    void gotoPostActivity(Intent intent, int requestCode);
     Context getContext();
 }

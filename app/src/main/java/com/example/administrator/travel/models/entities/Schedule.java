@@ -1,5 +1,7 @@
 package com.example.administrator.travel.models.entities;
 
+import android.graphics.Bitmap;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
@@ -13,14 +15,16 @@ public class Schedule {
     public String title;
     public String content;
     public MyLatLng latLng;
+    public String placeId;
     public Schedule(){ }
 
-    public Schedule(String day, String hour, String title, String content, MyLatLng latLng) {
+    public Schedule(String day, String hour, String title, String content, MyLatLng latLng, String placeId) {
         this.day = day;
         this.hour = hour;
         this.title = title;
         this.content = content;
         this.latLng = latLng;
+        this.placeId=placeId;
     }
 
     @Override

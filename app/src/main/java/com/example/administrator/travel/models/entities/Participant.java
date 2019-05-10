@@ -15,7 +15,7 @@ public class Participant {
     public String userId;
     public String tourStartId;
     public Boolean shareLocation;
-    public MyLatLng latLng;
+    public MyLatLng location;
     public Long joinedTime;
     public Long lastTimeShareLocation;
     public Participant() {
@@ -29,11 +29,11 @@ public class Participant {
 //        this.joinedTime = joinedTime;
 //        this.lastTimeShareLocation=lastTimeShareLocation;
 //    }
-    public Participant(String userId, String tourStartId, Boolean shareLocation, MyLatLng latLng) {
+    public Participant(String userId, String tourStartId, Boolean shareLocation, MyLatLng location) {
         this.userId = userId;
         this.tourStartId=tourStartId;
         this.shareLocation = shareLocation;
-        this.latLng = latLng;
+        this.location = location;
     }
     @Exclude
     public Map<String, Object> toMap(){
@@ -41,9 +41,10 @@ public class Participant {
         result.put("userId", userId);
         result.put("tourStartId", tourStartId);
         result.put("shareLocation", shareLocation);
-        result.put("latLng", latLng);
+        result.put("location", location);
         result.put("joinedTime", ServerValue.TIMESTAMP);
         result.put("lastTimeShareLocation", ServerValue.TIMESTAMP);
         return result;
     }
+
 }

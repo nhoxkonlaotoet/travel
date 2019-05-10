@@ -1,17 +1,10 @@
 package com.example.administrator.travel.models;
-import android.content.Context;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.entities.NearbyType;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +18,6 @@ import java.util.List;
 /**
  * Created by Administrator on 23/12/2018.
  */
-import com.example.administrator.travel.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -87,7 +79,7 @@ public class NearbyInteractor extends AsyncTask<Object, String, String> {
     protected void onPostExecute(String s){
 
         List<Nearby> lstNearby = new ArrayList<>();
-        DataParser parser = new DataParser();
+        NearbyDataParser parser = new NearbyDataParser();
         lstNearby = parser.parse(s);
         for(int i=0;i<lstNearby.size();i++)
         {

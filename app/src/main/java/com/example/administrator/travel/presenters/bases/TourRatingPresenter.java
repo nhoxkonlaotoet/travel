@@ -1,6 +1,7 @@
 package com.example.administrator.travel.presenters.bases;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -13,10 +14,13 @@ import java.util.List;
 public interface TourRatingPresenter {
     void onViewCreated(Bundle bundle);
     void onBtnCollapseClicked();
-    void OnRatingBarTouched(float value);
-    void onBtnSendReviewClicked(float rate, String content, List<Bitmap> lstImage);
+    void OnRatingBarChanged(float value);
+    void onBtnSendReviewClicked();
     void onGetImageResult();
     void onBtnCancelClicked();
     void onImageAddClicked();
     void onListviewReviewItemClicked(String reviewId);
+    void onEditTextContentClicked();
+    void onViewResult(int requestCode, int resultCode, Intent data);
+
 }
