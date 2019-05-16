@@ -4,31 +4,27 @@ package com.example.administrator.travel.views.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.NearbyAdapter;
-import com.example.administrator.travel.models.OnTransmitMyLocationFinishedListener;
 import com.example.administrator.travel.models.entities.MyLatLng;
-import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.entities.NearbyType;
+import com.example.administrator.travel.models.entities.place.nearby.Nearby;
 import com.example.administrator.travel.presenters.bases.NearbyPresenter;
 import com.example.administrator.travel.presenters.impls.NearbyPresenterImpl;
-import com.example.administrator.travel.views.NearbyView;
+import com.example.administrator.travel.views.bases.NearbyView;
 import com.example.administrator.travel.views.activities.MapsActivity;
 
 import java.util.ArrayList;
@@ -76,9 +72,8 @@ public class NearbyFragment extends Fragment implements NearbyView, NearbyAdapte
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
-                if (!recyclerView.canScrollVertically(1)) {
-                    //presenter.onListViewNearbyScrollBottom();
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    presenter.onListViewNearbyScrollBottom();
                 }
             }
         });
@@ -133,21 +128,26 @@ public class NearbyFragment extends Fragment implements NearbyView, NearbyAdapte
 
     @Override
     public void appendNearbys(List<Nearby> lstNearby) {
-//        for (int i = 0; i < lstNearby.size(); i++)
-//            adapter.lstNearby.add(lstNearby.get(i));
-//        Log.e("appendNearbys: ", adapter.lstNearby.size() + "");
-//        adapter.notifyDataSetChanged();
         adapter.appendItems(lstNearby);
     }
 
     @Override
-    public void notifyGetNearbyFailure(Exception ex) {
-
+    public void notify(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void updateListViewImages(int index, Bitmap bitmap) {
-        adapter.updateImage(index,bitmap);
+        adapter.updateImage(index, bitmap);
+    }
+
+    @Override
+    public void gotoMapActivity(String origin, String destination, String openFrom) {
+        Intent intent = new Intent(getActivity(), MapsActivity.class);
+        intent.putExtra("openFrom", openFrom);
+        intent.putExtra("origin", origin);
+        intent.putExtra("destination", destination);
+        startActivity(intent);
     }
 
     @Override
@@ -157,10 +157,6 @@ public class NearbyFragment extends Fragment implements NearbyView, NearbyAdapte
 
     @Override
     public void onNearbyClick(View view, Nearby nearby) {
-        Intent intent = new Intent(getActivity(), MapsActivity.class);
-        intent.putExtra("action", "nearby");
-        String destination = nearby.location.latitude+","+nearby.location.longitude;
-        intent.putExtra("destination", destination);
-        startActivity(intent);
+        presenter.onNearbyItemClicked(nearby);
     }
 }

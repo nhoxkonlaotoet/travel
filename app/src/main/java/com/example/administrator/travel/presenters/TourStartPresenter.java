@@ -3,7 +3,7 @@ package com.example.administrator.travel.presenters;
 import com.example.administrator.travel.models.OnGetTourStartDateFinishedListener;
 import com.example.administrator.travel.models.TourStartInteractor;
 import com.example.administrator.travel.models.entities.TourStartDate;
-import com.example.administrator.travel.views.TourStartView;
+import com.example.administrator.travel.views.bases.TourStartView;
 
 import java.util.List;
 

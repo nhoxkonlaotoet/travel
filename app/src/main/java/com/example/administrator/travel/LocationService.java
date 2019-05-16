@@ -110,17 +110,17 @@ public class LocationService extends Service implements GoogleApiClient.OnConnec
         LocationObservable.getInstance().updateLocation(myLatLng);
         if (!tourStartId.equals("") && !userId.equals("none") && participantInteractor.isShareLocation(userId,this))
             participantInteractor.updateLocation(tourStartId, userId, myLatLng);
-        Log.e("service: ", location + "");
+        Toast.makeText(this, "service: "+location, Toast.LENGTH_LONG).show();
     }
 
     public void startLocationServices() {
-        Log.e("startLocationServices: ", "true");
-        LocationRequest request = LocationRequest.create().setPriority(LocationRequest.PRIORITY_LOW_POWER);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, request, this);
-
+       if(googleApiClient.isConnected()) {
+           LocationRequest request = LocationRequest.create().setPriority(LocationRequest.PRIORITY_LOW_POWER);
+           if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+               return;
+           }
+           LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, request, this);
+       }
     }
 
     public MyLatLng getCurrentLocation() {

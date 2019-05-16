@@ -5,15 +5,15 @@ import android.graphics.Bitmap;
 import com.example.administrator.travel.models.entities.City;
 import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.entities.Day;
-import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.entities.NearbyType;
 import com.example.administrator.travel.models.entities.Participant;
-import com.example.administrator.travel.models.entities.PlaceDetail;
-import com.example.administrator.travel.models.entities.PlacePhoto;
 import com.example.administrator.travel.models.entities.Rating;
 import com.example.administrator.travel.models.entities.Schedule;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.TourStartDate;
+import com.example.administrator.travel.models.entities.map.direction.Route;
+import com.example.administrator.travel.models.entities.place.detail.PlaceDetail;
+import com.example.administrator.travel.models.entities.place.nearby.Nearby;
 import com.google.android.gms.location.places.PlaceTypes;
 import com.google.firebase.database.DatabaseException;
 
@@ -234,5 +234,17 @@ public interface Listener {
         void onGetPeopleLocationSuccess(List<Participant> participantList);
 
         void onGetPeopleLocationFailure(Exception ex);
+    }
+
+    interface OnGetDirectionFinishedListener {
+        void onGetDirectionSuccess(List<Route> routeList);
+
+        void onGetDirectionFail(Exception ex);
+    }
+
+    interface OnPicassoLoadFinishedListener {
+        void onPicassoLoadSuccess(int pos, Bitmap photo);
+
+        void onPicassoLoadFail(Exception ex);
     }
 }

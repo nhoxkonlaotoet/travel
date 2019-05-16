@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ import com.example.administrator.travel.models.entities.City;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.presenters.bases.NewsFeedPresenter;
 import com.example.administrator.travel.presenters.impls.NewsFeedPresenterImpl;
-import com.example.administrator.travel.views.NewsFeedView;
+import com.example.administrator.travel.views.bases.NewsFeedView;
 import com.example.administrator.travel.views.activities.TourActivity;
 import com.facebook.shimmer.ShimmerFrameLayout;
 

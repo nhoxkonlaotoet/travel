@@ -1,6 +1,5 @@
 package com.example.administrator.travel.presenters.impls;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.administrator.travel.models.bases.CompanyInteractor;
@@ -12,8 +11,7 @@ import com.example.administrator.travel.models.impls.TourStartInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.TourStartPresenter;
-import com.example.administrator.travel.views.TourStartView;
-import com.example.administrator.travel.views.activities.BookTourActivity;
+import com.example.administrator.travel.views.bases.TourStartView;
 
 import java.util.List;
 

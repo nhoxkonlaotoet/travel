@@ -87,7 +87,7 @@ public class ActivityFragment extends Fragment implements ActivityView {
     @Override
     public void gotoMapActivty(String tourStartId){
         Intent intent = new Intent(getActivity(), MapsActivity.class);
-        intent.putExtra("action","activity");
+        intent.putExtra("openFrom","activity");
         intent.putExtra("tourStartId",tourStartId);
         startActivity(intent);
     }

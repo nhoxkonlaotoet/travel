@@ -3,7 +3,6 @@ package com.example.administrator.travel.presenters.impls;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
-import android.view.View;
 
 import com.example.administrator.travel.LocationService;
 import com.example.administrator.travel.models.bases.CompanyInteractor;
@@ -18,9 +17,7 @@ import com.example.administrator.travel.models.impls.TourInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.SelectMyTourPresenter;
-import com.example.administrator.travel.views.SelectMyTourView;
-import com.example.administrator.travel.views.activities.TourActivity;
-import com.google.firebase.database.DatabaseException;
+import com.example.administrator.travel.views.bases.SelectMyTourView;
 
 import java.util.List;
 

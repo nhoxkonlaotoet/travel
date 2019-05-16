@@ -96,7 +96,7 @@
                 android:id="@+id/imgvOpen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_open" />
+                app:srcCompat="@drawable/ic_open"/>
                 <TextView
                     android:id="@+id/txtOpen"
                     android:layout_width="wrap_content"
@@ -116,7 +116,7 @@
                     android:id="@+id/imgvPriceLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_money_24dp" />
+                    app:srcCompat="@drawable/ic_money_24dp"/>
                 <TextView
                     android:id="@+id/txtPriceLevel"
                     android:layout_width="wrap_content"

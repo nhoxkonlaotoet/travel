@@ -29,12 +29,25 @@
     <string name="title_tour_start_date">Khởi hành</string>
     <!-- tour tab layout-->
 
+    <!-- <open from> -->
+    <string name="open_from_nearby">nearby</string>
+    <string name="open_from_schedule">schedule</string>
+    <string name="open_from_activity">activity</string>
+
+
+
+    <!-- </open from> -->
+
+
     <string name="not_yet_participated_in_the_tour">Bạn chưa tham gia tour</string>
     <string name="not_own_the_tour">Hãy đăng tour đê mọi người cùng trải nghiệm</string>
     <string name="book_tour">Mua</string>
     <string name="see_more">Xem thêm</string>
     <string name="notify_tour_finished">Tour đã kết thúc</string>
     <string name="see_other_photos">ảnh khác</string>
+    <string name="wait_for_location">Vui lòng chờ lấy vị trí</string>
+    <string name="search">Tìm kiếm</string>
+
     <!--Sing Up-->
     <string name="move_login">Bạn đã có tài khoản? Đăng nhập tại đây</string>
     <string name="move_signup">Bạn chưa có tài khoản? Đăng ký tại đây</string>

@@ -1,18 +1,14 @@
 package com.example.administrator.travel.views.fragments;
 
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,11 +26,8 @@ import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.ReviewAdapter;
 import com.example.administrator.travel.models.entities.Rating;
 import com.example.administrator.travel.presenters.impls.TourRatingPresenterImpl;
-import com.example.administrator.travel.views.ReviewView;
-import com.example.administrator.travel.views.activities.ReviewDetailActivity;
+import com.example.administrator.travel.views.bases.ReviewView;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

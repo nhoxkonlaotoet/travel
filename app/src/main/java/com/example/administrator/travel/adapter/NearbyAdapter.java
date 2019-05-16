@@ -1,23 +1,23 @@
 package com.example.administrator.travel.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.entities.MyLatLng;
-import com.example.administrator.travel.models.entities.Nearby;
+import com.example.administrator.travel.models.entities.place.nearby.Nearby;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,20 +28,19 @@ import java.util.List;
 
 public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder> {
 
-    private List<Bitmap> pictureList;
     private LayoutInflater mInflater;
     private NearbyAdapter.NearbyClickListener mClickListener;
-    public List<Nearby> lstNearby = new ArrayList<>();
+    private List<Nearby> nearbyList;
     MyLatLng mylocation;
     String open, close, pricelv0, pricelv1, pricelv2, pricelv3, pricelv4;
-    int idhalfstar, idnostar, idclose;
-
+    int idstar, idhalfstar, idnostar, idclose, idopen;
+    Context context;
     public NearbyAdapter(Context context, List<Nearby> lstNearby, MyLatLng mylocation) {
         if (context == null)
             return;
+        this.context = context;
         this.mInflater = LayoutInflater.from(context);
-        pictureList = new ArrayList<>();
-        this.lstNearby = lstNearby;
+        this.nearbyList = lstNearby;
         this.mylocation = mylocation;
         open = "Mở cửa";
         close = "Đóng cửa";
@@ -50,10 +49,11 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         pricelv2 = "Vừa phải";
         pricelv3 = "Đắt";
         pricelv4 = "Rất đắt";
+        idstar = R.drawable.ic_star_yellow_24dp;
         idhalfstar = R.drawable.ic_half_star_yellow_24dp;
         idnostar = R.drawable.ic_star_gray_24dp;
         idclose = R.drawable.ic_close_door_24dp;
-
+        idopen = R.drawable.ic_open;
     }
 
     @Override
@@ -66,46 +66,64 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NearbyAdapter.ViewHolder holder, int position) {
-        try {
+    public void onBindViewHolder(@NonNull NearbyAdapter.ViewHolder holder, final int position) {
 
-            Nearby nearby = lstNearby.get(position);
+        Nearby nearby = nearbyList.get(position);
+        float[] result = new float[1];
+        Location.distanceBetween(mylocation.latitude, mylocation.longitude,
+                nearby.geometry.location.lat, nearby.geometry.location.lng, result);
 
-            float[] result = new float[1];
-            Location.distanceBetween(mylocation.latitude, mylocation.longitude,
-                    nearby.location.latitude, nearby.location.longitude, result);
 
-            if (nearby.photo != null) {
-                holder.imgvNearby.setImageBitmap(nearby.photo);
-            }
-            holder.txtNearbyName.setText(nearby.name);
-            float km, m;
-            m = result[0];
-            if (m >= 1000) {
-                km = ((Math.round(m / 100)) * 100);
-                km /= 1000;
-                holder.txtNearbyDistance.setText(+km + "km");
-            } else {
-                holder.txtNearbyDistance.setText(+Math.round(m) + "m");
-            }
-
+        if (nearby.photo != null) {
+            holder.imgvNearby.setImageBitmap(nearby.photo);
+        }
+        else
+            holder.imgvNearby.setImageBitmap(null);
+        holder.txtNearbyName.setText(nearby.name);
+        float km, m;
+        m = result[0];
+        if (m >= 1000) {
+            km = ((Math.round(m / 100)) * 100);
+            km /= 1000;
+            holder.txtNearbyDistance.setText(+km + "km");
+        } else {
+            holder.txtNearbyDistance.setText(+Math.round(m) + "m");
+        }
+        if (nearby.rating == null) {
+            holder.txtRating.setVisibility(View.INVISIBLE);
+            holder.imgvRating.setVisibility(View.INVISIBLE);
+        } else {
+            holder.txtRating.setVisibility(View.VISIBLE);
+            holder.imgvRating.setVisibility(View.VISIBLE);
             holder.txtRating.setText(nearby.rating.toString());
             if (nearby.rating < 4 && nearby.rating > 1) {
                 holder.imgvRating.setImageResource(idhalfstar);
-
             } else if (nearby.rating < 1) {
                 holder.imgvRating.setImageResource(idnostar);
             }
+        }
 
-            if (nearby.openNow == null) {
-                holder.txtOpen.setVisibility(View.INVISIBLE);
-                holder.imgvOpen.setVisibility(View.INVISIBLE);
-            } else if (nearby.openNow) {
+        if (nearby.openingHours == null || nearby.openingHours.openNow == null) {
+            holder.imgvOpen.setVisibility(View.INVISIBLE);
+            holder.txtOpen.setVisibility(View.INVISIBLE);
+        } else {
+            holder.imgvOpen.setVisibility(View.VISIBLE);
+            holder.txtOpen.setVisibility(View.VISIBLE);
+            if (nearby.openingHours.openNow) {
                 holder.txtOpen.setText(open);
+                holder.imgvOpen.setImageResource(idopen);
             } else {
                 holder.txtOpen.setText(close);
                 holder.imgvOpen.setImageResource(idclose);
             }
+        }
+
+        if (nearby.priceLevel == null) {
+            holder.txtPriceLevel.setVisibility(View.INVISIBLE);
+            holder.imgvPriceLevel.setVisibility(View.INVISIBLE);
+        } else {
+            holder.txtPriceLevel.setVisibility(View.VISIBLE);
+            holder.imgvPriceLevel.setVisibility(View.VISIBLE);
             switch (nearby.priceLevel) {
                 case 0:
                     holder.txtPriceLevel.setText(pricelv0);
@@ -123,18 +141,14 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
                     holder.txtPriceLevel.setText(pricelv4);
                     break;
                 default:
-                    holder.imgvPriceLevel.setVisibility(View.INVISIBLE);
-                    holder.txtPriceLevel.setVisibility(View.INVISIBLE);
                     break;
             }
-
-        } catch (Exception e) {
         }
     }
 
     @Override
     public int getItemCount() {
-        return lstNearby.size();
+        return nearbyList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -158,13 +172,13 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         @Override
         public void onClick(View view) {
             if (mClickListener != null)
-                mClickListener.onNearbyClick(view, lstNearby.get(getAdapterPosition()));
+                mClickListener.onNearbyClick(view, nearbyList.get(getAdapterPosition()));
         }
     }
 
     // convenience method for getting data at click position
     public Nearby getItem(int pos) {
-        return lstNearby.get(pos);
+        return nearbyList.get(pos);
     }
 
     // allows clicks events to be caught
@@ -177,16 +191,18 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         void onNearbyClick(View view, Nearby nearby);
     }
 
-    public void updateImage(int pos, Bitmap picture) {
-        if (pos < lstNearby.size()) {
-            lstNearby.get(pos).photo = picture;
+    public void updateImage(int pos, Bitmap photo){
+        if(nearbyList!=null && nearbyList.size()>pos) {
+            nearbyList.get(pos).photo = photo;
             notifyDataSetChanged();
         }
     }
 
+
+
     public void appendItems(List<Nearby> nearbyList) {
         for (Nearby nearby : nearbyList) {
-            this.lstNearby.add(nearby);
+            this.nearbyList.add(nearby);
         }
         notifyDataSetChanged();
     }

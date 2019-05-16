@@ -1,20 +1,5 @@
 package com.example.administrator.travel.presenters;
 
-import android.graphics.Bitmap;
-import android.location.Location;
-import android.util.Log;
-
-import com.example.administrator.travel.models.OnPostActivityFinishedListener;
-import com.example.administrator.travel.adapter.PictureItem;
-import com.example.administrator.travel.models.OnLoadImageFinishedListener;
-import com.example.administrator.travel.models.PostInteractor;
-import com.example.administrator.travel.views.PostView;
-import com.example.administrator.travel.views.activities.PostActivity;
-import com.google.android.gms.maps.model.LatLng;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Administrator on 31/12/2018.
  */

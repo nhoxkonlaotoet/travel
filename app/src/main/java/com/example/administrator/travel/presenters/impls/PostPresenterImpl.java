@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 
 import com.example.administrator.travel.models.LoadImageTask;
@@ -19,10 +18,8 @@ import com.example.administrator.travel.models.impls.RatingInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.PostPresenter;
-import com.example.administrator.travel.views.PostView;
+import com.example.administrator.travel.views.bases.PostView;
 import com.example.administrator.travel.views.activities.MapsActivity;
-import com.example.administrator.travel.views.activities.PostActivity;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 import java.util.ArrayList;

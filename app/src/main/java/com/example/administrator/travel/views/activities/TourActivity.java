@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import com.example.administrator.travel.adapter.Pager;
 import com.example.administrator.travel.adapter.SectionsPagerAdapter;
 import com.example.administrator.travel.adapter.SlideTourImageAdapter;
-import com.example.administrator.travel.models.OnTransmitMyLocationFinishedListener;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -23,7 +22,7 @@ import android.widget.Toast;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.presenters.bases.TourPresenter;
 import com.example.administrator.travel.presenters.impls.TourPresenterImpl;
-import com.example.administrator.travel.views.TourView;
+import com.example.administrator.travel.views.bases.TourView;
 
 public class TourActivity extends AppCompatActivity implements TourView{
     Toolbar toolbar;

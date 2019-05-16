@@ -3,6 +3,7 @@ package com.example.administrator.travel.presenters.impls;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.bases.DayInteractor;
 import com.example.administrator.travel.models.bases.ScheduleInteractor;
 import com.example.administrator.travel.models.bases.TourInteractor;
@@ -14,7 +15,7 @@ import com.example.administrator.travel.models.impls.ScheduleInteractorImpl;
 import com.example.administrator.travel.models.impls.TourInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.TourDetailPresenter;
-import com.example.administrator.travel.views.TourDetailView;
+import com.example.administrator.travel.views.bases.TourDetailView;
 import com.example.administrator.travel.views.activities.MapsActivity;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public class TourDetailPresenterImpl implements TourDetailPresenter,
         intent.putExtra("tourId", tourId);
         intent.putExtra("dayId", dayId);
         intent.putExtra("scheduleId", scheduleId);
-        intent.putExtra("action", "schedule");
+        intent.putExtra("openFrom", view.getContext().getResources().getString(R.string.open_from_schedule));
         intent.putExtra("mytour", isMyTour);
         view.gotoMapActivity(intent);
     }

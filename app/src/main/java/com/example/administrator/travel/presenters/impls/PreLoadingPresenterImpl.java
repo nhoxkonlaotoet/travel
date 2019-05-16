@@ -8,7 +8,7 @@ import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.PreLoadingPresenter;
-import com.example.administrator.travel.views.PreLoadingView;
+import com.example.administrator.travel.views.bases.PreLoadingView;
 
 /**
  * Created by Admin on 4/25/2019.

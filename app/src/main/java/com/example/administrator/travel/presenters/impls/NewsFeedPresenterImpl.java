@@ -10,7 +10,7 @@ import com.example.administrator.travel.models.impls.CityInteractorImpl;
 import com.example.administrator.travel.models.impls.TourInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.NewsFeedPresenter;
-import com.example.administrator.travel.views.NewsFeedView;
+import com.example.administrator.travel.views.bases.NewsFeedView;
 
 import java.util.List;
 

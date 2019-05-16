@@ -1,9 +1,7 @@
 package com.example.administrator.travel.views.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,25 +9,18 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.adapter.PictureItem;
 import com.example.administrator.travel.adapter.StoragePictureAdapter;
 import com.example.administrator.travel.presenters.bases.PostPresenter;
 import com.example.administrator.travel.presenters.impls.PostPresenterImpl;
-import com.example.administrator.travel.views.PostView;
-import com.google.android.gms.maps.model.LatLng;
-
-import java.io.File;
+import com.example.administrator.travel.views.bases.PostView;
 
 public class PostActivity extends AppCompatActivity implements PostView, StoragePictureAdapter.PictureClickListener {
     RelativeLayout btnOpenPicture,btnMarkLocation;

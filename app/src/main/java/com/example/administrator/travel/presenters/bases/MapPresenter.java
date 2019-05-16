@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.PointOfInterest;
 
 /**
  * Created by Admin on 5/8/2019.
@@ -19,6 +20,8 @@ public interface MapPresenter {
     void onMapClicked(LatLng location);
 
     void onMarkerClicked(Marker marker);
+
+    void onPOIClicked(PointOfInterest poi);
 
     void onMapRefreshed();
 

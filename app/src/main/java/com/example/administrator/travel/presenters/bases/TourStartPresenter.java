@@ -2,8 +2,6 @@ package com.example.administrator.travel.presenters.bases;
 
 import android.os.Bundle;
 
-import com.example.administrator.travel.views.TourStartView;
-
 /**
  * Created by Admin on 4/11/2019.
  */

@@ -4,29 +4,30 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
-import android.location.Location;
+import android.graphics.drawable.Drawable;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.administrator.travel.LocationObservable;
 import com.example.administrator.travel.LocationService;
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.models.DownLoadImageTask;
-import com.example.administrator.travel.models.bases.NearbyInteractor;
+import com.example.administrator.travel.models.bases.PicassoInteractor;
+import com.example.administrator.travel.models.bases.PlaceInteractor;
 import com.example.administrator.travel.models.entities.MyLatLng;
-import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.entities.NearbyType;
-import com.example.administrator.travel.models.impls.NearbyInteractorImpl;
+import com.example.administrator.travel.models.entities.place.nearby.Nearby;
+import com.example.administrator.travel.models.impls.PicassoInteractorImpl;
+import com.example.administrator.travel.models.impls.PlaceInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.NearbyPresenter;
-import com.example.administrator.travel.views.NearbyView;
+import com.example.administrator.travel.views.bases.NearbyView;
 import com.google.android.gms.maps.model.LatLng;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.Set;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
@@ -35,24 +36,22 @@ import static android.content.Context.BIND_AUTO_CREATE;
  */
 
 public class NearbyPresenterImpl implements NearbyPresenter,
-        Listener.OnGetNearbyFinishedListener, Listener.OnGetPlaceTypeFinishedListener,
-        Listener.OnDownloadImageFinishedListener {
+        Listener.OnGetNearbyFinishedListener, Listener.OnGetPlaceTypeFinishedListener, Listener.OnPicassoLoadFinishedListener {
     NearbyView view;
-    NearbyInteractor nearbyInteractor;
+    PlaceInteractor placeInteractor;
+    PicassoInteractor picassoInteractor;
     String type;
     MyLatLng location;
-    String nextPageToken = "";
-    String apiKey;
+    String nextPageToken;
     int page = 0;
     LocationService locationService;
-    List<NearbyType> lstPlaceType=new ArrayList<>();
-    boolean loadFinished = false;
+    List<NearbyType> lstPlaceType = new ArrayList<>();
+    boolean loadFinished;
 
     public NearbyPresenterImpl(NearbyView view) {
         this.view = view;
-        nearbyInteractor = new NearbyInteractorImpl();
-        if (view.getContext() != null)
-            apiKey = view.getContext().getResources().getString(R.string.google_api_key);
+        placeInteractor = new PlaceInteractorImpl();
+        picassoInteractor = new PicassoInteractorImpl();
         Intent mIntent = new Intent(this.view.getContext(), LocationService.class);
         view.getContext().bindService(mIntent, mConnection, BIND_AUTO_CREATE);
     }
@@ -75,14 +74,15 @@ public class NearbyPresenterImpl implements NearbyPresenter,
 
     @Override
     public void onViewCreated() {
-        nearbyInteractor.getPlaceType(this);
+        placeInteractor.getPlaceType(this);
     }
 
     @Override
     public void onListViewNearbyScrollBottom() {
-        if (page < 3 && loadFinished && !nextPageToken.equals("")) {
+        if (page < 3 && loadFinished && nextPageToken != null && !nextPageToken.equals("")) {
             loadFinished = false;
-            nearbyInteractor.getNearby(type, new LatLng(location.latitude, location.longitude), nextPageToken, apiKey, this);
+            placeInteractor.getNearby(type, new LatLng(location.latitude, location.longitude), nextPageToken,
+                    view.getContext().getResources().getString(R.string.google_api_key), this);
             page++;
         }
 
@@ -91,50 +91,61 @@ public class NearbyPresenterImpl implements NearbyPresenter,
     @Override
     public void onSelectItemSpinnerPlaceType(int index) {
         if (location != null) {
-            type=lstPlaceType.get(index).value;
+            picassoInteractor.cleanGarbages();
+            type = lstPlaceType.get(index).value;
             loadFinished = false;
-            nextPageToken="";
+            nextPageToken = "";
             page = 1;
-            nearbyInteractor.getNearby(type, new LatLng(location.latitude, location.longitude), nextPageToken, apiKey, this);
+            placeInteractor.getNearby(type, new LatLng(location.latitude, location.longitude),
+                    view.getContext().getResources().getString(R.string.google_api_key), this);
         }
     }
 
     @Override
-    public void onGetNearbySuccess(List<Nearby> lstNearby, String nextPageToken) {
-        Log.e("onGetNearbySuccess: ", lstNearby.get(0).toString());
+    public void onNearbyItemClicked(Nearby nearby) {
+        StringBuilder origin = new StringBuilder()
+                .append(location.latitude)
+                .append(",")
+                .append(location.longitude);
+        StringBuilder destination = new StringBuilder()
+                .append(nearby.geometry.location.lat.toString())
+                .append(",")
+                .append(nearby.geometry.location.lng.toString());
+        String openFrom = view.getContext().getResources().getString(R.string.open_from_nearby);
+        view.gotoMapActivity(origin.toString(),destination.toString(),openFrom);
+    }
 
+    @Override
+    public void onGetNearbySuccess(List<Nearby> nearbyList, String nextPageToken) {
         loadFinished = true;
         this.nextPageToken = nextPageToken;
         if (page == 1)
-            view.showNearbys(lstNearby, location);
+            view.showNearbys(nearbyList, location);
         else {
-            view.appendNearbys(lstNearby);
+            view.appendNearbys(nearbyList);
+            view.notify("▼ Xem thêm");
         }
-        String url;
-        for (int i = 0; i < lstNearby.size(); i++) {
-            {
-                if (!lstNearby.get(i).photo_reference.equals("")) {
-                    url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photoreference="
-                            + lstNearby.get(i).photo_reference
-                            + "&key=" + apiKey;
-                } else {
-                    url = lstNearby.get(i).iconURl;
-                }
-                // 20 items/ page
-                new DownLoadImageTask(this).execute(((page-1)*20 + i) + "", url);
+        for (int i = 0; i < nearbyList.size(); i++) {
+            String url;
+            try {
+                url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photoreference="
+                        + nearbyList.get(i).photos.get(0).photoReference
+                        + "&key=" + view.getContext().getResources().getString(R.string.google_api_key);
+            } catch (Exception e) {
+                url = nearbyList.get(i).icon;
             }
+            picassoInteractor.load(view.getContext(),(page-1)*20 + i,url,this);
         }
-
     }
 
     @Override
     public void onGetNearbyFail(Exception ex) {
-        view.notifyGetNearbyFailure(ex);
+        view.notify(ex.getMessage());
     }
 
     @Override
     public void onGetPlaceTypeSuccess(List<NearbyType> lstPlaceType) {
-        this.lstPlaceType=lstPlaceType;
+        this.lstPlaceType = lstPlaceType;
         view.showPlacetypes(lstPlaceType);
     }
 
@@ -145,12 +156,12 @@ public class NearbyPresenterImpl implements NearbyPresenter,
 
 
     @Override
-    public void onDownloadImageFail(Exception e) {
-
+    public void onPicassoLoadSuccess(int pos, Bitmap photo) {
+        view.updateListViewImages(pos,photo);
     }
 
     @Override
-    public void onDownloadImageSuccess(int pos, Bitmap result) {
-        view.updateListViewImages(pos, result);
+    public void onPicassoLoadFail(Exception ex) {
+
     }
 }

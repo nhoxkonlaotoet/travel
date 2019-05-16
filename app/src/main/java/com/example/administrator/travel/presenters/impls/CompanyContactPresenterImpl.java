@@ -3,15 +3,13 @@ package com.example.administrator.travel.presenters.impls;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import com.example.administrator.travel.models.bases.CompanyInteractor;
 import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.impls.CompanyInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.CompanyContactPresenter;
-import com.example.administrator.travel.views.CompanyContactView;
+import com.example.administrator.travel.views.bases.CompanyContactView;
 import com.example.administrator.travel.views.activities.MapsActivity;
 
 /**

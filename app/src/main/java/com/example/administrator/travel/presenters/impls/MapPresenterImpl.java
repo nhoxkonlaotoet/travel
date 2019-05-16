@@ -3,54 +3,37 @@ package com.example.administrator.travel.presenters.impls;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.administrator.travel.OnGetPeopleLocationFinishedListener;
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.models.DirectionFinder;
-import com.example.administrator.travel.models.MapInteractor;
-import com.example.administrator.travel.models.OnFindDirectionFinishListener;
-import com.example.administrator.travel.models.OnGetScheduleFinishedListener;
-import com.example.administrator.travel.models.PlaceDetailTask;
 import com.example.administrator.travel.models.TourDetailInteractor;
+import com.example.administrator.travel.models.bases.MapInteractor;
 import com.example.administrator.travel.models.bases.ParticipantInteractor;
+import com.example.administrator.travel.models.bases.PlaceInteractor;
 import com.example.administrator.travel.models.bases.TourInteractor;
 import com.example.administrator.travel.models.bases.ScheduleInteractor;
-import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.entities.Participant;
-import com.example.administrator.travel.models.entities.PlaceDetail;
-import com.example.administrator.travel.models.entities.PlacePhoto;
-import com.example.administrator.travel.models.entities.Route;
 import com.example.administrator.travel.models.entities.Schedule;
+import com.example.administrator.travel.models.entities.map.direction.Route;
+import com.example.administrator.travel.models.entities.place.detail.PlaceDetail;
+import com.example.administrator.travel.models.impls.MapInteractorImpl;
 import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
+import com.example.administrator.travel.models.impls.PlaceInteractorImpl;
 import com.example.administrator.travel.models.impls.ScheduleInteractorImpl;
 import com.example.administrator.travel.models.impls.TourInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.MapPresenter;
-import com.example.administrator.travel.views.MapView;
-import com.example.administrator.travel.views.activities.MapsActivity;
+import com.example.administrator.travel.views.bases.MapView;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.squareup.picasso.Picasso;
 
-import java.io.UnsupportedEncodingException;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,23 +41,25 @@ import java.util.List;
  * Created by Administrator on 29/12/2018.
  */
 
-public class MapPresenterImpl implements MapPresenter, OnFindDirectionFinishListener,
+public class MapPresenterImpl implements MapPresenter,
         Listener.OnGetSchedulesFinishedListener, Listener.OnGetPeopleLocationFinishedListener,
-        Listener.OnGetTourImageFinishedListener, Listener.OnGetPlaceDetailFinishedListener {
+        Listener.OnGetTourImageFinishedListener, Listener.OnGetPlaceDetailFinishedListener, Listener.OnGetDirectionFinishedListener {
     private MapView view;
     private TourDetailInteractor tourDetailInteractor;
     private ScheduleInteractor scheduleInteractor;
     private TourInteractor tourInteractor;
     private ParticipantInteractor participantInteractor;
+    private PlaceInteractor placeInteractor;
+    private MapInteractor mapInteractor;
 
-    private LatLng destination;
-    private String action, scheduleId;
+    private LatLng origin, destination;
+    private String openFrom, scheduleId;
     private List<Schedule> scheduleList;
     private List<Route> routeList;
     private List<Participant> participantList;
     private PlaceDetail placeDetail;
     private Place autoCompleteResult;
-    private int currentMarkerTag;
+    private String currentPlaceId;
 
     private String tourStartId;
     private boolean isMyTour;
@@ -87,18 +72,22 @@ public class MapPresenterImpl implements MapPresenter, OnFindDirectionFinishList
         scheduleInteractor = new ScheduleInteractorImpl();
         participantInteractor = new ParticipantInteractorImpl();
         tourInteractor = new TourInteractorImpl();
-        currentMarkerTag = -1;
+        placeInteractor = new PlaceInteractorImpl();
+        mapInteractor = new MapInteractorImpl();
     }
 
     @Override
     public void onViewCreated(Bundle bundle) {
-        action = bundle.getString("action");
+        openFrom = bundle.getString("openFrom");
         tourId = bundle.getString("tourId");
-        switch (action) {
+        switch (openFrom) {
             case "nearby":
-                String des = bundle.getString("destination");
-                String[] arr = des.split(",");
-                destination = new LatLng(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]));
+                String[] orgSplit = bundle.getString("origin").split(",");
+                origin = new LatLng(Double.parseDouble(orgSplit[0]),Double.parseDouble(orgSplit[1]));
+                String[] desSplit = bundle.getString("destination").split(",");
+                destination = new LatLng(Double.parseDouble(desSplit[0]), Double.parseDouble(desSplit[1]));
+                mapInteractor.getDirection(bundle.getString("origin"),bundle.getString("origin"),
+                        view.getContext().getResources().getString(R.string.google_api_key),this);
                 view.showDialog();
                 break;
             case "schedule":
@@ -110,19 +99,12 @@ public class MapPresenterImpl implements MapPresenter, OnFindDirectionFinishList
             case "activity":
                 tourStartId = bundle.getString("tourStartId");
                 participantInteractor.setStreamPeopleLocationChange(tourStartId, this);
-                Log.e("people location: ", "_______________________________________________");
                 break;
             case "choose":
                 break;
             default:
                 break;
         }
-
-        try {
-
-        } catch (Exception ex) {
-        }
-
 
     }
 
@@ -153,17 +135,26 @@ public class MapPresenterImpl implements MapPresenter, OnFindDirectionFinishList
     @Override
     public void onMarkerClicked(Marker marker) {
         if (marker.getTag() != null) {
+            //marker.tag = position of schedule list;
             int markerTag = Integer.parseInt(marker.getTag().toString());
-            //abort case: click 1 marker 2 time
-            if (markerTag != currentMarkerTag) {
-                currentMarkerTag=markerTag;
-                Schedule schedule = scheduleList.get(Integer.parseInt(marker.getTag().toString()));
-                PlaceDetailTask placeDetailTask = new PlaceDetailTask(this);
-                String url = placeDetailTask.getUrl(schedule.placeId, new String[]{"photo"},
-                        view.getContext().getResources().getString(R.string.google_api_key));
-                placeDetailTask.execute(url);
+            Schedule schedule = scheduleList.get(markerTag);
+            //abort click 1 marker 2 time
+            if (currentPlaceId==null || !currentPlaceId.equals(schedule.placeId)) {
+                placeInteractor.getPlaceDetail(schedule.placeId, view.getContext().getResources().getString(R.string.google_api_key), this);
                 view.clearNavigationHeaderPhoto();
+                currentPlaceId = schedule.placeId;
             }
+        }
+        view.openDrawerLayout();
+    }
+
+    @Override
+    public void onPOIClicked(PointOfInterest poi) {
+        //abort click 1 marker 2 time
+        if (currentPlaceId==null || !currentPlaceId.equals(poi.placeId)) {
+            placeInteractor.getPlaceDetail(poi.placeId, view.getContext().getResources().getString(R.string.google_api_key), this);
+            view.clearNavigationHeaderPhoto();
+            currentPlaceId=poi.placeId;
         }
         view.openDrawerLayout();
     }
@@ -171,15 +162,19 @@ public class MapPresenterImpl implements MapPresenter, OnFindDirectionFinishList
     @Override
     public void onMapRefreshed() {
         int green = view.getContext().getResources().getColor(R.color.colorGreen);
-        if (routeList != null)
+        if (routeList != null) {
+            Log.e("routeList: "," not null" );
             for (Route route : routeList) {
+                Log.e("routeList: "," not empty" );
                 PolylineOptions polylineOptions = new PolylineOptions().
                         geodesic(true).color(green).width(10);
-                for (int i = 0; i < route.points.size(); i++) {
-                    polylineOptions.add(route.points.get(i));
+                Log.e("point: "," not empty "+route.overviewPolyline.points().size() );
+                for (int i = 0; i < route.overviewPolyline.points().size(); i++) {
+                    polylineOptions.add(route.overviewPolyline.points().get(i));
                 }
                 view.addPolyline(polylineOptions);
             }
+        }
         if (autoCompleteResult != null)
             view.addMarker(new MarkerOptions().position(autoCompleteResult.getLatLng())
                     .title(autoCompleteResult.getAddress().toString()));
@@ -192,7 +187,7 @@ public class MapPresenterImpl implements MapPresenter, OnFindDirectionFinishList
                 view.addMarker(new MarkerOptions()
                         .position(schedule.latLng.getLatLng())
                         .title(schedule.hour)
-                        .snippet(schedule.content.length()>20?schedule.content.substring(0,20):schedule.content+"..."),i++);
+                        .snippet(schedule.content.length() > 20 ? schedule.content.substring(0, 20) : schedule.content + "..."), i++);
             }
         }
         if (participantList != null)
@@ -214,15 +209,6 @@ public class MapPresenterImpl implements MapPresenter, OnFindDirectionFinishList
         mDialog.show();
     }
 
-    @Override
-    public void onDirectionFinderStart() {
-
-    }
-
-    @Override
-    public void onDirectionFinderSuccess(List<Route> route) {
-        view.closeDialog();
-    }
 
     @Override
     public void onGetSchedulesSuccess(List<Schedule> scheduleList) {
@@ -281,15 +267,15 @@ public class MapPresenterImpl implements MapPresenter, OnFindDirectionFinishList
 
     @Override
     public void onGetPlaceDetailSuccess(PlaceDetail placeDetail) {
-       this.placeDetail=placeDetail;
+        this.placeDetail = placeDetail;
         if (placeDetail.photos.size() > 0) {
             StringBuilder urlBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400")
                     .append("&photoreference=")
-                    .append(placeDetail.photos.get(0).photoRef)
+                    .append(placeDetail.photos.get(0).photoReference)
                     .append("&key=")
                     .append(view.getContext().getResources().getString(R.string.google_api_key));
             view.setNavigationHeaderPhoto(urlBuilder.toString());
-            StringBuilder seeOtherBuilder = new StringBuilder(String.valueOf(placeDetail.photos.size()-1))
+            StringBuilder seeOtherBuilder = new StringBuilder(String.valueOf(placeDetail.photos.size() - 1))
                     .append(" ")
                     .append(view.getContext().getResources().getString(R.string.see_other_photos));
             view.setNavigationHeaderTitle(seeOtherBuilder.toString());
@@ -299,5 +285,18 @@ public class MapPresenterImpl implements MapPresenter, OnFindDirectionFinishList
     @Override
     public void onGetPlaceDetailFail(Exception ex) {
 
+    }
+
+    @Override
+    public void onGetDirectionSuccess(List<Route> routeList) {
+        this.routeList = routeList;
+        view.mapRefesh();
+        view.closeDialog();
+        view.moveCamera(destination);
+    }
+
+    @Override
+    public void onGetDirectionFail(Exception ex) {
+        view.closeDialog();
     }
 }

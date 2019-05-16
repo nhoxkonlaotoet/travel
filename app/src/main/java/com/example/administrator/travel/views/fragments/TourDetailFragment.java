@@ -24,8 +24,7 @@ import com.example.administrator.travel.models.entities.Schedule;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.presenters.bases.TourDetailPresenter;
 import com.example.administrator.travel.presenters.impls.TourDetailPresenterImpl;
-import com.example.administrator.travel.views.TourDetailView;
-import com.example.administrator.travel.views.activities.MapsActivity;
+import com.example.administrator.travel.views.bases.TourDetailView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;

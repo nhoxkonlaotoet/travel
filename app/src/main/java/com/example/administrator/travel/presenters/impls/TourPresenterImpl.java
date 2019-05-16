@@ -17,7 +17,7 @@ import com.example.administrator.travel.models.impls.TourInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.TourPresenter;
-import com.example.administrator.travel.views.TourView;
+import com.example.administrator.travel.views.bases.TourView;
 
 /**
  * Created by Admin on 4/15/2019.

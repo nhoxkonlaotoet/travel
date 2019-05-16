@@ -11,14 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.TourStartAdapter;
 import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.presenters.bases.TourStartPresenter;
 import com.example.administrator.travel.presenters.impls.TourStartPresenterImpl;
-import com.example.administrator.travel.views.TourStartView;
+import com.example.administrator.travel.views.bases.TourStartView;
 import com.example.administrator.travel.views.activities.BookTourActivity;
 
 import java.util.List;
