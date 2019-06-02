@@ -20,6 +20,7 @@ public interface SOService {
     Call<DirectionResponse> getDirection(@Query("origin") String origin,
                                          @Query("destination") String destination,
                                          @Query("alternative") Boolean alternative,
+                                         @Query("mode") String mode,
                                          @Query("key") String apiKey);
     @GET("maps/api/place/details/json?")
     Call<PlaceDetailResponse> getPlaceDetail(@Query("placeid") String placeId,

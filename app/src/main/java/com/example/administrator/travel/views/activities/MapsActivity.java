@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.travel.LocationObservable;
 import com.example.administrator.travel.models.entities.place.detail.PlaceDetailResponse;
 import com.example.administrator.travel.models.retrofit.ApiUtils;
 import com.example.administrator.travel.presenters.bases.MapPresenter;
@@ -39,7 +41,11 @@ import com.example.administrator.travel.R;
 import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.Exclude;
 import com.squareup.picasso.Picasso;
+
+import java.util.Observable;
+import java.util.Observer;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -62,6 +68,7 @@ public class MapsActivity extends FragmentActivity implements MapView, OnMapRead
         mapping();
         setImgvNavHeaderClick();
         setAutocompletePlaceSlectec();
+        setOnLocationChange();
         presenter = new MapPresenterImpl(this);
         Bundle bundle = getIntent().getExtras();
         presenter.onViewCreated(bundle);
@@ -79,7 +86,21 @@ public class MapsActivity extends FragmentActivity implements MapView, OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+    void setOnLocationChange(){
+        LocationObservable.getInstance().addObserver(new Observer() {
+            @Override
+            public void update(Observable observable, Object object) {
+                Toast.makeText(MapsActivity.this, "Received location", Toast.LENGTH_SHORT).show();
+                try{
+                    Location location = (Location) object;
+                    presenter.onLocationChanged(location);
+                }
+                catch (ClassCastException ex){
 
+                }
+            }
+        });
+    }
     private void setAutocompletePlaceSlectec() {
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -207,9 +228,7 @@ public class MapsActivity extends FragmentActivity implements MapView, OnMapRead
 
     @Override
     public void setNavigationHeaderPhoto(String photoUrl) {
-        Log.e("setNavigationPhoto: ", photoUrl);
         Picasso.with(this).load(photoUrl).into(imgvNavHeader);
-
     }
 
     @Override

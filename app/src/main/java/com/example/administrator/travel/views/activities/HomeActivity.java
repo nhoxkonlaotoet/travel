@@ -10,33 +10,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.example.administrator.travel.LocationService;
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.models.TourDetailInteractor;
-import com.example.administrator.travel.models.entities.City;
-import com.example.administrator.travel.models.entities.Company;
-import com.example.administrator.travel.models.entities.Day;
-import com.example.administrator.travel.models.entities.MyLatLng;
-import com.example.administrator.travel.models.entities.NearbyType;
-import com.example.administrator.travel.models.entities.Participant;
-import com.example.administrator.travel.models.entities.Rating;
-import com.example.administrator.travel.models.entities.Schedule;
-import com.example.administrator.travel.models.entities.Tour;
-import com.example.administrator.travel.models.entities.TourStartDate;
-import com.example.administrator.travel.views.fragments.ChatFragment;
 import com.example.administrator.travel.views.fragments.ChatManagerFragment;
 import com.example.administrator.travel.views.fragments.NewsFeedFragment;
 import com.example.administrator.travel.views.fragments.SelectMyTourFragment;
 import com.example.administrator.travel.views.fragments.SettingFragment;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 public class HomeActivity extends AppCompatActivity {

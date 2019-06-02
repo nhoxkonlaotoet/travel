@@ -5,46 +5,37 @@
     android:layout_height="match_parent"
     tools:context="com.example.administrator.travel.views.fragments.SelectMyTourFragment">
 
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@drawable/background_toolbar"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:title="Danh sách tour"
+        app:titleTextColor="@color/colorCreme">
+
+        <ImageButton
+            android:id="@+id/btnScan"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/background_creme_button"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="4dp"
+            android:scaleType="fitXY"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/qr" />
+    </android.support.v7.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorGreen"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:gravity="center"
-                android:text="Danh sách tour"
-                android:textColor="#fff"
-                android:textSize="22sp" />
-
-            <LinearLayout
-                android:id="@+id/btnScan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="10dp"
-                android:background="@drawable/background_small_button"
-                android:clickable="true"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="5dp"
-                    android:src="@drawable/qr" />
-
-            </LinearLayout>
-        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/layoutLogin"
@@ -74,7 +65,7 @@
                     android:layout_marginTop="50dp"
                     android:gravity="center"
                     android:text="Đăng nhập để xem tour của bạn"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/colorLicoriceDark"
                     android:textSize="20sp" />
 
                 <Button
@@ -97,18 +88,20 @@
             android:id="@+id/layoutMyTours"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/txtHaveNothing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/place_autocomplete_search_hint"
-                android:textSize="22sp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="30dp"
                 android:text="@string/not_own_the_tour"
                 android:textAlignment="center"
-                android:layout_margin="30dp"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:visibility="invisible"/>
+                android:textColor="@color/place_autocomplete_search_hint"
+                android:textSize="22sp"
+                android:visibility="invisible" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerviewMyTour"
                 android:layout_width="match_parent"

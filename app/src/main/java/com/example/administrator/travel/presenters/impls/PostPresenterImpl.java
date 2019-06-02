@@ -33,7 +33,6 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class PostPresenterImpl implements PostPresenter,
-        Listener.OnLoadImageFinishedListener,
         Listener.OnPostActivityFinishedListener, Listener.OnRateTourFinishedListener {
     PostView view;
     final static int LOCATION_REQUEST = 111;
@@ -99,8 +98,8 @@ public class PostPresenterImpl implements PostPresenter,
                     File storage = new File(Environment.getExternalStorageDirectory() + "/DCIM/100ANDRO/");
                     view.showFramePictures(storage.listFiles().length);
                     for (File f : storage.listFiles()) {
-                        new LoadImageTask(this).execute(i + "", f.getAbsolutePath());
-                        i++;
+//                        new LoadImageTask(this).execute(i + "", f.getAbsolutePath());
+//                        i++;
                     }
                 } catch (Exception ex) {
                 }
@@ -143,11 +142,6 @@ public class PostPresenterImpl implements PostPresenter,
     @Override
     public void onButtonBackClicked() {
         view.finishView();
-    }
-
-    @Override
-    public void onLoadImageSuccess(int pos, Bitmap image) {
-        view.addPicture(pos, image);
     }
 
     @Override

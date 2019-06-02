@@ -5,26 +5,20 @@
     android:layout_height="match_parent"
     tools:context="com.example.administrator.travel.views.fragments.NearbyFragment">
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:orientation="vertical">
-       <RelativeLayout
-           android:layout_width="match_parent"
-           android:layout_height="30dp"
-           android:orientation="horizontal"
-           android:layout_marginTop="10dp">
-           <Spinner
-               android:id="@+id/spinnerPlaceType"
-               android:layout_width="150dp"
-               android:layout_height="match_parent"/>
-       </RelativeLayout>
-       <android.support.v7.widget.RecyclerView
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_choose_nearby_type" />
+
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewNearby"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-           app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+    </LinearLayout>
 
-   </LinearLayout>
 
 </FrameLayout>

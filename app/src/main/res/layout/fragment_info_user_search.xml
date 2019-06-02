@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorButton">
+        android:background="@color/colorBlueberry">
         <Button
             android:layout_width="50dp"
             android:layout_height="match_parent"
@@ -99,9 +99,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@color/colorButton"
+        android:background="@color/colorBlueberry"
         android:text="Kết Bạn"
-        android:textColor="@color/colorTextButton"
+        android:textColor="@color/colorCreme"
         android:textSize="16sp"/>
     <Button
         android:id="@+id/btn_info_user_search_unfriend"
@@ -110,9 +110,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@color/colorButton"
+        android:background="@color/colorBlueberry"
         android:text="Huỷ kết Bạn"
-        android:textColor="@color/colorTextButton"
+        android:textColor="@color/colorCreme"
         android:textSize="16sp"/>
 
 </LinearLayout>

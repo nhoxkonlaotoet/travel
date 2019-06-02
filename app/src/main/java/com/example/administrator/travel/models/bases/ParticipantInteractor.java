@@ -13,7 +13,7 @@ public interface ParticipantInteractor {
     void joinTour(String userId, boolean isShareLocation, String tourStartId,
                   Listener.OnJoinTourFinishedListener listener);
 
-    void rememberTour(String userId, String tourStartId, String tourId, Context context);
+    void rememberTour(String userId, String tourStartId, String tourId, String tourGuideId, Context context);
 
     boolean isJoiningTour(String userId, Context context);
 

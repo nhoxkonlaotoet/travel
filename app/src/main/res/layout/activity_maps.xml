@@ -21,7 +21,8 @@
             android:id="@+id/layoutPlaceAutoComplete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp">
+            android:layout_margin="20dp"
+            android:background="@drawable/background_creme_button">
 
             <fragment
                 android:id="@+id/place_autocomplete"
@@ -44,26 +45,7 @@
 
             <include layout="@layout/nav_header" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/layoutHeader"
-                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/txtContent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Nội dung"
-                        android:textColor="@color/colorText"
-                        android:textSize="15sp" />
-                </LinearLayout>
-            </LinearLayout>
         </RelativeLayout>
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

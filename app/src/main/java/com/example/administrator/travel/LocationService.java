@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -48,7 +49,7 @@ public class LocationService extends Service implements GoogleApiClient.OnConnec
         userInteractor = new UserInteractorImpl();
 
         userId = userInteractor.getUserId(this);
-        tourStartId = participantInteractor.getJoiningTourStartId(userId,this);
+        tourStartId = participantInteractor.getJoiningTourStartId(userId, this);
     }
 
 
@@ -107,28 +108,38 @@ public class LocationService extends Service implements GoogleApiClient.OnConnec
     @Override
     public void onLocationChanged(Location location) {
         MyLatLng myLatLng = new MyLatLng(location.getLatitude(), location.getLongitude());
-        LocationObservable.getInstance().updateLocation(myLatLng);
-        if (!tourStartId.equals("") && !userId.equals("none") && participantInteractor.isShareLocation(userId,this))
+        LocationObservable.getInstance().updateLocation(location);
+        if (!tourStartId.equals("") && !userId.equals("none") && participantInteractor.isShareLocation(userId, this))
             participantInteractor.updateLocation(tourStartId, userId, myLatLng);
-        Toast.makeText(this, "service: "+location, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "location changed", Toast.LENGTH_LONG).show();
     }
 
     public void startLocationServices() {
-       if(googleApiClient.isConnected()) {
-           LocationRequest request = LocationRequest.create().setPriority(LocationRequest.PRIORITY_LOW_POWER);
-           if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-               return;
-           }
-           LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, request, this);
-       }
+        if (googleApiClient.isConnected()) {
+            LocationRequest request = LocationRequest.create().setPriority(LocationRequest.PRIORITY_LOW_POWER);
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, request, this);
+        }
     }
 
     public MyLatLng getCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return null;
+        if (ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            if (googleApiClient.isConnected()) {
+                Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                MyLatLng result = new MyLatLng(location.getLatitude(), location.getLongitude());
+                return result;
+            }
         }
-        Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        MyLatLng result = new MyLatLng(location.getLatitude(), location.getLongitude());
-        return result;
+        return null;
+    }
+
+    public static String className() {
+        return "com.example.administrator.travel.LocationService";
     }
 }

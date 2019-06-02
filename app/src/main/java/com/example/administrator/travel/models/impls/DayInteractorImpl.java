@@ -1,6 +1,5 @@
 package com.example.administrator.travel.models.impls;
 
-import com.example.administrator.travel.models.OnGetTourDetailFinishedListener;
 import com.example.administrator.travel.models.bases.DayInteractor;
 import com.example.administrator.travel.models.entities.Day;
 import com.example.administrator.travel.models.listeners.Listener;

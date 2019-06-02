@@ -32,7 +32,6 @@ public class CompanyContactFragment extends Fragment implements CompanyContactVi
     CompanyContactPresenter presenter;
     TextView txtWebsite, txtPhonenNumber, txtAddress, txtCompanyName;
     RelativeLayout btnWebsite, btnPhoneNumber, btnAddress;
-    ProgressBar progressbarCompanyName,progressBarWeb,progressBarPhoneNumber,progressBarAddress;
     public CompanyContactFragment() {
         // Required empty public constructor
     }
@@ -64,10 +63,6 @@ public class CompanyContactFragment extends Fragment implements CompanyContactVi
         txtWebsite =getActivity().findViewById(R.id.txtWeblink);
         txtPhonenNumber = getActivity().findViewById(R.id.txtPhoneNumber);
         txtAddress = getActivity().findViewById(R.id.txtAddress);
-        progressBarAddress=getActivity().findViewById(R.id.progressbarAddress);
-        progressBarPhoneNumber = getActivity().findViewById(R.id.progressbarPhone);
-        progressBarWeb=getActivity().findViewById(R.id.progressbarWeb);
-        progressbarCompanyName = getActivity().findViewById(R.id.progressbarCompanyName);
     }
 
     void setBtnWebsiteClick(){
@@ -124,26 +119,6 @@ public class CompanyContactFragment extends Fragment implements CompanyContactVi
 
     @Override
     public void hideBtnPhoneNumber() { btnPhoneNumber.setVisibility(View.GONE); }
-
-    @Override
-    public void hideProgressBarCompanyName() {
-        progressbarCompanyName.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void hideProgressBarWeb() {
-        progressBarWeb.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void hideProgressBarPhoneNumber() {
-        progressBarPhoneNumber.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void hideProgressBarAddress() {
-        progressBarAddress.setVisibility(View.GONE);
-    }
 
     @Override
     public void gotoWebsite(Intent intent)

@@ -1,5 +1,6 @@
 package com.example.administrator.travel.views;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.example.administrator.travel.models.entities.Activity;
@@ -13,9 +14,18 @@ import java.util.List;
 
 public interface ActivityView {
     void gotoMapActivty(String tourStartId);
-    void showActivities(List<Activity> lstActivity, Long currentTime);
+
+    void showActivities(List<Activity> lstActivity);
+
     void notifyGetActivitiesFailure(Exception ex);
-    void addUserInfor(UserInformation info);
-    void addImage(Bitmap Bitmap, int index, String activityId);
-    void gotoPostActiivty(String tourStartId, boolean isTourGuide);
+
+    void updateActivityImage(String activityId, Bitmap activityPhoto);
+
+    void updateUserName(String userId, String userName);
+
+    void updateUserAvatar(String userId, Bitmap avatar);
+
+    void gotoPostActivity(String tourStartId, boolean isTourGuide);
+
+    Context getContext();
 }

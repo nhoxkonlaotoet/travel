@@ -23,7 +23,7 @@ import com.example.administrator.travel.views.bases.TourView;
  * Created by Admin on 4/15/2019.
  */
 
-public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImagesFinishedListener, Listener.OnFinishTourFinishedListener {
+public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImageFinishedListener, Listener.OnFinishTourFinishedListener {
     boolean onMyTour, isCompany, isOwned;
     String tourId;
     TourInteractor tourInteractor;
@@ -71,8 +71,9 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
                 view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_start_date));
                 view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_contact));
                 view.setActionbarTransparent();
-                tourInteractor.getTourImages(tourId, this);
+           //     tourInteractor.getTourImages(tourId, this);
             } else {
+                view.collapseToolbarLayout();
                 view.hideImagePanel();
                 view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_activity));
                 view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_nearby));
@@ -80,7 +81,7 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
             view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_rating));
         } else {
             view.setActionbarTransparent();
-            tourInteractor.getTourImages(tourId, this);
+        //    tourInteractor.getTourImage(0, tourId, this);
             view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_detail));
             if (!isCompany || (isCompany && isOwned))
                 view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_start_date));
@@ -89,15 +90,9 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
         }
     }
 
-    @Override
-    public void onGetTourImagesSuccess(Bitmap[] images) {
-        view.showTourImages(images);
-    }
 
-    @Override
-    public void onGetTourImagesFail(Exception ex) {
 
-    }
+
 
     @Override
     public void onTourFinished() {
@@ -109,5 +104,10 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
         view.getContext().stopService(new Intent(view.getContext(), LocationService.class));
 
         view.closebyTourFinished();
+    }
+
+    @Override
+    public void onGetTourImageSuccess(int pos, String tourId, Bitmap tourImage) {
+        view.showTourImages(null);
     }
 }

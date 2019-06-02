@@ -21,4 +21,6 @@ public interface TourView {
     void initVpContainer(int tabCount, boolean isMyTour, boolean isCompany);
     Context getContext();
     void notifyTourFinished();
+
+    void collapseToolbarLayout();
 }

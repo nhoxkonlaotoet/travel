@@ -1,69 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:layout_margin="5dp">
-    <RelativeLayout
-        android:id="@+id/layoutImage"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="horizontal">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgvReviewer"
         android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="5dp">
-        <ImageView
-            android:id="@+id/imgvReviewer"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            app:srcCompat="@null" />
-    </RelativeLayout>
+        android:layout_height="80dp"
+        android:padding="10dp"
+        app:civ_border_color="@color/colorBanana"
+        app:civ_border_width="2dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/layoutImage"
-        android:orientation="vertical"
-        android:layout_marginLeft="5dp">
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imgvReviewer"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/txtReviewerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorText"
-            android:textSize="16sp"
-            android:text=""/>
+            android:text=""
+            android:textColor="@color/colorLicoriceDark"
+            android:textSize="16sp" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp">
+
             <RatingBar
                 android:id="@+id/ratingBarReview"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="80dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/txtRatingDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5 tháng 12 năm 2018"
-                android:layout_toRightOf="@+id/ratingBarReview"
-                android:layout_alignTop="@+id/ratingBarReview"
                 android:layout_alignBottom="@+id/ratingBarReview"
-                android:layout_marginLeft="5dp" />
+                android:layout_alignTop="@+id/ratingBarReview"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/ratingBarReview"
+                android:text="5 tháng 12 năm 2018" />
         </RelativeLayout>
+
         <TextView
             android:id="@+id/txtReviewCOntent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/colorHintText"
             android:maxLines="3"
-            android:text="tour toẹt vời :D"/>
+            android:text="tour toẹt vời :D"
+            android:textColor="@color/colorHintText"
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Xem thêm"
-            android:textStyle="italic|bold"/>
+            android:textStyle="italic|bold" />
     </LinearLayout>
 
 

@@ -1,6 +1,7 @@
 package com.example.administrator.travel.presenters.bases;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Bundle;
 
 import com.google.android.gms.location.places.Place;
@@ -16,6 +17,8 @@ public interface MapPresenter {
     void onViewCreated(Bundle bundle);
 
     void onAutoCompleteSelected(Place place);
+
+    void onLocationChanged(Location location);
 
     void onMapClicked(LatLng location);
 

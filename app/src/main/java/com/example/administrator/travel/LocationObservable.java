@@ -1,5 +1,9 @@
 package com.example.administrator.travel;
 
+import android.location.Location;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Observable;
 
 /**

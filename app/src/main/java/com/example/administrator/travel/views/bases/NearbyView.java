@@ -16,15 +16,14 @@ import java.util.List;
 
 public interface NearbyView {
 
-    void showPlacetypes(List<NearbyType> lstPlacetype);
+    void showNearbyTypes(List<NearbyType> nearbyTypeList);
 
-    void showNearbys(List<Nearby> lstNearby, MyLatLng mylocation);
+    void showNearbys(List<Nearby> nearbyList, MyLatLng mylocation);
 
-    void appendNearbys(List<Nearby> lstNearby);
+    void appendNearbys(List<Nearby> nearbyList);
 
     void notify(String message);
 
-    void updateListViewImages(int index, Bitmap bitmap);
 
     void gotoMapActivity(String origin, String destination, String openFrom);
 

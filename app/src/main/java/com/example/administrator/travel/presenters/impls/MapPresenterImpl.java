@@ -3,19 +3,23 @@ package com.example.administrator.travel.presenters.impls;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.example.administrator.travel.LocationObservable;
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.models.TourDetailInteractor;
 import com.example.administrator.travel.models.bases.MapInteractor;
 import com.example.administrator.travel.models.bases.ParticipantInteractor;
 import com.example.administrator.travel.models.bases.PlaceInteractor;
 import com.example.administrator.travel.models.bases.TourInteractor;
 import com.example.administrator.travel.models.bases.ScheduleInteractor;
+import com.example.administrator.travel.models.bases.UserInteractor;
 import com.example.administrator.travel.models.entities.Participant;
 import com.example.administrator.travel.models.entities.Schedule;
+import com.example.administrator.travel.models.entities.map.direction.Polyline;
 import com.example.administrator.travel.models.entities.map.direction.Route;
 import com.example.administrator.travel.models.entities.place.detail.PlaceDetail;
 import com.example.administrator.travel.models.impls.MapInteractorImpl;
@@ -23,6 +27,7 @@ import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
 import com.example.administrator.travel.models.impls.PlaceInteractorImpl;
 import com.example.administrator.travel.models.impls.ScheduleInteractorImpl;
 import com.example.administrator.travel.models.impls.TourInteractorImpl;
+import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.MapPresenter;
 import com.example.administrator.travel.views.bases.MapView;
@@ -34,8 +39,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Administrator on 29/12/2018.
@@ -43,11 +51,9 @@ import java.util.List;
 
 public class MapPresenterImpl implements MapPresenter,
         Listener.OnGetSchedulesFinishedListener, Listener.OnGetPeopleLocationFinishedListener,
-        Listener.OnGetTourImageFinishedListener, Listener.OnGetPlaceDetailFinishedListener, Listener.OnGetDirectionFinishedListener {
+        Listener.OnGetPlaceDetailFinishedListener, Listener.OnGetDirectionFinishedListener {
     private MapView view;
-    private TourDetailInteractor tourDetailInteractor;
     private ScheduleInteractor scheduleInteractor;
-    private TourInteractor tourInteractor;
     private ParticipantInteractor participantInteractor;
     private PlaceInteractor placeInteractor;
     private MapInteractor mapInteractor;
@@ -65,13 +71,12 @@ public class MapPresenterImpl implements MapPresenter,
     private boolean isMyTour;
     private int pos = 0;
     private String tourId;
+    private Location myLocation;
 
     public MapPresenterImpl(MapView view) {
         this.view = view;
-        tourDetailInteractor = new TourDetailInteractor();
         scheduleInteractor = new ScheduleInteractorImpl();
         participantInteractor = new ParticipantInteractorImpl();
-        tourInteractor = new TourInteractorImpl();
         placeInteractor = new PlaceInteractorImpl();
         mapInteractor = new MapInteractorImpl();
     }
@@ -83,12 +88,16 @@ public class MapPresenterImpl implements MapPresenter,
         switch (openFrom) {
             case "nearby":
                 String[] orgSplit = bundle.getString("origin").split(",");
-                origin = new LatLng(Double.parseDouble(orgSplit[0]),Double.parseDouble(orgSplit[1]));
+                origin = new LatLng(Double.parseDouble(orgSplit[0]), Double.parseDouble(orgSplit[1]));
                 String[] desSplit = bundle.getString("destination").split(",");
                 destination = new LatLng(Double.parseDouble(desSplit[0]), Double.parseDouble(desSplit[1]));
-                mapInteractor.getDirection(bundle.getString("origin"),bundle.getString("origin"),
-                        view.getContext().getResources().getString(R.string.google_api_key),this);
+                mapInteractor.getDirection(bundle.getString("origin"), bundle.getString("destination"),
+                        view.getContext().getResources().getString(R.string.google_maps_key), this);
                 view.showDialog();
+                break;
+            case "contact":
+                String[] companySplit = bundle.getString("destination").split(",");
+                LatLng companyLocation= new LatLng(Double.parseDouble(companySplit[0]), Double.parseDouble(companySplit[1]));
                 break;
             case "schedule":
                 String dayId = bundle.getString("dayId");
@@ -106,21 +115,13 @@ public class MapPresenterImpl implements MapPresenter,
                 break;
         }
 
-    }
 
-    //    public void onViewLocationChanged(Location location){
-//        myLocation=location;
-//        if(action.equals("nearby"))
-//        try {
-//            new DirectionFinder(this, myLocation.getLatitude()+","+myLocation.getLongitude(),
-//                    destination.latitude+","+destination.longitude).execute();
-//            view.moveCamera(new LatLng(location.getLatitude(),location.getLongitude()));
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//        if(action.equals("activity"))
-//            view.moveCamera(new LatLng(location.getLatitude(),location.getLongitude()));
-//    }
+    }
+    @Override
+    public void onLocationChanged(Location location){
+       // Toast.makeText(view.getContext(), location.getLatitude()+","+location.getLongitude(), Toast.LENGTH_SHORT).show();
+        myLocation=location;
+    }
     @Override
     public void onAutoCompleteSelected(Place place) {
         autoCompleteResult = autoCompleteResult;
@@ -139,8 +140,8 @@ public class MapPresenterImpl implements MapPresenter,
             int markerTag = Integer.parseInt(marker.getTag().toString());
             Schedule schedule = scheduleList.get(markerTag);
             //abort click 1 marker 2 time
-            if (currentPlaceId==null || !currentPlaceId.equals(schedule.placeId)) {
-                placeInteractor.getPlaceDetail(schedule.placeId, view.getContext().getResources().getString(R.string.google_api_key), this);
+            if (currentPlaceId == null || !currentPlaceId.equals(schedule.placeId)) {
+                placeInteractor.getPlaceDetail(schedule.placeId, view.getContext().getResources().getString(R.string.google_maps_key), this);
                 view.clearNavigationHeaderPhoto();
                 currentPlaceId = schedule.placeId;
             }
@@ -151,25 +152,24 @@ public class MapPresenterImpl implements MapPresenter,
     @Override
     public void onPOIClicked(PointOfInterest poi) {
         //abort click 1 marker 2 time
-        if (currentPlaceId==null || !currentPlaceId.equals(poi.placeId)) {
-            placeInteractor.getPlaceDetail(poi.placeId, view.getContext().getResources().getString(R.string.google_api_key), this);
+        if (currentPlaceId == null || !currentPlaceId.equals(poi.placeId)) {
+            placeInteractor.getPlaceDetail(poi.placeId, view.getContext().getResources().getString(R.string.google_maps_key), this);
             view.clearNavigationHeaderPhoto();
-            currentPlaceId=poi.placeId;
+            currentPlaceId = poi.placeId;
         }
         view.openDrawerLayout();
     }
 
     @Override
     public void onMapRefreshed() {
-        int green = view.getContext().getResources().getColor(R.color.colorGreen);
+        int green = view.getContext().getResources().getColor(R.color.colorKiwi);
         if (routeList != null) {
-            Log.e("routeList: "," not null" );
             for (Route route : routeList) {
-                Log.e("routeList: "," not empty" );
                 PolylineOptions polylineOptions = new PolylineOptions().
                         geodesic(true).color(green).width(10);
-                Log.e("point: "," not empty "+route.overviewPolyline.points().size() );
                 for (int i = 0; i < route.overviewPolyline.points().size(); i++) {
+                    Log.e("onMapRefreshed: ", route.overviewPolyline.points().get(i).latitude
+                            + ", " + route.overviewPolyline.points().get(i).longitude);
                     polylineOptions.add(route.overviewPolyline.points().get(i));
                 }
                 view.addPolyline(polylineOptions);
@@ -255,30 +255,22 @@ public class MapPresenterImpl implements MapPresenter,
 
     }
 
-    @Override
-    public void onGetTourImageSuccess(int pos, Bitmap image) {
-        view.setNavigationHeaderPhoto(pos, image);
-    }
-
-    @Override
-    public void onGetTourImageFail(Exception ex) {
-
-    }
 
     @Override
     public void onGetPlaceDetailSuccess(PlaceDetail placeDetail) {
         this.placeDetail = placeDetail;
-        if (placeDetail.photos.size() > 0) {
+        if (placeDetail.photos != null && placeDetail.photos.size() > 0) {
             StringBuilder urlBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400")
                     .append("&photoreference=")
                     .append(placeDetail.photos.get(0).photoReference)
                     .append("&key=")
-                    .append(view.getContext().getResources().getString(R.string.google_api_key));
+                    .append(view.getContext().getResources().getString(R.string.google_maps_key));
             view.setNavigationHeaderPhoto(urlBuilder.toString());
             StringBuilder seeOtherBuilder = new StringBuilder(String.valueOf(placeDetail.photos.size() - 1))
                     .append(" ")
                     .append(view.getContext().getResources().getString(R.string.see_other_photos));
             view.setNavigationHeaderTitle(seeOtherBuilder.toString());
+        } else {
         }
     }
 
@@ -289,6 +281,7 @@ public class MapPresenterImpl implements MapPresenter,
 
     @Override
     public void onGetDirectionSuccess(List<Route> routeList) {
+       
         this.routeList = routeList;
         view.mapRefesh();
         view.closeDialog();

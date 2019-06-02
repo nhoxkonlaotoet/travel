@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,186 +7,256 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
+
         <LinearLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bảng giá:"
-                android:textColor="@color/colorText"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:textSize="18sp"/>
+                android:layout_marginTop="10dp"
+                android:text="Bảng giá:"
+                android:textColor="@color/colorLicoriceDark"
+                android:textSize="18sp" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
             <TableLayout
                 android:id="@+id/tableLayoutCost"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="1"
-                android:background="@drawable/newsfeed_item_background"
-                android:layout_margin="10dp">
+                android:weightSum="1">
 
                 <TableRow
-                    android:background="#ECEFF1"
-                    android:paddingLeft="5dp">
-                    <TextView android:layout_width="match_parent"
+                    android:background="@color/colorBanana"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/table_row_height"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
                         android:text="Loại khách"
+                        android:textColor="@color/colorCreme"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/table_row_height"
                         android:layout_weight="1"
                         android:gravity="center|left"
-                        android:textColor="@color/colorText">
-                    </TextView>
-                    <TextView android:layout_width="match_parent"
-                        android:layout_height="@dimen/table_row_height"
+                        android:paddingLeft="5dp"
                         android:text="Giá tour"
-                        android:layout_weight="1"
-                        android:gravity="center|left"
-                        android:textColor="@color/colorText">
-                    </TextView>
-                    <TextView android:layout_width="match_parent"
+                        android:textColor="@color/colorCreme"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/table_row_height"
-                        android:text="Khuyến mãi"
                         android:layout_weight="1"
                         android:gravity="center|left"
-                        android:textColor="@color/colorText">
-                    </TextView>
+                        android:paddingLeft="5dp"
+                        android:text="Khuyến mãi"
+                        android:textColor="@color/colorCreme"></TextView>
 
                 </TableRow>
+
                 <TableRow
-                    android:paddingLeft="5dp">
-                    <TextView android:layout_width="match_parent"
-                        android:layout_height="@dimen/table_row_height"
-                        android:text="Người lớn"
-                        android:layout_weight="1"
-                        android:gravity="center|left"
-                        android:textColor="@color/colorText">
-                    </TextView>
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_man" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:gravity="center|left"
+                            android:text="Người lớn"
+                            android:textColor="@color/colorLicoriceDark"
+                            android:paddingLeft="5dp"/>
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/txtAdultPrice"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/table_row_height"
-                        android:text="10000000đ"
                         android:layout_weight="1"
                         android:gravity="center|left"
-                        android:textColor="@color/colorText">
-                    </TextView>
-                    <TextView android:layout_width="match_parent"
+                        android:paddingLeft="5dp"
+                        android:text="10000000đ"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/table_row_height"
-                        android:text=""
                         android:layout_weight="1"
-                        android:gravity="center|left">
-                    </TextView>
+                        android:gravity="center|left"
+                        android:text=""></TextView>
 
                 </TableRow>
+
                 <TableRow
-                    android:paddingLeft="5dp">
-                    <TextView android:layout_width="match_parent"
-                        android:layout_height="@dimen/table_row_height"
-                        android:text="Trẻ em"
-                        android:layout_weight="1"
-                        android:gravity="center|left"
-                        android:textColor="@color/colorText">
-                    </TextView>
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_girl" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:gravity="center|left"
+                            android:text="Trẻ em"
+                            android:textColor="@color/colorLicoriceDark"
+                            android:paddingLeft="5dp"/>
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/txtChildrenPrice"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/table_row_height"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:paddingLeft="5dp"
                         android:text="7000000đ"
-                        android:layout_weight="1"
-                        android:gravity="center|left"
-                        android:textColor="@color/colorText">
-                    </TextView>
-                    <TextView android:layout_width="match_parent"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/table_row_height"
-                        android:text=""
                         android:layout_weight="1"
                         android:gravity="center|left"
-                        android:textColor="@color/colorText">
-                    </TextView>
+                        android:text=""
+                        android:textColor="@color/colorLicoriceDark"></TextView>
 
                 </TableRow>
+
                 <TableRow
-                    android:layout_marginLeft="5dp">
-                    <TextView android:layout_width="match_parent"
-                        android:layout_height="@dimen/table_row_height"
-                        android:text="Em bé"
-                        android:layout_weight="1"
-                        android:gravity="center|left"
-                        android:textColor="@color/colorText">
-                    </TextView>
+                    android:layout_marginLeft="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_baby" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:gravity="center|left"
+                            android:text="Em bé"
+                            android:textColor="@color/colorLicoriceDark"
+                            android:paddingLeft="5dp"/>
+
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/txtBabyPrice"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/table_row_height"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:paddingLeft="5dp"
                         android:text="5000000đ"
-                        android:layout_weight="1"
-                        android:gravity="center|left"
-                        android:textColor="@color/colorText">
-                    </TextView>
-                    <TextView android:layout_width="match_parent"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/table_row_height"
-                        android:text=""
                         android:layout_weight="1"
                         android:gravity="center|left"
-                        android:textColor="@color/colorText">
-                    </TextView>
+                        android:text=""
+                        android:textColor="@color/colorLicoriceDark"></TextView>
                 </TableRow>
             </TableLayout>
+            </android.support.v7.widget.CardView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="10dp">
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Phương tiện: "
-                    android:textColor="@color/colorText"
-                    android:textSize="18sp"/>
+                    android:textColor="@color/colorLicoriceDark"
+                    android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/txtVehicle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="VIETJET"
-                    android:textColor="@color/colorText"
-                    android:textSize="18sp"/>
+                    android:textColor="@color/colorLicoriceDark"
+                    android:textSize="18sp" />
             </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Lịch trình:   Ngày "
-                android:textColor="@color/colorText"
-                android:gravity="center"
-                android:textSize="18sp"/>
-            <Spinner
-                android:id="@+id/spinnerDays"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"/>
-        </LinearLayout>
 
-            <com.example.administrator.travel.adapter.NonScrollListView
-                android:id="@+id/lstvSchedule"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Lịch trình:   Ngày "
+                    android:textColor="@color/colorLicoriceDark"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerDays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:divider="@null"
-                android:dividerHeight="0dp"/>
+                android:dividerHeight="0dp"
+                android:orientation="vertical"
+                android:scrollbars="none"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
         </LinearLayout>
-
-
-
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 
 </FrameLayout>

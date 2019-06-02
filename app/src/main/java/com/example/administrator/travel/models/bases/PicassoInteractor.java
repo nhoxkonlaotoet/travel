@@ -14,6 +14,4 @@ import java.util.List;
 
 public interface PicassoInteractor {
     void load(Context context, int pos ,String url, Listener.OnPicassoLoadFinishedListener listener);
-
-    void cleanGarbages();
 }

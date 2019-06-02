@@ -40,10 +40,8 @@ public class PreLoadingPresenterImpl implements PreLoadingPresenter, Listener.On
 
 
     @Override
-    public void onCheckJoiningTourTrue(String tourId, String tourStartId) {
-        participantInteractor.rememberTour(userId, tourStartId, tourId, view.getContext());
-        //Log.e("JoiningTourTrue: ","++++"+participantInteractor.getJoiningTourStartId(userId, view.getContext())
-        //+" "+participantInteractor.getJoiningTourId(userId,view.getContext())+ " "+participantInteractor.isJoiningTour(userId,view.getContext()));
+    public void onCheckJoiningTourTrue(String tourId, String tourStartId, String tourGuide) {
+        participantInteractor.rememberTour(userId, tourStartId, tourId, tourGuide, view.getContext());
         view.gotoHomeActivity();
     }
 

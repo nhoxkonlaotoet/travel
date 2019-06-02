@@ -12,6 +12,8 @@ import java.util.List;
  */
 
 public interface ActivityInteractor {
+    void getActivities(String tourStartId, Listener.OnGetActivitiesFinishedListener listener);
     void postActivity(String tourStartId, String userId, Activity activity, List<Bitmap> listImage, Listener.OnPostActivityFinishedListener listener);
+    void getActivitiyPhoto(int pos, String tourStartId, String activityId, Listener.OnGetActivityPhotosFinishedListener listener);
     byte[] bitmapToBytes(Bitmap image);
 }

@@ -2,11 +2,12 @@ package com.example.administrator.travel.views.bases;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.view.View;
 
 import com.example.administrator.travel.models.entities.City;
 import com.example.administrator.travel.models.entities.Tour;
+import com.example.administrator.travel.models.entities.TourStartDate;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,23 +17,19 @@ import java.util.List;
 public interface NewsFeedView {
     void showCities(List<City> lstCity);
 
-    void showTours(List<Tour> listTour);
+    void showAboutToDepartTours(List<Tour> listTour, HashMap<String,TourStartDate> tourStartMap);
 
-    void updateTourImage(int pos, String tourId, Bitmap img);
+    void showLikedTours(List<Tour> listTour, HashMap<String,Double> ratingMap);
 
     void gotoActivityTour(String tourId, String ownerId);
 
-    void startShimmerTourAnimation();
+    void notify(String message);
 
-    void stopShimmerTourAnimation();
+    void hideLayoutCities();
 
-    void showShimmerViewTour();
+    void hideLayoutAboutToDepartTours();
 
-    void hideShimmerViewTour();
-
-    void showRecyclerViewTour();
-
-    void hideRecyclerViewTour();
+    void hideLayoutLikedTours();
 
     Context getContext();
 }

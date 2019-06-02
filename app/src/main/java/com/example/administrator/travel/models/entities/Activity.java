@@ -23,7 +23,6 @@ public class Activity {
     public String content;
     public MyLatLng location;
     public int numberOfPicture;
-    public List<Bitmap> lstPicture =new ArrayList<>();
     public Activity() {
     }
 

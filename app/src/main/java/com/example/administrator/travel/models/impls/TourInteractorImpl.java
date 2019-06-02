@@ -1,16 +1,11 @@
 package com.example.administrator.travel.models.impls;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
-import com.example.administrator.travel.models.OnGetTourImagesFinishedListener;
 import com.example.administrator.travel.models.bases.TourInteractor;
-import com.example.administrator.travel.models.entities.City;
-import com.example.administrator.travel.models.entities.MyLatLng;
-import com.example.administrator.travel.models.entities.Participant;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.models.listeners.Listener;
@@ -21,14 +16,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -38,101 +34,6 @@ import java.util.List;
 public class TourInteractorImpl implements TourInteractor {
     private final static String TOURS_REF = "tours";
 
-    @Override
-    public void getTours(final Listener.OnGetToursFinishedListener listener) {
-        final List<Tour> listTour = new ArrayList<>();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference tourRef = database.getReference(TOURS_REF);
-
-        tourRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot Snapshot1 : dataSnapshot.getChildren()) {
-                    Tour tour = Snapshot1.getValue(Tour.class);
-                    tour.id = Snapshot1.getKey();
-                    listTour.add(tour);
-                }
-
-                listener.onGetToursSuccess(listTour);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                listener.onGetToursFail(databaseError.toException());
-            }
-        });
-    }
-
-    @Override
-    public void getTours(String origin, Listener.OnGetToursFinishedListener listener) {
-        getTours(origin, "", listener);
-    }
-
-    @Override
-    public void getTours(final String origin, final String destination, final Listener.OnGetToursFinishedListener listener) {
-        final List<Tour> listTour = new ArrayList<>();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference tourRef = database.getReference(TOURS_REF);
-        Query query;
-        if ((!origin.equals("")) && destination.equals(""))// chi chon den xuat phat
-            query = tourRef.orderByChild("origin").equalTo(origin);
-        else // chi chon diem den hoac chon ca 2
-            query = tourRef.orderByChild("destination/" + destination).equalTo(true);
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() == 0)
-                    listener.onGetToursSuccess(listTour);
-                for (DataSnapshot Snapshot1 : dataSnapshot.getChildren()) {
-                    Tour tour = Snapshot1.getValue(Tour.class);
-                    tour.id = Snapshot1.getKey();
-                    if ((!origin.equals("")) && (!destination.equals("")))// neu chon ca 2
-                    {
-                        if (tour.origin.equals(origin))
-                            listTour.add(tour);
-                    } else
-                        listTour.add(tour);
-                }
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference toursRef = storage.getReference().child("tours/");
-                // xử lý củ chuối
-                final Boolean[] downloadedFlags = new Boolean[listTour.size()];
-                for (int i = 0; i < listTour.size(); i++)
-                    downloadedFlags[i] = false;
-
-                final long HALF_MEGABYTE = 1024 * 512;
-                for (int i = 0; i < listTour.size(); i++) {
-                    final int I = i;
-                    toursRef.child(listTour.get(i).id + "/0.jpg").getBytes(HALF_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            listTour.get(I).image = bmp;
-                            downloadedFlags[I] = true;
-                            for (int j = 0; j < listTour.size(); j++)
-                                if (downloadedFlags[j] == false)
-                                    return;
-                            listener.onGetToursSuccess(listTour);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            listener.onGetToursFail(exception);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-    }
 
     @Override
     public void getTour(String tourId, final Listener.OnGetTourFinishedListener listener) {
@@ -152,25 +53,6 @@ public class TourInteractorImpl implements TourInteractor {
         });
 
 
-    }
-
-    @Override
-    public void getFirstImage(final int pos, final String tourId, final Listener.OnGetFirstImageFinishedListener listener) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference toursRef = storage.getReference().child(TOURS_REF + "/");
-        final long HALF_MEGABYTE =1024 * 1024;
-        toursRef.child(tourId + "/0.jpg").getBytes(HALF_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                listener.onGetFirstImageSuccess(pos, tourId, bmp);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                listener.onGetFirstImageFail(exception);
-            }
-        });
     }
 
     @Override
@@ -228,90 +110,187 @@ public class TourInteractorImpl implements TourInteractor {
         });
     }
 
-    @Override
-    public void getTourImages(final String tourId, final Listener.OnGetTourImagesFinishedListener listener) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference dbtourRef = database.getReference().child("tours").child(tourId).child("numberofImages");
-        dbtourRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                final Integer number = dataSnapshot.getValue(Integer.class) - 1;
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference tourRef = storage.getReference().child("tours/" + tourId + "/");
-                final Bitmap[] bitmaps = new Bitmap[number];
-                final long ONE_MEGABYTE = 1024 * 1024;
-
-                final Boolean[] downloadedFlags = new Boolean[number];
-                for (int i = 0; i < number; i++)
-                    downloadedFlags[i] = false;
-
-                for (int i = 0; i < number; i++) {
-                    final Integer j = i;
-                    tourRef.child(i + ".jpg").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            bitmaps[j] = bmp;
-                            downloadedFlags[j] = true;
-                            for (int k = 0; k < number; k++)
-                                if (downloadedFlags[k] == false)
-                                    return;
-                            listener.onGetTourImagesSuccess(bitmaps);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle any errors
-                            listener.onGetTourImagesFail(exception);
-                        }
-                    });
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                listener.onGetTourImagesFail(databaseError.toException());
-            }
-        });
-    }
 
     @Override
-    public void getTourImage(final int pos, String tourId, final Listener.OnGetTourImageFinishedListener listener) {
+    public void getTourImage(final int pos, final String tourId, final Listener.OnGetTourImageFinishedListener listener) {
 
-        final long HALF_MEGABYTE = 1024 * 512 ;
+        final long HALF_MEGABYTE = 1024 * 512;
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference tourRef = storage.getReference().child("tours/" + tourId + "/");
         tourRef.child(pos + ".jpg").getBytes(HALF_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                listener.onGetTourImageSuccess(pos, bmp);
+                listener.onGetTourImageSuccess(pos, tourId, bmp);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
-                listener.onGetTourImageFail(exception);
+            }
+        });
+    }
+
+
+    @Override
+    public void getAboutToDepartTours(final Listener.OnGetAboutToDepartToursFinishedListener listener) {
+        Date date = new Date();
+        final long now = date.getTime();
+        final long nextThreeDays = now + 86400000 * 3;
+        final long nextFiveDays = now + 86400000 * 5;
+
+        final List<Tour> tourList = new ArrayList<>();
+        final HashMap<String, TourStartDate> tourStartMap = new HashMap<>();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference tourStartDateRef = database.getReference("tour_start_date");
+        Query query = tourStartDateRef.orderByChild("startDate").startAt(nextThreeDays).endAt(nextFiveDays);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    TourStartDate tourStartDate = snapshot.getValue(TourStartDate.class);
+                    tourStartDate.id = snapshot.getKey();
+                    if (tourStartMap.get(tourStartDate.tourId) == null
+                            || tourStartMap.get(tourStartDate.tourId).startDate > tourStartDate.startDate) {
+                        tourStartMap.remove(tourStartDate.tourId);
+                        tourStartMap.put(tourStartDate.tourId, tourStartDate);
+                    }
+                }
+                final int[] count = {0};
+                for (final String tourId : tourStartMap.keySet()) {
+                    DatabaseReference tourRef = database.getReference("tours");
+                    tourRef.child(tourId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Tour tour = dataSnapshot.getValue(Tour.class);
+                            tour.id = tourId;
+                            tourList.add(tour);
+                            count[0]++;
+                            if (count[0] == tourStartMap.size())
+                                listener.onGetAboutToDepartToursSuccess(tourList, tourStartMap);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public void getLikedTours(final Listener.OnGetLikedToursFinishedListener listener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference toursRef = database.getReference(TOURS_REF);
+        toursRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Tour> tourList = new LinkedList<>();
+                HashMap<String, Double> ratingMap = new HashMap<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    boolean added = false;
+                    Tour tour = snapshot.getValue(Tour.class);
+                    tour.id = snapshot.getKey();
+
+                    if (tour.ratings != null) {
+                        Double tourRating = 0D;
+                        for (Double rating : tour.ratings.values())
+                            tourRating += rating;
+                        tourRating /= tour.ratings.size();
+                        if(tourRating<4D) {
+                            added = true;
+                        }
+                        else {
+                            ratingMap.put(tour.id, tourRating);
+                            for (int i = 0; i < tourList.size(); i++)
+                                if (ratingMap.get(tourList.get(i).id) != null
+                                        && tourRating > ratingMap.get(tourList.get(i).id)) {
+                                    tourList.add(i, tour);
+                                    added = true;
+                                    break;
+                                }
+                        }
+                    }
+                    if (!added) {
+                        tourList.add(tour);
+                    }
+
+                }
+                listener.onGetLikedToursSuccess(tourList, ratingMap);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onGetLikedToursFail(databaseError.toException());
             }
         });
     }
 
     @Override
-    public void getTourImageTitle(final int pos, String tourId, final Listener.OnGetTourImageTitleFinishedListener listener) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference forestRef = storageRef.child("tours/"+tourId+"/"+pos+".jpg");
-        forestRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+    public void getToursByDestination(String cityId, final Listener.OnGetToursFinishedListener listener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference toursRef = database.getReference(TOURS_REF);
+        Query findTourByDestinationQuery = toursRef.orderByChild("destination/"+cityId).equalTo(true);
+        findTourByDestinationQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onSuccess(StorageMetadata storageMetadata) {
-                String title=storageMetadata.getCustomMetadata("title");
-                listener.onGetTourImageTitleSuccess(pos,title);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Tour> tourList = new ArrayList<>();
+                HashMap<String,Double> ratingMap = new HashMap<>();
+                for(DataSnapshot snapshot : dataSnapshot.getChildren())
+                {
+                    Tour tour = snapshot.getValue(Tour.class);
+                    tour.id=snapshot.getKey();
+                    Double tourRating = 0D;
+                    for (Double rating : tour.ratings.values())
+                        tourRating += rating;
+                    ratingMap.put(tour.id,tourRating);
+                    tourList.add(tour);
+                }
+                listener.onGetToursSuccess(tourList,ratingMap);
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception exception) {
-                listener.onGetTourImageTitleFail(exception);
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onGetToursFail(databaseError.toException());
+            }
+        });
+    }
+
+    @Override
+    public void getToursByOwner(String companyId, final Listener.OnGetToursFinishedListener listener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference toursRef = database.getReference(TOURS_REF);
+        Query findOwnTourQuery = toursRef.orderByChild("owner").equalTo(companyId);
+        findOwnTourQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Tour> tourList = new ArrayList<>();
+                HashMap<String,Double> ratingMap = new HashMap<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Tour tour = snapshot.getValue(Tour.class);
+                    tour.id = snapshot.getKey();
+                    Double tourRating = 0D;
+                    for (Double rating : tour.ratings.values())
+                        tourRating += rating;
+                    ratingMap.put(tour.id,tourRating);
+                    tourList.add(tour);
+                }
+                listener.onGetToursSuccess(tourList,ratingMap);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onGetToursFail(databaseError.toException());
             }
         });
     }

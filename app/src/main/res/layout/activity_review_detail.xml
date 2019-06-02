@@ -15,7 +15,7 @@
         android:layout_toRightOf="@+id/imgvReviewerAvatar"
         android:text="Hiep"
         android:textSize="20sp"
-        android:textColor="@color/colorText"
+        android:textColor="@color/colorLicoriceDark"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="5dp"/>
@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="nội dung review"
-                android:textColor="@color/colorText"
+                android:textColor="@color/colorLicoriceDark"
                 android:layout_below="@+id/layoutImageContainer"
                 android:textSize="18sp"
                 android:padding="5dp"/>

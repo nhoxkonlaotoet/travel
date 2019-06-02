@@ -14,8 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
+import com.example.administrator.travel.models.bases.PicassoInteractor;
 import com.example.administrator.travel.models.entities.MyLatLng;
 import com.example.administrator.travel.models.entities.place.nearby.Nearby;
+import com.example.administrator.travel.models.impls.PicassoInteractorImpl;
+import com.example.administrator.travel.models.listeners.Listener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -26,7 +29,7 @@ import java.util.List;
  * Created by Administrator on 24/12/2018.
  */
 
-public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder> {
+public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder> implements Listener.OnPicassoLoadFinishedListener {
 
     private LayoutInflater mInflater;
     private NearbyAdapter.NearbyClickListener mClickListener;
@@ -34,11 +37,15 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
     MyLatLng mylocation;
     String open, close, pricelv0, pricelv1, pricelv2, pricelv3, pricelv4;
     int idstar, idhalfstar, idnostar, idclose, idopen;
+    PicassoInteractor picassoInteractor;
     Context context;
+    boolean[] loadPhotoFlags = new boolean[60];
+    RecyclerView parent;
     public NearbyAdapter(Context context, List<Nearby> lstNearby, MyLatLng mylocation) {
         if (context == null)
             return;
         this.context = context;
+        picassoInteractor = new PicassoInteractorImpl();
         this.mInflater = LayoutInflater.from(context);
         this.nearbyList = lstNearby;
         this.mylocation = mylocation;
@@ -55,6 +62,11 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         idclose = R.drawable.ic_close_door_24dp;
         idopen = R.drawable.ic_open;
     }
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        parent = recyclerView;
+    }
 
     @Override
     @NonNull
@@ -67,17 +79,29 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NearbyAdapter.ViewHolder holder, final int position) {
-
+        if (context == null || mInflater == null)
+            return;
+        Log.e("onbind: ", position + "_____");
         Nearby nearby = nearbyList.get(position);
         float[] result = new float[1];
         Location.distanceBetween(mylocation.latitude, mylocation.longitude,
                 nearby.geometry.location.lat, nearby.geometry.location.lng, result);
-
-
+        if (!loadPhotoFlags[position]) {
+            loadPhotoFlags[position]=true;
+            String url;
+            try {
+                url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photoreference="
+                        + nearbyList.get(position).photos.get(0).photoReference
+                        + "&key="
+                        + context.getResources().getString(R.string.google_maps_key);
+            } catch (Exception e) {
+                url = nearbyList.get(position).icon;
+            }
+            picassoInteractor.load(context, position, url, this);
+        }
         if (nearby.photo != null) {
             holder.imgvNearby.setImageBitmap(nearby.photo);
-        }
-        else
+        } else
             holder.imgvNearby.setImageBitmap(null);
         holder.txtNearbyName.setText(nearby.name);
         float km, m;
@@ -151,6 +175,24 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         return nearbyList.size();
     }
 
+    @Override
+    public void onPicassoLoadSuccess(int pos, Bitmap photo) {
+        if (nearbyList != null && nearbyList.size() > pos) {
+            nearbyList.get(pos).photo = photo;
+            parent.post(new Runnable() {
+                @Override
+                public void run() {
+                    notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onPicassoLoadFail(Exception ex) {
+
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView txtNearbyName, txtNearbyDistance, txtRating, txtOpen, txtPriceLevel;
         ImageView imgvRating, imgvPriceLevel, imgvOpen, imgvNearby;
@@ -190,15 +232,6 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
     public interface NearbyClickListener {
         void onNearbyClick(View view, Nearby nearby);
     }
-
-    public void updateImage(int pos, Bitmap photo){
-        if(nearbyList!=null && nearbyList.size()>pos) {
-            nearbyList.get(pos).photo = photo;
-            notifyDataSetChanged();
-        }
-    }
-
-
 
     public void appendItems(List<Nearby> nearbyList) {
         for (Nearby nearby : nearbyList) {

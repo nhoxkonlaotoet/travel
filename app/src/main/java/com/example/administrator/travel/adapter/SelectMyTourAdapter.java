@@ -107,9 +107,9 @@ public class SelectMyTourAdapter extends RecyclerView.Adapter<SelectMyTourAdapte
 
 
     public void updateTourInfo(int pos, Tour tour, TourStartDate tourStartDate) {
-        if (!tourList.contains(tour))
+        if (tour!=null && tourList!=null& !tourList.contains(tour))
             tourList.add(pos, tour);
-        if (!tourStartDateList.contains(tourStartDate))
+        if (tourStartDate!=null && tourStartDateList!=null && !tourStartDateList.contains(tourStartDate))
             tourStartDateList.add(pos, tourStartDate);
         notifyDataSetChanged();
     }

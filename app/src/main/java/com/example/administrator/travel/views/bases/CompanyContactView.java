@@ -18,10 +18,6 @@ public interface CompanyContactView {
     void hideBtnWebsite();
     void hideBtnAddress();
     void hideBtnPhoneNumber();
-    void hideProgressBarCompanyName();
-    void hideProgressBarWeb();
-    void hideProgressBarPhoneNumber();
-    void hideProgressBarAddress();
     void gotoWebsite(Intent intent);
     void gotoCall(Intent intent);
     void gotoMap(Intent intent);

@@ -1,32 +1,29 @@
 package com.example.administrator.travel.models.bases;
 
-import android.content.Context;
 
-import com.example.administrator.travel.models.OnGetMyToursFinishedListener;
+import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.listeners.Listener;
+
+import java.util.List;
 
 /**
  * Created by Admin on 4/1/2019.
  */
 
 public interface TourInteractor {
-    void getTours(Listener.OnGetToursFinishedListener listener);
-
-    void getTours(String origin, Listener.OnGetToursFinishedListener listener);
-
-    void getTours(String origin, String destination, Listener.OnGetToursFinishedListener listener);
-
     void getTour(String tourId, Listener.OnGetTourFinishedListener listener);
-
-    void getFirstImage(int pos, String tourId, Listener.OnGetFirstImageFinishedListener listener);
 
     void getMyOwnedTours(String companyId, Listener.OnGetMyOwnedTourIdsFinishedListener listener);
 
     void getMyTourInfo(int pos, String tourStartId, Listener.OnGetMyTourInfoFinishedListener listener);
 
-    void getTourImages(String tourId, Listener.OnGetTourImagesFinishedListener listener);
+    void getTourImage(final int pos, String tourId, final Listener.OnGetTourImageFinishedListener listener);
 
-    void getTourImage(int pos, String tourId, Listener.OnGetTourImageFinishedListener listener);
+    void getAboutToDepartTours(Listener.OnGetAboutToDepartToursFinishedListener listener);
 
-    void getTourImageTitle(int pos, String tourId, Listener.OnGetTourImageTitleFinishedListener listener);
+    void getLikedTours(Listener.OnGetLikedToursFinishedListener listener);
+
+    void getToursByDestination(String cityId, Listener.OnGetToursFinishedListener listener);
+
+    void getToursByOwner(String companyId, Listener.OnGetToursFinishedListener listener);
 }

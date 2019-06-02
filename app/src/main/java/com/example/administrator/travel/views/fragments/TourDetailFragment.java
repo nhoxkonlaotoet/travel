@@ -7,11 +7,13 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,13 +34,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-
-public class TourDetailFragment extends Fragment implements TourDetailView {
-    NonScrollListView lstvSchedule;
+//com.example.administrator.travel.adapter.NonScrollListView
+public class TourDetailFragment
+        extends Fragment implements TourDetailView, ScheduleAdapter.ItemClickListener {
+    RecyclerView recyclerViewSchedule;
     TourDetailPresenter presenter;
     TextView txtAdultPrice, txtChildrenPrice, txtBabyPrice, txtVehicle;
     Spinner spinnerDays;
     List<Day> lstDay = new ArrayList<>();
+
     public TourDetailFragment() {
     }
 
@@ -63,11 +67,10 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
         presenter = new TourDetailPresenterImpl(this);
         presenter.onViewCreated(bundle);
         setOnSelectItemSpinner();
-        setOnScheduleItemClick();
     }
 
     void mapping() {
-        lstvSchedule = getActivity().findViewById(R.id.lstvSchedule);
+        recyclerViewSchedule = getActivity().findViewById(R.id.recyclerViewSchedule);
         txtAdultPrice = getActivity().findViewById(R.id.txtAdultPrice);
         txtChildrenPrice = getActivity().findViewById(R.id.txtChildrenPrice);
         txtBabyPrice = getActivity().findViewById(R.id.txtBabyPrice);
@@ -75,16 +78,6 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
         txtVehicle = getActivity().findViewById(R.id.txtVehicle);
     }
 
-    void setOnScheduleItemClick() {
-        lstvSchedule.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String scheduleId = view.getTag().toString();
-                presenter.onScheduleItemClicked(scheduleId);
-
-            }
-        });
-    }
 
     void setOnSelectItemSpinner() {
         spinnerDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -118,7 +111,7 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
             //    Log.e("showDays: ", day.toString());
             lstSpinnerDay.add(day.day);
         }
-        if (!(lstSpinnerDay.size() == 0) && getContext()!=null){
+        if (!(lstSpinnerDay.size() == 0) && getContext() != null) {
             ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, lstSpinnerDay);
             spinnerDays.setAdapter(adapter);
         }
@@ -127,13 +120,16 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
     @Override
     public void showSchedules(List<Schedule> lstSchedule) {
         ScheduleAdapter scheduleAdapter = new ScheduleAdapter(getContext(), lstSchedule);
-        lstvSchedule.setAdapter(scheduleAdapter);
+        scheduleAdapter.setClickListener(this);
+        recyclerViewSchedule.setAdapter(scheduleAdapter);
+
     }
 
     @Override
     public void notifyFailure(Exception ex) {
         Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_LONG).show();
     }
+
     @Override
     public void gotoMapActivity(Intent intent) {
         startActivity(intent);
@@ -169,4 +165,8 @@ public class TourDetailFragment extends Fragment implements TourDetailView {
     }
 
 
+    @Override
+    public void onScheduleItemClick(View view, String scheduleId) {
+        presenter.onScheduleItemClicked(scheduleId);
+    }
 }

@@ -18,20 +18,17 @@ public class Tour {
     public Integer days;
     public Integer nights;
     public String vihicle;
-    public Float rating;
-    public Integer numberofRating;
     public Boolean state;
     public Integer adultPrice;
     public Integer childrenPrice;
     public Integer babyPrice;
     public String owner;
-    public Bitmap image;
     public String origin;
     public HashMap<String,Boolean> destination;
+    public HashMap<String,Double> ratings;
     public Integer numberofImages;
     public Tour(){}
-    public Tour(String name, String description, Integer days, Integer nights, String vihicle,
-                Float rating, Integer numberofRating, Boolean state, //1: hoat dong, 0: khoa
+    public Tour(String name, String description, Integer days, Integer nights, String vihicle, Integer numberofRating, Boolean state, //1: hoat dong, 0: khoa
                 Integer adultPrice, Integer childrenPrice, Integer babyPrice,String origin, HashMap<String,Boolean> destination, String owner)
     {
         this.name=name;
@@ -39,8 +36,6 @@ public class Tour {
         this.days=days;
         this.nights=nights;
         this.vihicle=vihicle;
-        this.rating = rating;
-        this.numberofRating=numberofRating;
         this.state=state;
         this.adultPrice=adultPrice;
         this.childrenPrice=childrenPrice;
@@ -52,8 +47,7 @@ public class Tour {
     @Override
     public String toString()
     {
-
-        return name+", "+days+", "+nights+", "+vihicle+", "+rating+", "+state+", "+rating+", "+numberofRating+", "+adultPrice+", "+
-                childrenPrice+", "+babyPrice+", "+owner +", "+ (image==null)+"";
+        return name+", "+days+", "+nights+", "+vihicle+", "+state+", "+adultPrice+", "+
+                childrenPrice+", "+babyPrice+", "+owner ;
     }
 }

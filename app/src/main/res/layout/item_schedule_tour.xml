@@ -1,107 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:clickable="false">
 
     <TextView
         android:id="@+id/txtScheduleTime"
-        android:layout_width="45dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:textColor="@color/colorText"
-        android:layout_marginTop="10dp"
-        android:text="07:00"/>
+        android:maxLines="1"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/colorLicoriceDark" />
 
     <RelativeLayout
         android:id="@+id/layoutTimeline"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-
+        android:layout_height="0dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="15dp"
-        android:layout_alignBottom="@+id/layoutTodo"
-        android:layout_toRightOf="@id/txtScheduleTime">
+        android:right="@id/txtScheduleTime"
+        app:layout_constraintBottom_toTopOf="@+id/vEndLine"
+        app:layout_constraintLeft_toRightOf="@+id/txtScheduleTime"
+        app:layout_constraintTop_toTopOf="parent">
+
         <View
             android:id="@+id/vAboveLine"
             android:layout_width="1dp"
             android:layout_height="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_alignParentTop="true"
-            android:background="@color/colorGreen"
-            />
+            android:layout_marginLeft="10dp"
+            android:background="@color/colorBanana" />
 
         <View
             android:id="@+id/vScheduleBullet"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:background="@drawable/schedule_bullet_background"
-            android:layout_below="@+id/vAboveLine"/>
+            android:layout_below="@+id/vAboveLine"
+            android:background="@drawable/schedule_bullet_background" />
 
         <View
             android:id="@+id/vBelowLine"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
             android:layout_below="@id/vScheduleBullet"
-            android:background="@color/colorGreen"
-            />
+            android:layout_marginLeft="10dp"
+            android:background="@color/colorBanana" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/layoutTodo"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:clickable="true"
         android:orientation="vertical"
-        android:layout_toRightOf="@+id/layoutTimeline">
+        android:background="@drawable/background_transparent_button"
+        app:layout_constraintLeft_toRightOf="@+id/layoutTimeline"
+        app:layout_constraintRight_toRightOf="parent">
+
         <TextView
             android:id="@+id/txtScheduleTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ăn sáng - Nhà hàng ABC"
-            android:textColor="@color/colorText"
-            android:textSize="18sp"
-            android:maxLines="2"/>
+            android:maxLines="2"
+            android:textColor="@color/colorLicoriceDark"
+            android:textSize="18sp" />
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_location_on_black_24dp"
-                android:foregroundGravity="top"/>
+                android:foregroundGravity="top"
+                app:srcCompat="@drawable/ic_map" />
+
             <TextView
                 android:id="@+id/txtScheduleAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Số 123, đường Hoàng Diệu 2, ..."
                 android:maxLines="1"/>
         </LinearLayout>
+
         <TextView
             android:id="@+id/txtScheduleDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorText"
+            android:layout_marginBottom="5dp"
             android:maxLines="3"
-            android:text="Buổi sáng, quý khách tập trung tại cổng D4, Ga đi trong nước, sân bay Tân Sơn Nhất. Lên chuyến bay VJ622 lúc 06:15 đi Đà Nẵng"
-            android:layout_marginBottom="10dp"
-
-            />
-        <View
-            android:id="@+id/vSpacing"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@id/vScheduleBullet"
-            android:background="@color/transparent"
-            android:visibility="gone"
-            />
+            android:textColor="@color/colorLicoriceDark" />
     </LinearLayout>
-
-
-</LinearLayout>
+    <View
+        android:id="@+id/vSpacing"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/layoutTodo" />
+    <View
+        android:id="@+id/vEndLine"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/vSpacing" />
+</android.support.constraint.ConstraintLayout>

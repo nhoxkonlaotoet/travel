@@ -11,9 +11,9 @@ import com.example.administrator.travel.models.listeners.Listener;
 public interface UserInteractor {
     String getUserId(Context context);
 
-    void getUserName(String userId, Listener.OnGetUserNameFinishedListener listener, int pos);
+    void getUserInfor(String userId, Listener.OnGetUserInforFinishedListener listener);
 
-    void getUserAvatar(String userId, Listener.OnGetUserAvatarFinishedListener listener, int pos);
+    void getUserAvatar(String userId, Listener.OnGetUserAvatarFinishedListener listener);
 
     boolean isLogged(Context context);
 

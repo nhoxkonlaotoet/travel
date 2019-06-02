@@ -51,7 +51,7 @@ public class LoadImageTask extends AsyncTask<String,Void,Bitmap> {
                 Runs on the UI thread after doInBackground(Params...).
          */
     protected void onPostExecute(Bitmap result){
-        listener.onLoadImageSuccess(index,result);
+      //  listener.onLoadImageSuccess(index,result);
     }
 
 }

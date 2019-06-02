@@ -39,16 +39,16 @@
 
     <Button
         android:id="@+id/btn_resetpass_send"
-        android:backgroundTint="@color/colorButton"
+        android:backgroundTint="@color/colorBlueberry"
         android:text="Đây là Email của tôi!"
         android:onClick="SendResetPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_marginTop="20dp"
-        android:background="@color/colorButton"
+        android:background="@color/colorBlueberry"
         android:padding="12dp"
         android:layout_below="@id/edt_resetpass_email"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/colorTextButton"/>
+        android:textColor="@color/colorCreme"/>
 </RelativeLayout>

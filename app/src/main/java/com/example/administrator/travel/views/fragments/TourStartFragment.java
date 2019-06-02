@@ -16,7 +16,7 @@ import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.TourStartAdapter;
 import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.presenters.bases.TourStartPresenter;
-import com.example.administrator.travel.presenters.impls.TourStartPresenterImpl;
+import com.example.administrator.travel.presenters.impls.TourStartsPresenterImpl;
 import com.example.administrator.travel.views.bases.TourStartView;
 import com.example.administrator.travel.views.activities.BookTourActivity;
 
@@ -46,7 +46,7 @@ public class TourStartFragment extends Fragment implements TourStartView, TourSt
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerviewTourStart = getActivity().findViewById(R.id.recyclerviewTourStart);
-        presenter = new TourStartPresenterImpl(this);
+        presenter = new TourStartsPresenterImpl(this);
         Bundle bundle = getActivity().getIntent().getExtras();
         presenter.onViewCreated(bundle);
     }

@@ -2,6 +2,7 @@ package com.example.administrator.travel.models.listeners;
 
 import android.graphics.Bitmap;
 
+import com.example.administrator.travel.models.entities.Activity;
 import com.example.administrator.travel.models.entities.City;
 import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.entities.Day;
@@ -10,13 +11,16 @@ import com.example.administrator.travel.models.entities.Participant;
 import com.example.administrator.travel.models.entities.Rating;
 import com.example.administrator.travel.models.entities.Schedule;
 import com.example.administrator.travel.models.entities.Tour;
+import com.example.administrator.travel.models.entities.TourBooking;
 import com.example.administrator.travel.models.entities.TourStartDate;
+import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.models.entities.map.direction.Route;
 import com.example.administrator.travel.models.entities.place.detail.PlaceDetail;
 import com.example.administrator.travel.models.entities.place.nearby.Nearby;
 import com.google.android.gms.location.places.PlaceTypes;
 import com.google.firebase.database.DatabaseException;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,39 +28,19 @@ import java.util.List;
  */
 
 public interface Listener {
-    interface OnGetToursFinishedListener {
-        void onGetToursSuccess(List<Tour> tours);
-
-        void onGetToursFail(Exception ex);
-    }
-
-    interface OnGetTourImagesFinishedListener {
-        void onGetTourImagesSuccess(Bitmap[] images);
-
-        void onGetTourImagesFail(Exception ex);
+    interface OnGetAboutToDepartToursFinishedListener {
+        void onGetAboutToDepartToursSuccess(List<Tour> tours, HashMap<String, TourStartDate> tourStartMap);
+        void onGetAboutToDepartToursFail(Exception ex);
     }
 
     interface OnGetTourImageFinishedListener {
-        void onGetTourImageSuccess(int pos, Bitmap image);
-
-        void onGetTourImageFail(Exception ex);
-    }
-    interface OnGetTourImageTitleFinishedListener {
-        void onGetTourImageTitleSuccess(int pos, String title);
-
-        void onGetTourImageTitleFail(Exception ex);
+        void onGetTourImageSuccess(int pos, String tourId, Bitmap tourImage);
     }
 
     interface OnGetCitiesFinishedListener {
         void onGetCitiesSuccess(List<City> cities);
 
         void onGetCitiesFail(Exception ex);
-    }
-
-    interface OnGetFirstImageFinishedListener {
-        void onGetFirstImageSuccess(int pos, String tourId, Bitmap image);
-
-        void onGetFirstImageFail(Exception ex);
     }
 
     interface OnGetMyTourIdsFinishedListener {
@@ -72,15 +56,9 @@ public interface Listener {
     }
 
     interface OnJoinTourFinishedListener {
-        void onJoinTourSuccess(String tourId, String tourStartId);
+        void onJoinTourSuccess(String tourId, String tourStartId, String tourGuideId);
 
         void onJoinTourFail(Exception ex);
-    }
-
-    interface OnRememberTourFinishedListener {
-        void onRememberTourSuccess();
-
-        void onRememberTourFail(Exception ex);
     }
 
     interface OnGetDaysFinishedListener {
@@ -101,8 +79,14 @@ public interface Listener {
         void onGetSchedulesFail(Exception ex);
     }
 
+    interface OnGetTourStartsFinishedListener {
+        void onGetTourStartsSuccess(List<TourStartDate> tourStartDateList);
+
+        void onGetTourStartsFail(Exception ex);
+    }
+
     interface OnGetTourStartFinishedListener {
-        void onGetTourStartSuccess(List<TourStartDate> tourStartDateList);
+        void onGetTourStartSuccess(TourStartDate tourStartDate);
 
         void onGetTourStartFail(Exception ex);
     }
@@ -139,12 +123,12 @@ public interface Listener {
         void onRateTourFail(Exception ex);
     }
 
-    interface OnGetUserNameFinishedListener {
-        void onGetUserNameSuccess(String userId, String name, int pos);
+    interface OnGetUserInforFinishedListener {
+        void onGetUserInforSuccess(UserInformation user);
     }
 
     interface OnGetUserAvatarFinishedListener {
-        void onGetUserAvatarFinishedListener(String userId, Bitmap avatar, int pos);
+        void onGetUserAvatarSuccess(String userId, Bitmap avatar);
     }
 
     interface OnFinishTourFinishedListener {
@@ -164,7 +148,7 @@ public interface Listener {
     }
 
     interface OnLoadImageFinishedListener {
-        void onLoadImageSuccess(int pos, Bitmap image);
+        void onLoadImageSuccess(String fileName, Bitmap image);
     }
 
     interface OnGetNearbyFinishedListener {
@@ -186,7 +170,7 @@ public interface Listener {
     }
 
     interface OnCheckJoiningTourFinishedListener {
-        void onCheckJoiningTourTrue(String tourId, String tourStartId);
+        void onCheckJoiningTourTrue(String tourId, String tourStartId, String tourGuideId);
 
         void onCheckJoiningTourFalse();
 
@@ -223,7 +207,7 @@ public interface Listener {
         void onGetMyOwnedToursFail(Exception ex);
     }
 
-    interface OnGetPlaceDetailFinishedListener{
+    interface OnGetPlaceDetailFinishedListener {
         void onGetPlaceDetailSuccess(PlaceDetail placeDetailList);
 
         void onGetPlaceDetailFail(Exception ex);
@@ -246,5 +230,42 @@ public interface Listener {
         void onPicassoLoadSuccess(int pos, Bitmap photo);
 
         void onPicassoLoadFail(Exception ex);
+    }
+
+    interface OnGetActivitiesFinishedListener {
+        void onGetActivitiesSuccess(List<Activity> activityList);
+
+        void onGetActivitiesFailure(DatabaseException ex);
+    }
+
+    interface OnGetActivityPhotosFinishedListener {
+        void onGetActivityPhotosSuccess(String activityId, Bitmap photo);
+
+    }
+
+    interface OnGetBookingFinishedListener {
+        void onGetMyBookTourSuccess(TourBooking tourBooking);
+
+        void onGetMyBookTourFailure(DatabaseException ex);
+    }
+
+    interface OnBookTourFinishedListener {
+        void onBookTourSuccess();
+
+        void onBookTourFail(Exception ex);
+    }
+
+    interface OnLoadCityPhotoFinishedListener {
+        void onLoadCityPhotoSuccess(String cityId, Bitmap cityPhoto);
+    }
+
+
+    interface OnGetToursFinishedListener {
+        void onGetToursSuccess(List<Tour> tourList, HashMap<String, Double> ratingMap);
+        void onGetToursFail(Exception ex);
+    }
+    interface OnGetLikedToursFinishedListener {
+        void onGetLikedToursSuccess(List<Tour> tourList, HashMap<String, Double> ratingMap);
+        void onGetLikedToursFail(Exception ex);
     }
 }

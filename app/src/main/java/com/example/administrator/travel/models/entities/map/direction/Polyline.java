@@ -21,7 +21,9 @@ public class Polyline {
             _points = decodePolyLine(raw_points);
         return _points;
     }
-
+    public void setPoints(List<LatLng> points){
+        this._points = points;
+    }
     private List<LatLng> decodePolyLine(final String poly) {
         int len = poly.length();
         int index = 0;

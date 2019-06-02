@@ -75,9 +75,9 @@ public class LoginPresenterImpl implements LoginPresenter,
     }
 
     @Override
-    public void onCheckJoiningTourTrue(String tourId, String tourStartId) {
+    public void onCheckJoiningTourTrue(String tourId, String tourStartId, String tourGuideId) {
         String userId = userInteractor.getUserId(view.getContext());
-        participantInteractor.rememberTour(userId, tourStartId, tourId, view.getContext());
+        participantInteractor.rememberTour(userId, tourStartId, tourId, tourGuideId, view.getContext());
         finishFlags[CHECK_JOINING_TOUR_INDEX] = true;
         if (checkLoadFinished())
         {

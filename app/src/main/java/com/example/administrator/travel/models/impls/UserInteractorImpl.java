@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 
 import com.example.administrator.travel.models.bases.UserInteractor;
+import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,20 +35,24 @@ public class UserInteractorImpl implements UserInteractor {
     public String getUserId(Context context) {
         if (context == null)
             return "";
-        SharedPreferences prefs = context.getSharedPreferences("dataLogin", MODE_PRIVATE);
-        String userId = prefs.getString("AuthID", "");
-        return userId;
+//        SharedPreferences prefs = context.getSharedPreferences("dataLogin", MODE_PRIVATE);
+//        String userId = prefs.getString("AuthID", "");
+
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null)
+           return FirebaseAuth.getInstance().getCurrentUser().getUid();
+        return "none";
     }
 
     @Override
-    public void getUserName(final String userId, final Listener.OnGetUserNameFinishedListener listener, final int pos) {
+    public void getUserInfor(final String userId, final Listener.OnGetUserInforFinishedListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference userRef = database.getReference("users");
         userRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String name = dataSnapshot.child("name").getValue(String.class);
-                listener.onGetUserNameSuccess(userId, name, pos);
+                UserInformation user = dataSnapshot.getValue(UserInformation.class);
+                user.id=dataSnapshot.getKey();
+                listener.onGetUserInforSuccess(user);
             }
 
             @Override
@@ -58,7 +63,7 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     @Override
-    public void getUserAvatar(final String userId, final Listener.OnGetUserAvatarFinishedListener listener, final int pos) {
+    public void getUserAvatar(final String userId, final Listener.OnGetUserAvatarFinishedListener listener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference avatarRef = storage.getReference();
         final long HALF_MEGABYTE = 1024 * 512;
@@ -66,7 +71,7 @@ public class UserInteractorImpl implements UserInteractor {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                listener.onGetUserAvatarFinishedListener(userId, bmp, pos);
+                listener.onGetUserAvatarSuccess(userId, bmp);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

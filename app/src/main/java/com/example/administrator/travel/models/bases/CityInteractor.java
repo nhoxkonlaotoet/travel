@@ -1,5 +1,7 @@
 package com.example.administrator.travel.models.bases;
 
+import android.graphics.Bitmap;
+
 import com.example.administrator.travel.models.listeners.Listener;
 
 /**
@@ -8,4 +10,7 @@ import com.example.administrator.travel.models.listeners.Listener;
 
 public interface CityInteractor {
     void getCities(Listener.OnGetCitiesFinishedListener listener);
+
+    void loadCityPhoto(String cityId, Listener.OnLoadCityPhotoFinishedListener listener);
+
 }

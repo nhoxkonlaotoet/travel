@@ -22,13 +22,13 @@
                    android:layout_height="wrap_content"
                    android:text="Đánh giá:"
                    android:textSize="18sp"
-                   android:textColor="@color/colorText"/>
+                   android:textColor="@color/colorLicoriceDark"/>
                <Button
                    android:id="@+id/btnCollapse"
                    android:layout_width="25dp"
                    android:layout_height="25dp"
-                   android:background="@drawable/background_small_button"
-                   android:textColor="@color/colorText"
+                   android:background="@drawable/background_transparent_button"
+                   android:textColor="@color/colorLicoriceDark"
                    android:text="^"
                    android:gravity="center"
                    android:layout_marginRight="10dp"
@@ -47,8 +47,7 @@
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:textSize="40sp"
-                       android:text="4.2"
-                       android:textColor="@color/colorText"
+                       android:textColor="@color/colorLicoriceDark"
                        android:layout_centerHorizontal="true"
                        android:gravity="center"/>
                    <TextView

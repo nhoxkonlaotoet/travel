@@ -14,12 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.adapter.NewsFeedAdapter;
+import com.example.administrator.travel.adapter.TourAboutToDepartAdapter;
 import com.example.administrator.travel.adapter.SelectMyTourAdapter;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.TourStartDate;
@@ -37,16 +37,17 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class SelectMyTourFragment extends Fragment implements SelectMyTourView,
-        SelectMyTourAdapter.ItemClickListener, NewsFeedAdapter.ItemClickListener {
-    RecyclerView recyclerViewMyTour;
-    LinearLayout btnScan;
-    public static final Integer SCAN_QR_CODE = 100, TOUR_CODE = 102, LOGIN_CODE = 103;
-    SelectMyTourPresenter presenter;
-    RelativeLayout layoutLogin, layoutMyTours;
-    Button btnLogin;
-    ProgressDialog waitDialog;
-    SelectMyTourAdapter selectMyTourAdapter;
-    NewsFeedAdapter newsFeedAdapter;
+        SelectMyTourAdapter.ItemClickListener, TourAboutToDepartAdapter.ItemClickListener {
+    private static final Integer SCAN_QR_CODE = 100, TOUR_CODE = 102, LOGIN_CODE = 103;
+
+    private RecyclerView recyclerViewMyTour;
+    private ImageButton btnScan;
+    private SelectMyTourPresenter presenter;
+    private RelativeLayout layoutLogin, layoutMyTours;
+    private Button btnLogin;
+    private ProgressDialog waitDialog;
+    private SelectMyTourAdapter selectMyTourAdapter;
+    private TourAboutToDepartAdapter tourAboutToDepartAdapter;
 
     public SelectMyTourFragment() {
         // Required empty public constructor
@@ -153,14 +154,8 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView,
     }
 
     @Override
-    public void notifyInvalidScanString() {
-        Toast.makeText(getActivity(), "Mã QR không đúng, vui lòng quét lại", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void notifyJoinTourFailure(String message) {
+    public void notify(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-
     }
 
 
@@ -208,21 +203,12 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView,
 
     @Override
     public void showMyTours(List<Tour> tourList) {
-        newsFeedAdapter = new NewsFeedAdapter(getActivity(), tourList);
-        newsFeedAdapter.setClickListener(this);
-        recyclerViewMyTour.setAdapter(newsFeedAdapter);
+        tourAboutToDepartAdapter = new TourAboutToDepartAdapter(getActivity(), tourList, null);
+        tourAboutToDepartAdapter.setClickListener(this);
+        recyclerViewMyTour.setAdapter(tourAboutToDepartAdapter);
 
     }
 
-    @Override
-    public void updateTourImage(int pos, String tourId, Bitmap image) {
-        newsFeedAdapter.updateImage(pos, tourId, image);
-    }
-
-    @Override
-    public void notifyGetMyTourFail(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public Context getContext() {

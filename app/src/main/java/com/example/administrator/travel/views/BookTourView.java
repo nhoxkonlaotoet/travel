@@ -11,8 +11,7 @@ public interface BookTourView {
     void updateAdultNumber(int number);
     void updateChildrenNumber(int number);
     void updateBabyNumber(int number);
-    void notifyBookingSuccess();
-    void notifyBookingFailure(Exception ex);
+    void notify(String message);
     void close();
     void showPrice(int adultPrice, int childrenPrice, int babyPrice, int availableNumber);
     void showNumberPeople(int adultNumber, int childrenNumber, int babyNumber);

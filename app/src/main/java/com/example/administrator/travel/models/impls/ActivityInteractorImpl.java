@@ -3,6 +3,7 @@ package com.example.administrator.travel.models.impls;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -23,6 +24,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +33,30 @@ import java.util.List;
 
 public class ActivityInteractorImpl implements ActivityInteractor {
     final static String ACTIVITIES_REF = "activities";
+
+    @Override
+    public void getActivities(final String tourStartId, final Listener.OnGetActivitiesFinishedListener listener) {
+        final List<Activity> lstActivity = new ArrayList<>();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference activitiesRef = database.getReference(ACTIVITIES_REF);
+        activitiesRef.child(tourStartId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.e("get activity: ", ds.getValue() + "");
+                    Activity activity = ds.getValue(Activity.class);
+                    activity.id = ds.getKey();
+                    lstActivity.add(activity);
+                }
+                listener.onGetActivitiesSuccess(lstActivity);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onGetActivitiesFailure(databaseError.toException());
+            }
+        });
+    }
 
     @Override
     public void postActivity(final String tourStartId, String userId, Activity activity, final List<Bitmap> listImage, final Listener.OnPostActivityFinishedListener listener) {
@@ -43,8 +69,7 @@ public class ActivityInteractorImpl implements ActivityInteractor {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageref = storage.getReference().child("activities/")
                         .child(tourStartId).child(key);
-                if(listImage==null||listImage.size()==0)
-                {
+                if (listImage == null || listImage.size() == 0) {
                     listener.onPostActivitySuccess();
                     return;
                 }
@@ -78,6 +103,25 @@ public class ActivityInteractorImpl implements ActivityInteractor {
     }
 
     @Override
+    public void getActivitiyPhoto(int pos, String tourStartId, final String activityId, final Listener.OnGetActivityPhotosFinishedListener listener) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference ref = storage.getReference("activities").child(tourStartId).child(activityId).child(pos + ".png");
+        long HALF_MEGABYTE = 1024 * 512;
+        ref.getBytes(HALF_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                listener.onGetActivityPhotosSuccess(activityId, bmp);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
+    }
+
+
+    @Override
     public byte[] bitmapToBytes(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -85,3 +129,4 @@ public class ActivityInteractorImpl implements ActivityInteractor {
         return data;
     }
 }
+

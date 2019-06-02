@@ -20,7 +20,7 @@
                 android:id="@+id/txtMyTourName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorText" />
+                android:textColor="@color/colorLicoriceDark" />
 
             <ProgressBar
                 android:id="@+id/progressbarWaitTourName"
@@ -48,7 +48,7 @@
                 android:id="@+id/txtStartDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorText" />
+                android:textColor="@color/colorLicoriceDark" />
 
             <ProgressBar
                 android:id="@+id/progressbarWaitTourStartDate"

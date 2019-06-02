@@ -22,13 +22,13 @@
                 android:layout_height="wrap_content"
                 android:text="Người đặt: "
                 android:textSize="18sp"
-                android:textColor="@color/colorText"/>
+                android:textColor="@color/colorLicoriceDark"/>
             <TextView
                 android:id="@+id/txtUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@color/colorText"/>
+                android:textColor="@color/colorLicoriceDark"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="Số vé: "
                 android:textSize="18sp"
-                android:textColor="@color/colorText"/>
+                android:textColor="@color/colorLicoriceDark"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,19 +48,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/colorLicoriceDark"
                     android:text="Người lớn"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/colorLicoriceDark"
                     android:text="Trẻ em"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/colorLicoriceDark"
                     android:text="Em bé"/>
             </LinearLayout>
             <LinearLayout
@@ -72,21 +72,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/colorLicoriceDark"
                     android:text="0"/>
                 <TextView
                     android:id="@+id/txtChildrenNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/colorLicoriceDark"
                     android:text="0"/>
                 <TextView
                     android:id="@+id/txtBabyNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/colorLicoriceDark"
                     android:text="0"/>
             </LinearLayout>
         </LinearLayout>
@@ -98,14 +98,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@color/colorText"
+                android:textColor="@color/colorLicoriceDark"
                 android:text="Số tiền: "/>
             <TextView
                 android:id="@+id/txtMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@color/colorText"
+                android:textColor="@color/colorLicoriceDark"
                 android:text="0đ"/>
         </LinearLayout>
     </LinearLayout>
@@ -118,7 +118,7 @@
             android:id="@+id/btnCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_small_button"
+            android:background="@drawable/background_transparent_button"
             android:layout_marginRight="5dp"
             android:layout_below="@id/btnAccept"
             android:layout_toLeftOf="@id/btnDelete"
@@ -131,21 +131,21 @@
                 android:id="@+id/imgvCall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_phone_black_24dp"/>
+                app:srcCompat="@drawable/ic_phone"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gọi"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/imgvCall"
-                android:textColor="@color/colorText"
+                android:textColor="@color/colorLicoriceDark"
                 android:textSize="18sp"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/btnAccept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_small_button"
+            android:background="@drawable/background_transparent_button"
             android:layout_alignParentRight="true"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="5dp"
@@ -162,14 +162,14 @@
                 android:text="Duyệt"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/imgvOK"
-                android:textColor="@color/colorText"
+                android:textColor="@color/colorLicoriceDark"
                 android:textSize="18sp" />
         </RelativeLayout>
         <ImageButton
             android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_small_button"
+            android:background="@drawable/background_transparent_button"
             app:srcCompat="@drawable/ic_cancel"
             android:padding="10dp"
             android:layout_below="@id/btnAccept"

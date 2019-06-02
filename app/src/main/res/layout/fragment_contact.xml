@@ -3,151 +3,125 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.administrator.travel.views.fragments.ContactFragment">
+    tools:context="com.example.administrator.travel.views.fragments.CompanyContactFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_transparent_button"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
-    <!-- TODO: Update blank fragment layout -->
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="vertical">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
-            <TextView
-                android:id="@+id/txtCompanyName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorText"
-                android:textSize="20sp"/>
-            <ProgressBar
-                android:id="@+id/progressbarCompanyName"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/txtCompanyName"
-                android:indeterminate="true"
-                android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
-                android:indeterminateDuration="1000" />
-        </RelativeLayout>
-       <View
-           android:layout_width="match_parent"
-           android:layout_height="1dp"
-           android:background="#CDD0D2"/>
-       <RelativeLayout
-           android:id="@+id/btnWebsite"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:padding="20dp"
-           android:clickable="true"
-           android:background="@drawable/background_button_contact">
-           <ImageView
-               android:id="@+id/imgvWeblink"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               app:srcCompat="@drawable/ic_web_link"/>
-           <TextView
-               android:id="@+id/txtWeblink"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textColor="@color/colorText"
-               android:layout_toRightOf="@+id/imgvWeblink"
-               android:layout_alignBottom="@+id/imgvWeblink"
-               android:layout_alignTop="@+id/imgvWeblink"
-               android:gravity="center|left"
-               android:layout_marginLeft="10dp"/>
-           <ProgressBar
-               android:id="@+id/progressbarWeb"
-               style="?android:attr/progressBarStyleHorizontal"
-               android:layout_width="match_parent"
-               android:layout_height="10dp"
-               android:layout_centerVertical="true"
-               android:layout_toRightOf="@+id/txtWeblink"
-               android:indeterminate="true"
-               android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
-               android:indeterminateDuration="1000" />
-       </RelativeLayout>
-       <View
-           android:layout_width="match_parent"
-           android:layout_height="1dp"
-           android:background="#CDD0D2"/>
-       <RelativeLayout
-           android:id="@+id/btnPhoneNumber"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:padding="20dp"
-           android:clickable="true"
-           android:background="@drawable/background_button_contact">
-           <ImageView
-               android:id="@+id/imgvPhoneNumber"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               app:srcCompat="@drawable/ic_phone_black_24dp"/>
-           <TextView
-               android:id="@+id/txtPhoneNumber"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textColor="@color/colorText"
-               android:layout_toRightOf="@+id/imgvPhoneNumber"
-               android:layout_alignBottom="@+id/imgvPhoneNumber"
-               android:layout_alignTop="@+id/imgvPhoneNumber"
-               android:gravity="center|left"
-               android:layout_marginLeft="10dp"/>
-           <ProgressBar
-               android:id="@+id/progressbarPhone"
-               style="?android:attr/progressBarStyleHorizontal"
-               android:layout_width="match_parent"
-               android:layout_height="10dp"
-               android:layout_centerVertical="true"
-               android:layout_toRightOf="@+id/txtPhoneNumber"
-               android:indeterminate="true"
-               android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
-               android:indeterminateDuration="1000" />
-       </RelativeLayout>
-       <View
-           android:layout_width="match_parent"
-           android:layout_height="1dp"
-           android:background="#CDD0D2"/>
-       <RelativeLayout
-           android:id="@+id/btnAddress"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:padding="20dp"
-           android:clickable="true"
-           android:background="@drawable/background_button_contact">
-           <ImageView
-               android:id="@+id/imgvLocation"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               app:srcCompat="@drawable/ic_location_on_black_24dp"/>
-           <TextView
-               android:id="@+id/txtAddress"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textColor="@color/colorText"
-               android:layout_toRightOf="@+id/imgvLocation"
-               android:layout_alignBottom="@+id/imgvLocation"
-               android:layout_alignTop="@+id/imgvLocation"
-               android:gravity="center|left"
-               android:layout_marginLeft="10dp"
-               android:maxLines="1"/>
-           <ProgressBar
-               android:id="@+id/progressbarAddress"
-               style="?android:attr/progressBarStyleHorizontal"
-               android:layout_width="match_parent"
-               android:layout_height="10dp"
-               android:layout_centerVertical="true"
-               android:layout_toRightOf="@+id/txtAddress"
-               android:indeterminate="true"
-               android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
-               android:indeterminateDuration="1000" />
-       </RelativeLayout>
-       <View
-           android:layout_width="match_parent"
-           android:layout_height="1dp"
-           android:background="#CDD0D2"/>
-   </LinearLayout>
+            android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/txtCompanyName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorLicoriceDark"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/btnWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/background_transparent_button"
+                android:clickable="true"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/imgvWeblink"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@drawable/ic_web_link" />
+
+                <TextView
+                    android:id="@+id/txtWeblink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/imgvWeblink"
+                    android:layout_alignTop="@+id/imgvWeblink"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/imgvWeblink"
+                    android:gravity="center|left"
+                    android:textColor="@color/colorLicoriceDark"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btnPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/background_transparent_button"
+                android:clickable="true"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/imgvPhoneNumber"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@drawable/ic_phone" />
+
+                <TextView
+                    android:id="@+id/txtPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/imgvPhoneNumber"
+                    android:layout_alignTop="@+id/imgvPhoneNumber"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/imgvPhoneNumber"
+                    android:gravity="center|left"
+                    android:textColor="@color/colorLicoriceDark"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btnAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/background_transparent_button"
+                android:clickable="true"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/imgvLocation"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@drawable/ic_map" />
+
+                <TextView
+                    android:id="@+id/txtAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/imgvLocation"
+                    android:layout_alignTop="@+id/imgvLocation"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/imgvLocation"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:textColor="@color/colorLicoriceDark"
+                    android:textSize="15sp" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
 </FrameLayout>

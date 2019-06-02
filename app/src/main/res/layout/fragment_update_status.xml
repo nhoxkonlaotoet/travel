@@ -10,7 +10,7 @@
         android:id="@+id/rlupdatestatus"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorGreen">
+        android:background="@color/colorKiwiDark">
         <ImageButton
             android:id="@+id/btn_updatestatus_back"
             android:layout_width="wrap_content"

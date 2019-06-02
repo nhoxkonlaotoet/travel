@@ -5,127 +5,159 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/newsfeed_item_background">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imgvTour"
-                android:layout_width="121dp"
-                android:layout_height="121dp"
-                android:scaleType="centerCrop"
-                android:src="@color/colorPlaceholder"/>
+            <RelativeLayout
+                android:id="@+id/layoutTourPhoto"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgvTour"
+                    android:layout_width="150dp"
+                    android:layout_height="110dp"
+                    android:scaleType="centerCrop" />
+
+                <RelativeLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/imgvTour"
+                    android:layout_alignTop="@id/imgvTour"
+                    android:background="@drawable/background_topleft_triangle">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="2dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtRating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="1dp"
+                            android:gravity="center_vertical"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorBananaLight"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/ic_star_yellow_24dp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/layoutTourInfo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/imgvTour"
-                android:orientation="vertical">
+                android:layout_height="110dp"
+                android:layout_toRightOf="@+id/layoutTourPhoto"
+                android:orientation="vertical"
+                android:weightSum="3">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="59dp"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/txtTourName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLines="2"
-                        android:text="Tour TP.HCM - Hội An"
-                        android:textColor="@color/colorText"
-                        android:textSize="16sp"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:id="@+id/txtDays"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
-                        android:text="2 ngày 1 đêm"
-                        android:layout_weight="1"/>
-
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical"
+                        android:maxLines="2"
+                        android:textColor="@color/colorLicoriceDark"
+                        android:textSize="14sp" />
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorPlaceholder" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="2dp"
+                        app:srcCompat="@drawable/ic_tickets" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="2dp"
+                        android:gravity="center"
+                        android:text="Chỉ " />
+
+                    <TextView
+                        android:id="@+id/txtTourPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/colorKiwiDark"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal">
 
-                        <RatingBar
-                            android:id="@+id/ratebarTourRating"
-                            style="?android:attr/ratingBarStyleSmall"
-                            android:layout_width="80dp"
+                        <ImageView
+                            android:layout_width="20dp"
                             android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="15dp"
-                            android:layout_weight="1"
-                            android:numStars="5" />
+                            android:layout_marginRight="2dp"
+                            android:paddingTop="5dp"
+                            app:srcCompat="@drawable/ic_love" />
+
 
                         <TextView
                             android:id="@+id/txtNumberofRating"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center|top"
-                            android:text="478 bình chọn" />
+                            android:gravity="center"
+                            android:textColor="@color/colorRaspberryDark" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text=" lượt đánh giá"
+                            android:textColor="@color/colorRaspberryDark" />
+
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/colorPlaceholder" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Viettravel"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/txtTourPrice"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="2.357.478 đ"
-                            android:textColor="@color/colorTourPrice"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/txtTourSalePrice"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center|bottom"
-                            android:text="1.951.423 đ"
-                            android:textColor="@color/colorTourPrice" />
-                    </LinearLayout>
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/layoutTourPhoto"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/layoutTourPhoto"
+                android:background="@drawable/background_bottomright_triangle" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

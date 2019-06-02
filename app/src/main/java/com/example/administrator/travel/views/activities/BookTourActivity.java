@@ -13,9 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.models.entities.TourBooking;
-import com.example.administrator.travel.models.entities.TourStartDate;
-import com.example.administrator.travel.presenters.BookTourPresenter;
+import com.example.administrator.travel.presenters.bases.BookTourPresenter;
+import com.example.administrator.travel.presenters.impls.BookTourPresenterImpl;
 import com.example.administrator.travel.views.BookTourView;
 
 
@@ -34,13 +33,9 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_tour);
         mapping();
-
         Bundle bundle = getIntent().getExtras();
-        tourStartId = bundle.getString("tourStartId");
-
-        Log.e( "onCreate: ",tourStartId );
-        presenter=new BookTourPresenter(this);
-        presenter.onViewLoad(tourStartId);
+        presenter=new BookTourPresenterImpl(this);
+        presenter.onViewCreated(bundle);
     }
 
     @Override
@@ -87,35 +82,35 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
     }
 
     public void btnAccept_Click(View view){
-        presenter.onBtnAcceptClicked();
+        presenter.onButtonAcceptClicked();
     }
 
     public void btnCancel_Click(View view){
-        presenter.onBtnCancelClicked();
+        presenter.onButtonCancelClicked();
     }
 
     public void btnDecreaseAdult_Click(View view){
-        presenter.onBtnDecreaseAdultClicked();
+        presenter.onButtonDecreaseAdultClicked();
     }
 
     public void btnIncreaseAdult_Click(View view){
-        presenter.onBtnIncreaseAdultClick();
+        presenter.onButtonIncreaseAdultClick();
     }
 
     public void btnDecreaseChildren_Click(View view){
-        presenter.onBtnDecreaseChildrenClicked();
+        presenter.onButtonDecreaseChildrenClicked();
     }
 
     public void btnIncreaseChildren_Click(View view){
-        presenter.onBtnIncreaseChildrenClicked();
+        presenter.onButtonIncreaseChildrenClicked();
     }
 
     public void btnDecreaseBaby_Click(View view){
-        presenter.onBtnDecreaseBabyClicked();
+        presenter.onButtonDecreaseBabyClicked();
     }
 
     public void btnIncreaseBaby_Click(View view){
-        presenter.onBtnIncreaseBabyClicked();
+        presenter.onButtonIncreaseBabyClicked();
     }
 
 
@@ -145,13 +140,8 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
     }
 
     @Override
-    public void notifyBookingSuccess() {
-        Toast.makeText(this, "Bạn đã đặt tour thành công", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void notifyBookingFailure(Exception ex) {
-        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+    public void notify(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

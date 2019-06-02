@@ -10,6 +10,7 @@ import com.example.administrator.travel.models.bases.ParticipantInteractor;
 import com.example.administrator.travel.models.bases.RatingInteractor;
 import com.example.administrator.travel.models.bases.UserInteractor;
 import com.example.administrator.travel.models.entities.Rating;
+import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
 import com.example.administrator.travel.models.impls.RatingInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
@@ -31,7 +32,8 @@ import static android.app.Activity.RESULT_OK;
 public class TourRatingPresenterImpl implements TourRatingPresenter,
         Listener.OnCheckRatedFinishedListener,
         Listener.OnGetReviewsTourFinishedListener, Listener.OnGetRatingTourFinishedListener,
-        Listener.OnRateTourFinishedListener, Listener.OnGetUserNameFinishedListener, Listener.OnGetUserAvatarFinishedListener {
+        Listener.OnRateTourFinishedListener, Listener.OnGetUserInforFinishedListener,
+        Listener.OnGetUserAvatarFinishedListener {
    final static int REQUEST_POST=101;
     ReviewView view;
     RatingInteractor ratingInteractor;
@@ -141,8 +143,8 @@ public class TourRatingPresenterImpl implements TourRatingPresenter,
     public void onGetReviewTourSuccess(List<Rating> ratingList) {
         view.showReviews(ratingList);
         for (int i = 0; i < ratingList.size(); i++) {
-            userInteractor.getUserName(ratingList.get(0).ratingPeopleId, this, i);
-            userInteractor.getUserAvatar(ratingList.get(0).ratingPeopleId, this, i);
+            userInteractor.getUserInfor(ratingList.get(0).ratingPeopleId, this);
+            userInteractor.getUserAvatar(ratingList.get(0).ratingPeopleId, this);
         }
     }
 
@@ -180,16 +182,6 @@ public class TourRatingPresenterImpl implements TourRatingPresenter,
     }
 
     @Override
-    public void onGetUserNameSuccess(String userId, String name, int pos) {
-        view.updateUserName(name, pos);
-    }
-
-    @Override
-    public void onGetUserAvatarFinishedListener(String userId, Bitmap avatar, int pos) {
-        view.updateUserAvatar(avatar, pos);
-    }
-
-    @Override
     public void onGetRatingTourSuccess(float value, long count)    {
         if(value==0)
             firstChange=false;
@@ -199,5 +191,16 @@ public class TourRatingPresenterImpl implements TourRatingPresenter,
     @Override
     public void onGetRatingTourFail(Exception ex) {
         view.notifyGetRatingFailure(ex);
+    }
+
+    @Override
+    public void onGetUserInforSuccess(UserInformation user) {
+       // view.updateUserName(user.name, pos);
+
+    }
+
+    @Override
+    public void onGetUserAvatarSuccess(String userId, Bitmap avatar) {
+      //  view.updateUserAvatar(avatar, pos);
     }
 }

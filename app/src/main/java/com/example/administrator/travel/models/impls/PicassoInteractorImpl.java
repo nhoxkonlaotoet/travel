@@ -31,7 +31,7 @@ public class PicassoInteractorImpl implements PicassoInteractor {
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-                listener.onPicassoLoadFail(new Exception(errorDrawable.toString() ));
+
             }
 
             @Override
@@ -42,9 +42,7 @@ public class PicassoInteractorImpl implements PicassoInteractor {
         targetList.add(target);
         Picasso.with(context).load(url).into(target);
     }
-
-    @Override
-    public void cleanGarbages() {
+    public void cleanGarbage(){
         targetList.clear();
     }
 }

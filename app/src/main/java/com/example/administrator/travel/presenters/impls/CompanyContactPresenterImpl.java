@@ -53,7 +53,7 @@ public class CompanyContactPresenterImpl implements CompanyContactPresenter, Lis
     public void onButtonAddressClicked() {
         if (company != null) {
             Intent intent = new Intent(view.getContext(), MapsActivity.class);
-            intent.putExtra("action", "nearby");
+            intent.putExtra("openFrom", "contact");
             String destination = company.location.latitude + "," + company.location.longitude;
             intent.putExtra("destination", destination);
             view.gotoMap(intent);
@@ -64,10 +64,6 @@ public class CompanyContactPresenterImpl implements CompanyContactPresenter, Lis
     public void onGetCompanyContactSuccess(Company company) {
         this.company = company;
         view.showContact(company);
-        view.hideProgressBarCompanyName();
-        view.hideProgressBarAddress();
-        view.hideProgressBarPhoneNumber();
-        view.hideProgressBarWeb();
     }
 
     @Override

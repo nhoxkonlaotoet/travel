@@ -2,35 +2,60 @@
 <resources>
     <!--<color name="colorPrimary">#3F51B5</color>-->
     <!--<color name="colorPrimaryDark">#303F9F</color>-->
-    <color name="colorPrimary">#65A400</color>
-    <color name="colorPrimaryDark">#317500</color>
+    <color name="colorPrimary">#267bff</color>
+    <color name="colorPrimaryDark">#0050cb</color>
     <color name="colorAccent">#f4427d</color>
 
     <color name="colorHintText">#6C767C</color>
-    <color name="colorPlaceholder">#dddddd</color>
-    <color name="colorText">#333</color>
-    <color name="colorTourName">#365899</color>
-    <color name="colorNewsFeedBackground">#e8eaf6</color>
-    <color name="colorNewsFeedItemBackground">#fff</color>
-    <color name="colorWhite">#fff</color>
 
 
-    <color name="colorTourPrice">#65A400</color>
-    <color name="colorTourOldPrice">#c30000</color>
 
+    <color name="colorTransparent">#00000000</color>
 
-    <color name="colorUserName">#000</color>
-    <color name="colorReviewContent">#000</color>
-    <color name="colorGreenLight">#98d644</color>
-    <color name="colorGreen">#65A400</color>
-    <color name="colorGreenDark">#317500</color>
+    <!--Kiwi-->
+    <color name="colorKiwiLight">#BFF199</color>
+    <color name="colorKiwi">#8EE000</color>
+    <color name="colorKiwiDark">#7AC70C</color>
 
-    <color name="colorRed">#d50000</color>
+    <!--Blueberry-->
+    <color name="colorBlueberryLight">#BCE9FF</color>
+    <color name="colorBlueberry">#14D4F4</color>
+    <color name="colorBlueberryDark">#1CB0F6</color>
 
-    <color name="transparent">#00000000</color>
+    <!--Raspberry-->
+    <color name="colorRaspberryLight">#FF9797</color>
+    <color name="colorRaspberry">#E53B3B</color>
+    <color name="colorRaspberryDark">#D33131</color>
 
-    <color name="colorSelected">#CDD0D2</color>
+    <!--Banana-->
+    <color name="colorBananaLight">#FFF277</color>
+    <color name="colorBanana">#FFC300</color>
+    <color name="colorBananaDark">#FFB020</color>
 
-    <color name="colorButton">#01a8e0</color>
-    <color name="colorTextButton">#ffffff</color>
+    <!--Pumpkin-->
+    <color name="colorPumpkinLight">#FFCF7A</color>
+    <color name="colorPumpkin">#FF9400</color>
+    <color name="colorPumpkinDark">#FA811B</color>
+
+    <!--Jelly-->
+    <color name="colorJellyLight">#CA94FF</color>
+    <color name="colorJelly">#A560EB</color>
+    <color name="colorJellyDark">#8549BA</color>
+
+    <!--Cocoa-->
+    <color name="colorCocoaLight">#DEAC5F</color>
+    <color name="colorCocoa">#A86425</color>
+    <color name="colorCocoaDark">#864E1B</color>
+
+    <!--Licorice-->
+    <color name="colorLicoriceLight">#AFAFAF</color>
+    <color name="colorLicorice">#777777</color>
+    <color name="colorLicoriceDark">#4C4C4C</color>
+
+    <!--Cloud-->
+    <color name="colorCloudLight">#F0F0F0</color>
+    <color name="colorCloud">#DDDDDD</color>
+    <color name="colorCloudDark">#CFCFCF</color>
+    <!--Creme-->
+    <color name="colorCreme">#FFFFFF</color>
 </resources>

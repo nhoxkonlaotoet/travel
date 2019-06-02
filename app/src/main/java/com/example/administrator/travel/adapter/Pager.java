@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.administrator.travel.views.fragments.AcceptBookingFragment;
 import com.example.administrator.travel.views.fragments.ActivityFragment;
 import com.example.administrator.travel.views.fragments.CompanyContactFragment;
 import com.example.administrator.travel.views.fragments.NearbyFragment;

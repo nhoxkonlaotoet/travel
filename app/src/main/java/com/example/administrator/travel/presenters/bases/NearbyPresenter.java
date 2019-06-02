@@ -9,9 +9,9 @@ import com.example.administrator.travel.models.entities.place.nearby.Nearby;
 public interface NearbyPresenter {
     void onViewCreated();
 
-    void onListViewNearbyScrollBottom();
-
-    void onSelectItemSpinnerPlaceType(int index);
+    void onRecyclerViewNearbyScrollBottom();
 
     void onNearbyItemClicked(Nearby nearby);
+
+    void onNearbyTypeItemClicked(String nearbyTypeValue);
 }

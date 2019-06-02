@@ -7,13 +7,8 @@ package com.example.administrator.travel.presenters.bases;
 public interface NewsFeedPresenter {
     void onViewCreated();
 
-    void onViewResumed();
+    void onItemCityClicked(String cityId);
 
-    void onViewPaused();
+    void onItemTourClicked(String tourId, String owner);
 
-    void onTourItemClicked(String tourId, String owner);
-
-    void onItemSpinnerOriginSelected(int pos);
-
-    void onItemSpinnerDestinationSelected(int pos);
 }

@@ -36,16 +36,15 @@ import static android.content.Context.BIND_AUTO_CREATE;
  */
 
 public class NearbyPresenterImpl implements NearbyPresenter,
-        Listener.OnGetNearbyFinishedListener, Listener.OnGetPlaceTypeFinishedListener, Listener.OnPicassoLoadFinishedListener {
+        Listener.OnGetNearbyFinishedListener, Listener.OnGetPlaceTypeFinishedListener {
     NearbyView view;
     PlaceInteractor placeInteractor;
     PicassoInteractor picassoInteractor;
-    String type;
+    String nearbyType;
     MyLatLng location;
     String nextPageToken;
     int page = 0;
     LocationService locationService;
-    List<NearbyType> lstPlaceType = new ArrayList<>();
     boolean loadFinished;
 
     public NearbyPresenterImpl(NearbyView view) {
@@ -78,27 +77,29 @@ public class NearbyPresenterImpl implements NearbyPresenter,
     }
 
     @Override
-    public void onListViewNearbyScrollBottom() {
-        if (page < 3 && loadFinished && nextPageToken != null && !nextPageToken.equals("")) {
+    public void onRecyclerViewNearbyScrollBottom() {
+        if (page != 0 && page < 3 && loadFinished && nextPageToken != null && !nextPageToken.equals("")) {
             loadFinished = false;
-            placeInteractor.getNearby(type, new LatLng(location.latitude, location.longitude), nextPageToken,
-                    view.getContext().getResources().getString(R.string.google_api_key), this);
+            placeInteractor.getNearby(nearbyType, new LatLng(location.latitude, location.longitude), nextPageToken,
+                    view.getContext().getResources().getString(R.string.google_maps_key), this);
             page++;
         }
 
     }
 
     @Override
-    public void onSelectItemSpinnerPlaceType(int index) {
-        if (location != null) {
-            picassoInteractor.cleanGarbages();
-            type = lstPlaceType.get(index).value;
+    public void onNearbyTypeItemClicked(String nearbyTypeValue) {
+        if(nearbyTypeValue.equals(nearbyType))
+            return;
+        nearbyType = nearbyTypeValue;
+        if (view.getContext()!=null && location != null) {
             loadFinished = false;
             nextPageToken = "";
             page = 1;
-            placeInteractor.getNearby(type, new LatLng(location.latitude, location.longitude),
-                    view.getContext().getResources().getString(R.string.google_api_key), this);
-        }
+            placeInteractor.getNearby(nearbyTypeValue, new LatLng(location.latitude, location.longitude),
+                    view.getContext().getResources().getString(R.string.google_maps_key), this);
+        } else
+            view.notify("Xin vui lòng cho phép truy cập vị trí của bạn");
     }
 
     @Override
@@ -112,7 +113,7 @@ public class NearbyPresenterImpl implements NearbyPresenter,
                 .append(",")
                 .append(nearby.geometry.location.lng.toString());
         String openFrom = view.getContext().getResources().getString(R.string.open_from_nearby);
-        view.gotoMapActivity(origin.toString(),destination.toString(),openFrom);
+        view.gotoMapActivity(origin.toString(), destination.toString(), openFrom);
     }
 
     @Override
@@ -125,17 +126,6 @@ public class NearbyPresenterImpl implements NearbyPresenter,
             view.appendNearbys(nearbyList);
             view.notify("▼ Xem thêm");
         }
-        for (int i = 0; i < nearbyList.size(); i++) {
-            String url;
-            try {
-                url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photoreference="
-                        + nearbyList.get(i).photos.get(0).photoReference
-                        + "&key=" + view.getContext().getResources().getString(R.string.google_api_key);
-            } catch (Exception e) {
-                url = nearbyList.get(i).icon;
-            }
-            picassoInteractor.load(view.getContext(),(page-1)*20 + i,url,this);
-        }
     }
 
     @Override
@@ -144,24 +134,27 @@ public class NearbyPresenterImpl implements NearbyPresenter,
     }
 
     @Override
-    public void onGetPlaceTypeSuccess(List<NearbyType> lstPlaceType) {
-        this.lstPlaceType = lstPlaceType;
-        view.showPlacetypes(lstPlaceType);
+    public void onGetPlaceTypeSuccess(List<NearbyType> nearbyTypeList) {
+        view.showNearbyTypes(nearbyTypeList);
+        if (nearbyTypeList.size() != 0)
+            nearbyType = nearbyTypeList.get(0).value;
+        {
+            if (location != null && view.getContext()!=null) {
+                loadFinished = false;
+                nextPageToken = "";
+                page = 1;
+                placeInteractor.getNearby(nearbyType, new LatLng(location.latitude, location.longitude),
+                        view.getContext().getResources().getString(R.string.google_maps_key), this);
+            } else
+                view.notify("Xin vui lòng cho phép truy cập vị trí của bạn");
+        }
     }
 
     @Override
     public void onGetPlaceTypeFail(Exception ex) {
-
+        view.notify(ex.getMessage());
     }
 
 
-    @Override
-    public void onPicassoLoadSuccess(int pos, Bitmap photo) {
-        view.updateListViewImages(pos,photo);
-    }
 
-    @Override
-    public void onPicassoLoadFail(Exception ex) {
-
-    }
 }

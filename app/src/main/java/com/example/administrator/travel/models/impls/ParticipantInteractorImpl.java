@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.administrator.travel.models.OnGetShareLocationListenter;
-import com.example.administrator.travel.models.OnSetShareLocationFinishedListener;
 import com.example.administrator.travel.models.bases.ParticipantInteractor;
 import com.example.administrator.travel.models.entities.MyLatLng;
 import com.example.administrator.travel.models.entities.Participant;
@@ -41,7 +39,7 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
         tourStartRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                TourStartDate tourStartDate = dataSnapshot.getValue(TourStartDate.class);
+                final TourStartDate tourStartDate = dataSnapshot.getValue(TourStartDate.class);
                 if (tourStartDate.finished) {
                     listener.onJoinTourFail(new Exception("Tour đã kết thúc"));
                     return;
@@ -57,7 +55,7 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
                 participantsRef.child(tourStartId + "+" + userId).setValue(participant.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        listener.onJoinTourSuccess(tourId, tourStartId);
+                        listener.onJoinTourSuccess(tourId, tourStartId, tourStartDate.tourGuide);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -75,13 +73,14 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
     }
 
     @Override
-    public void rememberTour(String userId, String tourStartId, String tourId, Context context) {
+    public void rememberTour(String userId, String tourStartId, String tourId, String tourGuideId, Context context) {
         if (context == null)
             return;
         SharedPreferences prefs = context.getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("participatingTour" + userId, tourId);
         editor.putString("participatingTourStart" + userId, tourStartId);
+        editor.putString("participatingTourGuide" + tourStartId, tourGuideId);
         editor.apply();
     }
 
@@ -123,7 +122,7 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
                             if (!tourFinished) {
                                 TourStartDate tourStartDate = dataSnapshot.getValue(TourStartDate.class);
                                 tourStartDate.id = dataSnapshot.getKey();
-                                listener.onCheckJoiningTourTrue(tourStartDate.tourId, tourStartDate.id);
+                                listener.onCheckJoiningTourTrue(tourStartDate.tourId, tourStartDate.id, tourStartDate.tourGuide);
                             }
                         }
 

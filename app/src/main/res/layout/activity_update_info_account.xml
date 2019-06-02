@@ -11,7 +11,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/rl_update_info_temp"
         android:layout_width="match_parent"
-        android:background="@color/colorButton"
+        android:background="@color/colorBlueberry"
         android:layout_height="?attr/actionBarSize">
         <Button
             android:layout_width="50dp"
@@ -80,9 +80,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/touch_and_change_color"
-        android:backgroundTint="@color/colorButton"
+        android:backgroundTint="@color/colorBlueberry"
         android:text="Cập nhập dữ liệu"
-        android:textColor="@color/colorTextButton"
+        android:textColor="@color/colorCreme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.424"
         app:layout_constraintStart_toStartOf="parent"

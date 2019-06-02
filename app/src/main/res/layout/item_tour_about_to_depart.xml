@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/newsfeed_item_background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/layoutTourPhoto"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imgvTour"
+                android:layout_width="150dp"
+                android:layout_height="110dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/tour" />
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/imgvTour"
+                android:layout_alignBottom="@id/imgvTour"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/background_jagged_line" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutTourInfo"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_toRightOf="@+id/layoutTourPhoto"
+                android:orientation="vertical"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtTourName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical"
+                        android:maxLines="2"
+                        android:text="Tour TP.HCM - Hội An"
+                        android:textColor="@color/colorLicoriceDark"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
+                    <ImageView
+                        android:id="@+id/imgvHotSale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_hot_sale"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="2dp"/>
+                    <TextView
+                        android:id="@+id/txtTourPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="1.000.000đ"
+                        android:textColor="@color/colorKiwiDark"
+                        android:layout_toRightOf="@+id/imgvHotSale"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/txtTourPriceOld"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2.000.000đ"
+                        android:textSize="12sp"
+                        android:layout_toRightOf="@+id/txtTourPrice"
+                        android:layout_marginLeft="10dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/colorLicorice"
+                        />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="Còn " />
+
+                        <TextView
+                            android:id="@+id/txtDaysLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/colorRaspberryDark"
+                            android:gravity="center"
+                            android:text="1 ngày 12 giờ nữa"/>
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

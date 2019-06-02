@@ -91,7 +91,7 @@
         android:layout_margin="24dp"
         android:background="@drawable/touch_and_change_color"
         android:text="Tạo Tài Khoản"
-        android:textColor="@color/colorTextButton"
+        android:textColor="@color/colorCreme"
         android:onClick="SignUpClick"/>
 
     <TextView

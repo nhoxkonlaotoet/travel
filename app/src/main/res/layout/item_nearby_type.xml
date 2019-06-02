@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/btnNearbyType"
+    android:layout_width="60dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:background="@drawable/background_transparent_button"
+    android:clickable="true"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgvNearbyTypeFrame"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:src="@color/colorTransparent"
+        app:civ_circle_background_color="@color/colorBanana" />
+
+    <ImageView
+        android:id="@+id/imgvNearbyTypeIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:background="@color/colorTransparent"
+        android:padding="10dp"
+        android:src="@drawable/restaurant" />
+
+    <TextView
+        android:id="@+id/txtNearbyTypeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgvNearbyTypeIcon"
+        android:textAlignment="center"
+        android:textSize="13sp" />
+</RelativeLayout>
