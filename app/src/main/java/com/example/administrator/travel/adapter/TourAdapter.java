@@ -84,7 +84,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.ViewHolder> im
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(context,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             externalStoragePermissionGranted = true;
             externalStorageInteractor = new ExternalStorageInteractorImpl();
             toursPath = context.getString(R.string.external_storage_path_tours);
@@ -162,9 +162,16 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.ViewHolder> im
                     .append(" giờ");
             holder.txtDaysLeft.setText(timeLeftBuilder.toString());
         }else if(itemType.equals(TYPE_LIKED_TOUR)){
-            holder.txtTourPrice.setText(String.valueOf(tour.adultPrice));
-            holder.txtRating.setText(String.valueOf(ratingMap.get(tour.id).intValue()));
-            holder.txtNumberofRating.setText(String.valueOf(ratingMap.size()));
+            holder.txtTourPrice.setText(String.valueOf(tour.adultPrice) + "đ");
+            if(tour.ratings!=null) {
+                holder.txtNumberofRating.setText(String.valueOf(tour.ratings.size()+" lượt đánh giá"));
+                holder.txtRating.setText(String.valueOf(ratingMap.get(tour.id).intValue()));
+            }
+            else
+            {
+                holder.txtNumberofRating.setText("Chưa có đánh giá");
+                holder.txtRating.setText("0");
+            }
         }
     }
 

@@ -15,13 +15,16 @@ import android.widget.LinearLayout;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.CityAdapter;
+import com.example.administrator.travel.adapter.CompanyAdapter;
 import com.example.administrator.travel.adapter.TourAboutToDepartAdapter;
 import com.example.administrator.travel.adapter.TourAdapter;
 import com.example.administrator.travel.models.entities.City;
+import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.presenters.bases.NewsFeedPresenter;
 import com.example.administrator.travel.presenters.impls.NewsFeedPresenterImpl;
+import com.example.administrator.travel.views.activities.SearchTourActivity;
 import com.example.administrator.travel.views.bases.NewsFeedView;
 import com.example.administrator.travel.views.activities.TourActivity;
 
@@ -30,8 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NewsFeedFragment extends Fragment implements NewsFeedView, TourAboutToDepartAdapter.ItemClickListener,
-        CityAdapter.CityClickListener, TourAdapter.ItemClickListener {
-    private RecyclerView recyclerViewTour, recyclerViewCity, recyclerLikedTour;
+        CityAdapter.CityClickListener, TourAdapter.ItemClickListener, CompanyAdapter.CompanyClickListener {
+    private RecyclerView recyclerViewTour, recyclerViewCity, recyclerLikedTour, recyclerCompany;
     private NewsFeedPresenter presenter;
     private LinearLayout layoutCities, layoutAboutToDepartTours, layoutLikedTours;
 
@@ -65,6 +68,8 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView, TourAbou
         recyclerViewTour = getActivity().findViewById(R.id.recyclerViewTour);
         recyclerViewCity = getActivity().findViewById(R.id.recyclerViewCity);
         recyclerLikedTour = getActivity().findViewById(R.id.recyclerLikedTour);
+        recyclerCompany = getActivity().findViewById(R.id.recyclerCompany);
+
         layoutCities = getActivity().findViewById(R.id.layoutCities);
         layoutAboutToDepartTours = getActivity().findViewById(R.id.layoutAboutToDepartTours);
         layoutLikedTours = getActivity().findViewById(R.id.layoutLikedTours);
@@ -93,6 +98,13 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView, TourAbou
         recyclerLikedTour.setAdapter(tourAdapter);
     }
 
+    @Override
+    public void showCompanies(List<Company> companyList) {
+        CompanyAdapter companyAdapter = new CompanyAdapter(getActivity(), companyList);
+        companyAdapter.setClickListener(this);
+        recyclerCompany.setAdapter(companyAdapter);
+    }
+
 
     @Override
     public void gotoActivityTour(String tourId, String owner) {
@@ -100,6 +112,14 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView, TourAbou
         intent.putExtra("tourId", tourId);
         intent.putExtra("mytour", false);
         intent.putExtra("owner", owner);
+        startActivity(intent);
+    }
+
+    @Override
+    public void gotoActivitySearchTour(String cityId) {
+        Intent intent = new Intent(getActivity(), SearchTourActivity.class);
+        intent.putExtra("filter", "city");
+        intent.putExtra("cityId", cityId);
         startActivity(intent);
     }
 
@@ -135,6 +155,10 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView, TourAbou
 
     @Override
     public void onItemCityClick(View view, String cityId) {
+        presenter.onItemCityClicked(cityId);
+    }
 
+    @Override
+    public void onItemCompanyClick(View view, String companyId) {
     }
 }

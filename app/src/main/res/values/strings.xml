@@ -67,7 +67,10 @@
     <string name="external_storage_path_cities">/travel_experience/cities/</string>
     <string name="external_storage_path_tours">/travel_experience/tours/</string>
     <string name="external_storage_path_places">/travel_experience/places/</string>
+    <string name="external_storage_path_companies">/travel_experience/companies/</string>
     <!-- </External path>                          -->
+
+    <string name="have_no_result">Không tìm thấy kết quả,\n vui lòng thử lại</string>
 
 
 </resources>

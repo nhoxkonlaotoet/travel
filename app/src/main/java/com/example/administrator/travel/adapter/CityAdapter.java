@@ -41,6 +41,8 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> im
     private String citiesPath;
     private boolean externalStoragePermissionGranted;
     private boolean[] loadPhotoFlags;
+    private int clickPos = -1;
+    private int colorCreme, colorLicoriceDark;
 
     public CityAdapter(Context context, List<City> cityList) {
         if (context == null)
@@ -53,11 +55,13 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> im
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(context,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             externalStoragePermissionGranted = true;
             externalStorageInteractor = new ExternalStorageInteractorImpl();
             citiesPath = context.getString(R.string.external_storage_path_cities);
         }
+        colorCreme = ContextCompat.getColor(context, R.color.colorCreme);
+        colorLicoriceDark = ContextCompat.getColor(context, R.color.colorLicoriceDark);
     }
 
     @Override
@@ -83,7 +87,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> im
                 externalStorageInteractor.loadBitmapFromExternalFile(citiesPath, city.id, this);
                 Log.e("fromSDcard0: ", city.name);
             } else {
-                cityInteractor.loadCityPhoto(city.id, this);
+                cityInteractor.getCityPhoto(city.id, this);
                 Log.e("fromFirebase: ", city.name);
             }
         }
@@ -93,6 +97,14 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> im
         else
             holder.imgvCity.setImageBitmap(null);
         holder.txtCityName.setText(city.name);
+
+        if (position == clickPos) {
+            holder.txtCityName.setTextColor(colorCreme);
+            holder.txtCityName.setBackgroundResource(R.drawable.background_border_topright_banana);
+        } else {
+            holder.txtCityName.setBackgroundResource(R.drawable.background_border_topright_creme);
+            holder.txtCityName.setTextColor(colorLicoriceDark);
+        }
     }
 
 
@@ -138,8 +150,19 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> im
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null)
+            if (mClickListener != null) {
+                if (getAdapterPosition() == clickPos)
+                    return;
+                clickPos = getAdapterPosition();
+                parent.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyDataSetChanged();
+                    }
+                });
                 mClickListener.onItemCityClick(view, cityList.get(getAdapterPosition()).id);
+
+            }
         }
     }
 

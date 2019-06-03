@@ -79,7 +79,11 @@
             android:exported="true" />
 
         <activity android:name=".views.activities.TourBookingDetailActivity" />
-        <activity android:name=".views.activities.SearchTourActivity"></activity>
+        <activity android:name=".views.activities.SearchTourActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.activities.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

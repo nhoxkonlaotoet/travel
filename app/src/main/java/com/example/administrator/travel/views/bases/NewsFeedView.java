@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.example.administrator.travel.models.entities.City;
+import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.TourStartDate;
 
@@ -21,7 +22,11 @@ public interface NewsFeedView {
 
     void showLikedTours(List<Tour> listTour, HashMap<String,Double> ratingMap);
 
+    void showCompanies(List<Company> companyList);
+
     void gotoActivityTour(String tourId, String ownerId);
+
+    void gotoActivitySearchTour(String cityId);
 
     void notify(String message);
 
@@ -32,4 +37,5 @@ public interface NewsFeedView {
     void hideLayoutLikedTours();
 
     Context getContext();
+
 }

@@ -3,11 +3,14 @@ package com.example.administrator.travel.presenters.impls;
 import android.util.Log;
 
 import com.example.administrator.travel.models.bases.CityInteractor;
+import com.example.administrator.travel.models.bases.CompanyInteractor;
 import com.example.administrator.travel.models.bases.TourInteractor;
 import com.example.administrator.travel.models.entities.City;
+import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.models.impls.CityInteractorImpl;
+import com.example.administrator.travel.models.impls.CompanyInteractorImpl;
 import com.example.administrator.travel.models.impls.TourInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.NewsFeedPresenter;
@@ -21,18 +24,17 @@ import java.util.List;
  */
 
 public class NewsFeedPresenterImpl implements NewsFeedPresenter, Listener.OnGetAboutToDepartToursFinishedListener,
-        Listener.OnGetCitiesFinishedListener, Listener.OnGetLikedToursFinishedListener {
+        Listener.OnGetCitiesFinishedListener, Listener.OnGetLikedToursFinishedListener, Listener.OnGetCompaniesFinishedListener {
     NewsFeedView view;
     Long start;
     TourInteractor tourInteractor;
     CityInteractor cityInteractor;
-
+    CompanyInteractor companyInteractor;
     public NewsFeedPresenterImpl(NewsFeedView newsFeedView) {
         this.view = newsFeedView;
         tourInteractor = new TourInteractorImpl();
         cityInteractor = new CityInteractorImpl();
-
-
+        companyInteractor = new CompanyInteractorImpl();
     }
 
     @Override
@@ -41,12 +43,12 @@ public class NewsFeedPresenterImpl implements NewsFeedPresenter, Listener.OnGetA
         cityInteractor.getCities(this);
         tourInteractor.getAboutToDepartTours(this);
         tourInteractor.getLikedTours(this);
-
+        companyInteractor.getCompanies(this);
     }
 
     @Override
     public void onItemCityClicked(String cityId) {
-
+        view.gotoActivitySearchTour(cityId);
     }
 
 
@@ -85,5 +87,15 @@ public class NewsFeedPresenterImpl implements NewsFeedPresenter, Listener.OnGetA
     @Override
     public void onGetLikedToursFail(Exception ex) {
         view.hideLayoutLikedTours();
+    }
+
+    @Override
+    public void onGetCompaniesSuccess(List<Company> companyList) {
+        view.showCompanies(companyList);
+    }
+
+    @Override
+    public void onGetCompaniesFail(Exception ex) {
+
     }
 }

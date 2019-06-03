@@ -91,10 +91,15 @@ public interface Listener {
         void onGetTourStartFail(Exception ex);
     }
 
-    interface OnGetCompanyContactFinishedListener {
-        void onGetCompanyContactSuccess(Company company);
+    interface OnGetCompanyFinishedListener {
+        void onGetCompanySuccess(Company company);
 
-        void onGetCompanyContactFail(Exception ex);
+        void onGetCompanyFail(Exception ex);
+    }
+
+    interface OnGetCompanyLogoFinishedListener{
+        void onGetCompanyLogoSuccess(String companyId, Bitmap companyLogo);
+
     }
 
     interface OnGetReviewsTourFinishedListener {
@@ -133,6 +138,12 @@ public interface Listener {
 
     interface OnFinishTourFinishedListener {
         void onTourFinished();
+    }
+
+    interface OnGetCompaniesFinishedListener{
+        void onGetCompaniesSuccess(List<Company> companyList);
+
+        void onGetCompaniesFail(Exception ex);
     }
 
     interface OnCheckIsCompanyFinishedListener {
@@ -267,5 +278,15 @@ public interface Listener {
     interface OnGetLikedToursFinishedListener {
         void onGetLikedToursSuccess(List<Tour> tourList, HashMap<String, Double> ratingMap);
         void onGetLikedToursFail(Exception ex);
+    }
+
+    interface OnGetToursByDestinationFinishedListener {
+        void onGetToursByDestinationSuccess(List<Tour> tourList, HashMap<String, Double> ratingMap);
+        void onGetToursByDestinationFail(Exception ex);
+    }
+
+    interface OnGetToursByOnwerFinishedListener {
+        void onGetToursByOwnerSuccess(List<Tour> tourList, HashMap<String, Double> ratingMap);
+        void onGetToursByOwnerFail(Exception ex);
     }
 }

@@ -28,7 +28,7 @@ public class Tour {
     public HashMap<String,Double> ratings;
     public Integer numberofImages;
     public Tour(){}
-    public Tour(String name, String description, Integer days, Integer nights, String vihicle, Integer numberofRating, Boolean state, //1: hoat dong, 0: khoa
+    public Tour(String name, String description, Integer days, Integer nights, String vihicle, Boolean state, //1: hoat dong, 0: khoa
                 Integer adultPrice, Integer childrenPrice, Integer babyPrice,String origin, HashMap<String,Boolean> destination, String owner)
     {
         this.name=name;

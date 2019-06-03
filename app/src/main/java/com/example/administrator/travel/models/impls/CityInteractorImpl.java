@@ -88,7 +88,7 @@ public class CityInteractorImpl implements CityInteractor {
 
 
     @Override
-    public void loadCityPhoto(final String cityId, final Listener.OnLoadCityPhotoFinishedListener listener) {
+    public void getCityPhoto(final String cityId, final Listener.OnLoadCityPhotoFinishedListener listener) {
         final long HUNDRED_KILOBYTE = 1024 * 128;
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference tourRef = storage.getReference().child(CITIES_REF + "/");

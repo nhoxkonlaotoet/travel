@@ -122,45 +122,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         return lstSchedule.size();
     }
 
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//
-//        convertView = ((Activity) context).getLayoutInflater().inflate(R.layout.item_schedule_tour, null);
-//        Schedule schedule = lstSchedule.get(position);
-//        TextView txtScheduleTitle = convertView.findViewById(R.id.txtScheduleTitle);
-//        TextView txtScheduleAddress = convertView.findViewById(R.id.txtScheduleAddress);
-//        TextView txtScheduleDescription = convertView.findViewById(R.id.txtScheduleDescription);
-//        TextView txtScheduleTime = convertView.findViewById(R.id.txtScheduleTime);
-//        View vSpacing = convertView.findViewById(R.id.vSpacing);
-//        convertView.setTag(lstSchedule.get(position).id);
-//        if (position > 0 && schedule.title.equals(lstSchedule.get(position - 1).title))
-//            txtScheduleTitle.setVisibility(View.GONE);
-//        else {
-//            txtScheduleTitle.setText(schedule.title);
-//        }
-//        if (position == lstSchedule.size() ||
-//                ((position < lstSchedule.size() - 1) && !schedule.title.equals(lstSchedule.get(position + 1).title)))
-//            vSpacing.setVisibility(View.VISIBLE);
-//        {
-//            String address = getAddress(schedule.latLng.getLatLng());
-//            if (address == null)
-//                address = "";
-//            txtScheduleAddress.setText(address);
-//            txtScheduleDescription.setText(schedule.content);
-//            txtScheduleTime.setText(schedule.hour);
-//            if (position == 0) {
-//                View vAboveLine = convertView.findViewById(R.id.vAboveLine);
-//                vAboveLine.setVisibility(View.INVISIBLE);
-//            }
-//            if (position == getItemCount() - 1) {
-//                View vBelowLine = convertView.findViewById(R.id.vBelowLine);
-//                vBelowLine.setVisibility(View.INVISIBLE);
-//            }
-//            return convertView;
-//        }
-//    }
-
-    public String getAddress(LatLng latLng) {
+    private String getAddress(LatLng latLng) {
         List<Address> addresses;
         try {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5

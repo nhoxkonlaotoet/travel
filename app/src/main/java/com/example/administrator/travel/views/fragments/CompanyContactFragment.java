@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +20,7 @@ import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.presenters.bases.CompanyContactPresenter;
-import com.example.administrator.travel.presenters.impls.CompanyContactPresenterImpl;
+import com.example.administrator.travel.presenters.impls.CompanyPresenterImpl;
 import com.example.administrator.travel.views.bases.CompanyContactView;
 
 /**
@@ -48,7 +47,7 @@ public class CompanyContactFragment extends Fragment implements CompanyContactVi
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mappping();
-        presenter=new CompanyContactPresenterImpl(this);
+        presenter=new CompanyPresenterImpl(this);
         setBtnWebsiteClick();
         setBtnPhoneNumberClick();
         setBtnAddressClick();

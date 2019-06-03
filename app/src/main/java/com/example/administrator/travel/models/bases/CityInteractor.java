@@ -11,6 +11,6 @@ import com.example.administrator.travel.models.listeners.Listener;
 public interface CityInteractor {
     void getCities(Listener.OnGetCitiesFinishedListener listener);
 
-    void loadCityPhoto(String cityId, Listener.OnLoadCityPhotoFinishedListener listener);
+    void getCityPhoto(String cityId, Listener.OnLoadCityPhotoFinishedListener listener);
 
 }

@@ -12,10 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.administrator.travel.R;
+import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.views.fragments.ChatManagerFragment;
 import com.example.administrator.travel.views.fragments.NewsFeedFragment;
 import com.example.administrator.travel.views.fragments.SelectMyTourFragment;
 import com.example.administrator.travel.views.fragments.SettingFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -383,6 +388,103 @@ public class HomeActivity extends AppCompatActivity {
 //        scheduleKey = scheduleRef.push().getKey();
 //        scheduleRef.child("-LQ2GIaiHuH4LmUVogi5").child(scheduleKey)
 //                .setValue(new Schedule(daykey,"16:45","Trở về TP. HCM","trên chuyến bay VJ623 lúc 16:45. Kết thúc chương trình (Quý khách tự túc phương tiện từ sân bay về nhà)",new MyLatLng(16.0562785,108.2003724)));
+
+//String key;
+//        HashMap<String, Boolean> destinationMap;
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference ref = database.getReference("tours");
+//        key = ref.push().getKey();
+//        destinationMap = new HashMap<>();
+//        destinationMap.put("-LUUOokcrRrbLO1Udk9T",true);
+//        destinationMap.put("-LUUOokWseZaVo9Ks6eu",true);
+//        ref.child(key).setValue(new Tour("Du lịch Nha Trang - Đà Lạt", "", 5,4,
+//                "Xe",true,4579000,2290000,1000000,"-LUUOokQ42CGLHozCxRS",
+//                destinationMap,"NSz7g9VzkGRfciTSQWsZYdW6KRH3" ));
+//
+//        key = ref.push().getKey();
+//        destinationMap = new HashMap<>();
+//        destinationMap.put("-LUUOolZZa80opHStOIL",true);
+//        destinationMap.put("-LUUOoki3KepGy3EpOkW",true);
+//        destinationMap.put("-LUUOolTGJYrWLP1urOK",true);
+//        destinationMap.put("-LUUOolUmbTD7eai_MIq",true);
+//        ref.child(key).setValue(new Tour("Du lịch Mộc Châu - Sơn La - Điện Biên - Lai Châu - Sa Pa - Lào Cai - Lũng Pô",
+//                "", 5,4,"Vietjet Air",true,8979000,6147000,3315000,
+//                "-LUUOokQ42CGLHozCxRS", destinationMap,"NSz7g9VzkGRfciTSQWsZYdW6KRH3" ));
+//
+//        key = ref.push().getKey();
+//        destinationMap = new HashMap<>();
+//        destinationMap.put("-LUUOolbD2mJlFSdj_Y3",true);
+//        destinationMap.put("-LUUOolelsZ5RTarJZU0",true);
+//        destinationMap.put("-LUUOokd513570am3B1y",true);
+//        destinationMap.put("-LUUOolRs_xlNRxSuM76",true);
+//        ref.child(key).setValue(new Tour("Du lịch khám phá Cái Bè - Cần Thơ - Châu Đốc - Hà Tiên",
+//                "", 4,3,"Xe",true,3779000,1890000,1000000,
+//                "-LUUOokQ42CGLHozCxRS", destinationMap,"1qQcPQdqlqWzq8DwIQ8brS1Jx6t2" ));
+//
+//        key = ref.push().getKey();
+//        destinationMap = new HashMap<>();
+//        destinationMap.put("-LUUOokflwzaROL1XoPY",true);
+//        destinationMap.put("-LUUOolelsZ5RTarJZU-",true);
+//        ref.child(key).setValue(new Tour("Du lịch Quy Nhơn - Tuy Hòa",
+//                "", 4,3,"Vietjet Air",true,7690000, 5900000 ,3300000,
+//                "-LUUOokVT7stF_hU6wWz", destinationMap,"1qQcPQdqlqWzq8DwIQ8brS1Jx6t2" ));
+//
+//              key = ref.push().getKey();
+//        destinationMap = new HashMap<>();
+//        destinationMap.put("-LUUOokQ42CGLHozCxRS",true);
+//        destinationMap.put("-LUUOolbD2mJlFSdj_Y3",true);
+//        destinationMap.put("-LUUOolelsZ5RTarJZU0",true);
+//
+//        ref.child(key).setValue(new Tour("Du lịch Tp HCM – Mỹ Tho - Cần Thơ",
+//                "", 4,3,"Vietnam Airline",true, 7840000, 5920000, 3630000,
+//                "-LUUOolYFQ5sAUV8OizV", destinationMap,"1qQcPQdqlqWzq8DwIQ8brS1Jx6t2" ));
+//
+//        key = ref.push().getKey();
+//        destinationMap = new HashMap<>();
+//        destinationMap.put("-LUUOokQ42CGLHozCxRS",true);
+//        destinationMap.put("-LUUOokgXvKMXPdKzeEP",true);
+//
+//        ref.child(key).setValue(new Tour("Du lịch TpHCM - Phan Thiết - Mũi Né - Đồi Cát Vàng",
+//                "", 4,3,"Vietnam Airline",true, 7900000, 5950000, 3630000,
+//                "-LUUOolYFQ5sAUV8OizV", destinationMap,"uXrG8vuOubONtgINnqDHs3j6KtY2" ));
+//
+//        key = ref.push().getKey();
+//        destinationMap = new HashMap<>();
+//        destinationMap.put("-LUUOolZZa80opHStOIL",true);
+//
+//        ref.child(key).setValue(new Tour("Du lịch Mộc Châu - Cầu kính tình yêu",
+//                "", 2,1,"Xe",true, 2000000, 1200000, 800000,
+//                "-LUUOokVT7stF_hU6wWz", destinationMap,"uXrG8vuOubONtgINnqDHs3j6KtY2" ));
+//
+//        key = ref.push().getKey();
+//        destinationMap = new HashMap<>();
+//        destinationMap.put("-LUUOokd513570am3B1x",true);
+//
+//        ref.child(key).setValue(new Tour("Du lịch Côn Đảo",
+//                "", 3,2,"Xe, tàu cao tốc",true,  5939000 ,  3489000 , 2650000,
+//                "-LUUOokQ42CGLHozCxRS", destinationMap,"uXrG8vuOubONtgINnqDHs3j6KtY2" ));
+//
+//        key = ref.push().getKey();
+//        destinationMap = new HashMap<>();
+//        destinationMap.put("-LUUOolc_OK9HyouBfGC",true);
+//        destinationMap.put("-LUUOolc_OK9HyouBfGE",true);
+//
+//        ref.child(key).setValue(new Tour("Du lịch Trà Vinh- Vĩnh Long",
+//                "", 2,1,"Xe",true, 1979000  ,  990000 , 500000,
+//                "-LUUOokQ42CGLHozCxRS", destinationMap,"uXrG8vuOubONtgINnqDHs3j6KtY2" ));
+//
+//        key = ref.push().getKey();
+//        destinationMap = new HashMap<>();
+//        destinationMap.put("-LUUOokVT7stF_hU6wWz",true);
+//        destinationMap.put("-LUUOolUmbTD7eai_MIq",true);
+//        destinationMap.put("-LUUOolYFQ5sAUV8OizV",true);
+//
+//        ref.child(key).setValue(new Tour("Du lịch Hà Nội - Lào Cai - Sapa - Hạ Long",
+//                "", 5,4,"Vietjet Air",true, 8729000  ,  6022000 , 3315000,
+//                "-LUUOokQ42CGLHozCxRS", destinationMap,"NSz7g9VzkGRfciTSQWsZYdW6KRH3" ));
+
+        //String name, String description, Integer days, Integer nights, String vihicle, Boolean state,
+        //Integer adultPrice, Integer childrenPrice, Integer babyPrice,String origin, HashMap<String,Boolean> destination, String owner)
 
     }
 

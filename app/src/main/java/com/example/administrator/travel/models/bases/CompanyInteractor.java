@@ -9,11 +9,15 @@ import com.example.administrator.travel.models.listeners.Listener;
  */
 
 public interface CompanyInteractor {
+    void getCompanies(Listener.OnGetCompaniesFinishedListener listener);
+
     void checkIsCompany(String userId, Listener.OnCheckIsCompanyFinishedListener listener);
 
     boolean isCompany(String userId, Context context);
 
     void setIsCompany(String userId, boolean isCompany, Context context);
 
-    void getCompanyContact(String companyId, Listener.OnGetCompanyContactFinishedListener listener);
+    void getCompany(String companyId, Listener.OnGetCompanyFinishedListener listener);
+
+    void getCompanyPhoto(String companyId, Listener.OnGetCompanyLogoFinishedListener listener);
 }

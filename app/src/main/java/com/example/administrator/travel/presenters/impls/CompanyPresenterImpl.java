@@ -16,12 +16,12 @@ import com.example.administrator.travel.views.activities.MapsActivity;
  * Created by Admin on 4/11/2019.
  */
 
-public class CompanyContactPresenterImpl implements CompanyContactPresenter, Listener.OnGetCompanyContactFinishedListener {
+public class CompanyPresenterImpl implements CompanyContactPresenter, Listener.OnGetCompanyFinishedListener {
     CompanyContactView view;
     CompanyInteractor companyInteractor;
     Company company;
 
-    public CompanyContactPresenterImpl(CompanyContactView view) {
+    public CompanyPresenterImpl(CompanyContactView view) {
         this.view = view;
         companyInteractor = new CompanyInteractorImpl();
     }
@@ -29,7 +29,7 @@ public class CompanyContactPresenterImpl implements CompanyContactPresenter, Lis
     @Override
     public void onViewCreated(Bundle bundle) {
         String companyId = bundle.getString("owner");
-        companyInteractor.getCompanyContact(companyId, this);
+        companyInteractor.getCompany(companyId, this);
     }
 
     @Override
@@ -61,13 +61,13 @@ public class CompanyContactPresenterImpl implements CompanyContactPresenter, Lis
     }
 
     @Override
-    public void onGetCompanyContactSuccess(Company company) {
+    public void onGetCompanySuccess(Company company) {
         this.company = company;
         view.showContact(company);
     }
 
     @Override
-    public void onGetCompanyContactFail(Exception ex) {
+    public void onGetCompanyFail(Exception ex) {
         view.notifyGetContactFailure(ex);
     }
 }

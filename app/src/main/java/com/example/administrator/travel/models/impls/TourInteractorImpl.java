@@ -220,10 +220,11 @@ public class TourInteractorImpl implements TourInteractor {
                                     break;
                                 }
                         }
+                        if (!added) {
+                            tourList.add(tour);
+                        }
                     }
-                    if (!added) {
-                        tourList.add(tour);
-                    }
+
 
                 }
                 listener.onGetLikedToursSuccess(tourList, ratingMap);
@@ -251,10 +252,14 @@ public class TourInteractorImpl implements TourInteractor {
                     Tour tour = snapshot.getValue(Tour.class);
                     tour.id=snapshot.getKey();
                     Double tourRating = 0D;
-                    for (Double rating : tour.ratings.values())
-                        tourRating += rating;
+                    if(tour.ratings!=null) {
+                        for (Double rating : tour.ratings.values())
+                            tourRating += rating;
+                        tourRating /= tour.ratings.size();
+                    }
                     ratingMap.put(tour.id,tourRating);
                     tourList.add(tour);
+
                 }
                 listener.onGetToursSuccess(tourList,ratingMap);
             }
@@ -280,8 +285,11 @@ public class TourInteractorImpl implements TourInteractor {
                     Tour tour = snapshot.getValue(Tour.class);
                     tour.id = snapshot.getKey();
                     Double tourRating = 0D;
-                    for (Double rating : tour.ratings.values())
-                        tourRating += rating;
+                    if(tour.ratings!=null) {
+                        for (Double rating : tour.ratings.values())
+                            tourRating += rating;
+                        tourRating /= tour.ratings.size();
+                    }
                     ratingMap.put(tour.id,tourRating);
                     tourList.add(tour);
                 }
