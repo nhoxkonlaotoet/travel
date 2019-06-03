@@ -7,6 +7,7 @@ import com.example.administrator.travel.models.bases.CityInteractor;
 import com.example.administrator.travel.models.bases.CompanyInteractor;
 import com.example.administrator.travel.models.bases.TourInteractor;
 import com.example.administrator.travel.models.entities.City;
+import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.models.impls.CityInteractorImpl;
@@ -23,14 +24,14 @@ import java.util.List;
  * Created by Admin on 6/2/2019.
  */
 
-public class SearchTourPresenterImpl implements SearchTourPresenter, Listener.OnGetCitiesFinishedListener, Listener.OnGetToursFinishedListener, Listener.OnGetAboutToDepartToursFinishedListener {
+public class SearchTourPresenterImpl implements SearchTourPresenter, Listener.OnGetCitiesFinishedListener, Listener.OnGetToursFinishedListener, Listener.OnGetAboutToDepartToursFinishedListener, Listener.OnGetCompaniesFinishedListener {
     SearchTourView view;
     TourInteractor tourInteractor;
     CompanyInteractor companyInteractor;
     CityInteractor cityInteractor;
     boolean inputHasCityId;
 
-    String filter, cityId;
+    String filter;
 
     public SearchTourPresenterImpl(SearchTourView view) {
         this.view = view;
@@ -45,7 +46,7 @@ public class SearchTourPresenterImpl implements SearchTourPresenter, Listener.On
         switch (filter) {
             case "city":
                 cityInteractor.getCities(this);
-                cityId = bundle.getString("cityId");
+                String cityId = bundle.getString("cityId");
                 inputHasCityId = true;
                 tourInteractor.getToursByDestination(cityId, this);
                 break;
@@ -53,7 +54,11 @@ public class SearchTourPresenterImpl implements SearchTourPresenter, Listener.On
                 tourInteractor.getAboutToDepartTours(this);
 
                 break;
-
+            case "company":
+                String companyId= bundle.getString("companyId");
+                companyInteractor.getCompanies(this);
+                tourInteractor.getToursByOwner(companyId,this);
+                break;
         }
 
     }
@@ -80,6 +85,15 @@ public class SearchTourPresenterImpl implements SearchTourPresenter, Listener.On
     @Override
     public void onItemTourClicked(String tourId, String owner) {
         view.gotoActivityTour(tourId, owner);
+    }
+
+    @Override
+    public void onItemCompanyClick(String companyId) {
+        tourInteractor.getToursByOwner(companyId,this);
+        view.clearRecyclerViewChild();
+        view.showShimmerContainerChild();
+        view.startShimmerContainerChildAnimation();
+        view.hideTextHaveNoResult();
     }
 
     @Override
@@ -132,5 +146,16 @@ public class SearchTourPresenterImpl implements SearchTourPresenter, Listener.On
     public void onGetAboutToDepartToursFail(Exception ex) {
         view.notify(ex.getMessage());
         view.hideShimmerContainerChild();
+    }
+
+    @Override
+    public void onGetCompaniesSuccess(List<Company> companyList) {
+        view.showCompanies(companyList);
+        view.stopShimmerContainerParentAnimation();
+        view.hideShimmerContainerParent();
+    }
+
+    @Override
+    public void onGetCompaniesFail(Exception ex) {
     }
 }

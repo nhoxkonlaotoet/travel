@@ -11,4 +11,5 @@ public interface NewsFeedPresenter {
 
     void onItemTourClicked(String tourId, String owner);
 
+    void onItemCompanyClick(String companyId);
 }

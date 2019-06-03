@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.CityAdapter;
+import com.example.administrator.travel.adapter.CompanyAdapter;
 import com.example.administrator.travel.adapter.TourAdapter;
 import com.example.administrator.travel.models.entities.City;
 import com.example.administrator.travel.models.entities.Company;
@@ -24,7 +25,7 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import java.util.HashMap;
 import java.util.List;
 
-public class SearchTourActivity extends AppCompatActivity implements SearchTourView, CityAdapter.CityClickListener, TourAdapter.ItemClickListener {
+public class SearchTourActivity extends AppCompatActivity implements SearchTourView, CityAdapter.CityClickListener, TourAdapter.ItemClickListener, CompanyAdapter.CompanyClickListener {
     private ShimmerFrameLayout shimmerContainerParent, shimmerContainerChild;
     private RecyclerView recyclerViewParent, recyclerViewChild;
     private TextView txtHaveNoResult;
@@ -73,7 +74,9 @@ public class SearchTourActivity extends AppCompatActivity implements SearchTourV
 
     @Override
     public void showCompanies(List<Company> companyList) {
-
+        CompanyAdapter companyAdapter = new CompanyAdapter(this,companyList);
+        companyAdapter.setClickListener(this);
+        recyclerViewParent.setAdapter(companyAdapter);
     }
 
     @Override
@@ -188,5 +191,10 @@ public class SearchTourActivity extends AppCompatActivity implements SearchTourV
     @Override
     public Context getContext() {
         return this;
+    }
+
+    @Override
+    public void onItemCompanyClick(View view, String companyId) {
+        presenter.onItemCompanyClick(companyId);
     }
 }

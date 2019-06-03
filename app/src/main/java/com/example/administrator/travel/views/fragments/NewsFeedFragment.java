@@ -116,10 +116,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView, TourAbou
     }
 
     @Override
-    public void gotoActivitySearchTour(String cityId) {
-        Intent intent = new Intent(getActivity(), SearchTourActivity.class);
-        intent.putExtra("filter", "city");
-        intent.putExtra("cityId", cityId);
+    public void gotoActivitySearchTour(Intent intent) {
         startActivity(intent);
     }
 
@@ -160,5 +157,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView, TourAbou
 
     @Override
     public void onItemCompanyClick(View view, String companyId) {
+        presenter.onItemCompanyClick(companyId);
     }
+
 }

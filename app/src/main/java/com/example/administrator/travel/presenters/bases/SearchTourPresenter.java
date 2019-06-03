@@ -17,4 +17,5 @@ public interface SearchTourPresenter {
 
     void onItemTourClicked(String tourId, String owner);
 
+    void onItemCompanyClick(String companyId);
 }

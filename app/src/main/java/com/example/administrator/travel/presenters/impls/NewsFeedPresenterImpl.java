@@ -1,5 +1,6 @@
 package com.example.administrator.travel.presenters.impls;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.example.administrator.travel.models.bases.CityInteractor;
@@ -14,6 +15,7 @@ import com.example.administrator.travel.models.impls.CompanyInteractorImpl;
 import com.example.administrator.travel.models.impls.TourInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.NewsFeedPresenter;
+import com.example.administrator.travel.views.activities.SearchTourActivity;
 import com.example.administrator.travel.views.bases.NewsFeedView;
 
 import java.util.HashMap;
@@ -48,13 +50,24 @@ public class NewsFeedPresenterImpl implements NewsFeedPresenter, Listener.OnGetA
 
     @Override
     public void onItemCityClicked(String cityId) {
-        view.gotoActivitySearchTour(cityId);
+        Intent intent = new Intent(view.getContext(), SearchTourActivity.class);
+        intent.putExtra("filter", "city");
+        intent.putExtra("cityId", cityId);
+        view.gotoActivitySearchTour(intent);
     }
 
 
     @Override
     public void onItemTourClicked(String tourId, String owner) {
         view.gotoActivityTour(tourId, owner);
+    }
+
+    @Override
+    public void onItemCompanyClick(String companyId) {
+        Intent intent = new Intent(view.getContext(), SearchTourActivity.class);
+        intent.putExtra("filter", "company");
+        intent.putExtra("companyId", companyId);
+        view.gotoActivitySearchTour(intent);
     }
 
     @Override

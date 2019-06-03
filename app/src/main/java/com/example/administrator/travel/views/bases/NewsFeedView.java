@@ -1,6 +1,7 @@
 package com.example.administrator.travel.views.bases;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.example.administrator.travel.models.entities.City;
@@ -26,7 +27,7 @@ public interface NewsFeedView {
 
     void gotoActivityTour(String tourId, String ownerId);
 
-    void gotoActivitySearchTour(String cityId);
+    void gotoActivitySearchTour(Intent intent);
 
     void notify(String message);
 
