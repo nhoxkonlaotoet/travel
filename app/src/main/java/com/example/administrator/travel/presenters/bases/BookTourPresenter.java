@@ -1,5 +1,6 @@
 package com.example.administrator.travel.presenters.bases;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 /**
@@ -9,19 +10,14 @@ import android.os.Bundle;
 public interface BookTourPresenter {
     void onViewCreated(Bundle bundle);
 
-    void onButtonAcceptClicked();
+    void onEtxtNumberOfAdultTypingStoped(int numberOfAdult);
 
-    void onButtonCancelClicked();
+    void onEtxtNumberOfChildrenTypingStoped(int numberOfChildren);
 
-    void onButtonDecreaseAdultClicked();
+    void onEtxtNumberOfBabyTypingStoped(int numberOfBaby);
 
-    void onButtonIncreaseAdultClick();
+    void onButtonNextClicked();
 
-    void onButtonDecreaseChildrenClicked();
+    void onViewResult(int requestCode, int resultCode, Intent data);
 
-    void onButtonIncreaseChildrenClicked();
-
-    void onButtonDecreaseBabyClicked();
-
-    void onButtonIncreaseBabyClicked();
 }

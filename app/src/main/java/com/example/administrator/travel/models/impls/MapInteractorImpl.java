@@ -23,7 +23,7 @@ public class MapInteractorImpl implements MapInteractor {
     public void getDirection(String origin, String destination, String apiKey, final Listener.OnGetDirectionFinishedListener listener) {
         Log.e("input ", "origin="+origin+ "\rdestination="+destination+"\napikey="+apiKey );
 
-        ApiUtils.getSOService().getDirection(origin, destination,true, "walking", apiKey).enqueue(new Callback<DirectionResponse>() {
+        ApiUtils.getMapsService().getDirection(origin, destination,true, "walking", apiKey).enqueue(new Callback<DirectionResponse>() {
             @Override
             public void onResponse(Call<DirectionResponse> call, Response<DirectionResponse> response) {
                 if(response.isSuccessful()) {

@@ -35,12 +35,12 @@ public class SettingPresenterImpl implements SettingPresenter, Listener.OnCheckS
 
     @Override
     public void onViewStarted() {
-        Toast.makeText(view.getContext(), "logged:"+userInteractor.isLogged(view.getContext())+" "+userInteractor.getUserId(view.getContext()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), "logged:"+userInteractor.isLogged()+" "+userInteractor.getUserId(), Toast.LENGTH_SHORT).show();
 
-        if (userInteractor.isLogged(view.getContext())) {
+        if (userInteractor.isLogged()) {
             view.hideBtnLogin();
             view.showBtnLogout();
-            userId = userInteractor.getUserId(view.getContext());
+            userId = userInteractor.getUserId();
             if (!companyInteractor.isCompany(userId, view.getContext())) {
                 tourStartId = participantInteractor.getJoiningTourStartId(userId, view.getContext());
                 participantInteractor.checkShareLoction(userId, tourStartId, this);
@@ -74,7 +74,7 @@ public class SettingPresenterImpl implements SettingPresenter, Listener.OnCheckS
 
     @Override
     public void onButtonLogoutClicked() {
-        userInteractor.logout(view.getContext());
+        userInteractor.logout();
         ((Fragment) view).onStart();
     }
 

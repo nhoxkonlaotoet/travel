@@ -25,6 +25,7 @@ public class TourStartsPresenterImpl implements TourStartPresenter, Listener.OnG
     CompanyInteractor companyInteractor;
     UserInteractor userInteractor;
     boolean isCompany;
+    private String ownerId;
     public TourStartsPresenterImpl(TourStartView view){
         this.view = view;
         tourStartInteractor =new TourStartInteractorImpl();
@@ -34,8 +35,9 @@ public class TourStartsPresenterImpl implements TourStartPresenter, Listener.OnG
     @Override
     public void onViewCreated(Bundle bundle) {
         String tourId = bundle.getString("tourId");
-        if(userInteractor.isLogged(view.getContext())) {
-            String userId=userInteractor.getUserId(view.getContext());
+        ownerId = bundle.getString("owner");
+        if(userInteractor.isLogged()) {
+            String userId=userInteractor.getUserId();
             isCompany = companyInteractor.isCompany(userId,view.getContext());
         }
         tourStartInteractor.getTourStarts(tourId,this);
@@ -44,7 +46,7 @@ public class TourStartsPresenterImpl implements TourStartPresenter, Listener.OnG
     @Override
     public void onTourStartItemClick(String tourStartId) {
 
-        view.gotoBooktourActivity(tourStartId);
+        view.gotoBooktourActivity(tourStartId, ownerId);
     }
 
     @Override

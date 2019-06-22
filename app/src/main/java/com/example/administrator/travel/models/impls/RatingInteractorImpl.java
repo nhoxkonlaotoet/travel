@@ -2,6 +2,7 @@ package com.example.administrator.travel.models.impls;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.administrator.travel.models.bases.RatingInteractor;
 import com.example.administrator.travel.models.entities.Rating;
@@ -20,6 +21,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,35 +29,13 @@ import java.util.List;
  */
 
 public class RatingInteractorImpl implements RatingInteractor {
-    @Override
-    public void getRating(String tourId, final Listener.OnGetRatingTourFinishedListener listener) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference rateRef = database.getReference("ratings");
-        rateRef.child(tourId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                float value = 0;
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    float rating = snapshot.child("rating").getValue(Float.class);
-                    value += rating;
-                }
-                if(dataSnapshot.getChildrenCount()>0)
-                    value/=dataSnapshot.getChildrenCount();
-                listener.onGetRatingTourSuccess(value,dataSnapshot.getChildrenCount());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                listener.onGetRatingTourFail(databaseError.toException());
-            }
-        });
-    }
+    private final static String RATINGS_REF = "ratings";
 
     @Override
     public void checkRated(String tourId, String userId, final Listener.OnCheckRatedFinishedListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference rateRef = database.getReference("ratings").child(tourId);
-        Query query = rateRef.orderByChild("ratingPeopleId").equalTo(userId);
+        DatabaseReference ratingsRef = database.getReference(RATINGS_REF).child(tourId);
+        Query query = ratingsRef.orderByChild("ratingPeopleId").equalTo(userId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -75,10 +55,12 @@ public class RatingInteractorImpl implements RatingInteractor {
     @Override
     public void rateTour(final String tourId, final Rating rating, final List<Bitmap> imageList, final Listener.OnRateTourFinishedListener listener) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ratingRef = database.getReference("ratings");
-        ratingRef.child(tourId).child(rating.ratingPeopleId).setValue(rating.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DatabaseReference ratingsRef = database.getReference(RATINGS_REF);
+        ratingsRef.child(tourId).child(rating.ratingPeopleId).setValue(rating.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                DatabaseReference toursRef = database.getReference("tours");
+                toursRef.child(tourId).child("ratings").child(rating.ratingPeopleId).setValue(rating.rating);
                 if (imageList != null && imageList.size() != 0) {
                     FirebaseStorage storage = FirebaseStorage.getInstance();
                     StorageReference ratingStorageRef = storage.getReference().child("reviews/")
@@ -108,21 +90,20 @@ public class RatingInteractorImpl implements RatingInteractor {
         });
     }
 
-
     @Override
-    public void getReviews(String tourId, final Listener.OnGetReviewsTourFinishedListener listener) {
+    public void getReview(String tourId, String userId, final Listener.OnGetReviewTourFinishedListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reviewsRef = database.getReference("ratings");
-        reviewsRef.child(tourId).addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference ratingsRef = database.getReference(RATINGS_REF);
+        ratingsRef.child(tourId).child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Rating> lstReview = new ArrayList<>();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Rating rating = ds.getValue(Rating.class);
-                    rating.id = ds.getKey();
-                    lstReview.add(rating);
+                if (dataSnapshot.getValue() == null) {
+                    listener.onGetReviewTourSuccess(null);
+                } else {
+                    Rating rating = dataSnapshot.getValue(Rating.class);
+                    rating.id = dataSnapshot.getKey();
+                    listener.onGetReviewTourSuccess(rating);
                 }
-                listener.onGetReviewTourSuccess(lstReview);
             }
 
             @Override
@@ -132,6 +113,43 @@ public class RatingInteractorImpl implements RatingInteractor {
         });
     }
 
+    @Override
+    public void getReviews(String tourId, final Listener.OnGetReviewsTourFinishedListener listener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ratingsRef = database.getReference(RATINGS_REF);
+        ratingsRef.child(tourId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Rating> lstReview = new ArrayList<>();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Rating rating = ds.getValue(Rating.class);
+                    rating.id = ds.getKey();
+                    lstReview.add(rating);
+                }
+                listener.onGetReviewsTourSuccess(lstReview);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onGetReviewsTourFail(databaseError.toException());
+            }
+        });
+    }
+
+    // review ID = reviewER ID
+    @Override
+    public void reactReview(String tourId, String reviewId, String userId, boolean like) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ratingsRef = database.getReference(RATINGS_REF);
+        ratingsRef.child(tourId).child(reviewId).child("likes").child(userId).setValue(like);
+
+    }
+    @Override
+    public void removeReactReview(String tourId, String reviewId, String userId){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ratingsRef = database.getReference(RATINGS_REF);
+        ratingsRef.child(tourId).child(reviewId).child("likes").child(userId).removeValue();
+    }
     @Override
     public byte[] bitmapToBytes(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

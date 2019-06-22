@@ -1,11 +1,10 @@
 <resources>
     <string name="app_name">Travel</string>
     <string name="title_activity_home">HomeActivity</string>
-    <string name="title_home"></string>
-    <string name="title_tours">Tour</string>
-    <string name="title_my_tours">Tour của tôi</string>
+    <string name="title_home">Trang chủ</string>
+    <string name="title_my_tours">Tour</string>
     <string name="title_chat">Chat</string>
-    <string name="title_setting0">Cài đặt</string>
+    <string name="title_more">Thêm</string>
     <string name="OPEN_NOW">Đang mở</string>
     <string name="CLOSE_NOW">Đóng cửa</string>
     <string name="PRICE_LEVEL_0">Miễn phí</string>
@@ -59,16 +58,18 @@
     <string name="title_profile">Profile</string>
 
     <string name="ACTION_BOOKTOUR">book tour</string>
-    <string name="facebook_app_id">1032862680232777</string>
+    <string name="facebook_app_id">2953149691391653</string> <string name="fb_login_protocol_scheme">fb2953149691391653</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="action_settings">Settings</string>
 
     <!-- <External path>                            -->
-    <string name="external_storage_path_cities">/travel_experience/cities/</string>
-    <string name="external_storage_path_tours">/travel_experience/tours/</string>
-    <string name="external_storage_path_places">/travel_experience/places/</string>
-    <string name="external_storage_path_companies">/travel_experience/companies/</string>
+    <string name="external_storage_path_cities">/travel_experience/.cities/</string>
+    <string name="external_storage_path_tours">/travel_experience/.tours/</string>
+    <string name="external_storage_path_places">/travel_experience/.places/</string>
+    <string name="external_storage_path_companies">/travel_experience/.companies/</string>
     <!-- </External path>                          -->
+
+    <string name="url_tour_booking">https://travel-76809.firebaseapp.com/api/booking</string>
 
     <string name="have_no_result">Không tìm thấy kết quả,\n vui lòng thử lại</string>
 

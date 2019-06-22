@@ -30,8 +30,8 @@ public class PreLoadingPresenterImpl implements PreLoadingPresenter, Listener.On
 
     @Override
     public void onViewCreated() {
-        if (userInteractor.isLogged(view.getContext())) {
-            userId = userInteractor.getUserId(view.getContext());
+        if (userInteractor.isLogged()) {
+            userId = userInteractor.getUserId();
             participantInteractor.checkJoiningTour(userId, this);
         } else
             view.gotoHomeActivity();
@@ -47,7 +47,7 @@ public class PreLoadingPresenterImpl implements PreLoadingPresenter, Listener.On
 
     @Override
     public void onCheckJoiningTourFalse() {
-        String userId = userInteractor.getUserId(view.getContext());
+        String userId = userInteractor.getUserId();
         participantInteractor.removeparticipatingTour(userId, view.getContext());
         //Log.e("JoiingTourFalse: ","____________________" );
         view.gotoHomeActivity();

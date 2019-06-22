@@ -86,9 +86,9 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView, TourAbou
 
     @Override
     public void showAboutToDepartTours(List<Tour> listTour, HashMap<String, TourStartDate> tourStartMap) {
-        TourAdapter tourAdapter = new TourAdapter(getActivity(), tourStartMap, listTour);
-        tourAdapter.setClickListener(this);
-        recyclerViewTour.setAdapter(tourAdapter);
+        TourAboutToDepartAdapter tourAboutToDepartAdapter = new TourAboutToDepartAdapter(getActivity(), listTour, tourStartMap);
+        tourAboutToDepartAdapter.setClickListener(this);
+        recyclerViewTour.setAdapter(tourAboutToDepartAdapter);
     }
 
     @Override

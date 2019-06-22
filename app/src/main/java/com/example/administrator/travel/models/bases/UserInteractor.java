@@ -9,19 +9,17 @@ import com.example.administrator.travel.models.listeners.Listener;
  */
 
 public interface UserInteractor {
-    String getUserId(Context context);
+    String getUserId();
 
     void getUserInfor(String userId, Listener.OnGetUserInforFinishedListener listener);
 
     void getUserAvatar(String userId, Listener.OnGetUserAvatarFinishedListener listener);
 
-    boolean isLogged(Context context);
+    boolean isLogged();
 
     void login(String email, String password, Context context, Listener.OnLoginFinishedListener listener);
 
     void signUp(String email, String password, Listener.OnSignUpFinishedListener listener);
 
-    void rememberLogin(String userId, Context context);
-
-    void logout(Context context);
+    void logout();
 }

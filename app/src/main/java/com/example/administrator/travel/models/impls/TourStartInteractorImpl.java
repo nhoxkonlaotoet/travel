@@ -53,8 +53,22 @@ public class TourStartInteractorImpl implements TourStartInteractor {
     }
 
     @Override
-    public void getTourStart(String tourStartId, Listener.OnGetTourStartFinishedListener listener) {
+    public void getTourStart(String tourStartId, final Listener.OnGetTourStartFinishedListener listener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference tourStartsRef = database.getReference(TOUR_START_DATE_REF);
+        tourStartsRef.child(tourStartId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TourStartDate tourStartDate = dataSnapshot.getValue(TourStartDate.class);
+                tourStartDate.id = dataSnapshot.getKey();
+                listener.onGetTourStartSuccess(tourStartDate);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onGetTourStartFail(databaseError.toException());
+            }
+        });
     }
 
     @Override

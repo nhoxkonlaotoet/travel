@@ -24,29 +24,9 @@ public interface SearchTourView {
 
     void gotoActivityTour(String tourId, String owner);
 
-    void startShimmerContainerParentAnimation();
-
-    void stopShimmerContainerParentAnimation();
-
-    void startShimmerContainerChildAnimation();
-
-    void stopShimmerContainerChildAnimation();
-
-    void hideShimmerContainerParent();
-
-    void showShimmerContainerParent();
-
-    void hideShimmerContainerChild();
-
-    void showShimmerContainerChild();
-
     void showTextHaveNoResult();
 
     void hideTextHaveNoResult();
-
-    void clearRecyclerViewParent();
-
-    void clearRecyclerViewChild();
 
     void notify(String message);
 

@@ -89,9 +89,8 @@ public class TourActivity extends AppCompatActivity implements TourView {
 
 
     @Override
-    public void showTourImages(Bitmap[] images) {
-        int n = images.length;
-        SlideTourImageAdapter adapter = new SlideTourImageAdapter(images, n, this);
+    public void showTourImages(String tourId, int numberOfImages) {
+        SlideTourImageAdapter adapter = new SlideTourImageAdapter(tourId, numberOfImages, this);
         vpTourImage.setAdapter(adapter);
     }
 

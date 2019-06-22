@@ -28,7 +28,8 @@ import java.util.List;
  * Created by Admin on 5/30/2019.
  */
 
-public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> implements Listener.OnLoadCityPhotoFinishedListener, Listener.OnLoadImageFinishedListener {
+public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>
+        implements Listener.OnLoadCityPhotoFinishedListener, Listener.OnLoadImageThumpnailFinishedListener {
     private LayoutInflater mInflater;
     private RecyclerView parent;
     private CityAdapter.CityClickListener mClickListener;
@@ -43,7 +44,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> im
     private boolean[] loadPhotoFlags;
     private int clickPos = -1;
     private int colorCreme, colorLicoriceDark;
-
+    private int photoWidth, photoHeight;
     public CityAdapter(Context context, List<City> cityList) {
         if (context == null)
             return;
@@ -62,6 +63,9 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> im
         }
         colorCreme = ContextCompat.getColor(context, R.color.colorCreme);
         colorLicoriceDark = ContextCompat.getColor(context, R.color.colorLicoriceDark);
+        photoWidth = (int)context.getResources().getDimension(R.dimen.city_image_thumpnail_width);
+        photoHeight = (int)context.getResources().getDimension(R.dimen.city_image_thumpnail_height);
+
     }
 
     @Override
@@ -84,11 +88,9 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> im
         if (!loadPhotoFlags[position]) {
             loadPhotoFlags[position] = true;
             if (externalStoragePermissionGranted && externalStorageInteractor.isExistFile(citiesPath, city.id)) {
-                externalStorageInteractor.loadBitmapFromExternalFile(citiesPath, city.id, this);
-                Log.e("fromSDcard0: ", city.name);
+                externalStorageInteractor.getBitmapThumpnailFromExternalFile(citiesPath, city.id, this);
             } else {
                 cityInteractor.getCityPhoto(city.id, this);
-                Log.e("fromFirebase: ", city.name);
             }
         }
 
@@ -115,26 +117,27 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> im
 
     @Override
     public void onLoadCityPhotoSuccess(String cityId, Bitmap cityPhoto) {
-        updateCityPhoto(cityId, cityPhoto);
+        Bitmap thumb = Bitmap.createScaledBitmap(cityPhoto, photoWidth, photoHeight, false);
+        updateCityPhoto(cityId, thumb);
         if (externalStoragePermissionGranted)
             if (!externalStorageInteractor.isExistFile(citiesPath, cityId))
-                externalStorageInteractor.saveBitmapToExternalFile(citiesPath, cityId, cityPhoto);
-    }
-
-    @Override
-    public void onLoadImageSuccess(String fileName, Bitmap image) {
-        // filename = cityId
-        updateCityPhoto(fileName, image);
+                externalStorageInteractor.saveBitmapToExternalFile(citiesPath, cityId, cityPhoto,100);
     }
 
     private void updateCityPhoto(final String cityId, final Bitmap photo) {
+        cityPhotoMap.put(cityId, photo);
         parent.post(new Runnable() {
             @Override
             public void run() {
-                cityPhotoMap.put(cityId, photo);
                 notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onLoadImageThumpnailSuccess(String fileName, Bitmap image) {
+        // filename = cityId
+        updateCityPhoto(fileName, image);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

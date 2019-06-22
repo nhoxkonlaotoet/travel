@@ -32,14 +32,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class UserInteractorImpl implements UserInteractor {
     @Override
-    public String getUserId(Context context) {
-        if (context == null)
-            return "";
-//        SharedPreferences prefs = context.getSharedPreferences("dataLogin", MODE_PRIVATE);
-//        String userId = prefs.getString("AuthID", "");
-
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null)
-           return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    public String getUserId() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+            return FirebaseAuth.getInstance().getCurrentUser().getUid();
         return "none";
     }
 
@@ -51,7 +46,7 @@ public class UserInteractorImpl implements UserInteractor {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserInformation user = dataSnapshot.getValue(UserInformation.class);
-                user.id=dataSnapshot.getKey();
+                user.id = dataSnapshot.getKey();
                 listener.onGetUserInforSuccess(user);
             }
 
@@ -66,8 +61,9 @@ public class UserInteractorImpl implements UserInteractor {
     public void getUserAvatar(final String userId, final Listener.OnGetUserAvatarFinishedListener listener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference avatarRef = storage.getReference();
-        final long HALF_MEGABYTE = 1024 * 512;
-        avatarRef.child("default_image.png").getBytes(HALF_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        final long MEGABYTE = 1024 * 1024;
+
+        avatarRef.child("default_image.png").getBytes(MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -81,15 +77,9 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     @Override
-    public boolean isLogged(Context context) {
-        if (context == null)
-            return false;
-        SharedPreferences sharedPreferences = context.getSharedPreferences("dataLogin", MODE_PRIVATE);
-        String AuthID = sharedPreferences.getString("AuthID", "none");
-        boolean autoLogin = sharedPreferences.getBoolean("autoLogin", true);
-        if (!AuthID.equals("none") && autoLogin) {
+    public boolean isLogged() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
             return true;
-        }
         return false;
     }
 
@@ -97,7 +87,7 @@ public class UserInteractorImpl implements UserInteractor {
     public void login(String email, String password, Context context, final Listener.OnLoginFinishedListener listener) {
         if (context == null)
             listener.onLoginFail(new Exception(""));
-        if (email.isEmpty() || email.contains("/") || password.isEmpty() ||password.contains("/")) {
+        if (email.isEmpty() || email.contains("/") || password.isEmpty() || password.contains("/")) {
             listener.onLoginFail(new Exception("Email hoặc mật khẩu không hợp lệ"));
         } else {
             final FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -121,21 +111,7 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     @Override
-    public void rememberLogin(String userId, Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("dataLogin", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("autoLogin", true);
-        editor.putString("AuthID", userId);
-        editor.commit();
-    }
-
-    @Override
-    public void logout(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("dataLogin", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("autoLogin", false);
-        editor.putString("AuthID", "none");
-        editor.commit();
+    public void logout() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signOut();
     }

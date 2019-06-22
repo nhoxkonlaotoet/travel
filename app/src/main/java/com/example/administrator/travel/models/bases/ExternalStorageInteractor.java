@@ -10,6 +10,8 @@ import com.example.administrator.travel.models.listeners.Listener;
 
 public interface ExternalStorageInteractor {
     boolean isExistFile(String path, String fileName);
-    void saveBitmapToExternalFile(String path, String fileName, Bitmap bitmap);
-    void loadBitmapFromExternalFile(String path, String fileName, Listener.OnLoadImageFinishedListener listener);
+    void saveBitmapToExternalFile(String path, String fileName, Bitmap bitmap, int quality);
+    void getBitmapFromExternalFile(String path, String fileName, Listener.OnLoadImageFinishedListener listener);
+
+    void getBitmapThumpnailFromExternalFile(String path, String fileName, Listener.OnLoadImageThumpnailFinishedListener listener);
 }

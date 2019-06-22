@@ -13,14 +13,17 @@ import java.util.List;
 
 public interface TourRatingPresenter {
     void onViewCreated(Bundle bundle);
-    void onBtnCollapseClicked();
+
     void OnRatingBarChanged(float value);
-    void onBtnSendReviewClicked();
-    void onGetImageResult();
-    void onBtnCancelClicked();
-    void onImageAddClicked();
-    void onListviewReviewItemClicked(String reviewId);
-    void onEditTextContentClicked();
+
+    void onReviewItemClicked(String reviewId);
+
+    void onButtonShareFacebookClicked();
+
     void onViewResult(int requestCode, int resultCode, Intent data);
+
+    void onButtonLikeReviewItemClicked(String reviewId, boolean pressed);
+
+    void onButtonDislikeReviewItemClicked(String reviewId, boolean pressed);
 
 }

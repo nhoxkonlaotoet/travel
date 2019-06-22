@@ -59,6 +59,8 @@ public class SearchTourPresenterImpl implements SearchTourPresenter, Listener.On
                 companyInteractor.getCompanies(this);
                 tourInteractor.getToursByOwner(companyId,this);
                 break;
+            default:
+                break;
         }
 
     }
@@ -76,10 +78,7 @@ public class SearchTourPresenterImpl implements SearchTourPresenter, Listener.On
     @Override
     public void onItemCityClicked(String cityId) {
         tourInteractor.getToursByDestination(cityId, this);
-        view.clearRecyclerViewChild();
-        view.showShimmerContainerChild();
-        view.startShimmerContainerChildAnimation();
-        view.hideTextHaveNoResult();
+//        view.hideTextHaveNoResult();
     }
 
     @Override
@@ -90,27 +89,17 @@ public class SearchTourPresenterImpl implements SearchTourPresenter, Listener.On
     @Override
     public void onItemCompanyClick(String companyId) {
         tourInteractor.getToursByOwner(companyId,this);
-        view.clearRecyclerViewChild();
-        view.showShimmerContainerChild();
-        view.startShimmerContainerChildAnimation();
-        view.hideTextHaveNoResult();
+   //     view.hideTextHaveNoResult();
     }
 
     @Override
     public void onGetCitiesSuccess(List<City> cityList) {
-        if (inputHasCityId) {
-            //onItemCityClicked(cityId);
-        }
-        view.showCities(cityList);
-        view.stopShimmerContainerParentAnimation();
-        view.hideShimmerContainerParent();
+         view.showCities(cityList);
     }
 
     @Override
     public void onGetCitiesFail(Exception ex) {
-        view.notify(ex.getMessage());
-        view.stopShimmerContainerParentAnimation();
-        view.hideShimmerContainerParent();
+     //   view.notify(ex.getMessage());
     }
 
     @Override
@@ -118,18 +107,13 @@ public class SearchTourPresenterImpl implements SearchTourPresenter, Listener.On
         if (tourList.size() > 0)
             view.showLikedTours(tourList, ratingMap);
         else {
-            view.notify("không tìm thấy");
             view.showTextHaveNoResult();
         }
-        view.stopShimmerContainerChildAnimation();
-        view.hideShimmerContainerChild();
     }
 
     @Override
     public void onGetToursFail(Exception ex) {
-        view.notify(ex.getMessage());
-        view.stopShimmerContainerChildAnimation();
-        view.hideShimmerContainerChild();
+     //   view.notify(ex.getMessage());
     }
 
     @Override
@@ -138,21 +122,16 @@ public class SearchTourPresenterImpl implements SearchTourPresenter, Listener.On
             view.showAboutToDepartTours(tourList, tourStartMap);
         else
             view.showTextHaveNoResult();
-        view.stopShimmerContainerChildAnimation();
-        view.hideShimmerContainerChild();
     }
 
     @Override
     public void onGetAboutToDepartToursFail(Exception ex) {
-        view.notify(ex.getMessage());
-        view.hideShimmerContainerChild();
+    //    view.notify(ex.getMessage());
     }
 
     @Override
     public void onGetCompaniesSuccess(List<Company> companyList) {
         view.showCompanies(companyList);
-        view.stopShimmerContainerParentAnimation();
-        view.hideShimmerContainerParent();
     }
 
     @Override

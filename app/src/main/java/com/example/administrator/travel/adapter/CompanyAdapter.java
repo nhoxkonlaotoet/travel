@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -22,9 +21,7 @@ import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.impls.CompanyInteractorImpl;
 import com.example.administrator.travel.models.impls.ExternalStorageInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
-import com.google.android.gms.maps.model.LatLng;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -90,11 +87,9 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.ViewHold
         if (!loadPhotoFlags[position]) {
             loadPhotoFlags[position] = true;
             if (externalStoragePermissionGranted && externalStorageInteractor.isExistFile(companiesPath, company.id)) {
-                externalStorageInteractor.loadBitmapFromExternalFile(companiesPath, company.id, this);
-                Log.e("fromSDcard0: ", company.shortName);
+                externalStorageInteractor.getBitmapFromExternalFile(companiesPath, company.id, this);
             } else {
                 companyInteractor.getCompanyPhoto(company.id, this);
-                Log.e("fromFirebase: ", company.shortName);
             }
         }
         if (companyPhotoMap.get(company.id) != null)
@@ -111,18 +106,18 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.ViewHold
         return companyList.size();
     }
 
-    @Override
+    @Override //external storage load
     public void onLoadImageSuccess(String fileName, Bitmap image) {
         //filename=companyId
         updateLogo(fileName,image);
     }
 
-    @Override
+    @Override //firebase load
     public void onGetCompanyLogoSuccess(String companyId, Bitmap companyLogo) {
         updateLogo(companyId,companyLogo);
         if (externalStoragePermissionGranted)
             if (!externalStorageInteractor.isExistFile(companiesPath, companyId))
-                externalStorageInteractor.saveBitmapToExternalFile(companiesPath, companyId, companyLogo);
+                externalStorageInteractor.saveBitmapToExternalFile(companiesPath, companyId, companyLogo,100);
     }
 
 
@@ -140,15 +135,6 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.ViewHold
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
-//                if (getAdapterPosition() == clickPos)
-//                    return;
-//                clickPos = getAdapterPosition();
-//                parent.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        notifyDataSetChanged();
-//                    }
-//                });
                 mClickListener.onItemCompanyClick(view, companyList.get(getAdapterPosition()).id);
 
             }

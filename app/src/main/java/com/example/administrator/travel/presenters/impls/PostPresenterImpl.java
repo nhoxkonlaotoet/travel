@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 
-import com.example.administrator.travel.models.LoadImageTask;
 import com.example.administrator.travel.models.bases.ActivityInteractor;
 import com.example.administrator.travel.models.bases.RatingInteractor;
 import com.example.administrator.travel.models.bases.UserInteractor;
@@ -68,7 +67,7 @@ public class PostPresenterImpl implements PostPresenter,
 
     @Override
     public void onButtonSendClicked(String content) {
-        String userId = userInteractor.getUserId(view.getContext());
+        String userId = userInteractor.getUserId();
         if (!userId.equals("none")) {
             if(isActivity) {
                 Activity activity = new Activity(userId, false, content, location, selectedImageList.size());

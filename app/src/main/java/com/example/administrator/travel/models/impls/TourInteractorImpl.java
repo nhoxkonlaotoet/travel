@@ -43,6 +43,7 @@ public class TourInteractorImpl implements TourInteractor {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Tour tour = dataSnapshot.getValue(Tour.class);
+                tour.id = dataSnapshot.getKey();
                 listener.onGetTourSuccess(tour);
             }
 
@@ -114,10 +115,10 @@ public class TourInteractorImpl implements TourInteractor {
     @Override
     public void getTourImage(final int pos, final String tourId, final Listener.OnGetTourImageFinishedListener listener) {
 
-        final long HALF_MEGABYTE = 1024 * 512;
+        final long TWO_HUNDRED_KILOBYTE = 1024 * 256;
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference tourRef = storage.getReference().child("tours/" + tourId + "/");
-        tourRef.child(pos + ".jpg").getBytes(HALF_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        tourRef.child(pos + ".jpg").getBytes(TWO_HUNDRED_KILOBYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -207,10 +208,9 @@ public class TourInteractorImpl implements TourInteractor {
                         for (Double rating : tour.ratings.values())
                             tourRating += rating;
                         tourRating /= tour.ratings.size();
-                        if(tourRating<4D) {
+                        if (tourRating < 4D) {
                             added = true;
-                        }
-                        else {
+                        } else {
                             ratingMap.put(tour.id, tourRating);
                             for (int i = 0; i < tourList.size(); i++)
                                 if (ratingMap.get(tourList.get(i).id) != null
@@ -241,27 +241,26 @@ public class TourInteractorImpl implements TourInteractor {
     public void getToursByDestination(String cityId, final Listener.OnGetToursFinishedListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference toursRef = database.getReference(TOURS_REF);
-        Query findTourByDestinationQuery = toursRef.orderByChild("destination/"+cityId).equalTo(true);
+        Query findTourByDestinationQuery = toursRef.orderByChild("destination/" + cityId).equalTo(true);
         findTourByDestinationQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Tour> tourList = new ArrayList<>();
-                HashMap<String,Double> ratingMap = new HashMap<>();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren())
-                {
+                HashMap<String, Double> ratingMap = new HashMap<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Tour tour = snapshot.getValue(Tour.class);
-                    tour.id=snapshot.getKey();
+                    tour.id = snapshot.getKey();
                     Double tourRating = 0D;
-                    if(tour.ratings!=null) {
+                    if (tour.ratings != null) {
                         for (Double rating : tour.ratings.values())
                             tourRating += rating;
                         tourRating /= tour.ratings.size();
                     }
-                    ratingMap.put(tour.id,tourRating);
+                    ratingMap.put(tour.id, tourRating);
                     tourList.add(tour);
 
                 }
-                listener.onGetToursSuccess(tourList,ratingMap);
+                listener.onGetToursSuccess(tourList, ratingMap);
             }
 
             @Override
@@ -280,20 +279,20 @@ public class TourInteractorImpl implements TourInteractor {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Tour> tourList = new ArrayList<>();
-                HashMap<String,Double> ratingMap = new HashMap<>();
+                HashMap<String, Double> ratingMap = new HashMap<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Tour tour = snapshot.getValue(Tour.class);
                     tour.id = snapshot.getKey();
                     Double tourRating = 0D;
-                    if(tour.ratings!=null) {
+                    if (tour.ratings != null) {
                         for (Double rating : tour.ratings.values())
                             tourRating += rating;
                         tourRating /= tour.ratings.size();
                     }
-                    ratingMap.put(tour.id,tourRating);
+                    ratingMap.put(tour.id, tourRating);
                     tourList.add(tour);
                 }
-                listener.onGetToursSuccess(tourList,ratingMap);
+                listener.onGetToursSuccess(tourList, ratingMap);
             }
 
             @Override

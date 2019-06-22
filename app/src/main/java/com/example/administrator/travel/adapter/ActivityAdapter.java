@@ -27,20 +27,21 @@ import java.util.List;
  */
 
 public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHolder> {
-    Context context;
+    private Context context;
     private LayoutInflater mInflater;
     private ActivityAdapter.ItemClickListener mClickListener;
-    List<com.example.administrator.travel.models.entities.Activity> activityList;
-    DateFormat dateFormat;
-    HashMap<String, String> userNameMap;
-    HashMap<String, Bitmap> userAvatarMap;
-    HashMap<String, List<Bitmap>> activityPhotosMap;
+    private List<com.example.administrator.travel.models.entities.Activity> activityList;
+    private DateFormat dateFormat;
+    private HashMap<String, String> userNameMap;
+    private HashMap<String, Bitmap> userAvatarMap;
+    private HashMap<String, List<Bitmap>> activityPhotosMap;
     int containerHeight, containerWidth;
 
     public ActivityAdapter(Context context, List<com.example.administrator.travel.models.entities.Activity> activityList) {
         if (context == null)
             return;
         this.context = context;
+        this.mInflater = LayoutInflater.from(context);
         this.activityList = activityList;
         dateFormat = new SimpleDateFormat("hh:mm dd/MM/yyyy");
         userNameMap = new HashMap<>();
@@ -48,7 +49,6 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         activityPhotosMap = new HashMap<>();
         containerHeight = context.getResources().getDimensionPixelSize(R.dimen.container_height);
         containerWidth = getScreenWidth();
-        this.mInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -149,22 +149,27 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
 
 
     public void updateUserName(String userId, String userName) {
-        userNameMap.put(userId, userName);
-        notifyDataSetChanged();
+        if (userNameMap != null) {
+            userNameMap.put(userId, userName);
+            notifyDataSetChanged();
+        }
     }
 
     public void updateUserAvatar(String userId, Bitmap avatarPhoto) {
-        userAvatarMap.put(userId, avatarPhoto);
-        notifyDataSetChanged();
+        if (userAvatarMap != null) {
+            userAvatarMap.put(userId, avatarPhoto);
+            notifyDataSetChanged();
+        }
     }
 
     public void updateImage(String activityId, Bitmap activityPhoto) {
-        if (activityPhotosMap.get(activityId) == null) {
+        if (activityPhotosMap!=null) {
             List<Bitmap> photoList = new ArrayList<>();
             activityPhotosMap.put(activityId, photoList);
+            activityPhotosMap.get(activityId).add(activityPhoto);
+            notifyDataSetChanged();
         }
-        activityPhotosMap.get(activityId).add(activityPhoto);
-        notifyDataSetChanged();
+
 
     }
 

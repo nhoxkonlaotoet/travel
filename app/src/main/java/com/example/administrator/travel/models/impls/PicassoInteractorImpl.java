@@ -42,6 +42,7 @@ public class PicassoInteractorImpl implements PicassoInteractor {
         targetList.add(target);
         Picasso.with(context).load(url).into(target);
     }
+
     public void cleanGarbage(){
         targetList.clear();
     }

@@ -111,4 +111,6 @@ public class NewsFeedPresenterImpl implements NewsFeedPresenter, Listener.OnGetA
     public void onGetCompaniesFail(Exception ex) {
 
     }
+
+
 }

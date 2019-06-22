@@ -30,7 +30,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/txtMyTourName"
                 android:indeterminate="true"
-                android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
+                android:indeterminateDrawable="@drawable/background_progressbar_horizontal"
                 android:indeterminateDuration="1000" />
         </RelativeLayout>
 
@@ -59,7 +59,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/txtStartDate"
                 android:indeterminate="true"
-                android:indeterminateDrawable="@drawable/drawable_progressbar_horizontal"
+                android:indeterminateDrawable="@drawable/background_progressbar_horizontal"
                 android:indeterminateDuration="1000" />
         </RelativeLayout>
     </LinearLayout>

@@ -1,6 +1,5 @@
 package com.example.administrator.travel.presenters.impls;
 
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.administrator.travel.models.bases.CompanyInteractor;
@@ -36,8 +35,8 @@ public class LoginPresenterImpl implements LoginPresenter,
 
     @Override
     public void onViewCreated() {
-        if (userInteractor.isLogged(view.getContext())) {//    view.gotoPreLoadingActivity();
-            String userId = userInteractor.getUserId(view.getContext());
+        if (userInteractor.isLogged()) {//    view.gotoPreLoadingActivity();
+            String userId = userInteractor.getUserId();
             participantInteractor.checkJoiningTour(userId, this);
             companyInteractor.checkIsCompany(userId, this);
             for (int i = 0; i < finishFlags.length; i++)
@@ -63,7 +62,6 @@ public class LoginPresenterImpl implements LoginPresenter,
 
     @Override
     public void onLoginSuccess(String userId) {
-        userInteractor.rememberLogin(userId, view.getContext());
         participantInteractor.checkJoiningTour(userId, this);
         companyInteractor.checkIsCompany(userId, this);
     }
@@ -76,7 +74,7 @@ public class LoginPresenterImpl implements LoginPresenter,
 
     @Override
     public void onCheckJoiningTourTrue(String tourId, String tourStartId, String tourGuideId) {
-        String userId = userInteractor.getUserId(view.getContext());
+        String userId = userInteractor.getUserId();
         participantInteractor.rememberTour(userId, tourStartId, tourId, tourGuideId, view.getContext());
         finishFlags[CHECK_JOINING_TOUR_INDEX] = true;
         if (checkLoadFinished())
@@ -99,15 +97,15 @@ public class LoginPresenterImpl implements LoginPresenter,
     @Override
     public void onCheckJoingTourFail(Exception ex) {
         view.notifyLoginFail("Tải dữ liệu thất bại " + ex.getMessage());
-        if (userInteractor.isLogged(view.getContext())) {
-            userInteractor.logout(view.getContext());
+        if (userInteractor.isLogged()) {
+            userInteractor.logout();
             view.closeLoginDialog();
         }
     }
 
     @Override
     public void onCheckIsCompanySuccess(boolean isCompany) {
-        String userId = userInteractor.getUserId(view.getContext());
+        String userId = userInteractor.getUserId();
         companyInteractor.setIsCompany(userId, isCompany, view.getContext());
         Toast.makeText(view.getContext(), isCompany+"___________", Toast.LENGTH_SHORT).show();
         finishFlags[CHECK_IS_COMPANY_INDEX] = true;
@@ -121,8 +119,8 @@ public class LoginPresenterImpl implements LoginPresenter,
     @Override
     public void onCheckIsCompanyFail(Exception ex) {
         view.notifyLoginFail("Tải dữ liệu thất bại " + ex.getMessage());
-        if (userInteractor.isLogged(view.getContext())) {
-            userInteractor.logout(view.getContext());
+        if (userInteractor.isLogged()) {
+            userInteractor.logout();
             view.closeLoginDialog();
         }
 

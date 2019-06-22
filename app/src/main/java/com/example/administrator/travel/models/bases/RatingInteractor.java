@@ -12,9 +12,17 @@ import java.util.List;
  */
 
 public interface RatingInteractor {
-    void getRating(String tourId, Listener.OnGetRatingTourFinishedListener listener);
     void checkRated(String tourId, String userId, Listener.OnCheckRatedFinishedListener listener);
+
     void rateTour(String tourId, Rating rating, List<Bitmap> imageList, Listener.OnRateTourFinishedListener listener);
+
+    void getReview(String tourId, String userId, Listener.OnGetReviewTourFinishedListener listener);
+
     void getReviews(String tourId, Listener.OnGetReviewsTourFinishedListener listener);
+    // review ID = reviewER ID
+    void reactReview(String tourId, String reviewId, String userId, boolean like);
+
+    void removeReactReview(String tourId, String reviewId, String userId);
+
     byte[] bitmapToBytes(Bitmap image);
 }

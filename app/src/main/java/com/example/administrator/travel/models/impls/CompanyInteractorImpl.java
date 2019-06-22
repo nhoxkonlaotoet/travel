@@ -38,14 +38,8 @@ public class CompanyInteractorImpl implements CompanyInteractor {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Company> companyList = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Company company = new Company();
+                    Company company = snapshot.getValue(Company.class);
                     company.id=snapshot.getKey();
-                    company.address = snapshot.child("address").getValue(String.class);
-                    company.companyName = snapshot.child("companyName").getValue(String.class);
-                    company.shortName = snapshot.child("shortName").getValue(String.class);
-                    company.location = snapshot.child("location").getValue(MyLatLng.class);
-                    company.phoneNumber = snapshot.child("phoneNumber").getValue(String.class);
-                    company.website = snapshot.child("phoneNumber").getValue(String.class);
                     companyList.add(company);
                 }
                 listener.onGetCompaniesSuccess(companyList);

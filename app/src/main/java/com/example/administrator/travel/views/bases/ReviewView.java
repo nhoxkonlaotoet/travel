@@ -8,6 +8,7 @@ import android.net.Uri;
 import com.example.administrator.travel.models.entities.Rating;
 import com.example.administrator.travel.models.entities.UserInformation;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,21 +17,21 @@ import java.util.List;
 
 public interface ReviewView {
 
-    void showDialog();
-    void closeDialog();
-    void showRating(float rating, long numberofRating);
-    void notifyGetRatingFailure(Exception ex);
-    void showReviews(List<Rating> lstReview);
-    void notifyGetReviewsFailure(Exception ex);
-    void updateUserName(String username, int pos);
-    void updateUserAvatar(Bitmap avatar, int pos);
-    void notifyRateSuccess();
-    void notifyRateFailure(Exception ex);
-    void showRatingBar();
-    void hideRatingBar();
-    void gotoReviewDetailActivity(Intent intent);
+    void showTourRating(HashMap<Integer,Integer> startCountMap);
+    void showReviews(List<Rating> reviewList);
+    void showMyReview(Rating myRating);
+    void showLayoutMyReview();
+    void hideLayoutMyReview();
+    void updateMyName(String name);
+    void updateMyAvatar(Bitmap avatar);
+    void showLayoutRateTour();
+    void hideLayoutRateTour();
+    void gotoReviewDetailActivity(String reviewId);
     void enableRatingBar();
     void disableRatingBar();
-    void gotoPostActivity(Intent intent, int requestCode);
+    void gotoPostActivity(String tourId, float rating, int requestCode);
+    void notify(String message);
     Context getContext();
+
+    Context getAppContext();
 }

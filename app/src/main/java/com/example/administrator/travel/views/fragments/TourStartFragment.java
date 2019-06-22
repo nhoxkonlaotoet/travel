@@ -66,8 +66,9 @@ public class TourStartFragment extends Fragment implements TourStartView, TourSt
     }
 
     @Override
-    public void gotoBooktourActivity(String tourStartId) {
+    public void gotoBooktourActivity(String tourStartId, String ownerId) {
         Intent intent = new Intent(getActivity(),BookTourActivity.class);
+        intent.putExtra("owner", ownerId);
         intent.putExtra("tourStartId",tourStartId);
         startActivity(intent);
     }

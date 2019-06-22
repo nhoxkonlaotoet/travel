@@ -1,26 +1,36 @@
 package com.example.administrator.travel.presenters.impls;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.administrator.travel.models.bases.ParticipantInteractor;
 import com.example.administrator.travel.models.bases.RatingInteractor;
+import com.example.administrator.travel.models.bases.TourInteractor;
 import com.example.administrator.travel.models.bases.UserInteractor;
 import com.example.administrator.travel.models.entities.Rating;
+import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
 import com.example.administrator.travel.models.impls.RatingInteractorImpl;
+import com.example.administrator.travel.models.impls.TourInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.TourRatingPresenter;
 import com.example.administrator.travel.views.bases.ReviewView;
-import com.example.administrator.travel.views.activities.PostActivity;
-import com.example.administrator.travel.views.activities.ReviewDetailActivity;
-import com.example.administrator.travel.views.fragments.ReviewFragment;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
+import com.facebook.appevents.AppEventsLogger;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -29,17 +39,17 @@ import static android.app.Activity.RESULT_OK;
  * Created by Administrator on 25/12/2018.
  */
 
-public class TourRatingPresenterImpl implements TourRatingPresenter,
-        Listener.OnCheckRatedFinishedListener,
-        Listener.OnGetReviewsTourFinishedListener, Listener.OnGetRatingTourFinishedListener,
+public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.OnGetReviewsTourFinishedListener,
         Listener.OnRateTourFinishedListener, Listener.OnGetUserInforFinishedListener,
-        Listener.OnGetUserAvatarFinishedListener {
-   final static int REQUEST_POST=101;
+        Listener.OnGetUserAvatarFinishedListener, Listener.OnCheckJoinedTourFinishedListener,
+        Listener.OnGetReviewTourFinishedListener, Listener.OnGetTourFinishedListener {
+    final static int REQUEST_POST = 101;
     ReviewView view;
     RatingInteractor ratingInteractor;
     UserInteractor userInteractor;
     ParticipantInteractor participantInteractor;
-    Boolean isCollapsed = true, firstChange = true;
+    TourInteractor tourInteractor;
+    boolean firstChange = true, joinedTour;
     String tourId;
     float rating = 0f;
 
@@ -48,91 +58,55 @@ public class TourRatingPresenterImpl implements TourRatingPresenter,
         ratingInteractor = new RatingInteractorImpl();
         userInteractor = new UserInteractorImpl();
         participantInteractor = new ParticipantInteractorImpl();
+        tourInteractor = new TourInteractorImpl();
     }
 
     @Override
     public void onViewCreated(Bundle bundle) {
 
+
         tourId = bundle.getString("tourId");
         view.disableRatingBar();
-        String userId = userInteractor.getUserId(view.getContext());
-        Boolean isMyTour = bundle.getBoolean("mytour");
-        if (!isMyTour)
-            view.disableRatingBar();
-        ratingInteractor.checkRated(tourId, userId, this);
-        ratingInteractor.getRating(tourId, this);
+        if (userInteractor.isLogged()) {
+            String myId = userInteractor.getUserId();
+            participantInteractor.checkJoinedTour(myId, tourId, this);
+            ratingInteractor.getReview(tourId, myId, this);
+        }
+        view.hideLayoutRateTour();
+        view.hideLayoutMyReview();
+        tourInteractor.getTour(tourId, this);
         ratingInteractor.getReviews(tourId, this);
     }
 
     @Override
-    public void onBtnCollapseClicked() {
-        if (isCollapsed) {
-            isCollapsed = false;
-            view.hideRatingBar();
-        } else {
-            isCollapsed = true;
-            view.showRatingBar();
-        }
-    }
-
-    @Override
-    public void onBtnSendReviewClicked() {
-        Context context = ((ReviewFragment) view).getActivity().getApplicationContext();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("dataLogin", context.MODE_PRIVATE);
-        String userId = sharedPreferences.getString("AuthID", "none");
-        Rating rating = new Rating(this.rating, userId, 0, "");
-        ratingInteractor.rateTour(tourId, rating, null, this);
-
-    }
-
-    @Override
     public void OnRatingBarChanged(float value) {
-        if(firstChange){
-            firstChange=false;
+        if (firstChange) {
+            firstChange = false;
             return;
         }
         this.rating = value;
-        view.showDialog();
     }
 
     @Override
-    public void onGetImageResult() {
+    public void onReviewItemClicked(String reviewId) {
+        view.gotoReviewDetailActivity(reviewId);
     }
 
     @Override
-    public void onBtnCancelClicked() {
-        view.closeDialog();
+    public void onButtonShareFacebookClicked() {
+        ShareLinkContent shareContent = new ShareLinkContent.Builder()
+                .setContentUrl(Uri.parse("https://developers.facebook.com"))
+                .build();
+        ShareDialog shareDialog = new ShareDialog((Activity) view.getContext());
+        shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
+
     }
 
-    @Override
-    public void onImageAddClicked() {
-        onEditTextContentClicked();
-    }
-
-    @Override
-    public void onListviewReviewItemClicked(String reviewId) {
-        if (view.getContext() != null) {
-            Intent intent = new Intent(view.getContext(), ReviewDetailActivity.class);
-            intent.putExtra("reviewId", reviewId);
-            view.gotoReviewDetailActivity(intent);
-        }
-    }
-
-    @Override
-    public void onEditTextContentClicked() {
-        Intent intent= new Intent(view.getContext(), PostActivity.class);
-        intent.putExtra("rating",rating);
-        intent.putExtra("tourId",tourId);
-        view.gotoPostActivity(intent,REQUEST_POST);
-    }
 
     @Override
     public void onViewResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==REQUEST_POST)
-        {
-            view.closeDialog();
-            if(resultCode==RESULT_OK) {
-                ratingInteractor.getRating(tourId, this);
+        if (requestCode == REQUEST_POST) {
+            if (resultCode == RESULT_OK) {
                 ratingInteractor.getReviews(tourId, this);
                 view.disableRatingBar();
             }
@@ -140,67 +114,125 @@ public class TourRatingPresenterImpl implements TourRatingPresenter,
     }
 
     @Override
-    public void onGetReviewTourSuccess(List<Rating> ratingList) {
+    public void onButtonLikeReviewItemClicked(String reviewId, boolean pressed) {
+        if (userInteractor.isLogged()) {
+            String myId = userInteractor.getUserId();
+            if (pressed)
+                ratingInteractor.reactReview(tourId, reviewId, myId, true);
+            else
+                ratingInteractor.removeReactReview(tourId, reviewId, myId);
+        }
+    }
+
+    @Override
+    public void onButtonDislikeReviewItemClicked(String reviewId, boolean pressed) {
+        if (userInteractor.isLogged()) {
+            String myId = userInteractor.getUserId();
+            if (pressed)
+                ratingInteractor.reactReview(tourId, reviewId, myId, false);
+            else
+                ratingInteractor.removeReactReview(tourId, reviewId, myId);
+        }
+    }
+
+    @Override
+    public void onGetReviewsTourSuccess(List<Rating> ratingList) {
+        if (userInteractor.isLogged()) {
+            String myId = userInteractor.getUserId();
+            for (int i = 0; i < ratingList.size(); i++)
+                if (ratingList.get(i).ratingPeopleId.equals(myId))
+                    ratingList.remove(i);
+        }
         view.showReviews(ratingList);
-        for (int i = 0; i < ratingList.size(); i++) {
-            userInteractor.getUserInfor(ratingList.get(0).ratingPeopleId, this);
-            userInteractor.getUserAvatar(ratingList.get(0).ratingPeopleId, this);
+    }
+
+    @Override
+    public void onGetReviewsTourFail(Exception ex) {
+        view.notify(ex.getMessage());
+    }
+
+    @Override
+    public void onRateTourSuccess() {
+    }
+
+    @Override
+    public void onRateTourFail(Exception ex) {
+        view.notify(ex.getMessage());
+    }
+
+    @Override
+    public void onGetUserInforSuccess(UserInformation user) {
+        view.updateMyName(user.name);
+    }
+
+    @Override
+    public void onGetUserAvatarSuccess(String userId, Bitmap avatar) {
+        view.updateMyAvatar(avatar);
+    }
+
+    @Override
+    public void onCheckJoinedTourSuccess(Boolean joined) {
+        joinedTour = joined;
+        if (!joined)
+            view.disableRatingBar();
+    }
+
+    @Override
+    public void onCheckJoinedTourFail(Exception ex) {
+
+    }
+
+    @Override // my review
+    public void onGetReviewTourSuccess(Rating rating) {
+        //haven't reviewed yet return null
+        if (rating == null)
+            if (joinedTour) // joined tour and haven't reviewed
+                view.enableRatingBar();
+            else
+                view.disableRatingBar();
+        else {
+            view.disableRatingBar();
+            view.showMyReview(rating);
+            view.showLayoutMyReview();
+            userInteractor.getUserInfor(userInteractor.getUserId(), this);
+            userInteractor.getUserAvatar(userInteractor.getUserId(), this);
         }
     }
 
     @Override
     public void onGetReviewTourFail(Exception ex) {
-        view.notifyGetReviewsFailure(ex);
-    }
-
-    @Override
-    public void onCheckRatedTrue() {
-        view.disableRatingBar();
-    }
-
-    @Override
-    public void onCheckRatedFalse() {
-        view.enableRatingBar();
-    }
-
-    @Override
-    public void onCheckRatedError(Exception ex) {
-        view.notifyGetRatingFailure(ex);
-        view.disableRatingBar();
-    }
-
-    @Override
-    public void onRateTourSuccess() {
-        view.notifyRateSuccess();
-        view.closeDialog();
-    }
-
-    @Override
-    public void onRateTourFail(Exception ex) {
-        view.notifyRateFailure(ex);
-        view.closeDialog();
-    }
-
-    @Override
-    public void onGetRatingTourSuccess(float value, long count)    {
-        if(value==0)
-            firstChange=false;
-        view.showRating(value, count);
-    }
-
-    @Override
-    public void onGetRatingTourFail(Exception ex) {
-        view.notifyGetRatingFailure(ex);
-    }
-
-    @Override
-    public void onGetUserInforSuccess(UserInformation user) {
-       // view.updateUserName(user.name, pos);
 
     }
 
     @Override
-    public void onGetUserAvatarSuccess(String userId, Bitmap avatar) {
-      //  view.updateUserAvatar(avatar, pos);
+    public void onGetTourSuccess(Tour tour) {
+        if (tour.ratings == null) {
+            firstChange = false;
+            return;
+        }
+        HashMap<Integer, Integer> startCountMap = new HashMap<>();
+        int oneCount = 0, twoCount = 0, threeCount = 0, fourCount = 0, fiveCount = 0;
+        for (Double rating : tour.ratings.values())
+            if (rating == 1.0)
+                oneCount++;
+            else if (rating == 2.0)
+                twoCount++;
+            else if (rating == 3.0)
+                threeCount++;
+            else if (rating == 4.0)
+                fourCount++;
+            else if (rating == 5.0)
+                fiveCount++;
+        startCountMap.put(1, oneCount);
+        startCountMap.put(2, twoCount);
+        startCountMap.put(3, threeCount);
+        startCountMap.put(4, fourCount);
+        startCountMap.put(5, fiveCount);
+        view.showTourRating(startCountMap);
+    }
+
+    @Override
+    public void onGetTourFail(Exception ex) {
+
     }
 }

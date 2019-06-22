@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.CityAdapter;
 import com.example.administrator.travel.adapter.CompanyAdapter;
+import com.example.administrator.travel.adapter.TourAboutToDepartAdapter;
 import com.example.administrator.travel.adapter.TourAdapter;
 import com.example.administrator.travel.models.entities.City;
 import com.example.administrator.travel.models.entities.Company;
@@ -20,13 +21,12 @@ import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.presenters.bases.SearchTourPresenter;
 import com.example.administrator.travel.presenters.impls.SearchTourPresenterImpl;
 import com.example.administrator.travel.views.bases.SearchTourView;
-import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class SearchTourActivity extends AppCompatActivity implements SearchTourView, CityAdapter.CityClickListener, TourAdapter.ItemClickListener, CompanyAdapter.CompanyClickListener {
-    private ShimmerFrameLayout shimmerContainerParent, shimmerContainerChild;
+public class SearchTourActivity extends AppCompatActivity implements SearchTourView, CityAdapter.CityClickListener,
+        TourAdapter.ItemClickListener, CompanyAdapter.CompanyClickListener, TourAboutToDepartAdapter.ItemClickListener {
     private RecyclerView recyclerViewParent, recyclerViewChild;
     private TextView txtHaveNoResult;
     SearchTourPresenter presenter;
@@ -39,31 +39,14 @@ public class SearchTourActivity extends AppCompatActivity implements SearchTourV
         Bundle bundle = getIntent().getExtras();
         presenter = new SearchTourPresenterImpl(this);
         presenter.onViewCreated(bundle);
-        shimmerContainerParent.startShimmerAnimation();
     }
 
     void mapping() {
         recyclerViewParent = findViewById(R.id.recyclerViewParent);
         recyclerViewChild = findViewById(R.id.recyclerViewChild);
-        shimmerContainerParent = findViewById(R.id.shimmerContainerParent);
-        shimmerContainerChild = findViewById(R.id.shimmerContainerChild);
         txtHaveNoResult = findViewById(R.id.txtHaveNoResult);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        shimmerContainerParent.startShimmerAnimation();
-        shimmerContainerChild.startShimmerAnimation();
-
-    }
-
-    @Override
-    protected void onPause() {
-        shimmerContainerParent.stopShimmerAnimation();
-        shimmerContainerChild.stopShimmerAnimation();
-        super.onPause();
-    }
 
     @Override
     public void showCities(List<City> cityList) {
@@ -77,13 +60,14 @@ public class SearchTourActivity extends AppCompatActivity implements SearchTourV
         CompanyAdapter companyAdapter = new CompanyAdapter(this,companyList);
         companyAdapter.setClickListener(this);
         recyclerViewParent.setAdapter(companyAdapter);
+
     }
 
     @Override
     public void showAboutToDepartTours(List<Tour> tourList, HashMap<String, TourStartDate> tourStartMap) {
-        TourAdapter tourAdapter = new TourAdapter(this, tourStartMap, tourList);
-        tourAdapter.setClickListener(this);
-        recyclerViewChild.setAdapter(tourAdapter);
+        TourAboutToDepartAdapter tourAboutToDepartAdapter = new TourAboutToDepartAdapter(this, tourList,tourStartMap);
+        tourAboutToDepartAdapter.setClickListener(this);
+        recyclerViewChild.setAdapter(tourAboutToDepartAdapter);
     }
 
     @Override
@@ -108,70 +92,15 @@ public class SearchTourActivity extends AppCompatActivity implements SearchTourV
     }
 
     @Override
-    public void startShimmerContainerParentAnimation() {
-        shimmerContainerParent.startShimmerAnimation();
-    }
-
-    @Override
-    public void stopShimmerContainerParentAnimation() {
-        shimmerContainerParent.stopShimmerAnimation();
-    }
-
-    @Override
-    public void startShimmerContainerChildAnimation() {
-        shimmerContainerChild.startShimmerAnimation();
-    }
-
-    @Override
-    public void stopShimmerContainerChildAnimation() {
-        shimmerContainerChild.stopShimmerAnimation();
-    }
-
-    @Override
-    public void hideShimmerContainerParent() {
-        if(shimmerContainerParent.getVisibility()==View.VISIBLE)
-            shimmerContainerParent.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showShimmerContainerParent() {
-        if(shimmerContainerParent.getVisibility()==View.GONE)
-            shimmerContainerParent.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideShimmerContainerChild() {
-        if(shimmerContainerChild.getVisibility()==View.VISIBLE)
-            shimmerContainerChild.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showShimmerContainerChild() {
-        if(shimmerContainerChild.getVisibility()==View.GONE)
-            shimmerContainerChild.setVisibility(View.VISIBLE);
-    }
-
-    @Override
     public void showTextHaveNoResult() {
-        if(txtHaveNoResult.getVisibility()==View.GONE)
             txtHaveNoResult.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideTextHaveNoResult() {
-        if(txtHaveNoResult.getVisibility()==View.VISIBLE)
-            txtHaveNoResult.setVisibility(View.GONE);
+        txtHaveNoResult.setVisibility(View.GONE);
     }
 
-    @Override
-    public void clearRecyclerViewParent() {
-        recyclerViewParent.setAdapter(null);
-    }
-
-    @Override
-    public void clearRecyclerViewChild() {
-        recyclerViewChild.setAdapter(null);
-    }
 
     @Override
     public void notify(String message) {

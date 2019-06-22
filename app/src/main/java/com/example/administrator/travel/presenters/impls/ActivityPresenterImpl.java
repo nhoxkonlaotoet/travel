@@ -46,7 +46,7 @@ public class ActivityPresenterImpl implements ActivityPresenter, Listener.OnGetA
     public void onViewCreated(Bundle bundle) {
         tourStartId = bundle.getString("tourStartId");
         tourGuideId = tourStartInteractor.getTourGuideId(tourStartId,view.getContext());
-        if (userInteractor.getUserId(view.getContext()).equals(tourGuideId))
+        if (userInteractor.getUserId().equals(tourGuideId))
             isTourGuide = true;
         activityInteractor.getActivities(tourStartId, this);
     }

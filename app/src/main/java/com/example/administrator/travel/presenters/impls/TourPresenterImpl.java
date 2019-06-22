@@ -11,6 +11,7 @@ import com.example.administrator.travel.models.bases.CompanyInteractor;
 import com.example.administrator.travel.models.bases.ParticipantInteractor;
 import com.example.administrator.travel.models.bases.TourInteractor;
 import com.example.administrator.travel.models.bases.UserInteractor;
+import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.impls.CompanyInteractorImpl;
 import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
 import com.example.administrator.travel.models.impls.TourInteractorImpl;
@@ -23,11 +24,11 @@ import com.example.administrator.travel.views.bases.TourView;
  * Created by Admin on 4/15/2019.
  */
 
-public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImageFinishedListener, Listener.OnFinishTourFinishedListener {
+public class TourPresenterImpl implements TourPresenter, Listener.OnFinishTourFinishedListener, Listener.OnGetTourFinishedListener {
     boolean onMyTour, isCompany, isOwned;
+    TourView view;
     String tourId;
     TourInteractor tourInteractor;
-    TourView view;
     CompanyInteractor companyInteractor;
     ParticipantInteractor participantInteractor;
     UserInteractor userInteractor;
@@ -39,7 +40,6 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
         companyInteractor = new CompanyInteractorImpl();
         participantInteractor = new ParticipantInteractorImpl();
         userInteractor = new UserInteractorImpl();
-
     }
 
     @Override
@@ -47,8 +47,8 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
         onMyTour = bundle.getBoolean("mytour");
         String owner = bundle.getString("owner");
         tourId = bundle.getString("tourId");
-        if (userInteractor.isLogged(view.getContext())) {
-            String userId = userInteractor.getUserId(view.getContext());
+        if (userInteractor.isLogged()) {
+            String userId = userInteractor.getUserId();
             isCompany = companyInteractor.isCompany(userId, view.getContext());
             if (userId.equals(owner))
                 isOwned = true;
@@ -60,9 +60,7 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
             String tourStartId = bundle.getString("tourStartId");
             participantInteractor.setTourFinishStream(tourStartId, view.getContext(), this);
         }
-
         tabCount = 4;
-
         view.initVpContainer(tabCount, onMyTour, isCompany);
 
         if (onMyTour) {
@@ -71,7 +69,7 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
                 view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_start_date));
                 view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_contact));
                 view.setActionbarTransparent();
-           //     tourInteractor.getTourImages(tourId, this);
+                //     tourInteractor.getTourImages(tourId, this);
             } else {
                 view.collapseToolbarLayout();
                 view.hideImagePanel();
@@ -81,7 +79,7 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
             view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_rating));
         } else {
             view.setActionbarTransparent();
-        //    tourInteractor.getTourImage(0, tourId, this);
+            tourInteractor.getTour(tourId, this);
             view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_detail));
             if (!isCompany || (isCompany && isOwned))
                 view.addTabLayoutTab(view.getContext().getResources().getString(R.string.title_tour_start_date));
@@ -91,12 +89,9 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
     }
 
 
-
-
-
     @Override
     public void onTourFinished() {
-        String userId = userInteractor.getUserId(view.getContext());
+        String userId = userInteractor.getUserId();
         if (!userId.equals("none"))
             participantInteractor.removeparticipatingTour(userId, view.getContext());
         view.notifyTourFinished();
@@ -107,7 +102,12 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnGetTourImage
     }
 
     @Override
-    public void onGetTourImageSuccess(int pos, String tourId, Bitmap tourImage) {
-        view.showTourImages(null);
+    public void onGetTourSuccess(Tour tour) {
+        view.showTourImages(tour.id, tour.numberofImages);
+    }
+
+    @Override
+    public void onGetTourFail(Exception ex) {
+
     }
 }

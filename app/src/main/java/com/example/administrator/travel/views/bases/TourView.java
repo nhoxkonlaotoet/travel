@@ -14,7 +14,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public interface TourView {
 
     void addTabLayoutTab(String tabText);
-    void showTourImages(Bitmap[] images);
+    void showTourImages(String tourId, int numberOfImages);
     void closebyTourFinished();
     void hideImagePanel();
     void setActionbarTransparent();

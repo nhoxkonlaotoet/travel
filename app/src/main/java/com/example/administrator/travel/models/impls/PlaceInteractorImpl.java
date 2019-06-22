@@ -31,7 +31,7 @@ import retrofit2.Response;
 public class PlaceInteractorImpl implements PlaceInteractor {
     @Override
     public void getNearby(String type, LatLng location, String apiKey, final Listener.OnGetNearbyFinishedListener listener) {
-        ApiUtils.getSOService().getNearby(location.latitude + "," + location.longitude, type, "distance", apiKey)
+        ApiUtils.getMapsService().getNearby(location.latitude + "," + location.longitude, type, "distance", apiKey)
                 .enqueue(new Callback<NearbyResponse>() {
                     @Override
                     public void onResponse(Call<NearbyResponse> call, Response<NearbyResponse> response) {
@@ -49,7 +49,7 @@ public class PlaceInteractorImpl implements PlaceInteractor {
 
     @Override
     public void getNearby(String type, LatLng location, String pageToken, String apiKey, final Listener.OnGetNearbyFinishedListener listener) {
-        ApiUtils.getSOService().getNearby(location.latitude + "," + location.longitude, type,
+        ApiUtils.getMapsService().getNearby(location.latitude + "," + location.longitude, type,
                 "distance", true, true, pageToken, apiKey)
                 .enqueue(new Callback<NearbyResponse>() {
                     @Override
@@ -98,7 +98,7 @@ public class PlaceInteractorImpl implements PlaceInteractor {
     @Override
     public void getPlaceDetail(String placeId, String apiKey, final Listener.OnGetPlaceDetailFinishedListener listener) {
         final long start = System.currentTimeMillis();
-        ApiUtils.getSOService().getPlaceDetail(placeId, apiKey)
+        ApiUtils.getMapsService().getPlaceDetail(placeId, apiKey)
                 .enqueue(new Callback<PlaceDetailResponse>() {
                     @Override
                     public void onResponse(Call<PlaceDetailResponse> call, Response<PlaceDetailResponse> response) {

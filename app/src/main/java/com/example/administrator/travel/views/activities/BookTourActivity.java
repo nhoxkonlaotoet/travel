@@ -2,142 +2,147 @@ package com.example.administrator.travel.views.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.travel.R;
+import com.example.administrator.travel.adapter.TourBookingAdapter;
+import com.example.administrator.travel.models.entities.TourBookingDetail;
 import com.example.administrator.travel.presenters.bases.BookTourPresenter;
 import com.example.administrator.travel.presenters.impls.BookTourPresenterImpl;
 import com.example.administrator.travel.views.BookTourView;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class BookTourActivity extends AppCompatActivity implements BookTourView {
 
-    RelativeLayout btnAccept, btnCancel;
-    TextView txtAdultPrice, txtChildrenPrice, txtBabyPrice,txtNumberofPeople,
-            txtNumberofAdult,txtNumberofChildren,txtNumberofBaby;
-    Button btnDecreaseAdult, btnIncreaseAdult,
-            btnDecreaseChildren, btnIncreaseChildren,
-            btnDecreaseBaby, btnIncreaseBaby;
-    BookTourPresenter presenter;
-    String tourStartId;
+public class BookTourActivity extends AppCompatActivity implements BookTourView, TextView.OnEditorActionListener, View.OnFocusChangeListener {
+    private RecyclerView recyclerViewBooking;
+    private Button btnNext;
+    private TextView txtAdultPrice, txtChildrenPrice, txtBabyPrice, txtNumberAvailableSlot;
+    private EditText etxtNumberOfAdult, etxtNumberOfChildren, etxtNumberOfBaby;
+    private BookTourPresenter presenter;
+    private TourBookingAdapter tourBookingAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_tour);
         mapping();
+        setOnEditTextStopTyping();
+        setOnButtonNextClick();
         Bundle bundle = getIntent().getExtras();
-        presenter=new BookTourPresenterImpl(this);
+        tourBookingAdapter = new TourBookingAdapter(this);
+        recyclerViewBooking.setAdapter(tourBookingAdapter);
+        presenter = new BookTourPresenterImpl(this);
         presenter.onViewCreated(bundle);
+
+    }
+
+    private void mapping() {
+        txtAdultPrice = findViewById(R.id.txtAdultPrice);
+        txtChildrenPrice = findViewById(R.id.txtchildrenPrice);
+        txtBabyPrice = findViewById(R.id.txtBabyPrice);
+        txtNumberAvailableSlot = findViewById(R.id.txtNumberAvailableSlot);
+        etxtNumberOfAdult = findViewById(R.id.etxtNumberOfAdult);
+        etxtNumberOfChildren = findViewById(R.id.etxtNumberOfChildren);
+        etxtNumberOfBaby = findViewById(R.id.etxtNumberOfBaby);
+        recyclerViewBooking = findViewById(R.id.recyclerViewBooking);
+        btnNext = findViewById(R.id.btnNext);
+    }
+
+    private void setOnEditTextStopTyping() {
+        etxtNumberOfAdult.setOnEditorActionListener(this);
+        etxtNumberOfAdult.setOnFocusChangeListener(this);
+        etxtNumberOfChildren.setOnEditorActionListener(this);
+        etxtNumberOfChildren.setOnFocusChangeListener(this);
+        etxtNumberOfBaby.setOnEditorActionListener(this);
+        etxtNumberOfBaby.setOnFocusChangeListener(this);
+    }
+
+    private void setOnButtonNextClick() {
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onButtonNextClicked();
+            }
+        });
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        SharedPreferences refs = getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
-        String userId = refs.getString("AuthID","");
-        if(userId.equals("none"))
-        {
-            startActivity(new Intent(BookTourActivity.this,LoginActivity.class));
-        }
-    }
-
-    public void mapping(){
-        btnAccept=findViewById(R.id.btnAccept);
-        btnCancel=findViewById(R.id.btnCancel);
-        btnDecreaseAdult=findViewById(R.id.btnDecreaseAdult);
-        btnIncreaseAdult=findViewById(R.id.btnIncreaseAdult);
-        btnDecreaseChildren=findViewById(R.id.btnDecreaseChildren);
-        btnIncreaseChildren=findViewById(R.id.btnIncreaseChildren);
-        btnDecreaseBaby=findViewById(R.id.btnDecreaseBaby);
-        btnIncreaseBaby=findViewById(R.id.btnIncreaseBaby);
-        txtAdultPrice=findViewById(R.id.txtAdultPrice);
-        txtChildrenPrice=findViewById(R.id.txtchildrenPrice);
-        txtBabyPrice=findViewById(R.id.txtBabyPrice);
-        txtNumberofPeople=findViewById(R.id.txtNumberofPeople);
-        txtNumberofAdult=findViewById(R.id.txtNumberofAdult);
-        txtNumberofChildren=findViewById(R.id.txtNumberofChildren);
-        txtNumberofBaby=findViewById(R.id.txtNumberofBaby);
-    }
-    @Override
-    public void showPrice(int adultPrice, int childrenPrice, int babyPrice, int availableNumber){
-        txtAdultPrice.setText(adultPrice+"");
-        txtChildrenPrice.setText(childrenPrice+"");
-        txtBabyPrice.setText(babyPrice+"");
-        txtNumberofPeople.setText(availableNumber+"");
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        presenter.onViewResult(requestCode, resultCode, data);
     }
 
     @Override
-    public void showNumberPeople(int adultNumber, int childrenNumber, int babyNumber) {
-        txtNumberofAdult.setText(adultNumber+"");
-        txtNumberofChildren.setText(childrenNumber+"");
-        txtNumberofBaby.setText(babyNumber+"");
-    }
-
-    public void btnAccept_Click(View view){
-        presenter.onButtonAcceptClicked();
-    }
-
-    public void btnCancel_Click(View view){
-        presenter.onButtonCancelClicked();
-    }
-
-    public void btnDecreaseAdult_Click(View view){
-        presenter.onButtonDecreaseAdultClicked();
-    }
-
-    public void btnIncreaseAdult_Click(View view){
-        presenter.onButtonIncreaseAdultClick();
-    }
-
-    public void btnDecreaseChildren_Click(View view){
-        presenter.onButtonDecreaseChildrenClicked();
-    }
-
-    public void btnIncreaseChildren_Click(View view){
-        presenter.onButtonIncreaseChildrenClicked();
-    }
-
-    public void btnDecreaseBaby_Click(View view){
-        presenter.onButtonDecreaseBabyClicked();
-    }
-
-    public void btnIncreaseBaby_Click(View view){
-        presenter.onButtonIncreaseBabyClicked();
-    }
-
-
-    @Override
-    public void disableBtnAccept() {
-        btnAccept.setVisibility(View.INVISIBLE);
+    public void showPrice(int adultPrice, int childrenPrice, int babyPrice) {
+        txtAdultPrice.setText(String.valueOf(adultPrice));
+        txtChildrenPrice.setText(String.valueOf(childrenPrice));
+        txtBabyPrice.setText(String.valueOf(babyPrice));
     }
 
     @Override
-    public void enableBtnAccept() {
-        btnAccept.setVisibility(View.VISIBLE);
+    public void showNumberAvailableSlot(int availableNumber) {
+        txtNumberAvailableSlot.setText(String.valueOf(availableNumber));
     }
 
     @Override
-    public void updateAdultNumber(int number) {
-        txtNumberofAdult.setText(number+"");
+    public void addTourists(int numberOfTourist, int touristType, int price) {
+        tourBookingAdapter.addTourists(numberOfTourist, touristType, price);
     }
 
     @Override
-    public void updateChildrenNumber(int number) {
-        txtNumberofChildren.setText(number+"");
+    public void removeTourists(int numberOfTourist, int touristType) {
+        tourBookingAdapter.removeTourists(numberOfTourist, touristType);
     }
 
     @Override
-    public void updateBabyNumber(int number) {
-        txtNumberofBaby.setText(number+"");
+    public void gotoLoginActivity() {
+        startActivity(new Intent(BookTourActivity.this, LoginActivity.class));
     }
+
+    @Override
+    public void gotoCardAuthorizationActivity(int authorizationCode, ArrayList<TourBookingDetail> tourBookingDetailList,
+                                              String tourStartDateId, Integer numberOfAdult, Integer numberOfChildren,
+                                              Integer numberOfBaby, Integer money, String ownerId) {
+        Intent intent = new Intent(BookTourActivity.this, CardAuthorizationActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("bookingDetailList", tourBookingAdapter.getTourists());
+        intent.putExtras(bundle);
+        intent.putExtra("tourStartId", tourStartDateId);
+        intent.putExtra("numberOfAdult", numberOfAdult);
+        intent.putExtra("numberOfChildren", numberOfChildren);
+        intent.putExtra("numberOfBaby", numberOfBaby);
+        intent.putExtra("money", money);
+        intent.putExtra("owner", ownerId);
+        TourBookingDetail tourBookingDetail = (TourBookingDetail) intent.getParcelableArrayListExtra("bookingDetailList").get(0);
+        Log.e("asdasdasdasd: ", tourBookingDetail.touristName+" "+tourBookingDetail.touristEmail
+                +" "+tourBookingDetail.dayOfBirth+" "+tourBookingDetail.monthOfBirth+" "+tourBookingDetail.yearOfBirth
+                +" "+tourBookingDetail.male+" "+tourBookingDetail.price+ " "+tourBookingDetail.touristType );
+        startActivityForResult(intent, authorizationCode);
+    }
+
+    @Override
+    public void showButtonNext() {
+        btnNext.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideButtonNext() {
+        btnNext.setVisibility(View.GONE);
+    }
+
 
     @Override
     public void notify(String message) {
@@ -150,4 +155,56 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView 
     }
 
 
+    @Override
+    public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+        if (actionId == EditorInfo.IME_ACTION_DONE || keyEvent != null &&
+                keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
+                keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            if (keyEvent == null || !keyEvent.isShiftPressed()) {
+                switch (textView.getId()) {
+                    case R.id.etxtNumberOfAdult:
+                        presenter.onEtxtNumberOfAdultTypingStoped(Integer.parseInt(etxtNumberOfAdult.getText().toString()));
+                        break;
+                    case R.id.etxtNumberOfChildren:
+                        presenter.onEtxtNumberOfChildrenTypingStoped(Integer.parseInt(etxtNumberOfChildren.getText().toString()));
+                        break;
+                    case R.id.etxtNumberOfBaby:
+                        presenter.onEtxtNumberOfBabyTypingStoped(Integer.parseInt(etxtNumberOfBaby.getText().toString()));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+        if (!b) {
+            switch (view.getId()) {
+                case R.id.etxtNumberOfAdult:
+                    presenter.onEtxtNumberOfAdultTypingStoped(Integer.parseInt(etxtNumberOfAdult.getText().toString()));
+                    break;
+                case R.id.etxtNumberOfChildren:
+                    presenter.onEtxtNumberOfChildrenTypingStoped(Integer.parseInt(etxtNumberOfChildren.getText().toString()));
+                    break;
+                case R.id.etxtNumberOfBaby:
+                    presenter.onEtxtNumberOfBabyTypingStoped(Integer.parseInt(etxtNumberOfBaby.getText().toString()));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public TourBookingAdapter getBookingAdapter() {
+        return tourBookingAdapter;
+    }
 }

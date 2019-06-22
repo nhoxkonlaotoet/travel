@@ -14,6 +14,6 @@ import java.util.List;
 public interface TourStartView {
     void showTourStartDate(List<TourStartDate> listTourStartDate, boolean isCompany);
     void notifyFailure(Exception ex);
-    void gotoBooktourActivity(String tourStartId);
+    void gotoBooktourActivity(String tourStartId, String ownerId);
     Context getContext();
 }

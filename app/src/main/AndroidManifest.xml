@@ -75,15 +75,12 @@
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider1032862680232777"
+            android:authorities="com.facebook.app.FacebookContentProvider2953149691391653"
             android:exported="true" />
 
         <activity android:name=".views.activities.TourBookingDetailActivity" />
-        <activity android:name=".views.activities.SearchTourActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.activities.HomeActivity" />
-        </activity>
+        <activity android:name=".views.activities.SearchTourActivity"></activity>
+        <activity android:name=".views.activities.CardAuthorizationActivity"></activity>
     </application>
 
 </manifest>

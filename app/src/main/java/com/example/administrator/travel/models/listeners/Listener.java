@@ -30,6 +30,7 @@ import java.util.List;
 public interface Listener {
     interface OnGetAboutToDepartToursFinishedListener {
         void onGetAboutToDepartToursSuccess(List<Tour> tours, HashMap<String, TourStartDate> tourStartMap);
+
         void onGetAboutToDepartToursFail(Exception ex);
     }
 
@@ -97,21 +98,21 @@ public interface Listener {
         void onGetCompanyFail(Exception ex);
     }
 
-    interface OnGetCompanyLogoFinishedListener{
+    interface OnGetCompanyLogoFinishedListener {
         void onGetCompanyLogoSuccess(String companyId, Bitmap companyLogo);
 
     }
 
-    interface OnGetReviewsTourFinishedListener {
-        void onGetReviewTourSuccess(List<Rating> ratingList);
+    interface OnGetReviewTourFinishedListener {
+        void onGetReviewTourSuccess(Rating rating);
 
         void onGetReviewTourFail(Exception ex);
     }
 
-    interface OnGetRatingTourFinishedListener {
-        void onGetRatingTourSuccess(float value, long count);
+    interface OnGetReviewsTourFinishedListener {
+        void onGetReviewsTourSuccess(List<Rating> ratingList);
 
-        void onGetRatingTourFail(Exception ex);
+        void onGetReviewsTourFail(Exception ex);
     }
 
     interface OnCheckRatedFinishedListener {
@@ -140,7 +141,7 @@ public interface Listener {
         void onTourFinished();
     }
 
-    interface OnGetCompaniesFinishedListener{
+    interface OnGetCompaniesFinishedListener {
         void onGetCompaniesSuccess(List<Company> companyList);
 
         void onGetCompaniesFail(Exception ex);
@@ -273,20 +274,41 @@ public interface Listener {
 
     interface OnGetToursFinishedListener {
         void onGetToursSuccess(List<Tour> tourList, HashMap<String, Double> ratingMap);
+
         void onGetToursFail(Exception ex);
     }
+
     interface OnGetLikedToursFinishedListener {
         void onGetLikedToursSuccess(List<Tour> tourList, HashMap<String, Double> ratingMap);
+
         void onGetLikedToursFail(Exception ex);
     }
 
     interface OnGetToursByDestinationFinishedListener {
         void onGetToursByDestinationSuccess(List<Tour> tourList, HashMap<String, Double> ratingMap);
+
         void onGetToursByDestinationFail(Exception ex);
     }
 
     interface OnGetToursByOnwerFinishedListener {
         void onGetToursByOwnerSuccess(List<Tour> tourList, HashMap<String, Double> ratingMap);
+
         void onGetToursByOwnerFail(Exception ex);
+    }
+
+    interface OnLoadImageThumpnailFinishedListener {
+        void onLoadImageThumpnailSuccess(String fileName, Bitmap image);
+    }
+
+    interface OnCheckValidCardFinishedListener {
+        void onCheckValidCardSuccess(Boolean isValid);
+
+        void onCheckValidCardFail(Exception ex);
+    }
+
+    interface OnCheckJoinedTourFinishedListener {
+        void onCheckJoinedTourSuccess(Boolean joined);
+
+        void onCheckJoinedTourFail(Exception ex);
     }
 }

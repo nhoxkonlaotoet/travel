@@ -3,8 +3,8 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_event_note_black_24dp"
-        android:title="@string/title_tours" />
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_my_tours"
@@ -16,9 +16,9 @@
         android:icon="@android:drawable/sym_action_chat"
         android:title="@string/title_chat"/>
     <item
-        android:id="@+id/navigation_setting"
-        android:icon="@drawable/ic_settings_black_24dp"
-        android:title="@string/title_setting0"
+        android:id="@+id/navigation_more"
+        android:icon="@drawable/ic_more_horiz_black_24dp"
+        android:title="@string/title_more"
 
         />
 

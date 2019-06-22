@@ -1,29 +1,22 @@
 package com.example.administrator.travel;
 
-import android.app.AlertDialog;
 import android.app.Service;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.content.pm.PackageManager;
 import android.widget.Toast;;
 import com.example.administrator.travel.models.bases.ParticipantInteractor;
 import com.example.administrator.travel.models.bases.UserInteractor;
 import com.example.administrator.travel.models.entities.MyLatLng;
 import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
-import com.example.administrator.travel.models.listeners.Listener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -48,7 +41,7 @@ public class LocationService extends Service implements GoogleApiClient.OnConnec
         participantInteractor = new ParticipantInteractorImpl();
         userInteractor = new UserInteractorImpl();
 
-        userId = userInteractor.getUserId(this);
+        userId = userInteractor.getUserId();
         tourStartId = participantInteractor.getJoiningTourStartId(userId, this);
     }
 

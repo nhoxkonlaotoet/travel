@@ -3,7 +3,6 @@ package com.example.administrator.travel.presenters.impls;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.example.administrator.travel.LocationService;
@@ -48,8 +47,8 @@ public class SelectMyTourPresenterImpl implements SelectMyTourPresenter, Listene
 
     @Override
     public void onViewCreated() {
-        if (userInteractor.isLogged(view.getContext())) {
-            userId = userInteractor.getUserId(view.getContext());
+        if (userInteractor.isLogged()) {
+            userId = userInteractor.getUserId();
             isCompany = companyInteractor.isCompany(userId, view.getContext());
             view.showLayoutMyTours();
             view.hideLayoutLogin();

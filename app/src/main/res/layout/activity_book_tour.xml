@@ -4,314 +4,246 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorCloudLight"
     tools:context="com.example.administrator.travel.views.activities.BookTourActivity">
-    <TextView
-        android:id="@+id/txtTourName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="tour name"
-        android:textAlignment="center"
-        android:textSize="22sp"
-        android:maxLines="2"
-        android:textColor="@color/colorLicoriceDark"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        />
-    <TableLayout
-        android:id="@+id/tableLayoutPrice"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:layout_below="@id/txtTourName"
-        android:background="@drawable/newsfeed_item_background"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
-        <TableRow
-            android:background="#ECEFF1"
-            android:minHeight="60dp">
-            <TextView android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Loại khách"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/colorLicoriceDark">
-            </TextView>
-            <TextView android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Giá tour"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/colorLicoriceDark">
-            </TextView>
-            <TextView android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Số người"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/colorLicoriceDark">
-            </TextView>
 
-        </TableRow>
-        <TableRow
-            android:minHeight="60dp">
-            <TextView android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Người lớn"
-                android:layout_weight="1"
-                android:gravity="left|center"
-                android:textColor="@color/colorLicoriceDark"
-                android:paddingLeft="10dp">
-            </TextView>
-            <TextView
-                android:id="@+id/txtAdultPrice"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="10000000đ"
-                android:layout_weight="1"
-                android:gravity="left|center"
-                android:textColor="@color/colorLicoriceDark"
-                android:paddingLeft="10dp">
-            </TextView>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_weight="1">
-                <Button
-                    android:id="@+id/btnDecreaseAdult"
-                    android:layout_width="10dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:text="-"
-                    android:onClick="btnDecreaseAdult_Click"/>
-                <EditText
-                    android:id="@+id/txtNumberofAdult"
-                    android:layout_width="10dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:text="0"
-                    android:focusable="false"
-                    android:textAlignment="center"
-                    android:textSize="13dp"/>
-                <Button
-                    android:id="@+id/btnIncreaseAdult"
-                    android:layout_width="10dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:text="+"
-                    android:onClick="btnIncreaseAdult_Click"/>
-            </LinearLayout>
-
-        </TableRow>
-        <TableRow
-            android:minHeight="60dp">
-            <TextView android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Trẻ em"
-                android:layout_weight="1"
-                android:gravity="left|center"
-                android:textColor="@color/colorLicoriceDark"
-                android:paddingLeft="10dp">
-            </TextView>
-            <TextView
-                android:id="@+id/txtchildrenPrice"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="7000000đ"
-                android:layout_weight="1"
-                android:gravity="left|center"
-                android:textColor="@color/colorLicoriceDark"
-                android:paddingLeft="10dp">
-            </TextView>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_weight="1">
-                <Button
-                    android:id="@+id/btnDecreaseChildren"
-                    android:layout_width="10dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:text="-"
-                    android:onClick="btnDecreaseChildren_Click"/>
-                <EditText
-                    android:id="@+id/txtNumberofChildren"
-                    android:layout_width="10dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:text="0"
-                    android:focusable="false"
-                    android:textAlignment="center"
-                    android:textSize="13dp"/>
-                <Button
-                    android:id="@+id/btnIncreaseChildren"
-                    android:layout_width="10dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:text="+"
-                    android:onClick="btnIncreaseChildren_Click"/>
-            </LinearLayout>
-        </TableRow>
-        <TableRow
-            android:minHeight="60dp"
-            android:layout_marginBottom="2dp">
-            <TextView android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Em bé"
-                android:layout_weight="1"
-                android:gravity="left|center"
-                android:textColor="@color/colorLicoriceDark"
-                android:paddingLeft="10dp">
-            </TextView>
-            <TextView
-                android:id="@+id/txtBabyPrice"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="5000000đ"
-                android:layout_weight="1"
-                android:gravity="left|center"
-                android:textColor="@color/colorLicoriceDark"
-                android:paddingLeft="10dp">
-            </TextView>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_weight="1">
-                <Button
-                    android:id="@+id/btnDecreaseBaby"
-                    android:layout_width="10dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:text="-"
-                    android:onClick="btnDecreaseBaby_Click"/>
-                <EditText
-                    android:id="@+id/txtNumberofBaby"
-                    android:layout_width="10dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:text="0"
-                    android:focusable="false"
-                    android:textAlignment="center"
-                    android:textSize="13dp"/>
-                <Button
-                    android:id="@+id/btnIncreaseBaby"
-                    android:layout_width="10dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:text="+"
-                    android:onClick="btnIncreaseBaby_Click"/>
-            </LinearLayout>
-        </TableRow>
-    </TableLayout>
-    <LinearLayout
-        android:id="@+id/layoutNumberofPeople"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tableLayoutPrice"
-        android:orientation="horizontal"
-        android:layout_margin="20dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Còn "
-            android:textSize="18sp"
-            android:textColor="@color/colorLicoriceDark"/>
-        <TextView
-            android:id="@+id/txtNumberofPeople"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="18sp"
-            android:textColor="@color/colorKiwiDark"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" chỗ"
-            android:textSize="18sp"
-            android:textColor="@color/colorLicoriceDark"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/layoutNumberofPeople"
-        android:orientation="horizontal"
-        android:layout_marginTop="40dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:weightSum="2">
-        <RelativeLayout
-            android:id="@+id/btnAccept"
+        android:fillViewport="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:clickable="true"
-            android:background="@drawable/background_transparent_button"
-            android:layout_weight="1"
-            android:onClick="btnAccept_Click">
-            <ImageView
-                android:id="@+id/icon_accept"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_tick"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/icon_accept"
-                android:layout_alignTop="@id/icon_accept"
-                android:layout_alignBottom="@+id/icon_accept"
-                android:text="Đồng ý"
-                android:textColor="@color/colorLicoriceDark"
-                android:textSize="16sp"
-                android:gravity="center|left"
-                android:textAllCaps="false"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/btnCancel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:background="@drawable/background_transparent_button"
-            android:onClick="btnCancel_Click">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/icon_cancel"
+            <TableLayout
+                android:id="@+id/tableLayoutPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorCreme">
+
+                <TableRow
+                    android:background="@drawable/background_toolbar"
+                    android:minHeight="@dimen/toolbar_height">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Loại khách"
+                        android:textColor="@color/colorCreme"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Giá tour"
+                        android:textColor="@color/colorCreme"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Số người"
+                        android:textColor="@color/colorCreme"></TextView>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginLeft="10dp"
+                    android:minHeight="40dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:paddingLeft="10dp"
+                        android:text="Người lớn"
+                        android:textColor="@color/colorLicoriceDark" />
+
+                    <TextView
+                        android:id="@+id/txtAdultPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:paddingLeft="10dp"
+                        android:text="10000000đ"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/etxtNumberOfAdult"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/background_edit_text"
+                            android:imeOptions="actionDone"
+                            android:inputType="numberDecimal"
+                            android:singleLine="true"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginLeft="10dp"
+                    android:minHeight="40dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:paddingLeft="10dp"
+                        android:text="Trẻ em"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <TextView
+                        android:id="@+id/txtchildrenPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:paddingLeft="10dp"
+                        android:text="7000000đ"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/etxtNumberOfChildren"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/background_edit_text"
+                            android:imeOptions="actionDone"
+                            android:inputType="numberDecimal"
+                            android:singleLine="true"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:minHeight="40dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:paddingLeft="10dp"
+                        android:text="Em bé"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <TextView
+                        android:id="@+id/txtBabyPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:paddingLeft="10dp"
+                        android:text="5000000đ"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/etxtNumberOfBaby"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/background_edit_text"
+                            android:imeOptions="actionDone"
+                            android:inputType="numberDecimal"
+                            android:singleLine="true"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutNumberofPeople"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_cancel"
-                android:scaleY="0.8"
-                android:scaleX="0.8"
-                android:scaleType="center"/>
-            <TextView
-                android:layout_width="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Còn "
+                    android:textColor="@color/colorLicoriceDark"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txtNumberAvailableSlot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/colorRaspberry"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" chỗ"
+                    android:textColor="@color/colorLicoriceDark"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewBooking"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/icon_cancel"
-                android:layout_alignTop="@id/icon_cancel"
-                android:layout_alignBottom="@+id/icon_cancel"
-                android:text="Hủy"
-                android:textColor="@color/colorLicoriceDark"
-                android:textSize="16sp"
-                android:gravity="center|left"
-                android:textAllCaps="false"/>
-        </RelativeLayout>
-    </LinearLayout>
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp">
+
+                <Button
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_banana_button"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:text="Tiếp theo"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorCreme" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
 
 </RelativeLayout>

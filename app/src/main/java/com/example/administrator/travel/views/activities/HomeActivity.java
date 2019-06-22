@@ -9,22 +9,51 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.administrator.travel.R;
+import com.example.administrator.travel.models.entities.BankCard;
 import com.example.administrator.travel.models.entities.Tour;
+import com.example.administrator.travel.models.entities.TourBooking;
+import com.example.administrator.travel.models.entities.TourBookingDetail;
+import com.example.administrator.travel.models.entities.TourBookingRequest;
+import com.example.administrator.travel.models.retrofit.ApiUtils;
 import com.example.administrator.travel.views.fragments.ChatManagerFragment;
 import com.example.administrator.travel.views.fragments.NewsFeedFragment;
 import com.example.administrator.travel.views.fragments.SelectMyTourFragment;
 import com.example.administrator.travel.views.fragments.SettingFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class HomeActivity extends AppCompatActivity {
-    Integer i=-1;
+    Integer i = -1;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -34,37 +63,37 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    if(i==0)
+                    if (i == 0)
                         return false;
-                    i=0;
+                    i = 0;
                     NewsFeedFragment f = new NewsFeedFragment();
-                    android.app.FragmentManager manager= getFragmentManager();
-                    manager.beginTransaction().replace(R.id.contenLayout,f,f.getTag()).commit();
+                    android.app.FragmentManager manager = getFragmentManager();
+                    manager.beginTransaction().replace(R.id.contenLayout, f, f.getTag()).commit();
                     return true;
 
                 case R.id.navigation_my_tours:
-                    if(i==1)
+                    if (i == 1)
                         return false;
-                    i=1;
+                    i = 1;
                     SelectMyTourFragment f1 = new SelectMyTourFragment();
-                    android.app.FragmentManager manager1= getFragmentManager();
-                    manager1.beginTransaction().replace(R.id.contenLayout,f1,f1.getTag()).commit();
+                    android.app.FragmentManager manager1 = getFragmentManager();
+                    manager1.beginTransaction().replace(R.id.contenLayout, f1, f1.getTag()).commit();
                     return true;
                 case R.id.navigation_chat:
-                    if(i==2)
+                    if (i == 2)
                         return false;
-                    i=2;
+                    i = 2;
                     ChatManagerFragment chatManagerFragment = new ChatManagerFragment();
                     android.app.FragmentManager manager2 = getFragmentManager();
-                    manager2.beginTransaction().replace(R.id.contenLayout,chatManagerFragment,chatManagerFragment.getTag()).commit();
+                    manager2.beginTransaction().replace(R.id.contenLayout, chatManagerFragment, chatManagerFragment.getTag()).commit();
                     return true;
-                case R.id.navigation_setting:
-                    if(i==3)
+                case R.id.navigation_more:
+                    if (i == 3)
                         return false;
-                    i=3;
+                    i = 3;
                     SettingFragment f3 = new SettingFragment();
-                    android.app.FragmentManager manager3= getFragmentManager();
-                    manager3.beginTransaction().replace(R.id.contenLayout,f3,f3.getTag()).commit();
+                    android.app.FragmentManager manager3 = getFragmentManager();
+                    manager3.beginTransaction().replace(R.id.contenLayout, f3, f3.getTag()).commit();
                     return true;
             }
             return false;
@@ -81,11 +110,12 @@ public class HomeActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);
 
+    }
 
-        //init database
+    //init database
 
 
- //           FirebaseDatabase database = FirebaseDatabase.getInstance();
+    //           FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        DatabaseReference userRef = database.getReference("tours");
 ////        String key;
 ////
@@ -119,8 +149,8 @@ public class HomeActivity extends AppCompatActivity {
 //        tourBooking.removeValue();
 //        key=tourStart.push().getKey();
 //        tourStart.child("-LTmGpSopuUhKOxQiujF").setValue(
- //               new TourStartDate(1541824295000L,5929000,4190000,2450000,
- //                       50,0,0,true,"-LQ2GIaiHuH4LmUVogi5"));
+    //               new TourStartDate(1541824295000L,5929000,4190000,2450000,
+    //                       50,0,0,true,"-LQ2GIaiHuH4LmUVogi5"));
 ////            tourBooking.child("-LQ2GIaiHuH4LmUVogi5").child(key+ServerValue.TIMESTAMP+"-LELM0FvJODmxnoRhFiG").setValue(
 ////                    new TourBooking("-LELM0FvJODmxnoRhFiG",key,ServerValue.TIMESTAMP,1,1,0,  0));
 ////            tourBooking.child("-LQ2GIaiHuH4LmUVogi5").child(key+ServerValue.TIMESTAMP+"-LELTicEhxKf9k4i_tHN").setValue(
@@ -483,10 +513,8 @@ public class HomeActivity extends AppCompatActivity {
 //                "", 5,4,"Vietjet Air",true, 8729000  ,  6022000 , 3315000,
 //                "-LUUOokQ42CGLHozCxRS", destinationMap,"NSz7g9VzkGRfciTSQWsZYdW6KRH3" ));
 
-        //String name, String description, Integer days, Integer nights, String vihicle, Boolean state,
-        //Integer adultPrice, Integer childrenPrice, Integer babyPrice,String origin, HashMap<String,Boolean> destination, String owner)
-
-    }
+    //String name, String description, Integer days, Integer nights, String vihicle, Boolean state,
+    //Integer adultPrice, Integer childrenPrice, Integer babyPrice,String origin, HashMap<String,Boolean> destination, String owner)
 
 
     @Override
@@ -498,6 +526,7 @@ public class HomeActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }
 
 

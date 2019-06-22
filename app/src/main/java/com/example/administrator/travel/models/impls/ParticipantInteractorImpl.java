@@ -280,8 +280,8 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
     public void setStreamPeopleLocationChange(String tourStartId, final Listener.OnGetPeopleLocationFinishedListener listener) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference participantRef = database.getReference(PARTICIPANTS_REF);
-        Query query = participantRef.orderByChild("tourStartId").equalTo(tourStartId);
-        query.addValueEventListener(new ValueEventListener() {
+        Query findPeopleInTourQuery = participantRef.orderByChild("tourStartId").equalTo(tourStartId);
+        findPeopleInTourQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Participant> participantList = new ArrayList<>();
@@ -297,6 +297,55 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
             public void onCancelled(DatabaseError databaseError) {
                 listener.onGetPeopleLocationFailure(databaseError.toException());
 
+            }
+        });
+    }
+
+    @Override
+    public void checkJoinedTour(String userId, final String tourId, final Listener.OnCheckJoinedTourFinishedListener listener) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference participantRef = database.getReference(PARTICIPANTS_REF);
+        Query findTourStartIdQuery = participantRef.orderByChild("userId").equalTo(userId);
+        findTourStartIdQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final boolean[] checkFlags = new boolean[(int) dataSnapshot.getChildrenCount()];
+                final int[] i = {0};
+                final boolean[] cancel = {false};
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String tourStartId = snapshot.child("tourStartId").getValue(String.class);
+                    DatabaseReference tourStartDateRef = database.getReference(TOUR_START_DATE_REF);
+                    tourStartDateRef.child(tourStartId).child("tourId").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (cancel[0])
+                                return;
+                            String tourID = dataSnapshot.getValue(String.class);
+                            if (tourID.equals(tourId)) {
+                                cancel[0] = true;
+                                listener.onCheckJoinedTourSuccess(true);
+                            } else {
+                                checkFlags[i[0]++] = true;
+                                for (int j = 0; j < checkFlags.length; j++)
+                                    if (!checkFlags[j])
+                                        return;
+                                cancel[0] = true;
+                                listener.onCheckJoinedTourSuccess(false);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            listener.onCheckJoinedTourFail(databaseError.toException());
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onCheckJoinedTourFail(databaseError.toException());
             }
         });
     }

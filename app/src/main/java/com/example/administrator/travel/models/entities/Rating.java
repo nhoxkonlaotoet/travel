@@ -18,6 +18,7 @@ public class Rating {
     public Long ratingTime;
     public int numberOfImages;
     public String content;
+    public HashMap<String,Boolean> likes;
     public Rating() {
     }
 
@@ -35,6 +36,7 @@ public class Rating {
         result.put("numberOfImages", numberOfImages);
         result.put("content", content);
         result.put("ratingTime", ServerValue.TIMESTAMP);
+        result.put("likes",likes);
         return result;
     }
 }

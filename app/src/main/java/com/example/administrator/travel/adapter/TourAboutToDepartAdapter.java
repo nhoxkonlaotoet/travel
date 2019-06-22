@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +35,8 @@ import java.util.List;
  * Created by Administrator on 24/12/2018.
  */
 
-public class TourAboutToDepartAdapter extends RecyclerView.Adapter<TourAboutToDepartAdapter.ViewHolder> implements Listener.OnGetTourImageFinishedListener, Listener.OnLoadImageFinishedListener {
+public class TourAboutToDepartAdapter extends RecyclerView.Adapter<TourAboutToDepartAdapter.ViewHolder>
+        implements Listener.OnGetTourImageFinishedListener, Listener.OnLoadImageThumpnailFinishedListener {
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private RecyclerView parent;
@@ -51,6 +51,7 @@ public class TourAboutToDepartAdapter extends RecyclerView.Adapter<TourAboutToDe
     private String toursPath;
     private boolean[] loadPhotoFlags;
     private boolean externalStoragePermissionGranted;
+    int photoWidth, photoHeight;
 
     public TourAboutToDepartAdapter(Context context, List<Tour> tourList, HashMap<String, TourStartDate> tourStartMap) {
         if (context == null)
@@ -69,6 +70,9 @@ public class TourAboutToDepartAdapter extends RecyclerView.Adapter<TourAboutToDe
             externalStorageInteractor = new ExternalStorageInteractorImpl();
             toursPath = context.getString(R.string.external_storage_path_tours);
         }
+
+        photoWidth = (int) context.getResources().getDimension(R.dimen.tour_image_thumpnail_width);
+        photoHeight = (int) context.getResources().getDimension(R.dimen.tour_image_thumpnail_height);
     }
 
     @Override
@@ -90,14 +94,15 @@ public class TourAboutToDepartAdapter extends RecyclerView.Adapter<TourAboutToDe
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Tour tour = tourList.get(position);
         TourStartDate tourStartDate = tourStartMap.get(tour.id);
-        Random rand = new Random();
-        int getRandomTourPhoto = rand.nextInt(tour.numberofImages);
+
 
         if (!loadPhotoFlags[position]) {
             String currentTourPath = new StringBuilder(toursPath).append(tour.id).append("/").toString();
+            Random rand = new Random();
+            int getRandomTourPhoto = rand.nextInt(tour.numberofImages);
             if (externalStoragePermissionGranted
                     && externalStorageInteractor.isExistFile(currentTourPath, tour.id + getRandomTourPhoto)) {
-                externalStorageInteractor.loadBitmapFromExternalFile(currentTourPath, tour.id + getRandomTourPhoto, this);
+                externalStorageInteractor.getBitmapThumpnailFromExternalFile(currentTourPath, tour.id + getRandomTourPhoto, this);
                 Log.e("fromSDcard0: ", tour.name);
             } else {
                 tourInteractor.getTourImage(getRandomTourPhoto, tour.id, this);
@@ -137,21 +142,18 @@ public class TourAboutToDepartAdapter extends RecyclerView.Adapter<TourAboutToDe
 
     @Override
     public void onGetTourImageSuccess(int pos, final String tourId, final Bitmap tourImage) {
-        updateImage(tourId, tourImage);
+        Bitmap thumb = Bitmap.createScaledBitmap(tourImage, photoWidth, photoHeight, false);
+        updateImage(tourId, thumb);
         if (externalStoragePermissionGranted) {
             String currentTourPath = new StringBuilder(toursPath).append(tourId).append("/").toString();
             if (!externalStorageInteractor.isExistFile(currentTourPath, tourId + pos))
-                externalStorageInteractor.saveBitmapToExternalFile(currentTourPath, tourId + pos, tourImage);
+                externalStorageInteractor.saveBitmapToExternalFile(currentTourPath, tourId + pos, tourImage,50);
         }
     }
 
     @Override
-    public void onLoadImageSuccess(String fileName, Bitmap image) {
-        // filename =   IQWEAHDASDHQWEKJHQWJE0
-        // tourid =     IQWEAHDASDHQWEKJHQWJE
-        // file =                            0
-
-        updateImage(fileName.substring(0, fileName.length() - 2), image);
+    public void onLoadImageThumpnailSuccess(String fileName, Bitmap image) {
+        updateImage(fileName.substring(0, fileName.length() - 1), image);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -176,17 +178,14 @@ public class TourAboutToDepartAdapter extends RecyclerView.Adapter<TourAboutToDe
         }
     }
 
-    // convenience method for getting data at click position
     public Tour getItem(int pos) {
         return tourList.get(pos);
     }
 
-    // allows clicks events to be caught
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
-    // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onTourItemClick(View view, String tourId, String ownerId);
     }

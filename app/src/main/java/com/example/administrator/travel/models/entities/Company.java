@@ -14,16 +14,19 @@ public class Company {
     public String website;
     public MyLatLng location;
     public String address;
-    public Company(){}
+    public String bankAccountNumber;
 
-    public Company(String companyName, String shortName, String phoneNumber, String website, MyLatLng location,String address) {
-        this.id = id;
+    public Company() {
+    }
+
+    public Company(String companyName, String shortName, String phoneNumber, String website, MyLatLng location, String address, String bankAccountNumber) {
         this.companyName = companyName;
-        this.shortName=shortName;
+        this.shortName = shortName;
         this.phoneNumber = phoneNumber;
         this.website = website;
         this.location = location;
-        this.address=address;
+        this.address = address;
+        this.bankAccountNumber = bankAccountNumber;
     }
 
 
