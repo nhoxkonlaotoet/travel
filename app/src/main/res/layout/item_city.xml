@@ -2,8 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/city_image_thumpnail_width"
     android:layout_height="@dimen/city_image_thumpnail_height"
-    android:layout_marginLeft="2dp"
-    android:layout_marginRight="2dp">
+    android:layout_margin="1dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/tour" />
+            android:layout_margin="1dp"/>
 
         <TextView
             android:id="@+id/txtCityName"

@@ -95,7 +95,7 @@
             android:layout_height="1dp"
             android:background="@color/colorCloudDark"/>
         <RelativeLayout
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnLoginToSeeMore"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
             android:paddingLeft="10dp"

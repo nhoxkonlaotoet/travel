@@ -58,7 +58,7 @@ public class SettingFragment extends Fragment implements SettingView {
     }
 
     void mapping() {
-        btnLogin = getActivity().findViewById(R.id.btnLogin);
+        btnLogin = getActivity().findViewById(R.id.btnLoginToSeeMore);
         btnLogout = getActivity().findViewById(R.id.btnLogout);
         switchShareLocation = getActivity().findViewById(R.id.switchShareLocation);
         layoutShareLocation = getActivity().findViewById(R.id.layoutShareLocation);

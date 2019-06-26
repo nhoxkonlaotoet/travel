@@ -95,9 +95,9 @@ public class TourAboutToDepartAdapter extends RecyclerView.Adapter<TourAboutToDe
         Tour tour = tourList.get(position);
         TourStartDate tourStartDate = tourStartMap.get(tour.id);
 
+        String currentTourPath = toursPath + tour.id + "/";
 
         if (!loadPhotoFlags[position]) {
-            String currentTourPath = new StringBuilder(toursPath).append(tour.id).append("/").toString();
             Random rand = new Random();
             int getRandomTourPhoto = rand.nextInt(tour.numberofImages);
             if (externalStoragePermissionGranted

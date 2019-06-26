@@ -4,7 +4,6 @@ package com.example.administrator.travel.views.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
@@ -76,7 +75,7 @@ public class SelectMyTourFragment extends Fragment implements SelectMyTourView,
         layoutLogin = getActivity().findViewById(R.id.layoutLogin);
         layoutMyTours = getActivity().findViewById(R.id.layoutMyTours);
         recyclerViewMyTour = getActivity().findViewById(R.id.recyclerviewMyTour);
-        btnLogin = getActivity().findViewById(R.id.btnLogin);
+        btnLogin = getActivity().findViewById(R.id.btnLoginToSeeMyTour);
     }
 
     public void setBtnScanClick() {
