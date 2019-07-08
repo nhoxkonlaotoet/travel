@@ -33,13 +33,6 @@
             android:layout_toRightOf="@id/imgvUserAvatar"
             android:layout_below="@id/txtUserName"/>
 
-        <ImageButton
-            android:id="@+id/btnOption"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:srcCompat="@drawable/ic_more_horiz_black_24dp"
-            android:background="@drawable/background_transparent_button"
-            android:layout_alignParentRight="true"/>
     </RelativeLayout>
     <TextView
         android:id="@+id/txtActivityContent"
@@ -48,12 +41,4 @@
         android:layout_height="wrap_content"
         android:text="Hôm nay thật toẹt vời?"
         android:textColor="@color/colorLicoriceDark"/>
-    <RelativeLayout
-        android:id="@+id/layoutContainer"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_height="@dimen/container_height">
-
-    </RelativeLayout>
 </LinearLayout>

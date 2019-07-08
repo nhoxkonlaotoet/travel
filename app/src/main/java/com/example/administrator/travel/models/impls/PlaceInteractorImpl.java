@@ -31,7 +31,7 @@ import retrofit2.Response;
 public class PlaceInteractorImpl implements PlaceInteractor {
     @Override
     public void getNearby(String type, LatLng location, String apiKey, final Listener.OnGetNearbyFinishedListener listener) {
-        ApiUtils.getMapsService().getNearby(location.latitude + "," + location.longitude, type, "distance", apiKey)
+        ApiUtils.getMapsService().getNearby(location.latitude + "," + location.longitude, type, "distance", apiKey,"vi")
                 .enqueue(new Callback<NearbyResponse>() {
                     @Override
                     public void onResponse(Call<NearbyResponse> call, Response<NearbyResponse> response) {
@@ -50,13 +50,11 @@ public class PlaceInteractorImpl implements PlaceInteractor {
     @Override
     public void getNearby(String type, LatLng location, String pageToken, String apiKey, final Listener.OnGetNearbyFinishedListener listener) {
         ApiUtils.getMapsService().getNearby(location.latitude + "," + location.longitude, type,
-                "distance", true, true, pageToken, apiKey)
+                "distance", true, true, pageToken, apiKey,"vi")
                 .enqueue(new Callback<NearbyResponse>() {
                     @Override
                     public void onResponse(Call<NearbyResponse> call, Response<NearbyResponse> response) {
-                        Log.e("nearby append: ", response.raw().request() + "       ____");
                         try {
-                            Log.e("nearby append: ", response.raw().body().contentLength()+ "       ____");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -102,7 +100,6 @@ public class PlaceInteractorImpl implements PlaceInteractor {
                 .enqueue(new Callback<PlaceDetailResponse>() {
                     @Override
                     public void onResponse(Call<PlaceDetailResponse> call, Response<PlaceDetailResponse> response) {
-                        Log.e("getPlaceDetail: ", response.raw().request() + "       ____");
                         if (response.isSuccessful())
                             listener.onGetPlaceDetailSuccess(response.body().placeDetail);
                     }
@@ -113,4 +110,5 @@ public class PlaceInteractorImpl implements PlaceInteractor {
                     }
                 });
     }
+
 }

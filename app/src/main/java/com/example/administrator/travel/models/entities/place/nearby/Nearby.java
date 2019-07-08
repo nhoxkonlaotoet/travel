@@ -60,8 +60,6 @@ public class Nearby{
     @Expose
     public Integer priceLevel;
 
-    @Ignore
-    public Bitmap photo;
     @Override
     public String toString() {
         return openingHours==null?"null":openingHours.openNow + " ." + priceLevel+".";

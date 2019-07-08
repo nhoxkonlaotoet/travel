@@ -1,35 +1,10 @@
 package com.example.administrator.travel.views.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.example.administrator.travel.R;
-import com.example.administrator.travel.adapter.CustomRecyclerSearchAdapter;
-import com.example.administrator.travel.models.entities.UserInformation;
-import com.example.administrator.travel.presenters.ChatSearchFriendPresenter;
-import com.example.administrator.travel.presenters.ChatSearchFriendPresenterImpl;
-import com.example.administrator.travel.views.ChatSearchFriendView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Henry
  */
 
-//public class ChatSearchFriendsFragment extends Fragment implements ChatSearchFriendView {
+//public class ChatSearchFriendsFragment extends Fragment implements SearchFriendView {
 //
 //    SharedPreferences sharedPreferences;
 //    EditText edtSearch;
@@ -89,7 +64,7 @@ import java.util.List;
 //
 //        adapter.setOnItemClickedListener(new CustomRecyclerSearchAdapter.OnItemClickedListener() {
 //            @Override
-//            public void onItemClick(int index) {
+//            public void onItemFriendClick(int index) {
 //
 //                UserInformation user = listUserQuery.get(index);
 //

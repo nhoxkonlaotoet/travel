@@ -124,9 +124,12 @@ public class LocationService extends Service implements GoogleApiClient.OnConnec
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             if (googleApiClient.isConnected()) {
-                Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-                MyLatLng result = new MyLatLng(location.getLatitude(), location.getLongitude());
-                return result;
+               try {
+                   Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                   MyLatLng result = new MyLatLng(location.getLatitude(), location.getLongitude());
+                   return result;
+               }catch (Exception ex){}
+               return null;
             }
         }
         return null;

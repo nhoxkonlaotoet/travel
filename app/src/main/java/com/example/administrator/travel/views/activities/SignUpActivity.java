@@ -101,7 +101,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView{
 
                                 //
                                 FirebaseUser user = mAuth.getCurrentUser ();
-                                UserInformation info = new UserInformation (mName, finalMSex, mUser, "none",urlAvatarDefault);
+                                UserInformation info = new UserInformation (mName, rbtnMale.isChecked(), mUser, "none",urlAvatarDefault,0,0,0);
 
                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance ().getReference ();
                                 databaseReference.child("users").child (user.getUid ()).setValue (info);

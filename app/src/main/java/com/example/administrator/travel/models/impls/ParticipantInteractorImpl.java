@@ -111,6 +111,8 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
                     long joinTime = snapshot.child("joinedTime").getValue(Long.class);
                     if (joinTime > participant.joinedTime) {
                         participant = snapshot.getValue(Participant.class);
+                        Log.e( "near participate: ", participant.tourStartId);
+
                     }
                 }
                 if (participant.joinedTime != 0L) {
@@ -122,8 +124,11 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
                             if (!tourFinished) {
                                 TourStartDate tourStartDate = dataSnapshot.getValue(TourStartDate.class);
                                 tourStartDate.id = dataSnapshot.getKey();
+                                Log.e( "onDataChange: ", "1293789172839612378");
                                 listener.onCheckJoiningTourTrue(tourStartDate.tourId, tourStartDate.id, tourStartDate.tourGuide);
                             }
+                            else
+                                listener.onCheckJoingTourFail(new Exception("tour đã kết thúc"));
                         }
 
                         @Override

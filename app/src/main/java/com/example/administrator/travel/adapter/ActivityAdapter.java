@@ -111,7 +111,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView txtUserName, txtActivityTime, txtActivityContent;
         ImageView imgvUserAvatar;
-        ImageButton btnOption;
+       // ImageButton btnOption;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -119,7 +119,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
             txtActivityTime = itemView.findViewById(R.id.txtActivityTime);
             txtActivityContent = itemView.findViewById(R.id.txtActivityContent);
             imgvUserAvatar = itemView.findViewById(R.id.imgvUserAvatar);
-            btnOption = itemView.findViewById(R.id.btnOption);
+           // btnOption = itemView.findViewById(R.id.btnOption);
         }
 
         @Override

@@ -89,7 +89,7 @@ public class NearbyFragment extends Fragment implements NearbyView, NearbyAdapte
 
     @Override
     public void showNearbys(List<Nearby> nearbyList, MyLatLng mylocation) {
-        nearbyAdapter = new NearbyAdapter(getContext(), nearbyList, mylocation);
+        nearbyAdapter = new NearbyAdapter(getContext(), nearbyList, mylocation,true);
         nearbyAdapter.setClickListener(this);
         recyclerViewNearby.setAdapter(nearbyAdapter);
 

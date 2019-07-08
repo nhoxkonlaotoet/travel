@@ -12,5 +12,4 @@ public interface CityInteractor {
     void getCities(Listener.OnGetCitiesFinishedListener listener);
 
     void getCityPhoto(String cityId, Listener.OnLoadCityPhotoFinishedListener listener);
-
 }

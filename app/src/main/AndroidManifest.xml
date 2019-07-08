@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.administrator.travel">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -24,6 +23,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".views.activities.CreateActivityActivity"></activity>
+        <activity android:name=".views.activities.UpdateUserProfileActivity" />
+        <activity
+            android:name=".views.activities.UserProfileActivity"
+            android:label="@string/title_activity_user_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
@@ -55,7 +61,7 @@
         <activity android:name=".views.activities.PostActivity" />
         <activity android:name=".views.activities.InfoUserSearchActivity" />
         <activity android:name=".views.activities.UpdateInfoAccountActivity" />
-        <activity android:name=".views.activities.ChatSearchFriendsActivity" />
+        <activity android:name=".views.activities.SearchFriendsActivity" />
         <activity android:name=".views.activities.ChatMessagerActivity" />
         <activity android:name=".views.activities.PreLoadingActivity">
             <intent-filter>
@@ -79,8 +85,8 @@
             android:exported="true" />
 
         <activity android:name=".views.activities.TourBookingDetailActivity" />
-        <activity android:name=".views.activities.SearchTourActivity"></activity>
-        <activity android:name=".views.activities.CardAuthorizationActivity"></activity>
+        <activity android:name=".views.activities.SearchTourActivity" />
+        <activity android:name=".views.activities.CardAuthorizationActivity" />
     </application>
 
 </manifest>

@@ -12,5 +12,4 @@
     <dimen name="tour_image_thumpnail_width">150dp</dimen>
     <dimen name="city_image_thumpnail_height">120dp</dimen>
     <dimen name="city_image_thumpnail_width">160dp</dimen>
-
 </resources>

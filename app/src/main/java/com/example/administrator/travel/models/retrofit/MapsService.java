@@ -38,7 +38,8 @@ public interface MapsService {
     Call<NearbyResponse> getNearby(@Query("location") String location,
                                    @Query("type") String type,
                                    @Query("rankby") String rankby,
-                                   @Query("key") String apiKey);
+                                   @Query("key") String apiKey,
+                                   @Query("language") String language);
 
     @GET("maps/api/place/nearbysearch/json?")
     Call<NearbyResponse> getNearby(@Query("location") String location,
@@ -47,6 +48,7 @@ public interface MapsService {
                                    @Query("hasNextPage") Boolean hasNextPage,
                                    @Query("nextPage()") Boolean nextPage,
                                    @Query("pagetoken") String pagetoken,
-                                   @Query("key") String apiKey);
+                                   @Query("key") String apiKey,
+                                   @Query("language") String language);
 
 }

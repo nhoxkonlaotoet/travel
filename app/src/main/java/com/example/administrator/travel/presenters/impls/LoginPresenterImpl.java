@@ -1,5 +1,6 @@
 package com.example.administrator.travel.presenters.impls;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.administrator.travel.models.bases.CompanyInteractor;
@@ -62,6 +63,7 @@ public class LoginPresenterImpl implements LoginPresenter,
 
     @Override
     public void onLoginSuccess(String userId) {
+        Log.e( "onLoginSuccess: ","_____________________" );
         participantInteractor.checkJoiningTour(userId, this);
         companyInteractor.checkIsCompany(userId, this);
     }
@@ -74,6 +76,8 @@ public class LoginPresenterImpl implements LoginPresenter,
 
     @Override
     public void onCheckJoiningTourTrue(String tourId, String tourStartId, String tourGuideId) {
+        Log.e( "onCheckJoining: ","_____________________" );
+
         String userId = userInteractor.getUserId();
         participantInteractor.rememberTour(userId, tourStartId, tourId, tourGuideId, view.getContext());
         finishFlags[CHECK_JOINING_TOUR_INDEX] = true;
@@ -105,6 +109,7 @@ public class LoginPresenterImpl implements LoginPresenter,
 
     @Override
     public void onCheckIsCompanySuccess(boolean isCompany) {
+        Log.e( "IsCompanySuccess: ","_____________________" );
         String userId = userInteractor.getUserId();
         companyInteractor.setIsCompany(userId, isCompany, view.getContext());
         Toast.makeText(view.getContext(), isCompany+"___________", Toast.LENGTH_SHORT).show();

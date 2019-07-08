@@ -3,6 +3,7 @@ package com.example.administrator.travel.models.listeners;
 import android.graphics.Bitmap;
 
 import com.example.administrator.travel.models.entities.Activity;
+import com.example.administrator.travel.models.entities.ActivitySuggestion;
 import com.example.administrator.travel.models.entities.City;
 import com.example.administrator.travel.models.entities.Company;
 import com.example.administrator.travel.models.entities.Day;
@@ -176,9 +177,9 @@ public interface Listener {
     }
 
     interface OnDownloadImageFinishedListener {
-        void onDownloadImageFail(Exception ex);
+        void onDownloadImageSuccess(String id, Bitmap image);
 
-        void onDownloadImageSuccess(int pos, Bitmap result);
+        void onDownloadImageFail(Exception ex);
     }
 
     interface OnCheckJoiningTourFinishedListener {
@@ -310,5 +311,24 @@ public interface Listener {
         void onCheckJoinedTourSuccess(Boolean joined);
 
         void onCheckJoinedTourFail(Exception ex);
+    }
+
+    interface OnSearchUsersFinishedListener {
+        void onSearchUsersSuccess(List<UserInformation> userInformationList);
+        void onSearchUsersFail(Exception ex);
+    }
+
+    interface OnUpdateAvatarFinishedListener {
+        void onUpdateAvatarSuccess(String avatarUrl);
+        void onUpdateAvatarFail(Exception ex);
+    }
+    interface OnUpdateUserInforFinishedListener{
+        void onUpdateUserInforSuccess();
+        void onUpdateUserInforFail(Exception ex);
+    }
+
+    interface OnGetActivitySuggestionsFinishedListener {
+        void onGetActivitySuggestionsSuccess(List<ActivitySuggestion> activitySuggestionList);
+        void onGetActivitySuggestionsFail(Exception ex);
     }
 }

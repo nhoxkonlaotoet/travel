@@ -6,35 +6,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    tools:context="com.example.administrator.travel.views.activities.ChatSearchFriendsActivity">
-    <LinearLayout
-        android:orientation="horizontal"
+    tools:context="com.example.administrator.travel.views.activities.SearchFriendsActivity"
+    android:background="@color/colorCloudLight">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
-        <Button
-            android:onClick="OnClickBackContactSearch"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/touch_btn_back"
-            android:layout_gravity="center_vertical"
-            tools:ignore="OnClick" />
-        <EditText
-            android:id="@+id/edt_chat_contact_search"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@drawable/background_toolbar"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginRight="20dp">
+        <EditText
+            android:id="@+id/edt_chat_contact_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Tim kiem"
+            android:hint="@string/search"
+            android:paddingLeft="10dp"
             android:singleLine="true"
-            android:drawableRight="@drawable/touch_menu_search"
-            android:inputType="textPersonName"/>
-    </LinearLayout>
+            android:background="@drawable/background_edit_text_toolbar"
+            android:textColor="@drawable/selector_text_edittext_toolbar"
+            android:textCursorDrawable="@drawable/background_cursor_edittext"
+            android:inputType="textPersonName"
+            android:imeOptions="actionSearch"
+            android:layout_toLeftOf="@id/btnClearSearchFriendResult"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="5dp"/>
+            <ImageButton
+                android:id="@+id/btnClearSearchFriendResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/places_ic_clear"
+                android:layout_alignParentRight="true"
+                android:text="@string/search"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_chat_contact_friendearch"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+    <TextView
+        android:id="@+id/txtHaveNoResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/have_no_result"
+        android:textSize="18sp"
+        android:textColor="@color/colorLicorice"
+        android:gravity="center"/>
 
 </LinearLayout>

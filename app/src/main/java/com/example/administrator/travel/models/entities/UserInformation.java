@@ -2,6 +2,8 @@ package com.example.administrator.travel.models.entities;
 
 import android.graphics.Bitmap;
 
+import com.google.firebase.database.Exclude;
+
 /**
  * Created by Henry on 12/10/2018.
  */
@@ -9,26 +11,34 @@ import android.graphics.Bitmap;
 public class UserInformation {
     public String id;
     public String name;
-    public String sex;
+    public Boolean isMale;
     public String mail;
     public String sdt;
     public String urlAvatar;
     public Bitmap avatar;
-    public UserInformation(){
+    public Integer dateOfBirth;
+    public Integer monthOfBirth;
+    public Integer yearOfBirth;
+
+    public UserInformation() {
 
     }
 
-    public UserInformation(String name, String sex, String mail, String sdt, String urlAvatar){
+    public UserInformation(String name, Boolean isMale, String mail, String sdt, String urlAvatar,
+                           Integer dateOfBirth, Integer monthOfBirth, Integer yearOfBirth) {
         this.name = name;
-        this.sex = sex;
+        this.isMale = isMale;
         this.mail = mail;
         this.sdt = sdt;
         this.urlAvatar = urlAvatar;
+        this.dateOfBirth = dateOfBirth;
+        this.monthOfBirth = monthOfBirth;
+        this.yearOfBirth = yearOfBirth;
     }
 
-    public UserInformation(String name, String sex, String sdt){
+    public UserInformation(String name, String sex, String sdt) {
         this.name = name;
-        this.sex = sex;
+        this.isMale = isMale;
         this.sdt = sdt;
     }
 
@@ -40,12 +50,13 @@ public class UserInformation {
         this.name = name;
     }
 
+    @Exclude
     public String getSex() {
-        return sex;
+        return isMale ? "Nam" : "Nữ";
     }
 
     public void setSex(String sex) {
-        this.sex = sex;
+        this.isMale = isMale;
     }
 
     public String getMail() {
@@ -61,10 +72,10 @@ public class UserInformation {
     }
 
     public void setSdt(String sdt) {
-        if(sdt.trim().equals(""))
+        if (sdt.trim().equals(""))
             this.sdt = "none";
         else
-            this.sdt=sdt;
+            this.sdt = sdt;
     }
 
     public String getUrlAvatar() {

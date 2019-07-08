@@ -2,17 +2,15 @@ package com.example.administrator.travel.views.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.views.activities.ChatSearchFriendsActivity;
+import com.example.administrator.travel.views.activities.SearchFriendsActivity;
 
 /**
  * Created by Henry
@@ -70,7 +68,7 @@ public class ChatListFriendFragment extends Fragment {
 
                     tableLayout.setSelected(false);
                     tableLayout.setSelected(true);
-                    startActivity(new Intent(getActivity(), ChatSearchFriendsActivity.class));
+                    startActivity(new Intent(getActivity(), SearchFriendsActivity.class));
                 }
             }
 

@@ -20,6 +20,7 @@ import com.example.administrator.travel.models.entities.Activity;
 import com.example.administrator.travel.presenters.bases.ActivityPresenter;
 import com.example.administrator.travel.presenters.impls.ActivityPresenterImpl;
 import com.example.administrator.travel.views.ActivityView;
+import com.example.administrator.travel.views.activities.CreateActivityActivity;
 import com.example.administrator.travel.views.activities.MapsActivity;
 import com.example.administrator.travel.views.activities.PostActivity;
 
@@ -121,7 +122,7 @@ public class ActivityFragment extends Fragment implements ActivityView {
 
     @Override
     public void gotoPostActivity(String tourStartId, boolean isTourGuide) {
-        Intent intent = new Intent(getActivity(), PostActivity.class);
+        Intent intent = new Intent(getActivity(), CreateActivityActivity.class);
         intent.putExtra("tourStartId", tourStartId);
         intent.putExtra("isActivity", true);
         intent.putExtra("isTourGuide", isTourGuide);
