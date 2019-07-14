@@ -1,12 +1,10 @@
 package com.example.administrator.travel.views.bases;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.location.Location;
 
 import com.example.administrator.travel.models.entities.MyLatLng;
 import com.example.administrator.travel.models.entities.NearbyType;
-import com.example.administrator.travel.models.entities.place.nearby.Nearby;
+import com.example.administrator.travel.models.entities.Nearby;
 
 import java.util.List;
 

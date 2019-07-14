@@ -25,4 +25,6 @@ public interface RatingInteractor {
     void removeReactReview(String tourId, String reviewId, String userId);
 
     byte[] bitmapToBytes(Bitmap image);
+
+    void getReviewImage(int index, String tourId, String reviewerId, Listener.OnGetReviewImageFinishedListener listener);
 }

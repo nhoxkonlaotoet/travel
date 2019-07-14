@@ -1,4 +1,4 @@
-package com.example.administrator.travel.views;
+package com.example.administrator.travel.views.bases;
 
 import android.content.Context;
 

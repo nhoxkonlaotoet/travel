@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:clickable="true"
+    android:background="@drawable/background_transparent_button">
     <RelativeLayout
         android:id="@+id/layoutImageNearby"
         android:layout_width="100dp"
@@ -79,8 +81,7 @@
                     android:shadowColor="@color/colorHintText"
                     android:textSize="15sp"
                     android:gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:text="4.5"/>
+                    android:layout_marginLeft="5dp" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -124,8 +125,7 @@
                     android:shadowColor="@color/colorHintText"
                     android:layout_marginLeft="5dp"
                     android:textSize="15sp"
-                    android:gravity="center"
-                    android:text="Đắt"/>
+                    android:gravity="center"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

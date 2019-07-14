@@ -39,17 +39,11 @@ public class ChatFragment extends Fragment implements ChatView{
     CustomRecyclerChatAdapter adapter;
     ChatPresenter chatPresenter;
 
-    public ChatFragment() {
-        // Required empty public constructor
-    }
+    public ChatFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
     }
 
     @Override
@@ -58,7 +52,7 @@ public class ChatFragment extends Fragment implements ChatView{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_list_chat_group_friend);
+        mRecyclerView =  view.findViewById(R.id.recyclerview_list_chat_group_friend);
 
         adapter = new CustomRecyclerChatAdapter(listLastChat,listKeyFriend);
         mRecyclerView.setAdapter(adapter);
@@ -96,15 +90,6 @@ public class ChatFragment extends Fragment implements ChatView{
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 
     @Override
     public void onResultGetChatView(List<Chats> lstLastChat, List<String> lstKeyFriend, List<String> lstUserGroup) {

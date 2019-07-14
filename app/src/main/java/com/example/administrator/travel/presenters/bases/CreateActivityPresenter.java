@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.administrator.travel.models.entities.ActivitySuggestion;
-import com.example.administrator.travel.models.entities.place.nearby.Nearby;
+import com.example.administrator.travel.models.entities.Nearby;
 
 public interface CreateActivityPresenter {
     void onViewCreated(Bundle bundle);

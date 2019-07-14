@@ -25,7 +25,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
     private Toolbar toolbar;
     private CircleImageView imgvUserAvatar;
     private TextView txtUserName, txtUserNameTop, txtUserGender, txtUserEmail, txtUserDOB, txtUserPhoneNumber;
-    private Button btnEditInfor;
+    private Button btnEditInfor, btnAddFriend;
 
     private UserProfilePresenter presenter;
 
@@ -34,6 +34,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         mapping();
+        setOnButtonAddFriendClick();
         setOnButtonEditInforClick();
         Bundle bundle = getIntent().getExtras();
         presenter = new UserProfilePresenterImpl(this);
@@ -56,6 +57,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
         txtUserDOB = findViewById(R.id.txtUserDOB);
         txtUserPhoneNumber = findViewById(R.id.txtUserPhoneNumber);
         btnEditInfor = findViewById(R.id.btnEditInfor);
+        btnAddFriend = findViewById(R.id.btnAddFriend);
     }
 
     private void setOnButtonEditInforClick() {
@@ -63,6 +65,15 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
             @Override
             public void onClick(View v) {
                 presenter.onButtonEditInforClicked();
+            }
+        });
+    }
+
+    private void setOnButtonAddFriendClick() {
+        btnAddFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onButtonAddFriendClicked();
             }
         });
     }
@@ -102,10 +113,10 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       // super.onActivityResult(requestCode, resultCode, data);
-        presenter.onViewResult(requestCode,resultCode,data);
-       // onDestroy();
-       // onCreate(null);
+        // super.onActivityResult(requestCode, resultCode, data);
+        presenter.onViewResult(requestCode, resultCode, data);
+        // onDestroy();
+        // onCreate(null);
     }
 
     @Override
@@ -126,6 +137,16 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
     @Override
     public void hideButtonEditInfor() {
         btnEditInfor.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showButtonAddFriend() {
+        btnAddFriend.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideButtonAddFriend() {
+        btnAddFriend.setVisibility(View.GONE);
     }
 
 

@@ -9,4 +9,6 @@ public interface UserProfilePresenter {
     void onButtonEditInforClicked();
 
     void onViewResult(int requestCode, int resultCode, Intent data);
+
+    void onButtonAddFriendClicked();
 }

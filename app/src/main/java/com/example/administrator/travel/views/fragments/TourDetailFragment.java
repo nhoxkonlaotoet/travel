@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-//com.example.administrator.travel.adapter.NonScrollListView
+//com.example.administrator.travel.friendContactAdapter.NonScrollListView
 public class TourDetailFragment
         extends Fragment implements TourDetailView, ScheduleAdapter.ItemClickListener {
     RecyclerView recyclerViewSchedule;

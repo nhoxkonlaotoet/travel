@@ -16,9 +16,8 @@ import com.example.administrator.travel.models.entities.TourBooking;
 import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.models.entities.map.direction.Route;
-import com.example.administrator.travel.models.entities.place.detail.PlaceDetail;
-import com.example.administrator.travel.models.entities.place.nearby.Nearby;
-import com.google.android.gms.location.places.PlaceTypes;
+import com.example.administrator.travel.models.entities.PlaceDetail;
+import com.example.administrator.travel.models.entities.Nearby;
 import com.google.firebase.database.DatabaseException;
 
 import java.util.HashMap;
@@ -251,11 +250,6 @@ public interface Listener {
         void onGetActivitiesFailure(DatabaseException ex);
     }
 
-    interface OnGetActivityPhotosFinishedListener {
-        void onGetActivityPhotosSuccess(String activityId, Bitmap photo);
-
-    }
-
     interface OnGetBookingFinishedListener {
         void onGetMyBookTourSuccess(TourBooking tourBooking);
 
@@ -315,20 +309,41 @@ public interface Listener {
 
     interface OnSearchUsersFinishedListener {
         void onSearchUsersSuccess(List<UserInformation> userInformationList);
+
         void onSearchUsersFail(Exception ex);
     }
 
     interface OnUpdateAvatarFinishedListener {
         void onUpdateAvatarSuccess(String avatarUrl);
+
         void onUpdateAvatarFail(Exception ex);
     }
-    interface OnUpdateUserInforFinishedListener{
+
+    interface OnUpdateUserInforFinishedListener {
         void onUpdateUserInforSuccess();
+
         void onUpdateUserInforFail(Exception ex);
     }
 
     interface OnGetActivitySuggestionsFinishedListener {
         void onGetActivitySuggestionsSuccess(List<ActivitySuggestion> activitySuggestionList);
+
         void onGetActivitySuggestionsFail(Exception ex);
+    }
+
+    interface OnSendAddFriendRequestFinishedListener {
+        void onSendAddFriendRequestSuccess();
+
+        void onSendAddFriendRequestFail(Exception ex);
+    }
+
+    interface OnGetFriendsFinishedListener {
+        void onGetFriendsSuccess(List<String> friendIdList);
+
+        void onGetFriendsFail(Exception ex);
+    }
+
+    interface OnGetReviewImageFinishedListener {
+        void onGetReviewImageSuccess(int index, String tourId, Bitmap image);
     }
 }

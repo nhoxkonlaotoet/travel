@@ -85,6 +85,14 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
     }
 
     @Override
+    public String getTourGuide(String tourStartId, Context context){
+        if(context==null)
+            return null;
+        SharedPreferences prefs = context.getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        return prefs.getString("participatingTourGuide" + tourStartId,null);
+    }
+
+    @Override
     public boolean isJoiningTour(String userId, Context context) {
         if (context == null)
             return false;
@@ -128,7 +136,7 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
                                 listener.onCheckJoiningTourTrue(tourStartDate.tourId, tourStartDate.id, tourStartDate.tourGuide);
                             }
                             else
-                                listener.onCheckJoingTourFail(new Exception("tour đã kết thúc"));
+                                listener.onCheckJoiningTourFalse();
                         }
 
                         @Override

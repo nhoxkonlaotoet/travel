@@ -1,6 +1,7 @@
 package com.example.administrator.travel.models.impls;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -156,5 +157,24 @@ public class RatingInteractorImpl implements RatingInteractor {
         image.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] data = baos.toByteArray();
         return data;
+    }
+    @Override
+    public void getReviewImage(final int index, final String tourId, String reviewerId, final Listener.OnGetReviewImageFinishedListener listener){
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference tourRef = storage.getReference().child("reviews/" + tourId + "/"+reviewerId+"/");
+        tourRef.child(index + ".png").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                listener.onGetReviewImageSuccess(index, tourId, bmp);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
     }
 }

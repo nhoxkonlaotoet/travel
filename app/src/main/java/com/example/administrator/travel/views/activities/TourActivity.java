@@ -34,6 +34,8 @@ public class TourActivity extends AppCompatActivity implements TourView {
     AppBarLayout appBarLayout;
     CollapsingToolbarLayout collapsingToolbarLayout;
     ViewPager vpTourImage, vpContainer;
+
+    SlideTourImageAdapter tourImageAdapter;
     TabLayout tablayoutTour;
     SectionsPagerAdapter mSectionsPagerAdapter;
     ActionBar actionBar;
@@ -54,8 +56,6 @@ public class TourActivity extends AppCompatActivity implements TourView {
         actionBar = this.getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         presenter.onViewCreated(bundle);
-
-
 
 
     }
@@ -90,8 +90,8 @@ public class TourActivity extends AppCompatActivity implements TourView {
 
     @Override
     public void showTourImages(String tourId, int numberOfImages) {
-        SlideTourImageAdapter adapter = new SlideTourImageAdapter(tourId, numberOfImages, this);
-        vpTourImage.setAdapter(adapter);
+        tourImageAdapter = new SlideTourImageAdapter(tourId, numberOfImages, this);
+        vpTourImage.setAdapter(tourImageAdapter);
     }
 
     @Override
@@ -135,6 +135,12 @@ public class TourActivity extends AppCompatActivity implements TourView {
         Toast.makeText(this, getResources().getString(R.string.notify_tour_finished), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void addTourImage(String name, Bitmap image) {
+        if (tourImageAdapter != null)
+            tourImageAdapter.updateImage(name, image);
+    }
+
     void setOnVpContainerChangePage() {
         vpContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -175,7 +181,7 @@ public class TourActivity extends AppCompatActivity implements TourView {
     }
 
     @Override
-    public void collapseToolbarLayout(){
+    public void collapseToolbarLayout() {
         float dip = 50;
         Resources r = getResources();
         float px = TypedValue.applyDimension(
@@ -183,14 +189,14 @@ public class TourActivity extends AppCompatActivity implements TourView {
                 dip,
                 r.getDisplayMetrics()
         );
-      //  vpTourImage.setVisibility(View.INVISIBLE);
+        //  vpTourImage.setVisibility(View.INVISIBLE);
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) collapsingToolbarLayout.getLayoutParams();
         params.setScrollFlags(0);
         params.height = ((int) px);
         collapsingToolbarLayout.setLayoutParams(params);
 
-        ViewGroup.LayoutParams params1 =  appBarLayout.getLayoutParams();
-        params1.height =((int) px);
+        ViewGroup.LayoutParams params1 = appBarLayout.getLayoutParams();
+        params1.height = ((int) px);
         appBarLayout.setLayoutParams(params1);
         appBarLayout.setExpanded(false);
     }

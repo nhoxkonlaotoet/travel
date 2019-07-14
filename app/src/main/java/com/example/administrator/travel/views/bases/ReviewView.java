@@ -18,7 +18,7 @@ import java.util.List;
 public interface ReviewView {
 
     void showTourRating(HashMap<Integer,Integer> startCountMap);
-    void showReviews(List<Rating> reviewList);
+    void showReviews(String tourId, List<Rating> reviewList);
     void showMyReview(Rating myRating);
     void showLayoutMyReview();
     void hideLayoutMyReview();
@@ -26,7 +26,7 @@ public interface ReviewView {
     void updateMyAvatar(Bitmap avatar);
     void showLayoutRateTour();
     void hideLayoutRateTour();
-    void gotoReviewDetailActivity(String reviewId);
+    void gotoReviewDetailActivity(String tourId, String reviewId);
     void enableRatingBar();
     void disableRatingBar();
     void gotoPostActivity(String tourId, float rating, int requestCode);

@@ -106,6 +106,7 @@ public class MapsActivity extends FragmentActivity implements MapView, OnMapRead
             @Override
             public void onPlaceSelected(Place place) {
                 Toast.makeText(MapsActivity.this, place + "", Toast.LENGTH_SHORT).show();
+                Log.e("onPlaceSelected: ",place.getId() );
                 presenter.onAutoCompleteSelected(place);
             }
 

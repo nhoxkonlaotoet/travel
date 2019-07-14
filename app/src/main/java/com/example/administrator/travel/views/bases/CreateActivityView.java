@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.travel.models.entities.ActivitySuggestion;
-import com.example.administrator.travel.models.entities.place.nearby.Nearby;
+import com.example.administrator.travel.models.entities.Nearby;
 
 import java.util.List;
 
@@ -44,5 +44,6 @@ public interface CreateActivityView {
 
     void hideSoftKeyboard();
 
+    void closeForResult(int resultCode);
     Context getContext();
 }

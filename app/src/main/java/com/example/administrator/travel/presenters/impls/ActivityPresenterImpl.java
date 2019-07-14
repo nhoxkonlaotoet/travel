@@ -15,7 +15,7 @@ import com.example.administrator.travel.models.impls.TourStartInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.ActivityPresenter;
-import com.example.administrator.travel.views.ActivityView;
+import com.example.administrator.travel.views.bases.ActivityView;
 import com.google.firebase.database.DatabaseException;
 
 import java.util.List;
@@ -25,8 +25,7 @@ import java.util.List;
  */
 
 public class ActivityPresenterImpl implements ActivityPresenter, Listener.OnGetActivitiesFinishedListener,
-        Listener.OnGetUserInforFinishedListener,
-        Listener.OnGetActivityPhotosFinishedListener, Listener.OnGetUserAvatarFinishedListener {
+        Listener.OnGetUserInforFinishedListener, Listener.OnGetUserAvatarFinishedListener {
     private ActivityView view;
     private ActivityInteractor activityInteractor;
     private TourStartInteractor tourStartInteractor;
@@ -46,18 +45,19 @@ public class ActivityPresenterImpl implements ActivityPresenter, Listener.OnGetA
     public void onViewCreated(Bundle bundle) {
         tourStartId = bundle.getString("tourStartId");
         tourGuideId = tourStartInteractor.getTourGuideId(tourStartId,view.getContext());
+        Log.e( "activity fragment: ", tourStartId+", "+tourGuideId);
         if (userInteractor.getUserId().equals(tourGuideId))
             isTourGuide = true;
         activityInteractor.getActivities(tourStartId, this);
     }
 
     @Override
-    public void onButtonMapClicked() {
-        view.gotoMapActivty(tourStartId);
+    public void onViewResult(int requestCode, int resultCode, Intent data){
+        activityInteractor.getActivities(tourStartId, this);
     }
 
     @Override
-    public void onEditTextContentClicked() {
+    public void onTextContentClicked() {
         view.gotoPostActivity(tourStartId, isTourGuide);
     }
 
@@ -79,9 +79,6 @@ public class ActivityPresenterImpl implements ActivityPresenter, Listener.OnGetA
             String userId = activity.userId;
             userInteractor.getUserInfor(userId, this);
             userInteractor.getUserAvatar(userId, this);
-            int n = activity.numberOfPicture;
-            for (int i = 0; i < n; i++)
-                activityInteractor.getActivitiyPhoto(i, tourStartId, activity.id, this);
         }
     }
 
@@ -92,14 +89,7 @@ public class ActivityPresenterImpl implements ActivityPresenter, Listener.OnGetA
 
 
     @Override
-    public void onGetActivityPhotosSuccess(String activityId, Bitmap photo) {
-        view.updateActivityImage(activityId, photo);
-        Log.e("onGetPhotosSuccess: ","___"+photo.getByteCount() );
-    }
-
-    @Override
     public void onGetUserAvatarSuccess(String userId, Bitmap avatar) {
         view.updateUserAvatar(userId, avatar);
-        Log.e("onGetAvatarFinished: ","_____"+ avatar.getByteCount());
     }
 }

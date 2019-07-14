@@ -1,4 +1,4 @@
-package com.example.administrator.travel.views;
+package com.example.administrator.travel.views.bases;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,8 +18,6 @@ public interface ActivityView {
     void showActivities(List<Activity> lstActivity);
 
     void notifyGetActivitiesFailure(Exception ex);
-
-    void updateActivityImage(String activityId, Bitmap activityPhoto);
 
     void updateUserName(String userId, String userName);
 

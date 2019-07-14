@@ -36,19 +36,18 @@ public class ActivityInteractorImpl implements ActivityInteractor {
 
     @Override
     public void getActivities(final String tourStartId, final Listener.OnGetActivitiesFinishedListener listener) {
-        final List<Activity> lstActivity = new ArrayList<>();
+        final List<Activity> activityArrayList = new ArrayList<>();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference activitiesRef = database.getReference(ACTIVITIES_REF);
-        activitiesRef.child(tourStartId).addListenerForSingleValueEvent(new ValueEventListener() {
+        activitiesRef.orderByChild("tourStartId").equalTo(tourStartId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.e("get activity: ", ds.getValue() + "");
                     Activity activity = ds.getValue(Activity.class);
                     activity.id = ds.getKey();
-                    lstActivity.add(activity);
+                    activityArrayList.add(activity);
                 }
-                listener.onGetActivitiesSuccess(lstActivity);
+                listener.onGetActivitiesSuccess(activityArrayList);
             }
 
             @Override
@@ -59,74 +58,28 @@ public class ActivityInteractorImpl implements ActivityInteractor {
     }
 
     @Override
-    public void postActivity(final String tourStartId, String userId, Activity activity, final List<Bitmap> listImage, final Listener.OnPostActivityFinishedListener listener) {
+    public void postActivity(Activity activity, final Listener.OnPostActivityFinishedListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference(ACTIVITIES_REF);
-        final String key = ref.push().getKey();
-        ref.child(tourStartId).child(key).setValue(activity.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageref = storage.getReference().child("activities/")
-                        .child(tourStartId).child(key);
-                if (listImage == null || listImage.size() == 0) {
-                    listener.onPostActivitySuccess();
-                    return;
-                }
-                final boolean[] flags = new boolean[listImage.size()];
-                for (int i = 0; i < listImage.size(); i++) {
-                    UploadTask uploadTask = storageref.child(i + ".png").putBytes(bitmapToBytes(listImage.get(i)));
-                    final int finalI = i;
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            flags[finalI] = true;
-                            for (int j = 0; j < listImage.size(); j++)
-                                if (!flags[j])
-                                    return;
-                            listener.onPostActivitySuccess();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            listener.onPostActivityFail(e);
-                        }
-                    });
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+        DatabaseReference activitiesRef = database.getReference(ACTIVITIES_REF);
+        final String key = activitiesRef.push().getKey();
+        activitiesRef.child(key).setValue(activity.toMap())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        listener.onPostActivitySuccess();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 listener.onPostActivityFail(e);
             }
         });
     }
-
     @Override
-    public void getActivitiyPhoto(int pos, String tourStartId, final String activityId, final Listener.OnGetActivityPhotosFinishedListener listener) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference ref = storage.getReference("activities").child(tourStartId).child(activityId).child(pos + ".png");
-        long HALF_MEGABYTE = 1024 * 512;
-        ref.getBytes(HALF_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                listener.onGetActivityPhotosSuccess(activityId, bmp);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-            }
-        });
-    }
-
-
-    @Override
-    public byte[] bitmapToBytes(Bitmap image) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] data = baos.toByteArray();
-        return data;
+    public void likeActivity(String activityId, String userId, Boolean like){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference activitiesRef = database.getReference(ACTIVITIES_REF);
+        activitiesRef.child(activityId).child("likes").child(userId).setValue(like);
     }
 }
 

@@ -9,4 +9,6 @@ public interface SettingPresenter {
     void onShareLocationSwitchClicked();
     void onButtonLoginClicked();
     void onButtonLogoutClicked();
+
+    void onMyProfileClicked();
 }

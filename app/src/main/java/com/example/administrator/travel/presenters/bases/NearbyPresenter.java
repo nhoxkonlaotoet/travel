@@ -1,6 +1,6 @@
 package com.example.administrator.travel.presenters.bases;
 
-import com.example.administrator.travel.models.entities.place.nearby.Nearby;
+import com.example.administrator.travel.models.entities.Nearby;
 
 /**
  * Created by Admin on 4/25/2019.

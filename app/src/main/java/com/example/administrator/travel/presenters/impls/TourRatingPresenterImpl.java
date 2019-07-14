@@ -50,7 +50,7 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
     ParticipantInteractor participantInteractor;
     TourInteractor tourInteractor;
     boolean firstChange = true, joinedTour;
-    String tourId;
+    String tourId, myId;
     float rating = 0f;
 
     public TourRatingPresenterImpl(ReviewView view) {
@@ -68,12 +68,12 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
         tourId = bundle.getString("tourId");
         view.disableRatingBar();
         if (userInteractor.isLogged()) {
-            String myId = userInteractor.getUserId();
+            myId = userInteractor.getUserId();
             participantInteractor.checkJoinedTour(myId, tourId, this);
-            ratingInteractor.getReview(tourId, myId, this);
+        } else {
+            view.hideLayoutRateTour();
+            view.hideLayoutMyReview();
         }
-        view.hideLayoutRateTour();
-        view.hideLayoutMyReview();
         tourInteractor.getTour(tourId, this);
         ratingInteractor.getReviews(tourId, this);
     }
@@ -85,17 +85,18 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
             return;
         }
         this.rating = value;
+        view.gotoPostActivity(tourId,value,REQUEST_POST);
     }
 
     @Override
-    public void onReviewItemClicked(String reviewId) {
-        view.gotoReviewDetailActivity(reviewId);
+    public void onReviewItemClicked(String tourId, String reviewId) {
+        view.gotoReviewDetailActivity(tourId, reviewId);
     }
 
     @Override
     public void onButtonShareFacebookClicked() {
         ShareLinkContent shareContent = new ShareLinkContent.Builder()
-                .setContentUrl(Uri.parse("https://developers.facebook.com"))
+                .setContentUrl(Uri.parse("https://travel-76809.web.app/u/reivew/tour/cmt?id=" + tourId + "&uid=" + userInteractor.getUserId()))
                 .build();
         ShareDialog shareDialog = new ShareDialog((Activity) view.getContext());
         shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
@@ -143,7 +144,7 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
                 if (ratingList.get(i).ratingPeopleId.equals(myId))
                     ratingList.remove(i);
         }
-        view.showReviews(ratingList);
+        view.showReviews(tourId, ratingList);
     }
 
     @Override
@@ -163,6 +164,8 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
     @Override
     public void onGetUserInforSuccess(UserInformation user) {
         view.updateMyName(user.name);
+        userInteractor.getUserAvatar(user.id, user.urlAvatar, this);
+
     }
 
     @Override
@@ -175,6 +178,9 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
         joinedTour = joined;
         if (!joined)
             view.disableRatingBar();
+        else
+            ratingInteractor.getReview(tourId, myId, this);
+
     }
 
     @Override
@@ -186,16 +192,20 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
     public void onGetReviewTourSuccess(Rating rating) {
         //haven't reviewed yet return null
         if (rating == null)
-            if (joinedTour) // joined tour and haven't reviewed
+            if (joinedTour) // joined tour and haven't reviewed{
+            {
+                Log.e("asdasdasd", "onGetReviewTourSuccess: ");
                 view.enableRatingBar();
-            else
+                view.hideLayoutMyReview();
+            } else {
                 view.disableRatingBar();
+                view.hideLayoutMyReview();
+            }
         else {
             view.disableRatingBar();
             view.showMyReview(rating);
             view.showLayoutMyReview();
             userInteractor.getUserInfor(userInteractor.getUserId(), this);
-            userInteractor.getUserAvatar(userInteractor.getUserId(), this);
         }
     }
 

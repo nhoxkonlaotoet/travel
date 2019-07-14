@@ -13,6 +13,7 @@ public interface SettingView {
     void hideBtnLogout();
     void showBtnLogout();
     void gotoLoginActivity();
+    void gotoProfileActivity(String myId);
     void turnOnSwitchShareLocation();
     void turnOffSwitchShareLocation();
     void disableSwitchShareLocation();

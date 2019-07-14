@@ -1,74 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorCreme"
+    android:orientation="vertical"
     tools:context="com.example.administrator.travel.views.activities.ReviewDetailActivity">
-    <ImageView
-        android:id="@+id/imgvReviewerAvatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
-    <TextView
-        android:id="@+id/txtReviewerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/imgvReviewerAvatar"
-        android:text="Hiep"
-        android:textSize="20sp"
-        android:textColor="@color/colorLicoriceDark"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="5dp"/>
-    <LinearLayout
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtReviewerName"
-        android:layout_toRightOf="@+id/imgvReviewerAvatar"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="đánh giá "
-            android:layout_marginLeft="10dp"/>
-        <RatingBar
-            android:id="@+id/ratingBarReview"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_width="80dp"
-            android:layout_height="match_parent"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:text=" lúc "/>
-        <TextView
-            android:id="@+id/txtReviewTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20/12/2018"/>
-    </LinearLayout>
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@drawable/background_toolbar"
+        android:elevation="8dp"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </android.support.v7.widget.Toolbar>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/imgvReviewerAvatar">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:fillViewport="true">
-        <RelativeLayout
-                android:id="@+id/layoutImageContainer"
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp">
-            </RelativeLayout>
+                android:padding="15dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgvReviewerAvatar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+
+                <TextView
+                    android:id="@+id/txtReviewerName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="Hùng Hiệp"
+                    android:textColor="@color/colorLicoriceDark"
+                    android:textSize="@dimen/text_size_title" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtReviewerName"
+                android:layout_toRightOf="@+id/imgvReviewerAvatar"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp">
+
+                <RatingBar
+                    android:id="@+id/ratingBarReview"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/txtReviewTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đánh giá vào 20/12/2018" />
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hình ảnh chuyến đi: "
+                android:textColor="@color/colorLicoriceDark"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_margin="15dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewReviewImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
             <TextView
                 android:id="@+id/txtReviewContent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:text="nội dung review"
                 android:textColor="@color/colorLicoriceDark"
-                android:layout_below="@+id/layoutImageContainer"
-                android:textSize="18sp"
-                android:padding="5dp"/>
-    </RelativeLayout>
+                android:textSize="@dimen/text_size_normal" />
+
+        </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+</LinearLayout>

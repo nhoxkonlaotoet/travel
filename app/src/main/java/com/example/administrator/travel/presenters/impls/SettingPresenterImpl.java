@@ -24,7 +24,7 @@ public class SettingPresenterImpl implements SettingPresenter, Listener.OnCheckS
     CompanyInteractor companyInteractor;
     boolean shareLocation;
 
-    String userId, tourStartId;
+    String myId, tourStartId;
 
     public SettingPresenterImpl(SettingView view) {
         this.view = view;
@@ -40,10 +40,10 @@ public class SettingPresenterImpl implements SettingPresenter, Listener.OnCheckS
         if (userInteractor.isLogged()) {
             view.hideBtnLogin();
             view.showBtnLogout();
-            userId = userInteractor.getUserId();
-            if (!companyInteractor.isCompany(userId, view.getContext())) {
-                tourStartId = participantInteractor.getJoiningTourStartId(userId, view.getContext());
-                participantInteractor.checkShareLoction(userId, tourStartId, this);
+            myId = userInteractor.getUserId();
+            if (!companyInteractor.isCompany(myId, view.getContext())) {
+                tourStartId = participantInteractor.getJoiningTourStartId(myId, view.getContext());
+                participantInteractor.checkShareLoction(myId, tourStartId, this);
                 view.showLayoutShareLocation();
                 view.disableSwitchShareLocation();
             }
@@ -58,11 +58,11 @@ public class SettingPresenterImpl implements SettingPresenter, Listener.OnCheckS
 
     @Override
     public void onShareLocationSwitchClicked() {
-        Toast.makeText(view.getContext(), userId + " " + tourStartId, Toast.LENGTH_SHORT).show();
-        if (!userId.equals("") && !tourStartId.equals("")) {
+        Toast.makeText(view.getContext(), myId + " " + tourStartId, Toast.LENGTH_SHORT).show();
+        if (!myId.equals("") && !tourStartId.equals("")) {
             // share = false -> click switch -> save !share = true
             // save success share=true
-            participantInteractor.setShareLocation(userId, tourStartId, !shareLocation, view.getContext(), this);
+            participantInteractor.setShareLocation(myId, tourStartId, !shareLocation, view.getContext(), this);
             view.disableSwitchShareLocation();
         }
     }
@@ -77,7 +77,11 @@ public class SettingPresenterImpl implements SettingPresenter, Listener.OnCheckS
         userInteractor.logout();
         ((Fragment) view).onStart();
     }
+    @Override
+    public void onMyProfileClicked(){
 
+        view.gotoProfileActivity(myId);
+    }
     @Override
     public void onCheckLocationSuccess(boolean isShareLocation) {
         shareLocation = isShareLocation;

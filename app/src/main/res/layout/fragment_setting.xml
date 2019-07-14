@@ -13,16 +13,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/colorCloudLight">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_height"
-            android:background="@drawable/background_toolbar"
-            android:minHeight="?attr/actionBarSize"
-            app:title="Thêm"
-            app:titleTextColor="#fff"
-            android:theme="?attr/actionBarTheme"/>
         <RelativeLayout
+            android:id="@+id/layoutMyProfile"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:paddingLeft="10dp"
@@ -46,7 +38,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hùng Hiệp"
-                    android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="@color/colorLicoriceDark"/>
                 <TextView
@@ -121,9 +112,7 @@
                 android:layout_marginLeft="10dp"
                 android:textSize="18sp"/>
         </RelativeLayout>
-        <View android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorCloudDark"/>
+
         <RelativeLayout
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"

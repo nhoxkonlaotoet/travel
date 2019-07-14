@@ -5,6 +5,8 @@ public class ActivitySuggestion {
     public String display;
     public String value;
     public String keywords;
+    public String type;
+    public Boolean forUser;
     public ActivitySuggestion(){}
 }
 

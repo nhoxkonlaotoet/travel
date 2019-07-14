@@ -5,48 +5,16 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.administrator.travel.models.bases.BookTourInteractor;
-import com.example.administrator.travel.models.entities.TourBooking;
-import com.example.administrator.travel.models.entities.TourBookingDetail;
 import com.example.administrator.travel.models.entities.TourBookingRequest;
 import com.example.administrator.travel.models.listeners.Listener;
-import com.example.administrator.travel.models.retrofit.ApiUtils;
-import com.example.administrator.travel.models.retrofit.NoSSLv3SocketFactory;
-import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Admin on 5/26/2019.

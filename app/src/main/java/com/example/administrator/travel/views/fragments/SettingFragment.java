@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.presenters.bases.SettingPresenter;
 import com.example.administrator.travel.presenters.impls.SettingPresenterImpl;
+import com.example.administrator.travel.views.activities.UserProfileActivity;
 import com.example.administrator.travel.views.bases.SettingView;
 import com.example.administrator.travel.views.activities.LoginActivity;
 
@@ -26,7 +27,7 @@ public class SettingFragment extends Fragment implements SettingView {
     RelativeLayout btnLogin, btnLogout;
     SettingPresenter presenter;
     SwitchCompat switchShareLocation;
-    RelativeLayout layoutShareLocation;
+    RelativeLayout layoutShareLocation, layoutMyProfile;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -49,6 +50,7 @@ public class SettingFragment extends Fragment implements SettingView {
         setBtnLoginClick();
         setBtnLogoutClick();
         setSwitchShareLocationClick();
+        setMyProfileClick();
     }
 
     @Override
@@ -62,6 +64,7 @@ public class SettingFragment extends Fragment implements SettingView {
         btnLogout = getActivity().findViewById(R.id.btnLogout);
         switchShareLocation = getActivity().findViewById(R.id.switchShareLocation);
         layoutShareLocation = getActivity().findViewById(R.id.layoutShareLocation);
+        layoutMyProfile = getActivity().findViewById(R.id.layoutMyProfile);
     }
 
     public void setSwitchShareLocationClick() {
@@ -91,7 +94,14 @@ public class SettingFragment extends Fragment implements SettingView {
             }
         });
     }
-
+    public void setMyProfileClick(){
+        layoutMyProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onMyProfileClicked();
+            }
+        });
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -121,6 +131,13 @@ public class SettingFragment extends Fragment implements SettingView {
     @Override
     public void gotoLoginActivity() {
         startActivity((new Intent(getActivity(), LoginActivity.class)));
+    }
+
+    @Override
+    public void gotoProfileActivity(String myId) {
+        Intent intent=new Intent(getActivity(), UserProfileActivity.class);
+        intent.putExtra("userId",myId);
+        startActivity(intent);
     }
 
     @Override

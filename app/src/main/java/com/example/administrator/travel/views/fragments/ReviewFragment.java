@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,11 +39,11 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class ReviewFragment extends Fragment implements ReviewView, ReviewAdapter.ItemClickListener {
-    //view
+
     TextView txtRating, txtNumberofRating, txtMyName, txtMyRatingDate, txtMyReviewContent, txtEditMyReview;
     RatingBar ratingBarRating, ratingBarRateTour, ratingBarMyRating;
     ProgressBar progressBar5Star, progressBar4Star, progressBar3Star, progressBar2Star, progressBar1Star;
-    LinearLayout layoutRateTour, layoutMyReview;
+    CardView layoutRateTour, layoutMyReview;
     RecyclerView recyclerViewReview;
     RelativeLayout btnShareFacebook;
     ImageView imgvMyAvatar;
@@ -145,8 +146,8 @@ public class ReviewFragment extends Fragment implements ReviewView, ReviewAdapte
 
 
     @Override
-    public void showReviews(List<Rating> reviewList) {
-        reviewAdapter = new ReviewAdapter(getActivity(), reviewList);
+    public void showReviews(String tourId, List<Rating> reviewList) {
+        reviewAdapter = new ReviewAdapter(getActivity(),tourId, reviewList);
         reviewAdapter.setClickListener(this);
         recyclerViewReview.setAdapter(reviewAdapter);
 
@@ -195,9 +196,10 @@ public class ReviewFragment extends Fragment implements ReviewView, ReviewAdapte
     }
 
     @Override
-    public void gotoReviewDetailActivity(String reviewId) {
+    public void gotoReviewDetailActivity(String tourId, String reviewId) {
         Intent intent = new Intent(getActivity(), ReviewDetailActivity.class);
         intent.putExtra("reviewId", reviewId);
+        intent.putExtra("tourId", tourId);
         startActivity(intent);
     }
 
@@ -235,8 +237,8 @@ public class ReviewFragment extends Fragment implements ReviewView, ReviewAdapte
     }
 
     @Override
-    public void onReviewItemClick(View view, String reviewId) {
-        presenter.onReviewItemClicked(reviewId);
+    public void onReviewItemClick(View view,String tourId, String reviewId) {
+        presenter.onReviewItemClicked(tourId, reviewId);
     }
 
     @Override

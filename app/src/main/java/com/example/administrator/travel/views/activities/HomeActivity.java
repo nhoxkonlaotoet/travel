@@ -21,6 +21,7 @@ import com.example.administrator.travel.models.entities.TourBookingDetail;
 import com.example.administrator.travel.models.entities.TourBookingRequest;
 import com.example.administrator.travel.models.retrofit.ApiUtils;
 import com.example.administrator.travel.views.fragments.ChatManagerFragment;
+import com.example.administrator.travel.views.fragments.FriendContactFragment;
 import com.example.administrator.travel.views.fragments.NewsFeedFragment;
 import com.example.administrator.travel.views.fragments.SelectMyTourFragment;
 import com.example.administrator.travel.views.fragments.SettingFragment;
@@ -87,13 +88,22 @@ public class HomeActivity extends AppCompatActivity {
                     android.app.FragmentManager manager2 = getFragmentManager();
                     manager2.beginTransaction().replace(R.id.contenLayout, chatManagerFragment, chatManagerFragment.getTag()).commit();
                     return true;
-                case R.id.navigation_more:
+                case R.id.navigation_contact:
                     if (i == 3)
                         return false;
                     i = 3;
-                    SettingFragment f3 = new SettingFragment();
+                    FriendContactFragment f3 = new FriendContactFragment();
                     android.app.FragmentManager manager3 = getFragmentManager();
                     manager3.beginTransaction().replace(R.id.contenLayout, f3, f3.getTag()).commit();
+                    return true;
+
+                case R.id.navigation_more:
+                    if (i == 4)
+                        return false;
+                    i = 4;
+                    SettingFragment f4 = new SettingFragment();
+                    android.app.FragmentManager manager4 = getFragmentManager();
+                    manager4.beginTransaction().replace(R.id.contenLayout, f4, f4.getTag()).commit();
                     return true;
             }
             return false;

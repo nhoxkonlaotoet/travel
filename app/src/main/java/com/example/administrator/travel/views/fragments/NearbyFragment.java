@@ -3,13 +3,11 @@ package com.example.administrator.travel.views.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +16,9 @@ import android.widget.Toast;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.NearbyAdapter;
 import com.example.administrator.travel.adapter.NearbyTypeAdapter;
-import com.example.administrator.travel.models.bases.TourInteractor;
 import com.example.administrator.travel.models.entities.MyLatLng;
 import com.example.administrator.travel.models.entities.NearbyType;
-import com.example.administrator.travel.models.entities.place.nearby.Nearby;
-import com.example.administrator.travel.models.impls.TourInteractorImpl;
+import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.presenters.bases.NearbyPresenter;
 import com.example.administrator.travel.presenters.impls.NearbyPresenterImpl;
 import com.example.administrator.travel.views.bases.NearbyView;
@@ -35,11 +31,12 @@ import java.util.List;
  */
 public class NearbyFragment extends Fragment implements NearbyView, NearbyAdapter.NearbyClickListener, NearbyTypeAdapter.NearbyTypeClickListener {
 
-    RecyclerView recyclerViewNearby,recyclerViewNearbyType;
+    RecyclerView recyclerViewNearby, recyclerViewNearbyType;
     NearbyPresenter presenter;
 
     NearbyAdapter nearbyAdapter;
     NearbyTypeAdapter nearbyTypeAdapter;
+
     public NearbyFragment() {
         // Required empty public constructor
     }
@@ -53,20 +50,22 @@ public class NearbyFragment extends Fragment implements NearbyView, NearbyAdapte
         return inflater.inflate(R.layout.fragment_nearby, container, false);
     }
 
-    void setOnRecyclerViewNearbyScroll(){
+    void setOnRecyclerViewNearbyScroll() {
 
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerViewNearby = getActivity().findViewById(R.id.recyclerViewNearby);
         recyclerViewNearbyType = getActivity().findViewById(R.id.recyclerViewNearbyType);
         setrecyclerViewNearbyScroll();
+        setOnRecyclerViewNearbyScroll();
+
         presenter = new NearbyPresenterImpl(this);
         presenter.onViewCreated();
-
-        setOnRecyclerViewNearbyScroll();
     }
+
 
     void setrecyclerViewNearbyScroll() {
         recyclerViewNearby.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -82,14 +81,14 @@ public class NearbyFragment extends Fragment implements NearbyView, NearbyAdapte
 
     @Override
     public void showNearbyTypes(List<NearbyType> nearbyTypeList) {
-        nearbyTypeAdapter = new NearbyTypeAdapter(getActivity(),nearbyTypeList);
+        nearbyTypeAdapter = new NearbyTypeAdapter(getActivity(), nearbyTypeList);
         nearbyTypeAdapter.setClickListener(this);
         recyclerViewNearbyType.setAdapter(nearbyTypeAdapter);
     }
 
     @Override
     public void showNearbys(List<Nearby> nearbyList, MyLatLng mylocation) {
-        nearbyAdapter = new NearbyAdapter(getContext(), nearbyList, mylocation,true);
+        nearbyAdapter = new NearbyAdapter(getContext(), nearbyList, mylocation, true);
         nearbyAdapter.setClickListener(this);
         recyclerViewNearby.setAdapter(nearbyAdapter);
 
@@ -103,9 +102,9 @@ public class NearbyFragment extends Fragment implements NearbyView, NearbyAdapte
 
     @Override
     public void notify(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        if (getActivity() != null)
+            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
-
 
 
     @Override

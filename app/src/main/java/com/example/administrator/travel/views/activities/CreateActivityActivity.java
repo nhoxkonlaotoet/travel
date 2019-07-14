@@ -5,22 +5,19 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableString;
-import android.text.TextWatcher;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -28,10 +25,9 @@ import android.widget.TextView;
 
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.ActivitySuggestionAdapter;
-import com.example.administrator.travel.adapter.CityAdapter;
 import com.example.administrator.travel.adapter.NearbyAdapter;
 import com.example.administrator.travel.models.entities.ActivitySuggestion;
-import com.example.administrator.travel.models.entities.place.nearby.Nearby;
+import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.presenters.bases.CreateActivityPresenter;
 import com.example.administrator.travel.presenters.impls.CreateActivityPresenterImpl;
 import com.example.administrator.travel.views.bases.CreateActivityView;
@@ -43,7 +39,8 @@ public class CreateActivityActivity extends AppCompatActivity
     private RecyclerView recyclerViewActivitySuggest, recyclerViewPlaceSuggest;
     private TextView txtPlaceSuggestAddress;
     private EditText etxtActivityContent;
-    private LinearLayout layoutPlaceAddress, layoutPlaceSuggest;
+    private LinearLayout layoutPlaceAddress;
+    private CardView layoutPlaceSuggest;
     private Toolbar toolbar;
     private Button btnPost;
     private NearbyAdapter nearbyAdapter;
@@ -56,9 +53,11 @@ public class CreateActivityActivity extends AppCompatActivity
         setContentView(R.layout.activity_create_activity);
         mapping();
         setActionbar();
+        setOnButtonPostClick();
         setMultilinesActionDoneEditTextContent();
         setOnEditTextContentStopTyping();
         setOnEditTextContentClick();
+
         Bundle bundle = getIntent().getExtras();
         presenter = new CreateActivityPresenterImpl(this);
         presenter.onViewCreated(bundle);
@@ -82,7 +81,14 @@ public class CreateActivityActivity extends AppCompatActivity
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(null);
     }
-
+    private void setOnButtonPostClick(){
+        btnPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onButtonPostClicked();
+            }
+        });
+    }
     private void setMultilinesActionDoneEditTextContent() {
         etxtActivityContent.setImeOptions(EditorInfo.IME_ACTION_DONE);
         etxtActivityContent.setRawInputType(InputType.TYPE_CLASS_TEXT);
@@ -96,10 +102,12 @@ public class CreateActivityActivity extends AppCompatActivity
             }
         });
     }
-    private void setOnEditTextContentStopTyping(){
+
+    private void setOnEditTextContentStopTyping() {
         etxtActivityContent.setOnFocusChangeListener(this);
         etxtActivityContent.setOnEditorActionListener(this);
     }
+
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (!hasFocus)
@@ -109,11 +117,11 @@ public class CreateActivityActivity extends AppCompatActivity
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent keyEvent) {
         if (actionId == EditorInfo.IME_ACTION_DONE || keyEvent != null &&
-                keyEvent.getAction() == KeyEvent.ACTION_DOWN &&(
+                keyEvent.getAction() == KeyEvent.ACTION_DOWN && (
                 keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
             if (keyEvent == null || !keyEvent.isShiftPressed()) {
                 presenter.onEditTextContentTypingStoped();
-                Log.e( "onEditorAction: ","stop" );
+                Log.e("onEditorAction: ", "stop");
             }
         }
         return false;
@@ -151,8 +159,7 @@ public class CreateActivityActivity extends AppCompatActivity
 
     @Override
     public void showWaitForLocationDialog() {
-        waitForLocationDialog = ProgressDialog.show(this, "", getResources().getString(R.string.wait_for_location)
-                , true);
+        waitForLocationDialog = ProgressDialog.show(this, "", getResources().getString(R.string.wait_for_location), true);
     }
 
     @Override
@@ -200,7 +207,14 @@ public class CreateActivityActivity extends AppCompatActivity
 
     @Override
     public void showLayoutPlaceSuggest() {
-        layoutPlaceSuggest.setVisibility(View.VISIBLE);
+        if (recyclerViewPlaceSuggest.getAdapter() != null) {
+            layoutPlaceSuggest.setVisibility(View.VISIBLE);
+            layoutPlaceSuggest.setAlpha(0.0f);
+            layoutPlaceSuggest.animate()
+                    .alpha(1.0f)
+                    .setDuration(1000)
+                    .setListener(null);
+        }
     }
 
     @Override
@@ -216,6 +230,13 @@ public class CreateActivityActivity extends AppCompatActivity
             view = new View(this);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @Override
+    public void closeForResult(int resultCode) {
+        Intent returnIntent = new Intent();
+        setResult(resultCode, returnIntent);
+        finish();
     }
 
     @Override

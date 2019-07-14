@@ -70,8 +70,8 @@ public class PostPresenterImpl implements PostPresenter,
         String userId = userInteractor.getUserId();
         if (!userId.equals("none")) {
             if(isActivity) {
-                Activity activity = new Activity(userId, false, content, location, selectedImageList.size());
-                activityInteractor.postActivity(tourStartId, userId, activity, selectedImageList, this);
+               // Activity activity = new Activity(myId, false, content, location, selectedImageList.size());
+               // activityInteractor.postActivity(tourStartId, myId, activity, selectedImageList, this);
             }
             else
             {

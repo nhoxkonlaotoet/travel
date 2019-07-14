@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -38,7 +39,6 @@ import java.util.List;
  */
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> implements Listener.OnGetUserInforFinishedListener, Listener.OnGetUserAvatarFinishedListener {
-    private Context context;
     private LayoutInflater mInflater;
     private ReviewAdapter.ItemClickListener mClickListener;
     private RecyclerView parent;
@@ -51,12 +51,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     private boolean[] loadUserInfoFlags;
     private DateFormat dateFormat;
-    private String myId;
+    private String myId, tourId;
 
-    public ReviewAdapter(Context context, List<Rating> ratingList) {
+    public ReviewAdapter(Context context, String tourId, List<Rating> ratingList) {
         if (context == null)
             return;
-        this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.ratingList = ratingList;
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -65,6 +64,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         loadUserInfoFlags = new boolean[ratingList.size()];
         userInteractor = new UserInteractorImpl();
         myId = userInteractor.getUserId();
+        this.tourId = tourId;
     }
 
     @Override
@@ -90,7 +90,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         if (!loadUserInfoFlags[position]) {
             loadUserInfoFlags[position] = true;
             userInteractor.getUserInfor(rating.ratingPeopleId, this);
-            userInteractor.getUserAvatar(rating.ratingPeopleId, this);
         }
         if (userNameMap.get(rating.ratingPeopleId) != null) {
             holder.txtReviewerName.setText(userNameMap.get(rating.ratingPeopleId));
@@ -126,6 +125,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         RatingBar ratingBarReview;
         ImageView imgvReviewer;
         CheckBox checkboxLike, checkboxDislike;
+        LinearLayout layoutReview;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -136,11 +136,16 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             imgvReviewer = itemView.findViewById(R.id.imgvReviewer);
             checkboxLike = itemView.findViewById(R.id.checkboxLike);
             checkboxDislike = itemView.findViewById(R.id.checkboxDislike);
-            txtReviewContent.setOnClickListener(new View.OnClickListener() {
+            layoutReview = itemView.findViewById(R.id.layoutReview);
+            layoutReview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mClickListener != null)
-                        mClickListener.onReviewItemClick(view, ratingList.get(getAdapterPosition()).id);
+                    if (mClickListener != null) {
+                        if (txtReviewContent.getMaxLines() == 3)
+                            txtReviewContent.setMaxLines(Integer.MAX_VALUE);
+                        else
+                            mClickListener.onReviewItemClick(view, tourId, ratingList.get(getAdapterPosition()).id);
+                    }
                 }
             });
 
@@ -148,7 +153,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (b) {
-                        if(checkboxDislike.isChecked()) {
+                        if (checkboxDislike.isChecked()) {
                             checkboxDislike.setTag(true);
                             checkboxDislike.setChecked(!b);
                         }
@@ -164,7 +169,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (b) {
-                        if(checkboxLike.isChecked()) {
+                        if (checkboxLike.isChecked()) {
                             checkboxLike.setTag(true);
                             checkboxLike.setChecked(!b);
                         }
@@ -186,7 +191,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     }
 
     public interface ItemClickListener {
-        void onReviewItemClick(View view, String reviewId);
+        void onReviewItemClick(View view, String tourId, String reviewId);
 
         void onButtonLikeReviewItemClick(View view, String reviewId, boolean pressed);
 
@@ -216,6 +221,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     @Override
     public void onGetUserInforSuccess(UserInformation user) {
         updateUserName(user.id, user.name);
+        userInteractor.getUserAvatar(user.id, user.urlAvatar, this);
     }
 
     @Override

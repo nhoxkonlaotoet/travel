@@ -8,7 +8,7 @@ package com.example.administrator.travel.views.fragments;
 //
 //    SharedPreferences sharedPreferences;
 //    EditText edtSearch;
-//    CustomRecyclerSearchAdapter adapter;
+//    CustomRecyclerSearchAdapter friendContactAdapter;
 //    RecyclerView mResultList;
 //    public List<UserInformation> listUserQuery = new ArrayList<>();
 //    public List<String> keyUser = new ArrayList<>();
@@ -33,11 +33,11 @@ package com.example.administrator.travel.views.fragments;
 //        edtSearch = (EditText) view.findViewById(R.id.edt_chat_contact_search);
 //        mResultList = (RecyclerView) view.findViewById(R.id.rv_chat_contact_friendearch);
 //
-//        //set adapter
-//        adapter = new CustomRecyclerSearchAdapter(listUserQuery);
-//        mResultList.setAdapter(adapter);
+//        //set friendContactAdapter
+//        friendContactAdapter = new CustomRecyclerSearchAdapter(listUserQuery);
+//        mResultList.setAdapter(friendContactAdapter);
 //        mResultList.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        adapter.notifyDataSetChanged();
+//        friendContactAdapter.notifyDataSetChanged();
 ////       presenter
 //        chatSearchFriendPresenter = new ChatSearchFriendPresenterImpl(this);
 //
@@ -62,7 +62,7 @@ package com.example.administrator.travel.views.fragments;
 //            }
 //        });
 //
-//        adapter.setOnItemClickedListener(new CustomRecyclerSearchAdapter.OnItemClickedListener() {
+//        friendContactAdapter.setOnItemClickedListener(new CustomRecyclerSearchAdapter.OnItemClickedListener() {
 //            @Override
 //            public void onItemFriendClick(int index) {
 //
@@ -113,7 +113,7 @@ package com.example.administrator.travel.views.fragments;
 //        for (int i = 0; i < listUserSearch.size(); ++i) {
 //            listUserQuery.add(listUserSearch.get(i));
 //            keyUser.add(UID.get(i));
-//            adapter.notifyDataSetChanged();
+//            friendContactAdapter.notifyDataSetChanged();
 //        }
 //    }
 //
@@ -125,7 +125,7 @@ package com.example.administrator.travel.views.fragments;
 //        for (int i = 0; i < listUserSearch.size(); ++i) {
 //            listUserQuery.add(listUserSearch.get(i));
 //            keyUser.add(UID.get(i));
-//            adapter.notifyDataSetChanged();
+//            friendContactAdapter.notifyDataSetChanged();
 //        }
 //    }
 //

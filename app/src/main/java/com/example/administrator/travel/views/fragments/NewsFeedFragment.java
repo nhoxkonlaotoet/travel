@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView, TourAbou
         CityAdapter.CityClickListener, TourAdapter.ItemClickListener, CompanyAdapter.CompanyClickListener {
     private RecyclerView recyclerViewTour, recyclerViewCity, recyclerLikedTour, recyclerCompany;
     private NewsFeedPresenter presenter;
-    private LinearLayout layoutCities, layoutAboutToDepartTours, layoutLikedTours;
+    private CardView layoutCities, layoutAboutToDepartTours, layoutLikedTours,layoutCompany;
 
     public NewsFeedFragment() {
 
@@ -73,7 +74,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView, TourAbou
         layoutCities = getActivity().findViewById(R.id.layoutCities);
         layoutAboutToDepartTours = getActivity().findViewById(R.id.layoutAboutToDepartTours);
         layoutLikedTours = getActivity().findViewById(R.id.layoutLikedTours);
-
+        layoutCompany = getActivity().findViewById(R.id.layoutCompany);
     }
 
     @Override

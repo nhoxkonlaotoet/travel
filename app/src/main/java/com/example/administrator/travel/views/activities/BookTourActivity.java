@@ -2,7 +2,6 @@ package com.example.administrator.travel.views.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -20,10 +19,9 @@ import com.example.administrator.travel.adapter.TourBookingAdapter;
 import com.example.administrator.travel.models.entities.TourBookingDetail;
 import com.example.administrator.travel.presenters.bases.BookTourPresenter;
 import com.example.administrator.travel.presenters.impls.BookTourPresenterImpl;
-import com.example.administrator.travel.views.BookTourView;
+import com.example.administrator.travel.views.bases.BookTourView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class BookTourActivity extends AppCompatActivity implements BookTourView, TextView.OnEditorActionListener, View.OnFocusChangeListener {

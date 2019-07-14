@@ -1,14 +1,10 @@
 package com.example.administrator.travel.models.impls;
 
-import android.util.Log;
-
+import com.example.administrator.travel.models.asyncTasks.PlaceDetailTask;
+import com.example.administrator.travel.models.asyncTasks.NearbyTask;
 import com.example.administrator.travel.models.bases.PlaceInteractor;
 import com.example.administrator.travel.models.entities.NearbyType;
-import com.example.administrator.travel.models.entities.place.detail.PlaceDetailResponse;
-import com.example.administrator.travel.models.entities.place.nearby.Nearby;
-import com.example.administrator.travel.models.entities.place.nearby.NearbyResponse;
 import com.example.administrator.travel.models.listeners.Listener;
-import com.example.administrator.travel.models.retrofit.ApiUtils;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,57 +12,42 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Admin on 4/25/2019.
  */
 
 public class PlaceInteractorImpl implements PlaceInteractor {
+
     @Override
     public void getNearby(String type, LatLng location, String apiKey, final Listener.OnGetNearbyFinishedListener listener) {
-        ApiUtils.getMapsService().getNearby(location.latitude + "," + location.longitude, type, "distance", apiKey,"vi")
-                .enqueue(new Callback<NearbyResponse>() {
-                    @Override
-                    public void onResponse(Call<NearbyResponse> call, Response<NearbyResponse> response) {
-                        Log.e("nearby: ", response.raw().request() + "       ____");
-                        listener.onGetNearbySuccess(response.body().nearbys, response.body().nextPageToken);
-                    }
-
-                    @Override
-                    public void onFailure(Call<NearbyResponse> call, Throwable t) {
-                        listener.onGetNearbyFail(new Exception(t.getMessage()));
-                    }
-                });
+        String url = getNearbyUrl(location.latitude,location.longitude,type,null,apiKey);
+        new NearbyTask(listener).execute(url);
 
     }
 
     @Override
     public void getNearby(String type, LatLng location, String pageToken, String apiKey, final Listener.OnGetNearbyFinishedListener listener) {
-        ApiUtils.getMapsService().getNearby(location.latitude + "," + location.longitude, type,
-                "distance", true, true, pageToken, apiKey,"vi")
-                .enqueue(new Callback<NearbyResponse>() {
-                    @Override
-                    public void onResponse(Call<NearbyResponse> call, Response<NearbyResponse> response) {
-                        try {
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        listener.onGetNearbySuccess(response.body().nearbys, response.body().nextPageToken);
-                    }
+        String url = getNearbyUrl(location.latitude,location.longitude,type,pageToken,apiKey);
+        new NearbyTask(listener).execute(url);
+    }
 
-                    @Override
-                    public void onFailure(Call<NearbyResponse> call, Throwable t) {
-                        listener.onGetNearbyFail(new Exception(t.getMessage()));
-                    }
-                });
+    private String getNearbyUrl(Double latitude, Double longitude, String type, String pagetoken, String apiKey) {
+        StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googlePlaceUrl.append("location=").append(latitude).append(",").append(longitude);
+        googlePlaceUrl.append("&rankby=distance");
+        googlePlaceUrl.append("&type=").append(type);
+        googlePlaceUrl.append("&language=").append("vi");
 
+        googlePlaceUrl.append("&key=").append(apiKey);
+        if (pagetoken!=null && !pagetoken.equals("")) {
+            googlePlaceUrl.append("&hasNextPage=true");
+            googlePlaceUrl.append("&nextPage()=true");
+            googlePlaceUrl.append("&pagetoken=").append(pagetoken);
+        }
+        return googlePlaceUrl.toString();
     }
 
     @Override
@@ -95,20 +76,27 @@ public class PlaceInteractorImpl implements PlaceInteractor {
 
     @Override
     public void getPlaceDetail(String placeId, String apiKey, final Listener.OnGetPlaceDetailFinishedListener listener) {
-        final long start = System.currentTimeMillis();
-        ApiUtils.getMapsService().getPlaceDetail(placeId, apiKey)
-                .enqueue(new Callback<PlaceDetailResponse>() {
-                    @Override
-                    public void onResponse(Call<PlaceDetailResponse> call, Response<PlaceDetailResponse> response) {
-                        if (response.isSuccessful())
-                            listener.onGetPlaceDetailSuccess(response.body().placeDetail);
-                    }
+       new PlaceDetailTask(listener).execute(getPlaceDetailUrl(placeId,apiKey));
 
-                    @Override
-                    public void onFailure(Call<PlaceDetailResponse> call, Throwable t) {
-                        listener.onGetPlaceDetailFail(new Exception(t.getMessage()));
-                    }
-                });
+    }
+    private String getPlaceDetailUrl(String placeId,  String apiKey) {
+        StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
+        googlePlaceUrl.append("placeid=");
+        googlePlaceUrl.append(placeId);
+//        googlePlaceUrl.append("&fields=");
+//        for (int i = 0; i < fileds.length; i++) {
+//            googlePlaceUrl.append(fileds[i]);
+//            if (i != fileds.length - 1)
+//                googlePlaceUrl.append(",");
+//        }
+        googlePlaceUrl.append("&key=");
+        googlePlaceUrl.append(apiKey);
+        return googlePlaceUrl.toString();
     }
 
+    public void likePlace(String placeId, String userId, Boolean like) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference placesRef = database.getReference("places");
+        placesRef.child(placeId).child("likes").child(userId).setValue(like);
+    }
 }

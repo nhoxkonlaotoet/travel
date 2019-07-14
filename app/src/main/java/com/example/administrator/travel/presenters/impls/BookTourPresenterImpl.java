@@ -14,7 +14,7 @@ import com.example.administrator.travel.models.impls.TourStartInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.BookTourPresenter;
-import com.example.administrator.travel.views.BookTourView;
+import com.example.administrator.travel.views.bases.BookTourView;
 
 import java.util.List;
 

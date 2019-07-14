@@ -34,8 +34,6 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     private DateFormat dateFormat;
     private HashMap<String, String> userNameMap;
     private HashMap<String, Bitmap> userAvatarMap;
-    private HashMap<String, List<Bitmap>> activityPhotosMap;
-    int containerHeight, containerWidth;
 
     public ActivityAdapter(Context context, List<com.example.administrator.travel.models.entities.Activity> activityList) {
         if (context == null)
@@ -46,9 +44,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         dateFormat = new SimpleDateFormat("hh:mm dd/MM/yyyy");
         userNameMap = new HashMap<>();
         userAvatarMap = new HashMap<>();
-        activityPhotosMap = new HashMap<>();
-        containerHeight = context.getResources().getDimensionPixelSize(R.dimen.container_height);
-        containerWidth = getScreenWidth();
+
     }
 
     @Override
@@ -63,69 +59,32 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         final com.example.administrator.travel.models.entities.Activity activity = activityList.get(position);
         Date date = new Date(activity.postTime);
-        holder.txtActivityTime.setText(dateFormat.format(date));
         if (userNameMap.get(activity.userId) != null) {
-            holder.txtUserName.setText(userNameMap.get(activity.userId));
+
         }
         if (userAvatarMap.get(activity.userId) != null) {
             holder.imgvUserAvatar.setImageBitmap(userAvatarMap.get(activity.userId));
         }
         holder.txtActivityContent.setText(activity.content);
-//        if (context != null) {
-//            int n = activity.numberOfPicture;
-//            int h, w;
-//            if (n == 1) {
-//                h = containerHeight;
-//                w = containerWidth;
-//                holder.layoutPicture.setColumnCount(1);
-//                holder.layoutPicture.setRowCount(1);
-//            } else if (n == 2) {
-//                h = containerHeight * 2 / 3;
-//                w = containerWidth / 2;
-//                holder.layoutPicture.setColumnCount(2);
-//                holder.layoutPicture.setRowCount(1);
-//            } else {
-//                h = containerHeight / 2;
-//                w = containerWidth / 3;
-//                holder.layoutPicture.setColumnCount(3);
-//                holder.layoutPicture.setRowCount(2);
-//            }
-//            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(w, h);
-//            ImageView imageView;
-//            for (int i = 0; i < activity.numberOfPicture; i++) {
-//                imageView = new ImageView(context);
-//                imageView.setLayoutParams(params);
-//                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//                if (activityPhotosMap.get(activity.id) != null) {
-//                    List<Bitmap> photoList = activityPhotosMap.get(activity.id);
-//                    if (photoList.size() > i && photoList.get(i) != null) {
-//                        imageView.setImageBitmap(photoList.get(i));
-//                        //   Log.e( "getView: ",activity.id+"" +activity.photoList.get(i));
-//                    }
-//                }
-//                holder.layoutPicture.addView(imageView, i);
-//            }
-//        }
+        holder.txtActivityTime.setText(dateFormat.format(date));
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView txtUserName, txtActivityTime, txtActivityContent;
+        TextView txtActivityTime, txtActivityContent;
         ImageView imgvUserAvatar;
-       // ImageButton btnOption;
 
         ViewHolder(View itemView) {
             super(itemView);
-            txtUserName = itemView.findViewById(R.id.txtUserName);
             txtActivityTime = itemView.findViewById(R.id.txtActivityTime);
             txtActivityContent = itemView.findViewById(R.id.txtActivityContent);
             imgvUserAvatar = itemView.findViewById(R.id.imgvUserAvatar);
-           // btnOption = itemView.findViewById(R.id.btnOption);
         }
 
         @Override
         public void onClick(View view) {
             if (mClickListener != null)
-                mClickListener.onScheduleItemClick(view, "");
+                mClickListener.onActivityItemClick(view, "");
         }
     }
 
@@ -134,7 +93,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     }
 
     public interface ItemClickListener {
-        void onScheduleItemClick(View view, String scheduleId);
+        void onActivityItemClick(View view, String activityId);
     }
 
     @Override
@@ -160,20 +119,5 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
             userAvatarMap.put(userId, avatarPhoto);
             notifyDataSetChanged();
         }
-    }
-
-    public void updateImage(String activityId, Bitmap activityPhoto) {
-        if (activityPhotosMap!=null) {
-            List<Bitmap> photoList = new ArrayList<>();
-            activityPhotosMap.put(activityId, photoList);
-            activityPhotosMap.get(activityId).add(activityPhoto);
-            notifyDataSetChanged();
-        }
-
-
-    }
-
-    int getScreenWidth() {
-        return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 }

@@ -54,7 +54,7 @@ public class ChatListFriendFragment extends Fragment {
                 int position = tab.getPosition();
                 if(position == 0){//contact list friends
                     ChatManagerFragment.rechangeFrmLayoutManager();
-                    ChatContactFriendFragment contactFriendFragment = new ChatContactFriendFragment();
+                    FriendContactFragment contactFriendFragment = new FriendContactFragment();
                     android.app.FragmentManager manager = getFragmentManager();
                     manager.beginTransaction().replace(R.id.conten_layout_chatlistfriend, contactFriendFragment,
                             contactFriendFragment.getTag()).commit();
@@ -83,7 +83,7 @@ public class ChatListFriendFragment extends Fragment {
             }
         });
 
-        ChatContactFriendFragment contactFriendFragment = new ChatContactFriendFragment();
+        FriendContactFragment contactFriendFragment = new FriendContactFragment();
         android.app.FragmentManager manager = getFragmentManager();
         manager.beginTransaction().replace(R.id.conten_layout_chatlistfriend, contactFriendFragment,
                 contactFriendFragment.getTag()).commit();

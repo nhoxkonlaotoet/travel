@@ -18,30 +18,40 @@ import java.util.Map;
 public class Activity {
     public String id;
     public String userId;
-    public Boolean focus;
     public Long postTime;
     public String content;
-    public MyLatLng location;
-    public int numberOfPicture;
+    public MyLatLng myLocation;
+    public String placeId;
+    public String placeType;
+    public String tourStartId;
+    public HashMap<String, Boolean> likes;
+    public String type;
     public Activity() {
     }
 
-    public Activity(String userId, Boolean focus, String content, MyLatLng location, int numberOfPicture) {
+    public Activity(String userId, String tourStartId, String placeId, String placeType, String content,String type, MyLatLng myLocation) {
         this.userId = userId;
-        this.focus = focus;
+        this.tourStartId=tourStartId;
         this.content = content;
-        this.location = location;
-        this.numberOfPicture = numberOfPicture;
+        this.myLocation = myLocation;
+        this.placeId = placeId;
+        this.placeType=placeType;
+        this.type=type;
+        likes = new HashMap<>();
     }
+
     @Exclude
-    public Map<String, Object> toMap(){
+    public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("userId", userId);
-        result.put("focus", focus);
+        result.put("tourStartId", tourStartId);
+        result.put("placeId", placeId);
+        result.put("placeType", placeType);
+        result.put("type", type);
         result.put("content", content);
-        result.put("location", location);
+        result.put("myLocation", myLocation);
+        result.put("likes",likes);
         result.put("postTime", ServerValue.TIMESTAMP);
-        result.put("numberOfPicture", numberOfPicture);
         return result;
     }
 }

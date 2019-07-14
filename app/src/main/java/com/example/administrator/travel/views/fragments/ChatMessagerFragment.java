@@ -70,12 +70,12 @@ public class ChatMessagerFragment extends Fragment implements ChatMessagerView{
         // Inflate the layout for this fragment, getArguments
         View view = inflater.inflate(R.layout.fragment_chat_messager, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.reyclerview_chat_message_list);
-        edtMessage = (EditText) view.findViewById(R.id.edt_chat_message_chatbox);
-        tvNameFriend = (TextView) view.findViewById(R.id.tv_chat_message_name_friend);
-        btnSendMessage = (Button) view.findViewById(R.id.btn_chat_message_send);
-        btnCamera = (Button) view.findViewById(R.id.btn_chat_message_camera);
-        btnRecord = (Button) view.findViewById(R.id.btn_chat_message_record);
+        mRecyclerView =  view.findViewById(R.id.reyclerview_chat_message_list);
+        edtMessage =  view.findViewById(R.id.edt_chat_message_chatbox);
+        tvNameFriend =  view.findViewById(R.id.tv_chat_message_name_friend);
+        btnSendMessage =  view.findViewById(R.id.btn_chat_message_send);
+        btnCamera = view.findViewById(R.id.btn_chat_message_camera);
+        btnRecord =  view.findViewById(R.id.btn_chat_message_record);
 
 
         tvNameFriend.setText(getArguments().getString("UserName"));

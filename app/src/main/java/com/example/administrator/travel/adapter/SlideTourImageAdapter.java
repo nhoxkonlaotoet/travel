@@ -27,17 +27,13 @@ import java.util.Random;
  * Created by Administrator on 24/12/2018.
  */
 
-public class SlideTourImageAdapter extends PagerAdapter implements Listener.OnLoadImageThumpnailFinishedListener, Listener.OnGetTourImageFinishedListener {
+public class SlideTourImageAdapter extends PagerAdapter  {
     private LayoutInflater layoutInflater;
     private HashMap<String, Bitmap> imagesMap;
     private Integer n;
     private Context context;
     private ImageView imgv;
-    private String tourId, toursPath;
-    private boolean[] loadPhotoFlags;
-    private boolean externalStoragePermissionGranted;
-    private TourInteractor tourInteractor;
-    private ExternalStorageInteractor externalStorageInteractor;
+    private String tourId;
 
     public SlideTourImageAdapter(String tourId, Integer numberofImages, Context context) {
         if (context == null)
@@ -46,21 +42,6 @@ public class SlideTourImageAdapter extends PagerAdapter implements Listener.OnLo
         this.tourId = tourId;
         n = numberofImages;
         imagesMap = new HashMap<>();
-        loadPhotoFlags = new boolean[n];
-        initUsingExternalStorage(context);
-        externalStorageInteractor = new ExternalStorageInteractorImpl();
-        tourInteractor = new TourInteractorImpl();
-    }
-
-    private void initUsingExternalStorage(Context context) {
-        if (ContextCompat.checkSelfPermission(context,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(context,
-                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            externalStoragePermissionGranted = true;
-            externalStorageInteractor = new ExternalStorageInteractorImpl();
-            toursPath = context.getString(R.string.external_storage_path_tours);
-        }
     }
 
     @Override
@@ -86,19 +67,6 @@ public class SlideTourImageAdapter extends PagerAdapter implements Listener.OnLo
         View view = layoutInflater.inflate(R.layout.slide_tour_image, null);
         imgv = view.findViewById(R.id.imgvTourImage);
 
-        if (!loadPhotoFlags[position]) {
-            String currentTourPath = toursPath + tourId + "/";
-            if (externalStoragePermissionGranted
-                    && externalStorageInteractor.isExistFile(currentTourPath, tourId + position)) {
-                externalStorageInteractor.getBitmapThumpnailFromExternalFile(currentTourPath, tourId + position, this);
-                Log.e("fromSDcard0: ", currentTourPath + "    " + tourId + " " + position);
-            } else {
-                tourInteractor.getTourImage(position, tourId, this);
-                Log.e("fromFirebase: ", tourId + " " + position);
-            }
-            loadPhotoFlags[position] = true;
-        }
-
         if (imagesMap.get(tourId + position) != null)
             imgv.setImageBitmap(imagesMap.get(tourId + position));
         container.addView(view);
@@ -110,25 +78,12 @@ public class SlideTourImageAdapter extends PagerAdapter implements Listener.OnLo
     }
 
     public void updateImage(String fileName, Bitmap image) {
-        Log.e("updateImage: ", "gfhfghg");
         if (imagesMap != null) {
             imagesMap.put(fileName, image);
             notifyDataSetChanged();
         }
     }
 
-    @Override
-    public void onLoadImageThumpnailSuccess(String fileName, Bitmap image) {
-        updateImage(fileName, image);
-    }
 
-    @Override
-    public void onGetTourImageSuccess(int pos, String tourId, Bitmap tourImage) {
-        updateImage(tourId + pos, tourImage);
-        if (externalStoragePermissionGranted) {
-            String currentTourPath = new StringBuilder(toursPath).append(tourId).append("/").toString();
-            if (!externalStorageInteractor.isExistFile(currentTourPath, tourId + pos))
-                externalStorageInteractor.saveBitmapToExternalFile(currentTourPath, tourId + pos, tourImage, 50);
-        }
-    }
+
 }

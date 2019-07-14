@@ -21,6 +21,10 @@ public interface UserProfileView {
 
     void hideButtonEditInfor();
 
+    void showButtonAddFriend();
+
+    void hideButtonAddFriend();
+
     void notify(String message);
 
     Context getContext();

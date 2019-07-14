@@ -16,7 +16,7 @@ public interface TourRatingPresenter {
 
     void OnRatingBarChanged(float value);
 
-    void onReviewItemClicked(String reviewId);
+    void onReviewItemClicked(String tourId, String reviewId);
 
     void onButtonShareFacebookClicked();
 

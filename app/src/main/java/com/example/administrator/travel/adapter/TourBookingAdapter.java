@@ -20,6 +20,7 @@ import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.entities.TourBookingDetail;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,8 +35,8 @@ public class TourBookingAdapter extends RecyclerView.Adapter<TourBookingAdapter.
     private ArrayList<TourBookingDetail> tourBookingDetailList;
 
     private String[] yearArr = new String[151];
-    private String[] monthArr = new String[13];
-    private String[] dayArr = new String[32];
+    private String[] monthArr = new String[12];
+    private String[] dayArr = new String[31];
     private ArrayAdapter<String> dayArrayAdapter, monthArrayAdapter, yearArrayAdapter;
 
     public TourBookingAdapter(Context context) {
@@ -43,21 +44,18 @@ public class TourBookingAdapter extends RecyclerView.Adapter<TourBookingAdapter.
             return;
         this.mInflater = LayoutInflater.from(context);
         tourBookingDetailList = new ArrayList<>();
-        yearArr[0] = "Năm";
-        monthArr[0] = "Tháng";
-        dayArr[0] = "Ngày";
-        for (int i = 1; i < yearArr.length; i++) {
-            int j = i - 1;
-            yearArr[i] = String.valueOf(2019 - j);
-            if (i < 32) {
-                dayArr[i] = String.valueOf(i);
-                if (i < 13)
-                    monthArr[i] = String.valueOf(i);
+        for (int i = 0; i < yearArr.length; i++) {
+            yearArr[i] = String.valueOf(2019 - i);
+            if (i < 31) {
+                dayArr[i] = String.valueOf(i+1);
+                if (i < 12)
+                    monthArr[i] = String.valueOf(i+1);
             }
         }
+
         dayArrayAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, dayArr);
         monthArrayAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, monthArr);
-        yearArrayAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, yearArr);
+       yearArrayAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, yearArr);
     }
 
     public TourBookingAdapter(Context context, List<TourBookingDetail> tourBookingDetailList) {
@@ -179,7 +177,7 @@ public class TourBookingAdapter extends RecyclerView.Adapter<TourBookingAdapter.
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     if (i > 0)
-                        tourBookingDetailList.get(getAdapterPosition()).dayOfBirth = Integer.parseInt(dayArr[i + 1]);
+                        tourBookingDetailList.get(getAdapterPosition()).dayOfBirth = Integer.parseInt(dayArr[i]);
                     else
                         tourBookingDetailList.get(getAdapterPosition()).dayOfBirth = null;
                 }
@@ -193,7 +191,7 @@ public class TourBookingAdapter extends RecyclerView.Adapter<TourBookingAdapter.
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     if (i > 0)
-                        tourBookingDetailList.get(getAdapterPosition()).monthOfBirth = Integer.parseInt(monthArr[i + 1]);
+                        tourBookingDetailList.get(getAdapterPosition()).monthOfBirth = Integer.parseInt(monthArr[i]);
                     else
                         tourBookingDetailList.get(getAdapterPosition()).monthOfBirth = null;
                 }
@@ -207,7 +205,7 @@ public class TourBookingAdapter extends RecyclerView.Adapter<TourBookingAdapter.
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     if (i > 0)
-                        tourBookingDetailList.get(getAdapterPosition()).yearOfBirth = Integer.parseInt(dayArr[i + 1]);
+                        tourBookingDetailList.get(getAdapterPosition()).yearOfBirth = Integer.parseInt(yearArr[i]);
                     else
                         tourBookingDetailList.get(getAdapterPosition()).yearOfBirth = null;
                 }

@@ -13,7 +13,8 @@
         android:layout_height="@dimen/toolbar_height"
         android:background="@drawable/background_toolbar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="Thêm hoạt động">
+        app:title="Thêm hoạt động"
+        android:elevation="8dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -41,90 +42,125 @@
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_margin="5dp">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Nội dung hoạt động"
-            android:textColor="@color/colorLicoriceDark"
-            android:textStyle="bold" />
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Nội dung hoạt động"
+                android:textColor="@color/colorLicoriceDark"
+                android:textStyle="bold" />
 
 
             <EditText
                 android:id="@+id/etxtActivityContent"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:maxLines="4"
-                android:gravity="top"
-                android:scrollHorizontally="false"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/background_edit_text"/>
+                android:background="@drawable/background_edit_text"
+                android:gravity="top"
+                android:maxLines="4"
+                android:scrollHorizontally="false" />
+
+            <LinearLayout
+                android:id="@+id/layoutPlaceAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_map_location" />
+
+                <TextView
+                    android:id="@+id/txtPlaceSuggestAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:textColor="@color/colorBlueberryDark" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp">
 
         <LinearLayout
-            android:id="@+id/layoutPlaceAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_map_location"/>
+            android:orientation="vertical">
+
             <TextView
-                android:id="@+id/txtPlaceSuggestAddress"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:clickable="true"
-                android:textColor="@color/colorBlueberryDark"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:lines="1"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Gợi ý"
+                android:textColor="@color/colorLicoriceDark"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewActivitySuggest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
         </LinearLayout>
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Gợi ý"
-        android:textColor="@color/colorLicoriceDark"
-        android:textStyle="bold" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewActivitySuggest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:id="@+id/layoutPlaceSuggest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Địa điểm phù hợp"
-            android:textColor="@color/colorLicoriceDark"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewPlaceSuggest"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Địa điểm phù hợp"
+                android:textColor="@color/colorLicoriceDark"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewPlaceSuggest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>

@@ -1,18 +1,25 @@
 package com.example.administrator.travel.presenters.impls;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.administrator.travel.LocationService;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.bases.CompanyInteractor;
+import com.example.administrator.travel.models.bases.ExternalStorageInteractor;
 import com.example.administrator.travel.models.bases.ParticipantInteractor;
 import com.example.administrator.travel.models.bases.TourInteractor;
 import com.example.administrator.travel.models.bases.UserInteractor;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.impls.CompanyInteractorImpl;
+import com.example.administrator.travel.models.impls.ExternalStorageInteractorImpl;
 import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
 import com.example.administrator.travel.models.impls.TourInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
@@ -24,14 +31,15 @@ import com.example.administrator.travel.views.bases.TourView;
  * Created by Admin on 4/15/2019.
  */
 
-public class TourPresenterImpl implements TourPresenter, Listener.OnFinishTourFinishedListener, Listener.OnGetTourFinishedListener {
+public class TourPresenterImpl implements TourPresenter, Listener.OnFinishTourFinishedListener,
+        Listener.OnGetTourFinishedListener, Listener.OnGetTourImageFinishedListener {
     boolean onMyTour, isCompany, isOwned;
-    TourView view;
-    String tourId;
-    TourInteractor tourInteractor;
-    CompanyInteractor companyInteractor;
-    ParticipantInteractor participantInteractor;
-    UserInteractor userInteractor;
+    private TourView view;
+    private String tourId;
+    private TourInteractor tourInteractor;
+    private CompanyInteractor companyInteractor;
+    private ParticipantInteractor participantInteractor;
+    private UserInteractor userInteractor;
     int tabCount;
 
     public TourPresenterImpl(TourView view) {
@@ -92,22 +100,29 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnFinishTourFi
     @Override
     public void onTourFinished() {
         String userId = userInteractor.getUserId();
-        if (!userId.equals("none"))
+        if (userInteractor.isLogged())
             participantInteractor.removeparticipatingTour(userId, view.getContext());
         view.notifyTourFinished();
-
         view.getContext().stopService(new Intent(view.getContext(), LocationService.class));
-
         view.closebyTourFinished();
     }
 
     @Override
     public void onGetTourSuccess(Tour tour) {
         view.showTourImages(tour.id, tour.numberofImages);
+        for (int i = 0; i < tour.numberofImages; i++) {
+            tourInteractor.getTourImage(i, tourId, this);
+        }
     }
 
     @Override
     public void onGetTourFail(Exception ex) {
 
     }
+
+    @Override
+    public void onGetTourImageSuccess(int pos, String tourId, Bitmap tourImage) {
+        view.addTourImage(tourId + pos, tourImage);
+    }
+
 }

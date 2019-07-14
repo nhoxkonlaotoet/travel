@@ -3,8 +3,6 @@ package com.example.administrator.travel.presenters.impls;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -14,20 +12,15 @@ import com.example.administrator.travel.models.bases.PicassoInteractor;
 import com.example.administrator.travel.models.bases.PlaceInteractor;
 import com.example.administrator.travel.models.entities.MyLatLng;
 import com.example.administrator.travel.models.entities.NearbyType;
-import com.example.administrator.travel.models.entities.place.nearby.Nearby;
+import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.impls.PicassoInteractorImpl;
 import com.example.administrator.travel.models.impls.PlaceInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.NearbyPresenter;
 import com.example.administrator.travel.views.bases.NearbyView;
 import com.google.android.gms.maps.model.LatLng;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
@@ -109,9 +102,9 @@ public class NearbyPresenterImpl implements NearbyPresenter,
                 .append(",")
                 .append(location.longitude);
         StringBuilder destination = new StringBuilder()
-                .append(nearby.geometry.location.lat.toString())
+                .append(nearby.latitude.toString())
                 .append(",")
-                .append(nearby.geometry.location.lng.toString());
+                .append(nearby.longitude.toString());
         String openFrom = view.getContext().getResources().getString(R.string.open_from_nearby);
         view.gotoMapActivity(origin.toString(), destination.toString(), openFrom);
     }
@@ -145,8 +138,9 @@ public class NearbyPresenterImpl implements NearbyPresenter,
                 page = 1;
                 placeInteractor.getNearby(nearbyType, new LatLng(location.latitude, location.longitude),
                         view.getContext().getResources().getString(R.string.google_maps_key), this);
-            } else
+            } else {
                 view.notify("Xin vui lòng cho phép truy cập vị trí của bạn");
+            }
         }
     }
 

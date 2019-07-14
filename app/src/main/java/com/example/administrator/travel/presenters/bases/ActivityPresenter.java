@@ -9,8 +9,10 @@ import android.os.Bundle;
 
 public interface ActivityPresenter {
     void onViewCreated(Bundle bundle);
-    void onButtonMapClicked();
-    void onEditTextContentClicked();
+
+    void onViewResult(int requestCode, int resultCode, Intent data);
+
+    void onTextContentClicked();
     void onGetViewResult(Intent intent);
 
 }

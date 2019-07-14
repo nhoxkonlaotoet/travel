@@ -2,6 +2,8 @@
 package com.example.administrator.travel.models.entities.place.nearby;
 
 import java.util.List;
+
+import com.example.administrator.travel.models.entities.Nearby;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

@@ -7,27 +7,20 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.administrator.travel.LocationObservable;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.bases.MapInteractor;
 import com.example.administrator.travel.models.bases.ParticipantInteractor;
 import com.example.administrator.travel.models.bases.PlaceInteractor;
-import com.example.administrator.travel.models.bases.TourInteractor;
 import com.example.administrator.travel.models.bases.ScheduleInteractor;
-import com.example.administrator.travel.models.bases.UserInteractor;
 import com.example.administrator.travel.models.entities.Participant;
 import com.example.administrator.travel.models.entities.Schedule;
-import com.example.administrator.travel.models.entities.map.direction.Polyline;
 import com.example.administrator.travel.models.entities.map.direction.Route;
-import com.example.administrator.travel.models.entities.place.detail.PlaceDetail;
+import com.example.administrator.travel.models.entities.PlaceDetail;
 import com.example.administrator.travel.models.impls.MapInteractorImpl;
 import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
 import com.example.administrator.travel.models.impls.PlaceInteractorImpl;
 import com.example.administrator.travel.models.impls.ScheduleInteractorImpl;
-import com.example.administrator.travel.models.impls.TourInteractorImpl;
-import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 import com.example.administrator.travel.presenters.bases.MapPresenter;
 import com.example.administrator.travel.views.bases.MapView;
@@ -39,11 +32,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by Administrator on 29/12/2018.
@@ -262,7 +252,7 @@ public class MapPresenterImpl implements MapPresenter,
         if (placeDetail.photos != null && placeDetail.photos.size() > 0) {
             StringBuilder urlBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400")
                     .append("&photoreference=")
-                    .append(placeDetail.photos.get(0).photoReference)
+                    .append(placeDetail.photos.get(0))
                     .append("&key=")
                     .append(view.getContext().getResources().getString(R.string.google_maps_key));
             view.setNavigationHeaderPhoto(urlBuilder.toString());

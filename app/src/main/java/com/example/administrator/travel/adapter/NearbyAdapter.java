@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.DownLoadImageTask;
 import com.example.administrator.travel.models.bases.PicassoInteractor;
 import com.example.administrator.travel.models.entities.MyLatLng;
-import com.example.administrator.travel.models.entities.place.nearby.Nearby;
+import com.example.administrator.travel.models.entities.Nearby;
 import com.example.administrator.travel.models.impls.PicassoInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
 
@@ -102,7 +101,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
             String url;
             try {
                 url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photoreference="
-                        + nearbyList.get(position).photos.get(0).photoReference
+                        + nearbyList.get(position).photos.get(0)
                         + "&key="
                         + apiKey;
             } catch (Exception e) {
@@ -119,7 +118,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         if (isVerticalList) {
             float[] result = new float[1];
             Location.distanceBetween(mylocation.latitude, mylocation.longitude,
-                    nearby.geometry.location.lat, nearby.geometry.location.lng, result);
+                    nearby.latitude, nearby.longitude, result);
             float km, m;
             m = result[0];
             if (m >= 1000) {
@@ -143,13 +142,13 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
                 }
             }
 
-            if (nearby.openingHours == null || nearby.openingHours.openNow == null) {
+            if (nearby.openNow == null) {
                 holder.imgvOpen.setVisibility(View.INVISIBLE);
                 holder.txtOpen.setVisibility(View.INVISIBLE);
             } else {
                 holder.imgvOpen.setVisibility(View.VISIBLE);
                 holder.txtOpen.setVisibility(View.VISIBLE);
-                if (nearby.openingHours.openNow) {
+                if (nearby.openNow) {
                     holder.txtOpen.setText(open);
                     holder.imgvOpen.setImageResource(idopen);
                 } else {

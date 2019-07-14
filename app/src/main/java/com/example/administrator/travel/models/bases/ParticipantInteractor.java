@@ -15,6 +15,8 @@ public interface ParticipantInteractor {
 
     void rememberTour(String userId, String tourStartId, String tourId, String tourGuideId, Context context);
 
+    String getTourGuide(String tourStartId, Context context);
+
     boolean isJoiningTour(String userId, Context context);
 
     void checkJoiningTour(String userId, Listener.OnCheckJoiningTourFinishedListener listener);
