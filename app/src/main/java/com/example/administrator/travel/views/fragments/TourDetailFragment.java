@@ -127,7 +127,6 @@ public class TourDetailFragment
 
     @Override
     public void notifyFailure(Exception ex) {
-        Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override

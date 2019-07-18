@@ -3,6 +3,7 @@ package com.example.administrator.travel.views.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -10,7 +11,9 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.travel.R;
@@ -28,6 +31,8 @@ public class SettingFragment extends Fragment implements SettingView {
     SettingPresenter presenter;
     SwitchCompat switchShareLocation;
     RelativeLayout layoutShareLocation, layoutMyProfile;
+    ImageView imgvUserAvatar;
+    TextView txtUserName;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -65,6 +70,8 @@ public class SettingFragment extends Fragment implements SettingView {
         switchShareLocation = getActivity().findViewById(R.id.switchShareLocation);
         layoutShareLocation = getActivity().findViewById(R.id.layoutShareLocation);
         layoutMyProfile = getActivity().findViewById(R.id.layoutMyProfile);
+        txtUserName = getActivity().findViewById(R.id.txtUserNameInSetting);
+        imgvUserAvatar = getActivity().findViewById(R.id.imgvUserAvatarInSetting);
     }
 
     public void setSwitchShareLocationClick() {
@@ -94,7 +101,8 @@ public class SettingFragment extends Fragment implements SettingView {
             }
         });
     }
-    public void setMyProfileClick(){
+
+    public void setMyProfileClick() {
         layoutMyProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +110,7 @@ public class SettingFragment extends Fragment implements SettingView {
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -135,8 +144,8 @@ public class SettingFragment extends Fragment implements SettingView {
 
     @Override
     public void gotoProfileActivity(String myId) {
-        Intent intent=new Intent(getActivity(), UserProfileActivity.class);
-        intent.putExtra("userId",myId);
+        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+        intent.putExtra("userId", myId);
         startActivity(intent);
     }
 
@@ -183,5 +192,27 @@ public class SettingFragment extends Fragment implements SettingView {
     @Override
     public Context getContext() {
         return getActivity();
+    }
+
+    @Override
+    public void showUserName(String name) {
+        if (name != null)
+            txtUserName.setText(name);
+    }
+
+    @Override
+    public void showUserAvatar(Bitmap avatar) {
+        if (avatar != null)
+            imgvUserAvatar.setImageBitmap(avatar);
+    }
+
+    @Override
+    public void showLayoutUSer() {
+        layoutMyProfile.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLayoutUser() {
+        layoutMyProfile.setVisibility(View.GONE);
     }
 }

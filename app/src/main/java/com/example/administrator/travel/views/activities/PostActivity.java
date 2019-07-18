@@ -22,6 +22,9 @@ import com.example.administrator.travel.presenters.bases.PostPresenter;
 import com.example.administrator.travel.presenters.impls.PostPresenterImpl;
 import com.example.administrator.travel.views.bases.PostView;
 
+import java.io.File;
+import java.util.List;
+
 public class PostActivity extends AppCompatActivity implements PostView, StoragePictureAdapter.PictureClickListener {
     RelativeLayout btnOpenPicture,btnMarkLocation;
     TextView txtFileCount;
@@ -109,16 +112,16 @@ public class PostActivity extends AppCompatActivity implements PostView, Storage
     }
 
     @Override
-    public void showFramePictures(int length) {
-        storagePictureAdapter = new StoragePictureAdapter(this, length);
+    public void showFramePictures(int length, File[] filenameList) {
+        storagePictureAdapter = new StoragePictureAdapter(this, length, filenameList);
         storagePictureAdapter.setClickListener(this);
         recyclerViewPicture.setAdapter(storagePictureAdapter);
         recyclerViewPicture.setLayoutManager(new GridLayoutManager(this, 3));
     }
 
     @Override
-    public void addPicture(int index, Bitmap bitmap) {
-      storagePictureAdapter.updateImage(index, bitmap);
+    public void addPicture(String name, Bitmap bitmap) {
+      storagePictureAdapter.updateImage(name, bitmap);
     }
 
     @Override

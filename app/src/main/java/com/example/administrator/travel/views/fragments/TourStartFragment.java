@@ -29,7 +29,7 @@ public class TourStartFragment extends Fragment implements TourStartView, TourSt
     RecyclerView recyclerviewTourStart;
     TourStartPresenter presenter;
     TourStartAdapter tourStartAdapter;
-
+    Bundle bundle;
     public TourStartFragment() {
         // Required empty public constructor
     }
@@ -48,6 +48,7 @@ public class TourStartFragment extends Fragment implements TourStartView, TourSt
         recyclerviewTourStart = getActivity().findViewById(R.id.recyclerviewTourStart);
         presenter = new TourStartsPresenterImpl(this);
         Bundle bundle = getActivity().getIntent().getExtras();
+        this.bundle=bundle;
         presenter.onViewCreated(bundle);
     }
 
@@ -83,4 +84,9 @@ public class TourStartFragment extends Fragment implements TourStartView, TourSt
         presenter.onTourStartItemClick(tourStartId);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        presenter.onViewCreated(bundle);
+    }
 }

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.administrator.travel.models.bases.ParticipantInteractor;
 import com.example.administrator.travel.models.bases.RatingInteractor;
@@ -63,13 +64,14 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
 
     @Override
     public void onViewCreated(Bundle bundle) {
-
-
         tourId = bundle.getString("tourId");
         view.disableRatingBar();
         if (userInteractor.isLogged()) {
             myId = userInteractor.getUserId();
+            Log.e("check", myId+ " "+tourId);
             participantInteractor.checkJoinedTour(myId, tourId, this);
+            view.hideLayoutRateTour();
+            view.hideLayoutMyReview();
         } else {
             view.hideLayoutRateTour();
             view.hideLayoutMyReview();
@@ -175,31 +177,41 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
 
     @Override
     public void onCheckJoinedTourSuccess(Boolean joined) {
+        Log.e("checked", myId+ " "+joined);
+
         joinedTour = joined;
-        if (!joined)
-            view.disableRatingBar();
-        else
+        if (!joined) {
+           view.disableRatingBar();
+           view.hideLayoutMyReview();
+           view.hideLayoutRateTour();
+        }
+        else {
             ratingInteractor.getReview(tourId, myId, this);
+        }
 
     }
 
     @Override
     public void onCheckJoinedTourFail(Exception ex) {
+        Log.e("checked", myId+ " "+ex);
 
     }
 
     @Override // my review
     public void onGetReviewTourSuccess(Rating rating) {
         //haven't reviewed yet return null
+        if(rating==null || rating.rating==0)
+            firstChange=false;
+        Toast.makeText(view.getContext(),rating+"",Toast.LENGTH_LONG);
         if (rating == null)
             if (joinedTour) // joined tour and haven't reviewed{
             {
-                Log.e("asdasdasd", "onGetReviewTourSuccess: ");
                 view.enableRatingBar();
                 view.hideLayoutMyReview();
             } else {
                 view.disableRatingBar();
                 view.hideLayoutMyReview();
+                view.hideLayoutRateTour();
             }
         else {
             view.disableRatingBar();

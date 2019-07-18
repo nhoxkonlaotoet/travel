@@ -1,11 +1,13 @@
 package com.example.administrator.travel.presenters.impls;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import com.example.administrator.travel.models.bases.CompanyInteractor;
 import com.example.administrator.travel.models.bases.ParticipantInteractor;
 import com.example.administrator.travel.models.bases.UserInteractor;
+import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.models.impls.CompanyInteractorImpl;
 import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
@@ -17,13 +19,12 @@ import com.example.administrator.travel.views.bases.SettingView;
  * Created by Admin on 4/26/2019.
  */
 
-public class SettingPresenterImpl implements SettingPresenter, Listener.OnCheckShareLocationFinishedListener, Listener.OnSetShareLocationFinishedListener {
+public class SettingPresenterImpl implements SettingPresenter, Listener.OnCheckShareLocationFinishedListener, Listener.OnSetShareLocationFinishedListener, Listener.OnGetUserInforFinishedListener, Listener.OnGetUserAvatarFinishedListener {
     SettingView view;
     UserInteractor userInteractor;
     ParticipantInteractor participantInteractor;
     CompanyInteractor companyInteractor;
     boolean shareLocation;
-
     String myId, tourStartId;
 
     public SettingPresenterImpl(SettingView view) {
@@ -41,6 +42,8 @@ public class SettingPresenterImpl implements SettingPresenter, Listener.OnCheckS
             view.hideBtnLogin();
             view.showBtnLogout();
             myId = userInteractor.getUserId();
+            userInteractor.getUserInfor(myId,this);
+            view.showLayoutUSer();
             if (!companyInteractor.isCompany(myId, view.getContext())) {
                 tourStartId = participantInteractor.getJoiningTourStartId(myId, view.getContext());
                 participantInteractor.checkShareLoction(myId, tourStartId, this);
@@ -49,6 +52,7 @@ public class SettingPresenterImpl implements SettingPresenter, Listener.OnCheckS
             }
             else view.hideLayoutShareLocation();
         } else {
+            view.hideLayoutUser();
             view.hideBtnLogout();
             view.showBtnLogin();
             view.hideLayoutShareLocation();
@@ -107,5 +111,16 @@ public class SettingPresenterImpl implements SettingPresenter, Listener.OnCheckS
         view.notifySetShareLocationFail(ex.getMessage());
         view.setSwitchShareLocationState(shareLocation);
         view.enableSwitchShareLocation();
+    }
+
+    @Override
+    public void onGetUserInforSuccess(UserInformation user) {
+        view.showUserName(user.name);
+        userInteractor.getUserAvatar(user.id,user.urlAvatar,this);
+    }
+
+    @Override
+    public void onGetUserAvatarSuccess(String userId, Bitmap avatar) {
+        view.showUserAvatar(avatar);
     }
 }

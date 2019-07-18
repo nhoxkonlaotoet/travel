@@ -34,4 +34,8 @@ public interface UserProfileView {
     void detroy();
 
     void create();
+
+    void hideButtonCancelAddFriend();
+
+    void hideButtonUnfriend();
 }

@@ -88,6 +88,7 @@ public class MapPresenterImpl implements MapPresenter,
             case "contact":
                 String[] companySplit = bundle.getString("destination").split(",");
                 LatLng companyLocation= new LatLng(Double.parseDouble(companySplit[0]), Double.parseDouble(companySplit[1]));
+                view.moveCamera(companyLocation);
                 break;
             case "schedule":
                 String dayId = bundle.getString("dayId");
@@ -97,6 +98,8 @@ public class MapPresenterImpl implements MapPresenter,
                 break;
             case "activity":
                 tourStartId = bundle.getString("tourStartId");
+                String placeId = bundle.getString("placeId");
+                openPlace(placeId);
                 participantInteractor.setStreamPeopleLocationChange(tourStartId, this);
                 break;
             case "choose":
@@ -149,7 +152,13 @@ public class MapPresenterImpl implements MapPresenter,
         }
         view.openDrawerLayout();
     }
+    private void openPlace(String placeId){
+        currentPlaceId =placeId;
+        placeInteractor.getPlaceDetail(placeId, view.getContext().getResources().getString(R.string.google_maps_key), this);
+        view.clearNavigationHeaderPhoto();
+        view.openDrawerLayout();
 
+    }
     @Override
     public void onMapRefreshed() {
         int green = view.getContext().getResources().getColor(R.color.colorKiwi);

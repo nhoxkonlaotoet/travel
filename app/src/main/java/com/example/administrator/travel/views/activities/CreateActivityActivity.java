@@ -72,6 +72,12 @@ public class CreateActivityActivity extends AppCompatActivity
         btnPost = findViewById(R.id.btnPost);
         txtPlaceSuggestAddress = findViewById(R.id.txtPlaceSuggestAddress);
         toolbar = findViewById(R.id.toolbar);
+        txtPlaceSuggestAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onTextViewPlaceAddressClicked();
+            }
+        });
     }
 
     private void setActionbar() {
@@ -171,6 +177,7 @@ public class CreateActivityActivity extends AppCompatActivity
     @Override
     public void gotoMapsActivity(String placeId) {
         Intent intent = new Intent(CreateActivityActivity.this, MapsActivity.class);
+        intent.putExtra("openFrom", "activity");
         intent.putExtra("placeId", placeId);
         startActivity(intent);
     }

@@ -13,6 +13,8 @@ import java.util.List;
  */
 
 public interface ActivityView {
+    void showButtonFinish();
+
     void gotoMapActivty(String tourStartId);
 
     void showActivities(List<Activity> lstActivity);

@@ -15,4 +15,5 @@ public interface ActivityPresenter {
     void onTextContentClicked();
     void onGetViewResult(Intent intent);
 
+    void onBtnFinishTourClick();
 }

@@ -11,6 +11,7 @@ import com.example.administrator.travel.models.bases.UserInteractor;
 import com.example.administrator.travel.models.entities.Activity;
 import com.example.administrator.travel.models.entities.UserInformation;
 import com.example.administrator.travel.models.impls.ActivityInteractorImpl;
+import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
 import com.example.administrator.travel.models.impls.TourStartInteractorImpl;
 import com.example.administrator.travel.models.impls.UserInteractorImpl;
 import com.example.administrator.travel.models.listeners.Listener;
@@ -46,8 +47,10 @@ public class ActivityPresenterImpl implements ActivityPresenter, Listener.OnGetA
         tourStartId = bundle.getString("tourStartId");
         tourGuideId = tourStartInteractor.getTourGuideId(tourStartId,view.getContext());
         Log.e( "activity fragment: ", tourStartId+", "+tourGuideId);
-        if (userInteractor.getUserId().equals(tourGuideId))
+        if (userInteractor.getUserId().equals(tourGuideId)) {
             isTourGuide = true;
+            view.showButtonFinish();
+        }
         activityInteractor.getActivities(tourStartId, this);
     }
 
@@ -64,6 +67,11 @@ public class ActivityPresenterImpl implements ActivityPresenter, Listener.OnGetA
     @Override
     public void onGetViewResult(Intent intent) {
 
+    }
+
+    @Override
+    public void onBtnFinishTourClick() {
+        new ParticipantInteractorImpl().finishTour(tourStartId);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
     private Toolbar toolbar;
     private CircleImageView imgvUserAvatar;
     private TextView txtUserName, txtUserNameTop, txtUserGender, txtUserEmail, txtUserDOB, txtUserPhoneNumber;
-    private Button btnEditInfor, btnAddFriend;
+    private Button btnEditInfor, btnAddFriend, btnCancelAddFriendRequest, btnUnfriend;
 
     private UserProfilePresenter presenter;
 
@@ -58,6 +58,9 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
         txtUserPhoneNumber = findViewById(R.id.txtUserPhoneNumber);
         btnEditInfor = findViewById(R.id.btnEditInfor);
         btnAddFriend = findViewById(R.id.btnAddFriend);
+        btnCancelAddFriendRequest = findViewById(R.id.btnCancelAddFriendRequest);
+        btnUnfriend = findViewById(R.id.btnUnfriend);
+
     }
 
     private void setOnButtonEditInforClick() {
@@ -174,5 +177,15 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
     @Override
     public void create() {
         onCreate(null);
+    }
+
+    @Override
+    public void hideButtonCancelAddFriend() {
+        btnCancelAddFriendRequest.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideButtonUnfriend() {
+        btnUnfriend.setVisibility(View.GONE);
     }
 }

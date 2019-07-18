@@ -362,4 +362,11 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
             }
         });
     }
+
+    @Override
+    public void finishTour(String tourStartId) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference participantRef = database.getReference("tour_start_date");
+        participantRef.child(tourStartId).child("finished").setValue(true);
+    }
 }

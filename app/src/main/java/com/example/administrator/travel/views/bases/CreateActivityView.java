@@ -13,8 +13,6 @@ import java.util.List;
 public interface CreateActivityView {
     void onFocusChange(View v, boolean hasFocus);
 
-    boolean onEditorAction(TextView v, int actionId, KeyEvent keyEvent);
-
     void showActivitySuggestions(List<ActivitySuggestion> activitySuggestionList);
 
 

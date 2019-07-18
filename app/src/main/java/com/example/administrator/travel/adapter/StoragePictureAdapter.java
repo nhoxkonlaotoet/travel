@@ -16,7 +16,9 @@ import android.widget.TextView;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.entities.Tour;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,25 +27,27 @@ import java.util.List;
 
 public class StoragePictureAdapter extends RecyclerView.Adapter<StoragePictureAdapter.ViewHolder> {
 
-    private List<Bitmap> pictureList;
+    private HashMap<String, Bitmap> pictureList;
     private boolean[] flags;
     private LayoutInflater mInflater;
     private StoragePictureAdapter.PictureClickListener mClickListener;
     private int count;
+    File[] filenameList;
 
-    public StoragePictureAdapter(Context context, int count) {
-        if(context==null)
+    public StoragePictureAdapter(Context context, int count, File[] filenameList) {
+        if (context == null)
             return;
         this.mInflater = LayoutInflater.from(context);
-        pictureList = new ArrayList<>();
+        pictureList = new HashMap<>();
         this.count = count;
-        flags=new boolean[count];
+        flags = new boolean[count];
+        this.filenameList = filenameList;
     }
 
     @Override
     @NonNull
     public StoragePictureAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(mInflater==null)
+        if (mInflater == null)
             return null;
         View view = mInflater.inflate(R.layout.item_picture, parent, false);
         return new StoragePictureAdapter.ViewHolder(view);
@@ -52,8 +56,13 @@ public class StoragePictureAdapter extends RecyclerView.Adapter<StoragePictureAd
     @Override
     public void onBindViewHolder(@NonNull StoragePictureAdapter.ViewHolder holder, int position) {
         try {
-            Bitmap picture = pictureList.get(position);
-            holder.imgvPicture.setImageBitmap(picture);
+
+            String name = filenameList[position].getName();
+            if (pictureList.get(name) != null) {
+                Log.e("get",  name.substring(0,name.length()-5) + " "+pictureList.get(name));
+                Bitmap picture = pictureList.get(name);
+                holder.imgvPicture.setImageBitmap(picture);
+            }
             holder.checkBoxPicture.setChecked(flags[position]);
         } catch (Exception e) {
         }
@@ -67,6 +76,7 @@ public class StoragePictureAdapter extends RecyclerView.Adapter<StoragePictureAd
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imgvPicture;
         CheckBox checkBoxPicture;
+
         ViewHolder(View itemView) {
             super(itemView);
             imgvPicture = itemView.findViewById(R.id.imgvPicture);
@@ -76,10 +86,10 @@ public class StoragePictureAdapter extends RecyclerView.Adapter<StoragePictureAd
 
         @Override
         public void onClick(View view) {
-            if(flags[getAdapterPosition()])
-                flags[getAdapterPosition()]=false;
+            if (flags[getAdapterPosition()])
+                flags[getAdapterPosition()] = false;
             else
-                flags[getAdapterPosition()]=true;
+                flags[getAdapterPosition()] = true;
             if (mClickListener != null)
                 mClickListener.onPictureClick(view, pictureList.get(getAdapterPosition()));
             notifyDataSetChanged();
@@ -101,8 +111,9 @@ public class StoragePictureAdapter extends RecyclerView.Adapter<StoragePictureAd
         void onPictureClick(View view, Bitmap image);
     }
 
-    public void updateImage(int pos, Bitmap picture) {
-        pictureList.add(pos, picture);
+    public void updateImage(String name, Bitmap picture) {
+        Log.e("put", name.substring(0,name.length()-5));
+        pictureList.put(name, picture);
         notifyDataSetChanged();
     }
 }

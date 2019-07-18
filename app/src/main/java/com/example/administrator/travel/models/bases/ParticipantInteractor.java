@@ -42,4 +42,6 @@ public interface ParticipantInteractor {
     void setStreamPeopleLocationChange(String tourStartId, Listener.OnGetPeopleLocationFinishedListener listener);
 
     void checkJoinedTour(String userId, String tourId, Listener.OnCheckJoinedTourFinishedListener listener);
+
+    void finishTour(String tourStartId);
 }

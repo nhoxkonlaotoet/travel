@@ -21,23 +21,21 @@
             android:background="@drawable/background_creme_button"
             android:clickable="true">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgvUserAvatar"
+                android:id="@+id/imgvUserAvatarInSetting"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/tour"
                 android:layout_centerVertical="true"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/imgvUserAvatar"
+                android:layout_toRightOf="@+id/imgvUserAvatarInSetting"
                 android:orientation="vertical"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp">
                 <TextView
-                    android:id="@+id/txtUserName"
+                    android:id="@+id/txtUserNameInSetting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hùng Hiệp"
                     android:textSize="16sp"
                     android:textColor="@color/colorLicoriceDark"/>
                 <TextView

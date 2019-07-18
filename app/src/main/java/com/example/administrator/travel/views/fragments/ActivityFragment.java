@@ -11,10 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.administrator.travel.adapter.ActivityAdapter;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.entities.Activity;
+import com.example.administrator.travel.models.entities.Participant;
+import com.example.administrator.travel.models.impls.ParticipantInteractorImpl;
 import com.example.administrator.travel.presenters.bases.ActivityPresenter;
 import com.example.administrator.travel.presenters.impls.ActivityPresenterImpl;
 import com.example.administrator.travel.views.bases.ActivityView;
@@ -28,11 +31,12 @@ public class ActivityFragment extends Fragment implements ActivityView {
     CardView layoutStatusPost;
     ActivityAdapter adapter;
     ActivityPresenter presenter;
-
+    Button btnFinishTour;
     public ActivityFragment() {
         // Required empty public constructor
     }
-
+    @Override
+    public void showButtonFinish(){btnFinishTour.setVisibility(View.VISIBLE);}
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +47,19 @@ public class ActivityFragment extends Fragment implements ActivityView {
         super.onViewCreated(view, savedInstanceState);
         layoutStatusPost = getActivity().findViewById(R.id.layoutStatusPost);
         recyclerViewActivity = getActivity().findViewById(R.id.recyclerViewActivity);
-
+        btnFinishTour =getActivity().findViewById(R.id.btnFinishTour);
+        btnFinishTour.setVisibility(View.GONE);
         setTextContentClick();
         Bundle bundle = getActivity().getIntent().getExtras();
         presenter = new ActivityPresenterImpl(this);
         presenter.onViewCreated(bundle);
+
+        btnFinishTour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onBtnFinishTourClick();
+            }
+        });
 
     }
 

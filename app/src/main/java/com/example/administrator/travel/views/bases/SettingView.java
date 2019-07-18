@@ -2,6 +2,7 @@ package com.example.administrator.travel.views.bases;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 
 /**
  * Created by Admin on 4/26/2019.
@@ -23,4 +24,12 @@ public interface SettingView {
     void setSwitchShareLocationState(boolean value);
     void notifySetShareLocationFail(String message);
     Context getContext();
+
+    void showUserName(String name);
+
+    void showUserAvatar(Bitmap avatar);
+
+    void showLayoutUSer();
+
+    void hideLayoutUser();
 }

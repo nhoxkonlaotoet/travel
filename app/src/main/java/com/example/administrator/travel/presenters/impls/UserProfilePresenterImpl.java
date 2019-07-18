@@ -34,10 +34,14 @@ public class UserProfilePresenterImpl implements UserProfilePresenter, Listener.
             view.showButtonEditInfor();
             view.enableButtonEditInfor();
             view.hideButtonAddFriend();
+            view.hideButtonCancelAddFriend();
+            view.hideButtonUnfriend();
         } else {
             view.hideButtonEditInfor();
             view.disableButtonEditInfor();
             view.showButtonAddFriend();
+            view.hideButtonCancelAddFriend();
+            view.hideButtonUnfriend();
         }
     }
 
