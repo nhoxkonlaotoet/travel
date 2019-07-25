@@ -57,7 +57,9 @@ public class TourStartAdapter extends RecyclerView.Adapter<TourStartAdapter.View
 
     @Override
     public int getItemCount() {
-        return tourStartDateList.size();
+        if (tourStartDateList != null)
+            return tourStartDateList.size();
+        return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

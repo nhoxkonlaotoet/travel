@@ -99,12 +99,16 @@ public class TourPresenterImpl implements TourPresenter, Listener.OnFinishTourFi
 
     @Override
     public void onTourFinished() {
-        String userId = userInteractor.getUserId();
-        if (userInteractor.isLogged())
-            participantInteractor.removeparticipatingTour(userId, view.getContext());
-        view.notifyTourFinished();
-        view.getContext().stopService(new Intent(view.getContext(), LocationService.class));
-        view.closebyTourFinished();
+        if (userInteractor.isLogged()) {
+            String userId = userInteractor.getUserId();
+            boolean isJoining = participantInteractor.isJoiningTour(userId, view.getContext());
+            if (isJoining) {
+                participantInteractor.removeparticipatingTour(userId, view.getContext());
+                view.notifyTourFinished();
+                view.getContext().stopService(new Intent(view.getContext(), LocationService.class));
+                view.closebyTourFinished();
+            }
+        }
     }
 
     @Override

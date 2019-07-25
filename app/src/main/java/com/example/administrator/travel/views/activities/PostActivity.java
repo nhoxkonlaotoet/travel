@@ -1,10 +1,12 @@
 package com.example.administrator.travel.views.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,7 +28,7 @@ import java.io.File;
 import java.util.List;
 
 public class PostActivity extends AppCompatActivity implements PostView, StoragePictureAdapter.PictureClickListener {
-    RelativeLayout btnOpenPicture,btnMarkLocation;
+    RelativeLayout btnOpenPicture;
     TextView txtFileCount;
     PostPresenter presenter;
     EditText edittxtContent;
@@ -34,6 +36,8 @@ public class PostActivity extends AppCompatActivity implements PostView, Storage
     ImageButton btnBack;
     RecyclerView recyclerViewPicture;
     StoragePictureAdapter storagePictureAdapter;
+    private ProgressDialog progressDialog;
+
     int n=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,6 @@ public class PostActivity extends AppCompatActivity implements PostView, Storage
         setOnBtnOpenPictureClick();
         setOnBtnPostClick();
         setOnBtnBackClick();
-        setOnBtnMarkLocationClick();
         presenter = new PostPresenterImpl(this);
         presenter.onViewCreated(bundle);
     }
@@ -55,8 +58,8 @@ public class PostActivity extends AppCompatActivity implements PostView, Storage
         btnBack = findViewById(R.id.btnBack);
         btnOpenPicture = findViewById(R.id.btnOpenPicture);
         txtFileCount = findViewById(R.id.txtFileCount);
-        btnMarkLocation = findViewById(R.id.btnMarkLocation);
         recyclerViewPicture=findViewById(R.id.recyclerviewPicture);
+
         edittxtContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,14 +69,6 @@ public class PostActivity extends AppCompatActivity implements PostView, Storage
     }
 
 
-    void setOnBtnMarkLocationClick(){
-        btnMarkLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.onButtonMarkLocationClicked();
-            }
-        });
-    }
     void setOnBtnOpenPictureClick(){
         btnOpenPicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,20 +108,20 @@ public class PostActivity extends AppCompatActivity implements PostView, Storage
 
     @Override
     public void showFramePictures(int length, File[] filenameList) {
-        storagePictureAdapter = new StoragePictureAdapter(this, length, filenameList);
+        storagePictureAdapter = new StoragePictureAdapter( length, filenameList);
         storagePictureAdapter.setClickListener(this);
         recyclerViewPicture.setAdapter(storagePictureAdapter);
-        recyclerViewPicture.setLayoutManager(new GridLayoutManager(this, 3));
     }
 
     @Override
     public void addPicture(String name, Bitmap bitmap) {
       storagePictureAdapter.updateImage(name, bitmap);
+      storagePictureAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showFileCount(int count) {
-        if(count!=0)
+        if(count>0)
             txtFileCount.setText(count+" ảnh");
         else
             txtFileCount.setText("");
@@ -162,7 +157,6 @@ public class PostActivity extends AppCompatActivity implements PostView, Storage
 
     @Override
     public void finishViewReturnResult(int resultCode){
-        Log.e( "finishViewReturnOK: ","_________________" );
         Intent returnIntent = new Intent();
         setResult(resultCode,returnIntent);
         finish();
@@ -180,5 +174,16 @@ public class PostActivity extends AppCompatActivity implements PostView, Storage
     @Override
     public void onPictureClick(View view, Bitmap image) {
         presenter.onPictureItemClicked(view, image);
+    }
+
+    @Override
+    public void showWaitDialog(){
+        progressDialog = ProgressDialog.show(this, "",
+                "Đang gửi", true);
+    }
+    @Override
+    public void closeWaitDialog(){
+        if (progressDialog.isShowing())
+            progressDialog.cancel();
     }
 }

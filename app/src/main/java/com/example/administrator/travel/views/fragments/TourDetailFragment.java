@@ -8,24 +8,30 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.travel.FormatMoney;
 import com.example.administrator.travel.adapter.NonScrollListView;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.ScheduleAdapter;
+import com.example.administrator.travel.adapter.TourStartAdapter;
 import com.example.administrator.travel.models.entities.Day;
 import com.example.administrator.travel.models.entities.Schedule;
 import com.example.administrator.travel.models.entities.Tour;
+import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.presenters.bases.TourDetailPresenter;
 import com.example.administrator.travel.presenters.impls.TourDetailPresenterImpl;
+import com.example.administrator.travel.views.activities.AddTourStartDateActivity;
 import com.example.administrator.travel.views.bases.TourDetailView;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -36,13 +42,14 @@ import java.util.Locale;
 
 //com.example.administrator.travel.friendContactAdapter.NonScrollListView
 public class TourDetailFragment
-        extends Fragment implements TourDetailView, ScheduleAdapter.ItemClickListener {
-    RecyclerView recyclerViewSchedule;
+        extends Fragment implements TourDetailView, ScheduleAdapter.ItemClickListener, TourStartAdapter.ItemClickListener {
+    RecyclerView recyclerViewSchedule, recyclerviewTourStart;
+    RelativeLayout btnAddTourStart;
     TourDetailPresenter presenter;
     TextView txtAdultPrice, txtChildrenPrice, txtBabyPrice, txtVehicle;
     Spinner spinnerDays;
     List<Day> lstDay = new ArrayList<>();
-
+    TextView txtNotifyHaveNoTourStart;
     public TourDetailFragment() {
     }
 
@@ -62,20 +69,24 @@ public class TourDetailFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mapping();
+        setOnButtonAddTourStartClick();
+        setOnSelectItemSpinner();
 
         Bundle bundle = getActivity().getIntent().getExtras();
         presenter = new TourDetailPresenterImpl(this);
         presenter.onViewCreated(bundle);
-        setOnSelectItemSpinner();
     }
 
     void mapping() {
         recyclerViewSchedule = getActivity().findViewById(R.id.recyclerViewSchedule);
+        recyclerviewTourStart = getActivity().findViewById(R.id.recyclerviewTourStart);
         txtAdultPrice = getActivity().findViewById(R.id.txtAdultPrice);
         txtChildrenPrice = getActivity().findViewById(R.id.txtChildrenPrice);
         txtBabyPrice = getActivity().findViewById(R.id.txtBabyPrice);
         spinnerDays = getActivity().findViewById(R.id.spinnerDays);
         txtVehicle = getActivity().findViewById(R.id.txtVehicle);
+        btnAddTourStart = getActivity().findViewById(R.id.btnAddTourStart);
+        txtNotifyHaveNoTourStart=getActivity().findViewById(R.id.txtNotifyHaveNoTourStart);
     }
 
 
@@ -95,11 +106,20 @@ public class TourDetailFragment
 
     }
 
+    void setOnButtonAddTourStartClick() {
+        btnAddTourStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onButtonAddTourStartClick();
+            }
+        });
+    }
+
     @Override
     public void showInfor(Tour tour) {
-        txtAdultPrice.setText(String.valueOf(tour.adultPrice));
-        txtChildrenPrice.setText(String.valueOf(tour.childrenPrice));
-        txtBabyPrice.setText(String.valueOf(tour.babyPrice));
+        txtAdultPrice.setText(FormatMoney.formatToString(tour.adultPrice));
+        txtChildrenPrice.setText(FormatMoney.formatToString(tour.childrenPrice));
+        txtBabyPrice.setText(FormatMoney.formatToString(tour.babyPrice));
         txtVehicle.setText(String.valueOf(tour.vihicle));
     }
 
@@ -135,6 +155,29 @@ public class TourDetailFragment
     }
 
     @Override
+    public void gotoAddTourStartDateActivity(String tourId, int requestCode) {
+        Intent intent = new Intent(getActivity(), AddTourStartDateActivity.class);
+        intent.putExtra("tourId", tourId);
+        startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    public void showTourStartDate(List<TourStartDate> tourStartDateList) {
+        if(tourStartDateList==null || tourStartDateList.size()==0)
+        {
+            txtNotifyHaveNoTourStart.setVisibility(View.VISIBLE);
+        }
+        else {
+            txtNotifyHaveNoTourStart.setVisibility(View.GONE);
+            TourStartAdapter tourStartAdapter = new TourStartAdapter(getContext(), false, tourStartDateList);
+            tourStartAdapter.setClickListener(this);
+            recyclerviewTourStart.setAdapter(tourStartAdapter);
+        }
+    }
+
+
+
+    @Override
     public Context getContext() {
         return getActivity();
     }
@@ -167,5 +210,10 @@ public class TourDetailFragment
     @Override
     public void onScheduleItemClick(View view, String scheduleId) {
         presenter.onScheduleItemClicked(scheduleId);
+    }
+
+    @Override
+    public void onTourStartItemClick(View view, String tourStartId) {
+
     }
 }

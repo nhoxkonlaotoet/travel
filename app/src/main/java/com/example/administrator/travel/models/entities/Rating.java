@@ -36,7 +36,7 @@ public class Rating {
         result.put("numberOfImages", numberOfImages);
         result.put("content", content);
         result.put("ratingTime", ServerValue.TIMESTAMP);
-        result.put("likes",likes);
+        result.put("likes","none");
         return result;
     }
 }

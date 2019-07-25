@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.travel.R;
@@ -63,7 +64,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         userAvatarMap = new HashMap<>();
         loadUserInfoFlags = new boolean[ratingList.size()];
         userInteractor = new UserInteractorImpl();
-        myId = userInteractor.getUserId();
+        if (userInteractor.isLogged())
+            myId = userInteractor.getUserId();
         this.tourId = tourId;
     }
 
@@ -126,7 +128,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         ImageView imgvReviewer;
         CheckBox checkboxLike, checkboxDislike;
         LinearLayout layoutReview;
-
+        RelativeLayout layoutLikeReview;
         ViewHolder(View itemView) {
             super(itemView);
             txtReviewerName = itemView.findViewById(R.id.txtReviewerName);
@@ -137,14 +139,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             checkboxLike = itemView.findViewById(R.id.checkboxLike);
             checkboxDislike = itemView.findViewById(R.id.checkboxDislike);
             layoutReview = itemView.findViewById(R.id.layoutReview);
+            layoutLikeReview=itemView.findViewById(R.id.layoutLikeReview);
+            if(myId==null)
+                layoutLikeReview.setVisibility(View.GONE);
             layoutReview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (mClickListener != null) {
-                        if (txtReviewContent.getMaxLines() == 3)
-                            txtReviewContent.setMaxLines(Integer.MAX_VALUE);
-                        else
-                            mClickListener.onReviewItemClick(view, tourId, ratingList.get(getAdapterPosition()).id);
+                        mClickListener.onReviewItemClick(view, tourId, ratingList.get(getAdapterPosition()).id);
                     }
                 }
             });

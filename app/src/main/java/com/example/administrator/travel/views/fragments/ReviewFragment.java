@@ -132,22 +132,22 @@ public class ReviewFragment extends Fragment implements ReviewView, ReviewAdapte
         ratingBarRating.setRating(rating);
         txtRating.setText(String.valueOf(rating));
         txtNumberofRating.setText(String.valueOf(numberOfRating));
-        int progress = (startCountMap.get(1) / numberOfRating) * 100;
+        int progress = (int) ((((float) startCountMap.get(1)) / numberOfRating) * 100);
         progressBar1Star.setProgress(progress);
-        progress = (startCountMap.get(2) / numberOfRating) * 100;
+        progress = (int) ((((float) startCountMap.get(2)) / numberOfRating) * 100);
         progressBar2Star.setProgress(progress);
-        progress = (startCountMap.get(3) / numberOfRating) * 100;
+        progress = (int) ((((float) startCountMap.get(3)) / numberOfRating) * 100);
         progressBar3Star.setProgress(progress);
-        progress = (startCountMap.get(4) / numberOfRating) * 100;
+        progress = (int) ((((float) startCountMap.get(4)) / numberOfRating) * 100);
         progressBar4Star.setProgress(progress);
-        progress = (startCountMap.get(5) / numberOfRating) * 100;
+        progress = (int) ((((float) startCountMap.get(5)) / numberOfRating) * 100);
         progressBar5Star.setProgress(progress);
     }
 
 
     @Override
     public void showReviews(String tourId, List<Rating> reviewList) {
-        reviewAdapter = new ReviewAdapter(getActivity(),tourId, reviewList);
+        reviewAdapter = new ReviewAdapter(getActivity(), tourId, reviewList);
         reviewAdapter.setClickListener(this);
         recyclerViewReview.setAdapter(reviewAdapter);
 
@@ -237,7 +237,7 @@ public class ReviewFragment extends Fragment implements ReviewView, ReviewAdapte
     }
 
     @Override
-    public void onReviewItemClick(View view,String tourId, String reviewId) {
+    public void onReviewItemClick(View view, String tourId, String reviewId) {
         presenter.onReviewItemClicked(tourId, reviewId);
     }
 

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.administrator.travel.FormatMoney;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.models.bases.ExternalStorageInteractor;
 import com.example.administrator.travel.models.bases.TourInteractor;
@@ -59,8 +60,8 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.ViewHolder>
         tourInteractor = new TourInteractorImpl();
         loadPhotoFlags = new boolean[tourList.size()];
         initUsingExternalStorage(context);
-        photoWidth = (int)context.getResources().getDimension(R.dimen.tour_image_thumpnail_width);
-        photoHeight = (int)context.getResources().getDimension(R.dimen.tour_image_thumpnail_height);
+        photoWidth = (int) context.getResources().getDimension(R.dimen.tour_image_thumpnail_width);
+        photoHeight = (int) context.getResources().getDimension(R.dimen.tour_image_thumpnail_height);
     }
 
 
@@ -115,7 +116,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.ViewHolder>
             holder.imgvTourPhoto.setImageBitmap(tourImageMap.get(tour.id));
         // holder.imgvTourPhoto.setImageResource(R.drawable.tour);
         holder.txtTourName.setText(tour.name);
-        holder.txtTourPrice.setText(String.valueOf(tour.adultPrice) + "đ");
+        holder.txtTourPrice.setText(FormatMoney.formatToString(tour.adultPrice) + "đ");
         if (tour.ratings != null) {
             holder.txtNumberofRating.setText(String.valueOf(tour.ratings.size() + " lượt đánh giá"));
             holder.txtRating.setText(String.valueOf(ratingMap.get(tour.id).intValue()));
@@ -138,7 +139,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.ViewHolder>
         if (externalStoragePermissionGranted) {
             String currentTourPath = new StringBuilder(toursPath).append(tourId).append("/").toString();
             if (!externalStorageInteractor.isExistFile(currentTourPath, tourId + pos))
-                externalStorageInteractor.saveBitmapToExternalFile(currentTourPath, tourId + pos, tourImage,50);
+                externalStorageInteractor.saveBitmapToExternalFile(currentTourPath, tourId + pos, tourImage, 50);
         }
     }
 

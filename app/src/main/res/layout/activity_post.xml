@@ -9,8 +9,8 @@
     <RelativeLayout
         android:id="@+id/rlupdatestatus"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorKiwiDark">
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@drawable/background_toolbar">
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="35dp"
@@ -85,30 +85,7 @@
                     android:layout_height="match_parent"
                     app:srcCompat="@drawable/ic_picture" />
             </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/btnMarkLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:background="@drawable/background_transparent_button"
-               android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:clickable="true">
-                <ImageView
-                    android:id="@+id/imgvLocation"
-                    android:layout_width="15dp"
-                    android:layout_height="match_parent"
 
-                    app:srcCompat="@drawable/ic_map"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorLicoriceDark"
-                    android:text="Địa điểm"
-                    android:layout_centerVertical="true"
-                    android:gravity="center"
-                    android:layout_toRightOf="@+id/imgvLocation"/>
-            </RelativeLayout>
             <TextView
                 android:id="@+id/txtFileCount"
                 android:layout_width="match_parent"
@@ -136,7 +113,9 @@
             android:id="@+id/recyclerviewPicture"
             android:layout_width="match_parent"
             android:visibility="gone"
-            android:layout_height="250dp"
+            android:layout_height="400dp"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
          />
     </RelativeLayout>
 </RelativeLayout>

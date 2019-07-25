@@ -27,4 +27,8 @@ public interface PostView {
 
     void notifyFail(String message);
     Context getContext();
+
+    void showWaitDialog();
+
+    void closeWaitDialog();
 }

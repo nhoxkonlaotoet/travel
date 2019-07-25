@@ -1,5 +1,6 @@
 package com.example.administrator.travel.presenters.impls;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -36,7 +37,8 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class PostPresenterImpl implements PostPresenter,
-        Listener.OnPostActivityFinishedListener, Listener.OnRateTourFinishedListener, Listener.OnLoadImageFinishedListener {
+        Listener.OnPostActivityFinishedListener, Listener.OnRateTourFinishedListener,
+        Listener.OnLoadImageThumpnailFinishedListener {
     PostView view;
     final static int LOCATION_REQUEST = 111;
     ActivityInteractor activityInteractor;
@@ -80,6 +82,7 @@ public class PostPresenterImpl implements PostPresenter,
                 // Activity activity = new Activity(myId, false, content, location, selectedImageList.size());
                 // activityInteractor.postActivity(tourStartId, myId, activity, selectedImageList, this);
             } else {
+                view.showWaitDialog();
                 Rating rating = new Rating(this.rating, userId, selectedImageList.size(), content);
                 ratingInteractor.rateTour(tourId, rating, selectedImageList, this);
             }
@@ -101,12 +104,14 @@ public class PostPresenterImpl implements PostPresenter,
                 try {
                     File storage = new File(Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/");
                     view.showFramePictures(storage.listFiles().length, storage.listFiles());
-                    Log.e("count", storage.getAbsolutePath());
                     for (File f : storage.listFiles()) {
-//                        new LoadImageTask(this).execute(i + "", f.getAbsolutePath());
-//                        i++;
-                        Log.e("file", f.getPath() + " "+f.getName());
-                        externalStorageInteractor.getBitmapFromExternalFile(storage.getPath(), f.getName(), this);
+                        int quality = 1;
+                        if (f.length() > 1024) {
+                            quality += (int) ((float) f.length() / (1024 * 1024 * 1.5));
+                        }
+                        Log.e("size", quality+"");
+                        externalStorageInteractor.getBitmapThumpnailFromExternalFile("/DCIM/CAMERA/", f.getName(), quality, this);
+
                     }
                 } catch (Exception ex) {
                 }
@@ -164,18 +169,20 @@ public class PostPresenterImpl implements PostPresenter,
 
     @Override
     public void onRateTourSuccess() {
+        view.closeWaitDialog();
         view.finishViewReturnResult(RESULT_OK);
     }
 
     @Override
     public void onRateTourFail(Exception ex) {
         view.notifyFail(ex.getMessage());
+        view.closeWaitDialog();
         view.finishViewReturnResult(RESULT_CANCELED);
     }
 
     @Override
-    public void onLoadImageSuccess(String fileName, Bitmap image) {
-        Log.e("asdasdasd", fileName);
-          view.addPicture(fileName,image);
+    public void onLoadImageThumpnailSuccess(String fileName, Bitmap image) {
+        view.addPicture(fileName, image);
     }
+
 }

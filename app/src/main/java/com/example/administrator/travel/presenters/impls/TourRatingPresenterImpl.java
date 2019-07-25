@@ -68,7 +68,6 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
         view.disableRatingBar();
         if (userInteractor.isLogged()) {
             myId = userInteractor.getUserId();
-            Log.e("check", myId+ " "+tourId);
             participantInteractor.checkJoinedTour(myId, tourId, this);
             view.hideLayoutRateTour();
             view.hideLayoutMyReview();
@@ -110,7 +109,8 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
     public void onViewResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_POST) {
             if (resultCode == RESULT_OK) {
-                ratingInteractor.getReviews(tourId, this);
+                tourInteractor.getTour(tourId,this);
+                ratingInteractor.getReview(tourId,myId,this);
                 view.disableRatingBar();
             }
         }
@@ -186,6 +186,8 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
            view.hideLayoutRateTour();
         }
         else {
+            view.enableRatingBar();
+            view.showLayoutRateTour();
             ratingInteractor.getReview(tourId, myId, this);
         }
 
@@ -193,7 +195,7 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
 
     @Override
     public void onCheckJoinedTourFail(Exception ex) {
-        Log.e("checked", myId+ " "+ex);
+        Log.e("fail", myId+ " "+ex);
 
     }
 
@@ -202,7 +204,6 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
         //haven't reviewed yet return null
         if(rating==null || rating.rating==0)
             firstChange=false;
-        Toast.makeText(view.getContext(),rating+"",Toast.LENGTH_LONG);
         if (rating == null)
             if (joinedTour) // joined tour and haven't reviewed{
             {
@@ -217,6 +218,7 @@ public class TourRatingPresenterImpl implements TourRatingPresenter, Listener.On
             view.disableRatingBar();
             view.showMyReview(rating);
             view.showLayoutMyReview();
+            view.hideLayoutRateTour();
             userInteractor.getUserInfor(userInteractor.getUserId(), this);
         }
     }

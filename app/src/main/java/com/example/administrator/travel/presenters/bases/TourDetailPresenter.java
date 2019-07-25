@@ -10,4 +10,6 @@ public interface TourDetailPresenter {
     void onViewCreated(Bundle bundle);
     void onSelectItemSpinnerDays(String day);
     void onScheduleItemClicked(String scheduleId);
+
+    void onButtonAddTourStartClick();
 }

@@ -14,4 +14,6 @@ public interface ExternalStorageInteractor {
     void getBitmapFromExternalFile(String path, String fileName, Listener.OnLoadImageFinishedListener listener);
 
     void getBitmapThumpnailFromExternalFile(String path, String fileName, Listener.OnLoadImageThumpnailFinishedListener listener);
+
+    void getBitmapThumpnailFromExternalFile(String path, String fileName, int quality, Listener.OnLoadImageThumpnailFinishedListener listener);
 }

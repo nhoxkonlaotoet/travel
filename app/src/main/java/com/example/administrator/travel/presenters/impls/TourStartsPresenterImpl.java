@@ -45,7 +45,6 @@ public class TourStartsPresenterImpl implements TourStartPresenter, Listener.OnG
 
     @Override
     public void onTourStartItemClick(String tourStartId) {
-
         view.gotoBooktourActivity(tourStartId, ownerId);
     }
 

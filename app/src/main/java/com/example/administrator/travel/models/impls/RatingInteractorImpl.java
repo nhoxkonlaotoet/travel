@@ -101,8 +101,16 @@ public class RatingInteractorImpl implements RatingInteractor {
                 if (dataSnapshot.getValue() == null) {
                     listener.onGetReviewTourSuccess(null);
                 } else {
-                    Rating rating = dataSnapshot.getValue(Rating.class);
+                    Rating rating = new Rating();
                     rating.id = dataSnapshot.getKey();
+                    rating.content = dataSnapshot.child("content").getValue(String.class);
+                    rating.numberOfImages = dataSnapshot.child("numberOfImages").getValue(Integer.class);
+                    rating.rating = dataSnapshot.child("rating").getValue(Integer.class);
+                    rating.ratingPeopleId = dataSnapshot.child("ratingPeopleId").getValue(String.class);
+                    rating.ratingTime = dataSnapshot.child("ratingTime").getValue(Long.class);
+                    if (!(dataSnapshot.child("likes").getValue().equals("none"))) {
+                        rating.likes = (HashMap<String, Boolean>) dataSnapshot.child("likes").getValue();
+                    }
                     listener.onGetReviewTourSuccess(rating);
                 }
             }
@@ -123,8 +131,16 @@ public class RatingInteractorImpl implements RatingInteractor {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Rating> lstReview = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Rating rating = ds.getValue(Rating.class);
+                    Rating rating = new Rating();
                     rating.id = ds.getKey();
+                    rating.content = ds.child("content").getValue(String.class);
+                    rating.numberOfImages = ds.child("numberOfImages").getValue(Integer.class);
+                    rating.rating = ds.child("rating").getValue(Integer.class);
+                    rating.ratingPeopleId = ds.child("ratingPeopleId").getValue(String.class);
+                    rating.ratingTime = ds.child("ratingTime").getValue(Long.class);
+                    if (!(ds.child("likes").getValue().equals("none"))) {
+                        rating.likes = (HashMap<String, Boolean>) ds.child("likes").getValue();
+                    }
                     lstReview.add(rating);
                 }
                 listener.onGetReviewsTourSuccess(lstReview);
@@ -145,12 +161,14 @@ public class RatingInteractorImpl implements RatingInteractor {
         ratingsRef.child(tourId).child(reviewId).child("likes").child(userId).setValue(like);
 
     }
+
     @Override
-    public void removeReactReview(String tourId, String reviewId, String userId){
+    public void removeReactReview(String tourId, String reviewId, String userId) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ratingsRef = database.getReference(RATINGS_REF);
         ratingsRef.child(tourId).child(reviewId).child("likes").child(userId).removeValue();
     }
+
     @Override
     public byte[] bitmapToBytes(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -158,12 +176,13 @@ public class RatingInteractorImpl implements RatingInteractor {
         byte[] data = baos.toByteArray();
         return data;
     }
+
     @Override
-    public void getReviewImage(final int index, final String tourId, String reviewerId, final Listener.OnGetReviewImageFinishedListener listener){
+    public void getReviewImage(final int index, final String tourId, String reviewerId, final Listener.OnGetReviewImageFinishedListener listener) {
 
         final long ONE_MEGABYTE = 1024 * 1024;
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference tourRef = storage.getReference().child("reviews/" + tourId + "/"+reviewerId+"/");
+        StorageReference tourRef = storage.getReference().child("reviews/" + tourId + "/" + reviewerId + "/");
         tourRef.child(index + ".png").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {

@@ -10,16 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.example.administrator.travel.R;
-import com.example.administrator.travel.models.entities.Tour;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Admin on 4/15/2019.
@@ -27,18 +22,14 @@ import java.util.List;
 
 public class StoragePictureAdapter extends RecyclerView.Adapter<StoragePictureAdapter.ViewHolder> {
 
-    private HashMap<String, Bitmap> pictureList;
+    private HashMap<String, Bitmap> pictureMap;
     private boolean[] flags;
-    private LayoutInflater mInflater;
     private StoragePictureAdapter.PictureClickListener mClickListener;
     private int count;
     File[] filenameList;
-
-    public StoragePictureAdapter(Context context, int count, File[] filenameList) {
-        if (context == null)
-            return;
-        this.mInflater = LayoutInflater.from(context);
-        pictureList = new HashMap<>();
+    RecyclerView parent;
+    public StoragePictureAdapter(int count, File[] filenameList) {
+        pictureMap = new HashMap<>();
         this.count = count;
         flags = new boolean[count];
         this.filenameList = filenameList;
@@ -47,25 +38,24 @@ public class StoragePictureAdapter extends RecyclerView.Adapter<StoragePictureAd
     @Override
     @NonNull
     public StoragePictureAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (mInflater == null)
-            return null;
-        View view = mInflater.inflate(R.layout.item_picture, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture, parent, false);
         return new StoragePictureAdapter.ViewHolder(view);
+    }
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        parent = recyclerView;
     }
 
     @Override
     public void onBindViewHolder(@NonNull StoragePictureAdapter.ViewHolder holder, int position) {
-        try {
 
-            String name = filenameList[position].getName();
-            if (pictureList.get(name) != null) {
-                Log.e("get",  name.substring(0,name.length()-5) + " "+pictureList.get(name));
-                Bitmap picture = pictureList.get(name);
-                holder.imgvPicture.setImageBitmap(picture);
-            }
-            holder.checkBoxPicture.setChecked(flags[position]);
-        } catch (Exception e) {
+        String name = filenameList[position].getName();
+        if (pictureMap.get(name) != null) {
+            Bitmap picture = pictureMap.get(name);
+            holder.imgvPicture.setImageBitmap(picture);
         }
+        holder.checkBoxPicture.setChecked(flags[position]);
     }
 
     @Override
@@ -86,34 +76,37 @@ public class StoragePictureAdapter extends RecyclerView.Adapter<StoragePictureAd
 
         @Override
         public void onClick(View view) {
-            if (flags[getAdapterPosition()])
-                flags[getAdapterPosition()] = false;
-            else
-                flags[getAdapterPosition()] = true;
-            if (mClickListener != null)
-                mClickListener.onPictureClick(view, pictureList.get(getAdapterPosition()));
-            notifyDataSetChanged();
+
+            int pos=getAdapterPosition();
+            Log.e("position",getAdapterPosition()+"___________"+filenameList[pos].getName());
+            if (mClickListener != null) {
+                if (flags[pos])
+                    flags[pos] = false;
+                else
+                    flags[pos] = true;
+                notifyDataSetChanged();
+
+                String name = filenameList[pos].getName();
+                mClickListener.onPictureClick(view, pictureMap.get(name));
+            }
         }
     }
 
-    // convenience method for getting data at click position
-    public Bitmap getItem(int pos) {
-        return pictureList.get(pos);
-    }
-
-    // allows clicks events to be caught
     public void setClickListener(StoragePictureAdapter.PictureClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
-    // parent activity will implement this method to respond to click events
     public interface PictureClickListener {
         void onPictureClick(View view, Bitmap image);
     }
 
     public void updateImage(String name, Bitmap picture) {
-        Log.e("put", name.substring(0,name.length()-5));
-        pictureList.put(name, picture);
-        notifyDataSetChanged();
+        pictureMap.put(name, picture);
+        parent.post(new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
     }
 }

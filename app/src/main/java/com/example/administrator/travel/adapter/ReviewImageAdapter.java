@@ -43,7 +43,6 @@ public class ReviewImageAdapter extends RecyclerView.Adapter<ReviewImageAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if(!loadFlags[position]){
-            Log.e( "onBindViewHolder: ",tourId + reviewerId );
             ratingInteractor.getReviewImage(position,tourId,reviewerId,this);
             loadFlags[position]=true;
         }
@@ -68,7 +67,6 @@ public class ReviewImageAdapter extends RecyclerView.Adapter<ReviewImageAdapter.
 
     @Override
     public void onGetReviewImageSuccess(int index, String tourId, Bitmap image) {
-        Log.e("onGetReviewImg: ", index+"");
         imageMap.put(index,image);
         parent.post(new Runnable() {
             @Override

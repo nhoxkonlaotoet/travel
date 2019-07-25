@@ -56,8 +56,11 @@ public class ExternalStorageInteractorImpl implements ExternalStorageInteractor 
                     StringBuilder photoFilePathBuilder = new StringBuilder()
                             .append(ROOT)
                             .append(path)
-                            .append(fileName)
-                            .append(".jpg");
+                            .append(fileName);
+                    if (!(fileName.contains(".jpg") || fileName.contains(".png")
+                            || fileName.contains(".JPG") || fileName.contains(".PNG"))) {
+                        photoFilePathBuilder.append(".jpg");
+                    }
                     Bitmap photo = BitmapFactory.decodeFile(photoFilePathBuilder.toString());
                     listener.onLoadImageSuccess(fileName, photo);
 
@@ -79,11 +82,40 @@ public class ExternalStorageInteractorImpl implements ExternalStorageInteractor 
                     StringBuilder photoFilePathBuilder = new StringBuilder()
                             .append(ROOT)
                             .append(path)
-                            .append(fileName)
-                            .append(".jpg");
+                            .append(fileName);
+                    if (!(fileName.contains(".jpg") || fileName.contains(".png")
+                            || fileName.contains(".JPG") || fileName.contains(".PNG"))) {
+                        photoFilePathBuilder.append(".jpg");
+                    }
                     FileInputStream fileInputStream = new FileInputStream(photoFilePathBuilder.toString());
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
                     bitmapOptions.inSampleSize = 3;
+                    Bitmap photo = BitmapFactory.decodeStream(fileInputStream, null, bitmapOptions);
+                    listener.onLoadImageThumpnailSuccess(fileName, photo);
+                } catch (Exception ex) {
+
+                }
+            }
+        }).start();
+
+    }
+    @Override
+    public void getBitmapThumpnailFromExternalFile(final String path, final String fileName, final int quality, final Listener.OnLoadImageThumpnailFinishedListener listener) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    StringBuilder photoFilePathBuilder = new StringBuilder()
+                            .append(ROOT)
+                            .append(path)
+                            .append(fileName);
+                    if (!(fileName.contains(".jpg") || fileName.contains(".png")
+                            || fileName.contains(".JPG") || fileName.contains(".PNG"))) {
+                        photoFilePathBuilder.append(".jpg");
+                    }
+                    FileInputStream fileInputStream = new FileInputStream(photoFilePathBuilder.toString());
+                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                    bitmapOptions.inSampleSize = quality;
                     Bitmap photo = BitmapFactory.decodeStream(fileInputStream, null, bitmapOptions);
                     listener.onLoadImageThumpnailSuccess(fileName, photo);
                 } catch (Exception ex) {

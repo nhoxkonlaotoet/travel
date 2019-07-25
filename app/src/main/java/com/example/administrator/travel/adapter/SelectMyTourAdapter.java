@@ -89,7 +89,7 @@ public class SelectMyTourAdapter extends RecyclerView.Adapter<SelectMyTourAdapte
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null)
+            if (mClickListener != null && tourStartDateList.size()>0)
                 mClickListener.onMyTourItemClick(view, tourStartDateList.get(getAdapterPosition()).tourId, tourStartDateList.get(getAdapterPosition()).id);
         }
     }

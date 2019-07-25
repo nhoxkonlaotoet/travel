@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.travel.FormatMoney;
 import com.example.administrator.travel.R;
 import com.example.administrator.travel.adapter.TourBookingAdapter;
 import com.example.administrator.travel.models.entities.TourBookingDetail;
@@ -85,9 +86,9 @@ public class BookTourActivity extends AppCompatActivity implements BookTourView,
 
     @Override
     public void showPrice(int adultPrice, int childrenPrice, int babyPrice) {
-        txtAdultPrice.setText(String.valueOf(adultPrice));
-        txtChildrenPrice.setText(String.valueOf(childrenPrice));
-        txtBabyPrice.setText(String.valueOf(babyPrice));
+        txtAdultPrice.setText(FormatMoney.formatToString(adultPrice)+"đ");
+        txtChildrenPrice.setText(FormatMoney.formatToString(childrenPrice)+"đ");
+        txtBabyPrice.setText(FormatMoney.formatToString(babyPrice)+"đ");
     }
 
     @Override

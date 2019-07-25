@@ -136,7 +136,7 @@ public class CreateActivityPresenterImpl implements CreateActivityPresenter,
         selectedActivitySuggestion = activitySuggestion;
         clickSuggest = true;
         String[] keywordsSplit = activitySuggestion.keywords.split(",");
-
+        if (location == null) return;
         LatLng currentLocation = location.getLatLng();
         if (currentLocation != null) {
             for (String keyword : keywordsSplit)

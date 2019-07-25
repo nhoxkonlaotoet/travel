@@ -2,6 +2,7 @@ package com.example.administrator.travel.models.bases;
 
 import android.content.Context;
 
+import com.example.administrator.travel.models.entities.AddTourStartDateRequest;
 import com.example.administrator.travel.models.listeners.Listener;
 
 /**
@@ -14,4 +15,6 @@ public interface TourStartInteractor {
     void getTourStart(String tourStartId, Listener.OnGetTourStartFinishedListener listener);
 
     String getTourGuideId(String tourStartId, Context context);
+
+    void addTourStartRequest(String tourId, AddTourStartDateRequest addTourStartDateRequest, Listener.OnAddTourStartDateRequest listener);
 }

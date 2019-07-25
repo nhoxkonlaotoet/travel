@@ -2,12 +2,16 @@ package com.example.administrator.travel.models.impls;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.administrator.travel.models.bases.TourStartInteractor;
+import com.example.administrator.travel.models.entities.AddTourStartDateRequest;
 import com.example.administrator.travel.models.entities.Tour;
 import com.example.administrator.travel.models.entities.TourStartDate;
 import com.example.administrator.travel.models.listeners.Listener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,7 +83,24 @@ public class TourStartInteractorImpl implements TourStartInteractor {
         String tourGuideId = prefs.getString("participatingTourGuide" + tourStartId, "");
         return tourGuideId;
     }
-
+    @Override
+    public void addTourStartRequest(String tourId, AddTourStartDateRequest addTourStartDateRequest, final Listener.OnAddTourStartDateRequest listener)
+    {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference addTourStartsRef = database.getReference("add_tour_start_request").child(tourId);
+        String key = addTourStartsRef.push().getKey();
+        addTourStartsRef.child(key).setValue(addTourStartDateRequest.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                listener.onAddTourStartDateSuccess();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onAddTourStartDateFail(e);
+            }
+        });
+    }
 
 
 }

@@ -346,4 +346,10 @@ public interface Listener {
     interface OnGetReviewImageFinishedListener {
         void onGetReviewImageSuccess(int index, String tourId, Bitmap image);
     }
+
+    interface OnAddTourStartDateRequest {
+        void onAddTourStartDateSuccess();
+
+        void onAddTourStartDateFail(Exception ex);
+    }
 }

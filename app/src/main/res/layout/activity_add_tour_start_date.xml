@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorCreme"
+    android:orientation="vertical"
+    tools:context=".views.activities.AddTourStartDateActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@drawable/background_toolbar"
+        android:elevation="8dp"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorTransparent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Thêm ngày khởi hành"
+                android:textColor="@color/colorCreme"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnAddTourStart"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/background_transparent_button"
+                android:text="Thêm"
+                android:textAllCaps="false"
+                android:textColor="@color/colorCreme"
+                android:textSize="18dp" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Giá dự kiến: "
+                android:textColor="@color/colorLicoriceDark"
+                android:textSize="@dimen/text_size_title" />
+
+
+            <TableLayout
+                android:id="@+id/tableLayoutCost"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorCreme"
+                android:weightSum="1">
+
+                <TableRow
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/table_row_height"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:text="Loại khách"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/table_row_height"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:paddingLeft="5dp"
+                        android:text="Đơn giá"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/table_row_height"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="Số lượng"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                </TableRow>
+
+                <TableRow
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_man" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:gravity="center|left"
+                            android:paddingLeft="5dp"
+                            android:text="Người lớn"
+                            android:textColor="@color/colorLicoriceDark" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtAdultPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/table_row_height"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:paddingLeft="5dp"
+                        android:text="10000000đ"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/etxtNumberOfAdult"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/background_edit_text"
+                            android:imeOptions="actionDone"
+                            android:inputType="numberDecimal"
+                            android:singleLine="true"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </TableRow>
+
+                <TableRow
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_girl" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:gravity="center|left"
+                            android:paddingLeft="5dp"
+                            android:text="Trẻ em"
+                            android:textColor="@color/colorLicoriceDark" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtChildrenPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/table_row_height"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:paddingLeft="5dp"
+                        android:text="7000000đ"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/etxtNumberOfChildren"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/background_edit_text"
+                            android:imeOptions="actionDone"
+                            android:inputType="numberDecimal"
+                            android:singleLine="true"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_baby" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/table_row_height"
+                            android:gravity="center|left"
+                            android:paddingLeft="5dp"
+                            android:text="Em bé"
+                            android:textColor="@color/colorLicoriceDark" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtBabyPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/table_row_height"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:paddingLeft="5dp"
+                        android:text="5000000đ"
+                        android:textColor="@color/colorLicoriceDark"></TextView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/etxtNumberOfBaby"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="0dp"
+                            android:background="@drawable/background_edit_text"
+                            android:imeOptions="actionDone"
+                            android:inputType="numberDecimal"
+                            android:singleLine="true"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </TableRow>
+            </TableLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Bạn muốn du lịch vào ngày nào?"
+                android:textColor="@color/colorLicoriceDark"
+                android:textSize="@dimen/text_size_title" />
+
+            <sun.bob.mcalendarview.MCalendarView
+                android:id="@+id/calendarTourStart"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                tools:context=".MainActivity" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

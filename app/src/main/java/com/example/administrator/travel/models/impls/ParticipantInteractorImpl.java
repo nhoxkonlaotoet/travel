@@ -322,6 +322,7 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
         findTourStartIdQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("participant", dataSnapshot.getChildrenCount()+"     ");
                 final boolean[] checkFlags = new boolean[(int) dataSnapshot.getChildrenCount()];
                 final int[] i = {0};
                 final boolean[] cancel = {false};
@@ -331,6 +332,9 @@ public class ParticipantInteractorImpl implements ParticipantInteractor {
                     tourStartDateRef.child(tourStartId).child("tourId").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.e("participant", dataSnapshot.getValue(String.class)  + "    "+ tourId);
+
+
                             if (cancel[0])
                                 return;
                             String tourID = dataSnapshot.getValue(String.class);
